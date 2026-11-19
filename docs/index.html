@@ -126,7 +126,7 @@
   .inter input:disabled + span { opacity: .5; cursor: default; }
 
   /* ---------- Stratégies ---------- */
-  .strats { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+  .strats { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
   .strat { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 14px; }
   .strat::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--c, var(--cyan)); }
   .strat-tete { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
@@ -141,6 +141,16 @@
   .mini-stats span { font-size: 10.5px; color: var(--doux); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
   .etat-strat { display: flex; gap: 12px; align-items: center; background: var(--fond); border: 1px solid var(--bord); border-radius: 12px; padding: 10px 12px; font-size: 13.5px; }
   .etat-strat .fleche { font-size: 18px; font-weight: 800; }
+  .sous-bots { display: grid; gap: 6px; max-height: 260px; overflow-y: auto; }
+  .sous-bots.vide { color: var(--doux); font-size: 13px; padding: 10px; border: 1px dashed var(--bord); border-radius: 12px; text-align: center; }
+  .sb { display: grid; grid-template-columns: minmax(0, 1.3fr) 1fr minmax(0, 1.2fr); gap: 10px; align-items: center; background: var(--fond); border: 1px solid var(--bord); border-radius: 10px; padding: 7px 10px; font-size: 12.5px; }
+  .sb-nom { min-width: 0; } .sb-nom b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .sb-nom small { color: var(--doux); }
+  .sb-note { position: relative; height: 6px; border-radius: 3px; background: rgba(255,255,255,.07); }
+  .sb-note::after { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--doux); }
+  .sb-note i { position: absolute; top: 0; bottom: 0; border-radius: 3px; }
+  .sb-act { color: var(--doux); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: right; }
+  .garde { margin-top: 12px; font-size: 13px; color: var(--doux); background: var(--fond); border: 1px solid var(--bord); border-radius: 12px; padding: 9px 12px; }
+  .garde.alerte { color: #ffd1d4; background: rgba(234,57,67,.12); border-color: rgba(234,57,67,.5); }
   .spark { height: 54px; display: block; width: 100%; }
 
   /* ---------- Listes ---------- */
@@ -280,6 +290,7 @@
                 <button class="bouton vert" data-cmd="reprendre">▶ Tout reprendre</button>
               </div>
             </div>
+            <div id="garde"></div>
             <div class="etat-cmd" data-etat=""></div>
           </div>
           <div class="strats" id="strats"></div>
@@ -542,6 +553,8 @@ const STRAT_INFO = {
     desc: "Suit les grandes tendances du Bitcoin sur des bougies de 4 heures. Peu de trades, chacun visé pour durer, avec un stop garanti et un stop suiveur." },
   rapide: { ico: "⚡", couleur: COUL.violet, titre: "Rapide 5 min",
     desc: "Expérimentale : trade souvent (bougies de 5 minutes) pour voir le bot travailler en direct. Risque minuscule : 0,1 % du compte par trade." },
+  actions_etf: { ico: "🏦", couleur: COUL.orange, titre: "Actions et ETF",
+    desc: "Une équipe de petits bots, un par action ou ETF : chacun note son marché et n'achète que les plus solides, avec des garde-fous communs." },
 };
 const nomStrat = id => (STRAT_INFO[id] || {}).titre || id;
 function stratDe(o) { return o.strategie || (/^\[Rapide\]/.test(o.motif_sortie || "") ? "rapide" : "tendance_4h"); }
@@ -624,6 +637,7 @@ function afficher() {
 
   // ---- Stratégies
   $("strats").innerHTML = strats.map(carteStrat).join("");
+  $("garde").innerHTML = bandeauGardeFous();
 
   // ---- Ordres
   const fermesTous = ordres.filter(o => o.statut === "ferme" && o.resultat != null);
@@ -703,9 +717,29 @@ function afficher() {
 function etatChip(s) {
   return D.pause ? `<span class="chip neutre">⏸ Pause</span>` : s.active === false ? `<span class="chip neutre">○ Désactivée</span>` : `<span class="chip pos">● Active</span>`;
 }
+function listeSousBots() {
+  const sb = Object.entries(D?.sous_bots || {});
+  if (!sb.length) return `<div class="sous-bots vide">Les petits bots apparaîtront ici après leur premier tour.</div>`;
+  sb.sort((a, b) => (b[1].note ?? -2) - (a[1].note ?? -2));
+  return `<div class="sous-bots">${sb.map(([epic, b]) => {
+    const n = Math.max(-1, Math.min(1, +b.note || 0)), pct = Math.abs(n) * 50;
+    const coul = n >= 0 ? "var(--vert)" : "var(--rouge)";
+    return `<div class="sb" title="${esc(b.dernier_refus || "")}">
+      <div class="sb-nom"><b>${esc(b.nom || epic)}</b><small>${b.prix != null ? fmt(b.prix, 2) : ""}</small></div>
+      <div class="sb-note" title="Note ${fmt(n, 2)} (de -1 à +1)"><i style="${n >= 0 ? "left:50%" : `left:${50 - pct}%`};width:${pct}%;background:${coul}"></i></div>
+      <div class="sb-act">${esc(b.action || "—")}</div></div>`;
+  }).join("")}</div>`;
+}
+function bandeauGardeFous() {
+  const g = D?.garde_fous; if (!g) return "";
+  const r = g.regles || {};
+  if (g.coupe_circuit) return `<div class="garde alerte">🛑 <b>Coupe-circuit déclenché :</b> le compte a perdu plus de ${esc(r.perte_max_pct ?? "?")} % depuis son plus haut. Aucune nouvelle position tant que tu n'appuies pas sur « Tout reprendre ».</div>`;
+  return `<div class="garde">🛡️ Garde-fous actifs : perte max ${esc(r.perte_max_pct ?? "—")} % depuis le plus haut, ${esc(r.perte_jour_pct ?? "—")} % par jour, ${esc(r.positions_max ?? "—")} positions au maximum, risque total ${esc(r.risque_total_pct ?? "—")} % du compte.</div>`;
+}
 function carteStrat(s) {
   const active = s.active !== false;
-  const tend = s.tendance === "BUY" ? ["▲", "pos", "Tendance haussière : elle veut acheter"] : s.tendance === "SELL" ? ["▼", "neg", "Tendance baissière : elle veut vendre"] : ["•", "", "Pas de tendance claire"];
+  const nbSb = Object.keys(D?.sous_bots || {}).length;
+  const tend = s.id === "actions_etf" && !s.tendance ? ["◎", "", nbSb ? `Surveille ${nbSb} marchés, un petit bot par marché` : "Prépare ses petits bots"] : s.tendance === "BUY" ? ["▲", "pos", "Tendance haussière : elle veut acheter"] : s.tendance === "SELL" ? ["▼", "neg", "Tendance baissière : elle veut vendre"] : ["•", "", "Pas de tendance claire"];
   const unite = (UNITES[s.unite] || [s.unite || "—"])[0];
   return `<div class="carte strat" style="--c:${s.couleur}">
     <div class="strat-tete">
@@ -721,6 +755,7 @@ function carteStrat(s) {
       <div><span>Réussite</span><b>${isNaN(s.reussite) ? "—" : fmt(s.reussite, 0) + " %"}</b></div>
       <div><span>En cours</span><b>${s.ouverts.length}</b></div>
     </div>
+    ${s.id === "actions_etf" ? listeSousBots() : ""}
     ${sparkline(s.courbe, s.couleur)}
     <div class="actions">
       <button class="bouton primaire" data-cmd="lancer" data-strat="${esc(s.id)}">▶ Lancer maintenant</button>
