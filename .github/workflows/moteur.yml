@@ -46,7 +46,7 @@ jobs:
           RISQUE_PCT: "1"
           TP_PARTIEL_ATR: "1"
           RAPIDE: "oui"
-          RISQUE_RAPIDE_PCT: "0.1"
+          RISQUE_RAPIDE_PCT: "0.05"  # ≈ 10 € de perte maximale par trade
           ACTION: ""
         run: |
           fin=$(( $(date +%s) + 345 * 60 ))
