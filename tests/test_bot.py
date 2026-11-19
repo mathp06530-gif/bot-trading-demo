@@ -80,3 +80,23 @@ def test_sans_secrets_ecrit_une_erreur(tmp_path, monkeypatch):
     assert main.principal() == 1
     d = json.loads((tmp_path / "data.json").read_text())
     assert d["journal"][-1]["type"] == "erreur"
+
+
+def test_stop_garanti_si_exige(monkeypatch):
+    from bot.capital import CapitalDemo, ErreurCapital
+    api = CapitalDemo("k", "i", "p")
+    envoyes = []
+
+    def faux(methode, chemin, **kw):
+        if chemin == "/positions":
+            envoyes.append(dict(kw["json"]))
+            if not kw["json"].get("guaranteedStop"):
+                raise ErreurCapital('POST /positions -> 400 : {"errorCode":"error.vallidation.guaranteed-stop-loss.required"}')
+            return {"dealReference": "o_1"}
+        if chemin.startswith("/markets/"):
+            return {"dealingRules": {"minGuaranteedStopDistance": {"unit": "PERCENTAGE", "value": 5}}}
+        return {"dealStatus": "ACCEPTED"}
+
+    monkeypatch.setattr(api, "_requete", faux)
+    assert api.ouvrir("BTCUSD", "BUY", 0.01, 3, 1000)["dealStatus"] == "ACCEPTED"
+    assert envoyes[-1]["guaranteedStop"] is True and envoyes[-1]["stopDistance"] == 55.0

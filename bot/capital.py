@@ -76,8 +76,26 @@ class CapitalDemo:
         corps = {"epic": epic, "direction": direction, "size": taille}
         if stop_pct and prix:
             corps["stopDistance"] = round(prix * stop_pct / 100, 2)
-        ref = self._requete("POST", "/positions", json=corps)["dealReference"]
+        try:
+            ref = self._requete("POST", "/positions", json=corps)["dealReference"]
+        except ErreurCapital as e:
+            # Certains comptes européens exigent un « stop garanti » sur chaque position.
+            if "guaranteed-stop" not in str(e) or not prix:
+                raise
+            corps["guaranteedStop"] = True
+            corps["stopDistance"] = max(corps.get("stopDistance", 0), self.distance_stop_garanti(epic, prix))
+            ref = self._requete("POST", "/positions", json=corps)["dealReference"]
         return self.confirmation(ref)
+
+    def distance_stop_garanti(self, epic: str, prix: float) -> float:
+        """Distance minimale autorisée pour un stop garanti (en prix), avec une petite marge."""
+        try:
+            regle = self.marche(epic)["dealingRules"]["minGuaranteedStopDistance"]
+            valeur = float(regle["value"])
+            distance = prix * valeur / 100 if regle.get("unit") == "PERCENTAGE" else valeur
+            return round(distance * 1.1, 2)
+        except Exception:
+            return round(prix * 0.05, 2)
 
     def fermer(self, deal_id: str):
         ref = self._requete("DELETE", f"/positions/{deal_id}").get("dealReference")
