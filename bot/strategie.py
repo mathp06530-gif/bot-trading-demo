@@ -76,13 +76,18 @@ def adx(m: pd.DataFrame, n: int = 14) -> pd.Series:
 # --- Stratégie -----------------------------------------------------------------
 def signaux_tendance(df: pd.DataFrame, rapide=EMA_RAPIDE, lente=EMA_LENTE, adx_min=ADX_MIN,
                      stop_atr=STOP_ATR, suivi_atr=SUIVI_ATR, ventes=VENTES,
-                     objectif_atr=None, frais_max_pct=SPREAD_MAX_PCT) -> pd.DataFrame:
+                     objectif_atr=None, frais_max_pct=SPREAD_MAX_PCT, note_min=None) -> pd.DataFrame:
     """df : bougies avec colonnes open/high/low/close en _bid et _ask.
     Renvoie par bougie : cible (1 achat, -1 vente, 0 rien), stop (distance en $),
     objectif (distance ou NaN), suivi (distance du stop suiveur), et les indicateurs."""
     m = milieu(df)
     f, s, a, x = ema(m.close, rapide), ema(m.close, lente), atr(m), adx(m)
     spread = (df.close_ask - df.close_bid).values
+    if note_min is not None:
+        from bot.analyse import note_technique
+        note = note_technique(m).note.values
+    else:
+        note = np.zeros(len(m))
     cible = np.zeros(len(m), dtype=int)
     etat = 0
     for i in range(len(m)):
@@ -96,14 +101,17 @@ def signaux_tendance(df: pd.DataFrame, rapide=EMA_RAPIDE, lente=EMA_LENTE, adx_m
         if etat == 0 and x.iat[i] > adx_min:
             trop_cher = frais_max_pct and spread[i] > a.iat[i] * stop_atr * frais_max_pct / 100
             if not trop_cher:
-                if hausse and m.close.iat[i] > f.iat[i]:
+                # filtre « analyse du marché » : la note technique doit confirmer le sens
+                ok_achat = note_min is None or note[i] >= note_min
+                ok_vente = note_min is None or note[i] <= -note_min
+                if hausse and m.close.iat[i] > f.iat[i] and ok_achat:
                     etat = 1
-                elif ventes and not hausse and m.close.iat[i] < f.iat[i]:
+                elif ventes and not hausse and m.close.iat[i] < f.iat[i] and ok_vente:
                     etat = -1
         cible[i] = etat
     out = pd.DataFrame({"cible": cible, "stop": a * stop_atr,
                         "objectif": a * objectif_atr if objectif_atr else np.nan,
-                        "suivi": a * suivi_atr, "ema_rapide": f, "ema_lente": s, "atr": a, "adx": x,
+                        "suivi": a * suivi_atr, "note": note, "ema_rapide": f, "ema_lente": s, "atr": a, "adx": x,
                         "cloture": m.close}, index=df.index)
     out.attrs["entree_nouvelle"] = True
     return out
@@ -150,3 +158,37 @@ def decider(df: pd.DataFrame) -> dict:
         "sig": sig,
         "explication": explication,
     }
+
+
+def signaux_note(df: pd.DataFrame, seuil=0.5, sortie=0.0, tendance=200, stop_atr=STOP_ATR, suivi_atr=SUIVI_ATR,
+                 ventes=True, frais_max_pct=SPREAD_MAX_PCT) -> pd.DataFrame:
+    """Stratégie « Note technique » (pour les actions et ETF) :
+    ACHAT quand la note technique dépasse +seuil (achat fort) ET le prix est au-dessus de l'EMA 200,
+    VENTE quand elle passe sous -seuil ET le prix est sous l'EMA 200.
+    SORTIE quand la note repasse de l'autre côté de `sortie` (l'analyse ne confirme plus), ou au stop."""
+    from bot.analyse import note_technique
+    m = milieu(df)
+    note = note_technique(m).note.values
+    t, a = ema(m.close, tendance), atr(m)
+    spread = (df.close_ask - df.close_bid).values
+    cible = np.zeros(len(m), dtype=int)
+    etat = 0
+    for i in range(len(m)):
+        if np.isnan(t.iat[i]) or np.isnan(a.iat[i]) or np.isnan(note[i]):
+            continue
+        if etat == 1 and note[i] < sortie:
+            etat = 0
+        elif etat == -1 and note[i] > -sortie:
+            etat = 0
+        if etat == 0:
+            trop_cher = frais_max_pct and spread[i] > a.iat[i] * stop_atr * frais_max_pct / 100
+            if not trop_cher:
+                if note[i] >= seuil and m.close.iat[i] > t.iat[i]:
+                    etat = 1
+                elif ventes and note[i] <= -seuil and m.close.iat[i] < t.iat[i]:
+                    etat = -1
+        cible[i] = etat
+    out = pd.DataFrame({"cible": cible, "stop": a * stop_atr, "objectif": np.nan, "suivi": a * suivi_atr,
+                        "note": note, "ema_lente": t, "atr": a, "cloture": m.close}, index=df.index)
+    out.attrs["entree_nouvelle"] = True
+    return out

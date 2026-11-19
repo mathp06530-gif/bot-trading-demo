@@ -53,6 +53,8 @@ class FauxCapital:
         self.fermees = []
         self.stops = []
         self.objectifs = []
+        self.niveaux = {}
+        self.epics = {}
         self.n = 0
 
     def connexion(self): pass
@@ -66,15 +68,17 @@ class FauxCapital:
         return [bougie(i, p, unite) for i, p in enumerate(serie)] + [bougie(len(serie), serie[-1], unite)]
 
     def positions(self):
-        return [{"position": {"dealId": d, "direction": s, "size": t, "level": 100, "upl": 1.5, "stopLevel": st,
+        return [{"position": {"dealId": d, "direction": s, "size": t, "level": self.niveaux.get(d, 100), "upl": 1.5, "stopLevel": st,
                               "guaranteedStop": True},
-                 "market": {"epic": "BTCUSD", "instrumentName": "Bitcoin"}} for d, s, t, st in self.ouvertes]
+                 "market": {"epic": self.epics.get(d, "BTCUSD"), "instrumentName": "Bitcoin"}} for d, s, t, st in self.ouvertes]
 
     def ouvrir(self, epic, direction, taille, stop_pct=None, prix=None, stop_distance=None, garanti=False,
                objectif_distance=None):
         self.objectifs.append(objectif_distance)
         d = f"d{self.n}"
         self.n += 1
+        self.niveaux[d] = prix
+        self.epics[d] = epic
         self.ouvertes.append((d, direction, taille, prix - stop_distance if direction == "BUY" else prix + stop_distance))
         return {"dealStatus": "ACCEPTED", "level": prix, "affectedDeals": [{"dealId": d}]}
 
@@ -248,3 +252,87 @@ def test_fermeture_manuelle_estimee_au_dernier_prix():
     d = {"ordres": [dict(o, dernier_prix=65000)]}  # le prix avait dépassé le stop
     synchroniser(d, [], "2026-11-19T18:30:00Z")
     assert d["ordres"][0]["prix_sortie"] == 64718
+
+
+# --- Garde-fous ---------------------------------------------------------------
+def _pos(level, stop, size, sens="BUY"):
+    return {"position": {"level": level, "stopLevel": stop, "size": size, "direction": sens}}
+
+
+def test_garde_fous_regles():
+    from bot.garde_fous import GardeFous
+    d = {}
+    g = GardeFous(d, 10000, [], 1.0)
+    assert g.autoriser(100, 50) == (True, "")
+    assert not g.autoriser(100, 0)[0]  # jamais sans stop
+    assert not g.autoriser(700, 50)[0]  # risque total > 6 %
+    g = GardeFous(d, 10000, [_pos(100, 90, 50)], 1.0)  # 500 € déjà en jeu
+    assert not g.autoriser(150, 5)[0] and g.autoriser(90, 5)[0]
+    g = GardeFous(d, 10000, [_pos(100, 110, 50)], 1.0)  # stop au-dessus de l'entrée : gain verrouillé, 0 risque
+    assert g.risque_ouvert_eur() == 0
+    g = GardeFous(d, 10000, [_pos(100, 99, 1)] * 12, 1.0)
+    assert "positions" in g.autoriser(10, 5)[1]
+    g = GardeFous(d, 9650, [], 1.0)  # -3,5 % dans la journée
+    assert "perte du jour" in g.autoriser(10, 5)[1]
+    d2 = {"garde_fous": {"plus_haut": 12000}}
+    g = GardeFous(d2, 10000, [], 1.0)  # -16 % depuis le plus haut
+    assert "COUPE-CIRCUIT" in g.autoriser(10, 5)[1]
+    g.rearmer()
+    assert g.autoriser(10, 5)[0]
+
+
+# --- Sous-bots actions et ETF ----------------------------------------------------
+class FauxCapitalActions(FauxCapital):
+    def __init__(self, prix_action, statut="TRADEABLE"):
+        super().__init__([20000] * 300)
+        self.prix_action, self.statut = prix_action, statut
+
+    def marche(self, epic):
+        if epic == "BTCUSD":
+            return super().marche(epic)
+        return {"snapshot": {"marketStatus": self.statut}, "instrument": {"name": epic, "marginFactor": 20},
+                "dealingRules": {"minDealSize": {"value": 0.1}, "minSizeIncrement": {"value": 0.1},
+                                 "minGuaranteedStopDistance": {"unit": "PERCENTAGE", "value": 5}}}
+
+    def bougies(self, epic, unite, n):
+        if epic == "BTCUSD":
+            return super().bougies(epic, unite, n)
+        return [bougie(i, p) for i, p in enumerate(self.prix_action)] + [bougie(len(self.prix_action), self.prix_action[-1])]
+
+
+def serie_note_achat():
+    from bot.strategie import signaux_note
+    prix = [300 + 3 * i + 8 * ((i % 7) - 3) for i in range(260)] + [1100 - 10 * i for i in range(20)] + \
+           [900 + 15 * i for i in range(60)]
+    for n in range(262, len(prix)):
+        c = signaux_note(bougies_vers_df([bougie(i, p) for i, p in enumerate(prix[:n])]), ventes=False).cible.values
+        if c[-1] == 1 and c[-2] == 0:
+            return prix[:n]
+    raise AssertionError("pas de signal")
+
+
+def test_sous_bot_achete_avec_stop_et_tp(tmp_path, monkeypatch):
+    import bot.sous_bots as sb
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
+    monkeypatch.setattr(main, "SOUS_BOTS", ["NVDA"])
+    faux = FauxCapitalActions(serie_note_achat())
+    d = {"strategies": {"rapide": {"active": False}}}
+    main.un_tour(d, faux)
+    assert [o[1] for o in faux.ouvertes] == ["BUY", "BUY"]
+    assert faux.objectifs[0] > 0 and faux.objectifs[1] is None  # TP sur la moitié
+    prix = faux.prix_action[-1] + 1
+    assert all(prix - st >= prix * 0.05 for _, _, _, st in faux.ouvertes)  # stop >= minimum imposé (5 %)
+    risque = sum(t * (prix - st) for _, _, t, st in faux.ouvertes)
+    assert risque <= 10000 * sb.RISQUE_SOUS_BOT_PCT / 100 * 1.02
+    assert d["sous_bots"]["NVDA"]["note"] >= 0.5 and d["ordres"][0]["strategie"] == "actions_etf"
+
+
+def test_sous_bot_refuse_si_marche_ferme(tmp_path, monkeypatch):
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
+    monkeypatch.setattr(main, "SOUS_BOTS", ["NVDA"])
+    faux = FauxCapitalActions(serie_note_achat(), statut="CLOSED")
+    d = {"strategies": {"rapide": {"active": False}}}
+    main.un_tour(d, faux)
+    assert not faux.ouvertes and "marché fermé" in d["sous_bots"]["NVDA"]["action"]

@@ -12,7 +12,7 @@ on:
         description: "Stratégie visée par la commande"
         type: choice
         default: toutes
-        options: [toutes, tendance_4h, rapide]
+        options: [toutes, tendance_4h, rapide, actions_etf]
 
 permissions:
   contents: write
@@ -39,13 +39,7 @@ jobs:
           CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
           CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
           CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
-          # Réglages modifiables :
-          MARCHES: "BTCUSD"     # plusieurs marchés possibles, séparés par des virgules
-          UNITE: "HOUR_4"       # stratégie principale : bougies de 4 h (testée en backtest)
-          RISQUE_PCT: "1"       # stratégie principale : 1 % du capital risqué par trade
-          TP_PARTIEL_ATR: "1"   # moitié de la position avec un TP à 1 × ATR ("0" = pas de TP)
-          RAPIDE: "oui"         # stratégie rapide expérimentale (5 min) : "oui" ou "non"
-          RISQUE_RAPIDE_PCT: "0.05" # stratégie rapide : 0,05 % du capital risqué par trade (≈ 10 € max)
+          # Les réglages sont dans reglages.env (relu à chaque tour).
           ACTION: ${{ inputs.action }}
           STRATEGIE: ${{ inputs.strategie }}
         run: bash scripts/tour.sh

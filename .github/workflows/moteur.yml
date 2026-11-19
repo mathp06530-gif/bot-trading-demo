@@ -40,13 +40,7 @@ jobs:
           CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
           CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
           CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
-          # Réglages modifiables (les mêmes que dans bot.yml) :
-          MARCHES: "BTCUSD"
-          UNITE: "HOUR_4"
-          RISQUE_PCT: "1"
-          TP_PARTIEL_ATR: "1"
-          RAPIDE: "oui"
-          RISQUE_RAPIDE_PCT: "0.05"  # ≈ 10 € de perte maximale par trade
+          # Les réglages sont dans reglages.env (relu à chaque tour).
           ACTION: ""
         run: |
           fin=$(( $(date +%s) + 345 * 60 ))

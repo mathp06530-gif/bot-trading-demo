@@ -2,7 +2,7 @@
 
 Mathis veut voir le bot trader souvent (10 à 30 trades par jour) pour comparer en direct.
 Le backtest prévoit qu'elle PERD de l'argent : le spread (~50 $) mange les petits mouvements.
-Son risque est donc minuscule : RISQUE_RAPIDE_PCT (0,1 %) du capital par trade.
+Son risque est donc minuscule : RISQUE_RAPIDE_PCT (0,05 %, environ 10 €) du capital par trade.
 
 Règles, sur des bougies de 5 minutes (prix milieu) :
   - EMA 9 au-dessus de l'EMA 50 -> signal ACHAT ; en dessous -> signal VENTE.
@@ -56,7 +56,8 @@ def id_position(conf: dict) -> str | None:
     return (deals[0].get("dealId") if deals else None) or conf.get("dealId")
 
 
-def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, eurusd: float, noter, quand: str = "") -> str:
+def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, eurusd: float, noter, quand: str = "",
+                garde=None) -> str:
     etat = donnees.setdefault("rapide", {"deals": [], "nom": NOM})
     etat["nom"] = NOM
     mes_ids = set(etat.setdefault("deals", []))
@@ -97,6 +98,11 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
     distance = prix * STOP_PCT / 100
     taille = math.floor(capital * RISQUE_RAPIDE_PCT / 100 * eurusd / distance / 0.0001) * 0.0001
     taille = round(max(taille, 0.0001), 4)
+    if garde is not None:
+        ok, raison = garde.autoriser(taille * distance / eurusd, distance)
+        if not ok:
+            return f"Refusé (garde-fous) : {raison}"
+        garde.enregistrer({"position": {"level": prix, "stopLevel": prix - distance, "size": taille}})
     conf = api.ouvrir(epic, voulu, taille, prix=prix, stop_distance=distance, garanti=True)
     mot = "ACHAT" if voulu == "BUY" else "VENTE"
     if conf.get("dealStatus") == "ACCEPTED":
