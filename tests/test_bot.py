@@ -6,6 +6,7 @@ import os
 from datetime import datetime, timedelta, timezone
 
 import bot.main as main
+import bot.rapide as rapide
 from bot.strategie import bougies_vers_df, decider, ema
 
 
@@ -135,6 +136,8 @@ def test_apres_un_stop_pas_de_reentree_sur_le_meme_signal(tmp_path, monkeypatch)
 
 def test_strategie_rapide_separee(tmp_path, monkeypatch):
     monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    tendances = {"t": ("BUY", "BUY")}
+    monkeypatch.setattr(rapide, "tendances_superieures", lambda api, epic: tendances["t"])
     monkeypatch.setattr(main, "RAPIDE_ACTIVE", True)
     faux = FauxCapital([20000] * 300, [100 + i for i in range(80)])
     d = {}
@@ -142,8 +145,12 @@ def test_strategie_rapide_separee(tmp_path, monkeypatch):
     assert [o[1] for o in faux.ouvertes] == ["BUY"]  # seule la rapide trade (pas de tendance 4 h)
     assert d["rapide"]["deals"] == ["d0"]
     faux.prix_rapide = faux.prix_rapide + [180 - 3 * i for i in range(60)]
+    main.un_tour(d, faux)  # signal 5 min en baisse mais tendance de fond en hausse : on sort et on reste à l'écart
+    assert faux.fermees == ["d0"] and not faux.ouvertes
+    assert d["strategies"]["rapide"]["action"].startswith("À l'écart")
+    tendances["t"] = ("SELL", "SELL")
     main.un_tour(d, faux)
-    assert faux.fermees == ["d0"] and [o[1] for o in faux.ouvertes] == ["SELL"]
+    assert [o[1] for o in faux.ouvertes] == ["SELL"]
     assert {o["strategie"] for o in d["ordres"]} == {"rapide"}
 
 
@@ -194,6 +201,7 @@ def test_commandes_pause_fermer_reprendre(tmp_path, monkeypatch):
 
 def test_commandes_par_strategie(tmp_path, monkeypatch):
     monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(rapide, "tendances_superieures", lambda api, epic: ("BUY", "BUY"))
     monkeypatch.setattr(main, "RAPIDE_ACTIVE", True)
     debut, suite = serie_achat()
     faux = FauxCapital(debut, [100 + i for i in range(80)])
@@ -220,6 +228,7 @@ def test_commandes_par_strategie(tmp_path, monkeypatch):
 
 def test_rapide_attend_si_la_4h_est_en_sens_inverse(tmp_path, monkeypatch):
     monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(rapide, "tendances_superieures", lambda api, epic: ("SELL", "SELL"))
     monkeypatch.setattr(main, "RAPIDE_ACTIVE", True)
     debut, _ = serie_achat()
     faux = FauxCapital(debut, [200 - i for i in range(80)])  # 4 h : achat ; rapide : vente
