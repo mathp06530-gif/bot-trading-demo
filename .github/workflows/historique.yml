@@ -1,0 +1,35 @@
+name: Télécharger l'historique (backtest)
+
+on:
+  push:
+    branches: ["claude/**"]
+    paths: ["backtest/telecharger.py", ".github/workflows/historique.yml"]
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  historique:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Télécharger l'historique Capital.com (démo)
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+        run: python backtest/telecharger.py
+      - name: Enregistrer les données sur la branche
+        run: |
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          git add backtest/donnees
+          git diff --cached --quiet && exit 0
+          git commit -m "Historique BTCUSD pour le backtest"
+          git push -q
