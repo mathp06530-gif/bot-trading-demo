@@ -10,7 +10,7 @@
    20,
    200
   ],
-  "strategie_rapide": "Rapide 5 min : EMA 9/50, stop 1 %, risque 0.1 % (expérimentale)"
+  "strategie_rapide": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, stop 1 %, risque 0.1 % (expérimentale)"
  },
  "journal": [
   {
@@ -80,10 +80,16 @@
    "marche": "BTCUSD",
    "texte": "[Rapide] VENTE de 0.0365 à 63020.05, stop garanti à 630 $.",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-19T18:39:41Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Analyse demandée depuis l'application."
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-19T18:26:28Z",
+ "derniere_execution": "2026-11-19T18:39:43Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -100,15 +106,19 @@
   {
    "date": "2026-11-19T18:26:28Z",
    "valeur": 20995.68
+  },
+  {
+   "date": "2026-11-19T18:39:43Z",
+   "valeur": 20986.94
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 20997.36,
+  "solde": 20992.99,
   "depot": 20999.04,
-  "resultat_latent": -1.68,
-  "disponible": 19943.73
+  "resultat_latent": -6.05,
+  "disponible": 19937.58
  },
  "positions": [
   {
@@ -117,13 +127,13 @@
    "sens": "SELL",
    "taille": 0.0365,
    "prix_entree": 63020.05,
-   "resultat": -1.68,
+   "resultat": -6.05,
    "ouverte_le": "2026-11-19T18:26:28.191"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 62998.8,
+   "prix": 63100.65,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -554,15 +564,16 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-19T18:26:28Z",
    "statut": "ouvert",
-   "resultat": -1.68,
+   "resultat": -6.05,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
-   "strategie": "rapide"
+   "strategie": "rapide",
+   "dernier_prix": 63100.65
   }
  ],
  "historique_jour": {
-  "2026-11-19": 20995.68
+  "2026-11-19": 20986.94
  },
  "valeur_depart": 21000.0,
  "entrees": {},
@@ -570,9 +581,14 @@
   "deals": [
    "00000000-74d0-7cfb-049f-c46d0015549e"
   ],
-  "nom": "Rapide 5 min : EMA 9/50, stop 1 %, risque 0.1 % (expérimentale)",
+  "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, stop 1 %, risque 0.1 % (expérimentale)",
   "tendance": "SELL",
-  "action": "VENTE de 0.0365"
+  "action": "Position conservée",
+  "filtre": {
+   "signal_5min": "SELL",
+   "tendance_1h": "SELL",
+   "tendance_4h": "SELL"
+  }
  },
  "strategies": {
   "tendance_4h": {
@@ -591,9 +607,9 @@
    "description": "Trade souvent sur des bougies de 5 min avec un tout petit risque, pour comparer en direct (perdante en backtest).",
    "unite": "MINUTE_5",
    "risque_pct": 0.1,
-   "action": "VENTE de 0.0365",
+   "action": "Position conservée",
    "tendance": "SELL",
-   "reglages": "Rapide 5 min : EMA 9/50, stop 1 %, risque 0.1 % (expérimentale)"
+   "reglages": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, stop 1 %, risque 0.1 % (expérimentale)"
   }
  }
 }
