@@ -3,10 +3,14 @@
   "marches": [
    "BTCUSD"
   ],
-  "taille": 0.01,
-  "unite": "MINUTE_15",
-  "stop_pct": 3.0,
-  "strategie": "Croisement EMA 9 / EMA 21"
+  "unite": "HOUR_4",
+  "risque_pct": 1.0,
+  "strategie": "Tendance 4 h : EMA 20/200 + ADX > 20, stop 2 ATR, suiveur 5 ATR",
+  "ema": [
+   20,
+   200
+  ],
+  "strategie_rapide": "Rapide 5 min : EMA 9/50, stop 1 %, risque 0.1 % (expérimentale)"
  },
  "journal": [
   {
@@ -44,10 +48,22 @@
    "type": "analyse",
    "marche": "BTCUSD",
    "texte": "Pas de nouveau croisement, la tendance reste baissière. On garde la position."
+  },
+  {
+   "date": "2026-11-19T18:21:17Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Analyse demandée depuis l'application."
+  },
+  {
+   "date": "2026-11-19T18:21:18Z",
+   "type": "erreur",
+   "marche": "",
+   "texte": "POST /positions -> 400 : {\"errorCode\":\"Guaranteed stop loss is not available for hedged positions.\"}"
   }
  ],
- "statut": "ok",
- "derniere_execution": "2026-11-19T18:02:58Z",
+ "statut": "erreur",
+ "derniere_execution": "2026-11-19T18:21:18Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -505,5 +521,11 @@
  "historique_jour": {
   "2026-11-19": 21000.12
  },
- "valeur_depart": 21000.0
+ "valeur_depart": 21000.0,
+ "entrees": {},
+ "rapide": {
+  "deals": [],
+  "nom": "Rapide 5 min : EMA 9/50, stop 1 %, risque 0.1 % (expérimentale)",
+  "tendance": "SELL"
+ }
 }
