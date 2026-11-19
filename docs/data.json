@@ -99,10 +99,16 @@
    "marche": "BTCUSD",
    "texte": "Tour immédiat : Tendance baissière nette (ADX 47) : on veut être VENDEUR. Décision : aucune action.",
    "strategie": "tendance_4h"
+  },
+  {
+   "date": "2026-11-19T18:58:18Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Analyse demandée depuis l'application."
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-19T18:55:23Z",
+ "derniere_execution": "2026-11-19T18:58:24Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -147,15 +153,19 @@
   {
    "date": "2026-11-19T18:55:23Z",
    "valeur": 21008.04
+  },
+  {
+   "date": "2026-11-19T18:58:24Z",
+   "valeur": 21011.16
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 21003.54,
+  "solde": 21005.1,
   "depot": 20999.04,
-  "resultat_latent": 4.5,
-  "disponible": 19953.2
+  "resultat_latent": 6.06,
+  "disponible": 19955.44
  },
  "positions": [
   {
@@ -164,13 +174,13 @@
    "sens": "SELL",
    "taille": 0.0365,
    "prix_entree": 63020.05,
-   "resultat": 4.12,
+   "resultat": 6.02,
    "ouverte_le": "2026-11-19T18:26:28.191"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 62809.6,
+   "prix": 62855.125,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -601,16 +611,16 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-19T18:26:28Z",
    "statut": "ouvert",
-   "resultat": 4.12,
+   "resultat": 6.02,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
    "strategie": "rapide",
-   "dernier_prix": 62809.6
+   "dernier_prix": 62855.125
   }
  ],
  "historique_jour": {
-  "2026-11-19": 21008.04
+  "2026-11-19": 21011.16
  },
  "valeur_depart": 21000.0,
  "entrees": {},
@@ -647,6 +657,110 @@
    "action": "Position conservée",
    "tendance": "SELL",
    "reglages": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, stop 1 %, risque 0.05 % (expérimentale)"
+  },
+  "actions_etf": {
+   "active": true,
+   "nom": "Sous-bots actions et ETF",
+   "description": "Un sous-bot par action ou ETF : il n'achète que si l'analyse technique (~20 indicateurs) donne un achat fort dans une tendance haussière, avec SL garanti et TP.",
+   "unite": "HOUR_4",
+   "risque_pct": 0.5,
+   "reglages": "Note technique 4 h (achat seulement), SL garanti 2 ATR, TP 2 ATR sur la moitié, suiveur 5 ATR",
+   "marches": [
+    "TSLA",
+    "NVDA",
+    "AAPL",
+    "MSFT",
+    "GOOGL",
+    "SPY",
+    "QQQ",
+    "GLD",
+    "XLK",
+    "IWM"
+   ],
+   "action": "Actif"
+  }
+ },
+ "garde_fous": {
+  "jour": "2026-11-19",
+  "debut_jour": 21011.66,
+  "plus_haut": 21011.66,
+  "regles": {
+   "perte_max_pct": 10.0,
+   "perte_jour_pct": 3.0,
+   "positions_max": 12,
+   "risque_total_pct": 6.0
+  }
+ },
+ "sous_bots": {
+  "TSLA": {
+   "nom": "Tesla Inc",
+   "note": -0.3,
+   "tendance": null,
+   "prix": 377.245,
+   "action": "Aucune action"
+  },
+  "NVDA": {
+   "nom": "NVIDIA Corp",
+   "note": -0.48,
+   "tendance": null,
+   "prix": 148.47,
+   "action": "Aucune action"
+  },
+  "AAPL": {
+   "nom": "Apple Inc",
+   "note": -0.44,
+   "tendance": null,
+   "prix": 349.15999999999997,
+   "action": "Aucune action"
+  },
+  "MSFT": {
+   "nom": "Microsoft Corp",
+   "note": 0.13,
+   "tendance": null,
+   "prix": 501.78999999999996,
+   "action": "Aucune action"
+  },
+  "GOOGL": {
+   "nom": "Alphabet Inc - A",
+   "note": -0.13,
+   "tendance": null,
+   "prix": 279.21500000000003,
+   "action": "Aucune action"
+  },
+  "SPY": {
+   "nom": "SPDR S&P 500 ETF",
+   "note": -0.56,
+   "tendance": null,
+   "prix": 720.26,
+   "action": "Aucune action"
+  },
+  "QQQ": {
+   "nom": "Invesco QQQ Trust",
+   "note": -0.61,
+   "tendance": null,
+   "prix": 649.7149999999999,
+   "action": "Aucune action"
+  },
+  "GLD": {
+   "nom": "SPDR Gold Shares",
+   "note": -0.72,
+   "tendance": null,
+   "prix": 337.15,
+   "action": "Aucune action"
+  },
+  "XLK": {
+   "nom": "Technology Select Sector SPDR Fund",
+   "note": -0.41,
+   "tendance": null,
+   "prix": 161.78,
+   "action": "Aucune action"
+  },
+  "IWM": {
+   "nom": "iShares Russell 2000 ETF",
+   "note": -0.56,
+   "tendance": null,
+   "prix": 265.83000000000004,
+   "action": "Aucune action"
   }
  }
 }
