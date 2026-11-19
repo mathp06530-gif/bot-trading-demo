@@ -26,23 +26,33 @@
    "type": "ordre",
    "marche": "BTCUSD",
    "texte": "Pas de nouveau croisement, la tendance reste baissière. Ordre VENTE de 0.01 passé à 62832.85."
+  },
+  {
+   "date": "2026-11-19T17:55:57Z",
+   "type": "analyse",
+   "marche": "BTCUSD",
+   "texte": "Pas de nouveau croisement, la tendance reste baissière. On garde la position."
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-19T17:48:29Z",
+ "derniere_execution": "2026-11-19T17:55:57Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
    "valeur": 21000.0
+  },
+  {
+   "date": "2026-11-19T17:55:57Z",
+   "valeur": 21001.6
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 21000.0,
+  "solde": 21000.8,
   "depot": 21000.0,
-  "resultat_latent": 0.0,
-  "disponible": 21000.0
+  "resultat_latent": 0.8,
+  "disponible": 20713.69
  },
  "positions": [
   {
@@ -51,16 +61,16 @@
    "sens": "SELL",
    "taille": 0.01,
    "prix_entree": 62832.85,
-   "resultat": -0.44,
+   "resultat": 0.81,
    "ouverte_le": "2026-11-19T17:48:28.300"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 62856.525,
+   "prix": 62741.1,
    "tendance": "SELL",
    "explication": "Pas de nouveau croisement, la tendance reste baissière.",
-   "action": "VENTE de 0.01 BTCUSD",
+   "action": "Position conservée",
    "graphique": {
     "dates": [
      "2026-11-18T17:45:00",
@@ -456,5 +466,27 @@
     ]
    }
   }
- }
+ },
+ "ordres": [
+  {
+   "id": "00000000-74d0-147a-049f-c46d0015549e",
+   "marche": "BTCUSD",
+   "nom": "Bitcoin/USD",
+   "sens": "SELL",
+   "taille": 0.01,
+   "prix_entree": 62832.85,
+   "stop": 64718.55,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-19T17:48:28Z",
+   "statut": "ouvert",
+   "resultat": 0.81,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null
+  }
+ ],
+ "historique_jour": {
+  "2026-11-19": 21001.6
+ },
+ "valeur_depart": 21000.0
 }
