@@ -108,7 +108,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-19T19:45:26Z",
+ "derniere_execution": "2026-11-19T19:50:26Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -197,15 +197,19 @@
   {
    "date": "2026-11-19T19:45:26Z",
    "valeur": 21033.26
+  },
+  {
+   "date": "2026-11-19T19:50:26Z",
+   "valeur": 21035.64
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 21016.15,
+  "solde": 21017.34,
   "depot": 20999.04,
-  "resultat_latent": 17.11,
-  "disponible": 19971.58
+  "resultat_latent": 18.3,
+  "disponible": 19973.04
  },
  "positions": [
   {
@@ -214,13 +218,13 @@
    "sens": "SELL",
    "taille": 0.0365,
    "prix_entree": 63020.05,
-   "resultat": 16.34,
+   "resultat": 18.32,
    "ouverte_le": "2026-11-19T18:26:28.191"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 62521.45,
+   "prix": 62458.425,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -651,16 +655,16 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-19T18:26:28Z",
    "statut": "ouvert",
-   "resultat": 16.34,
+   "resultat": 18.32,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
    "strategie": "rapide",
-   "dernier_prix": 62521.45
+   "dernier_prix": 62458.425
   }
  ],
  "historique_jour": {
-  "2026-11-19": 21033.26
+  "2026-11-19": 21035.64
  },
  "valeur_depart": 21000.0,
  "entrees": {},
@@ -723,7 +727,7 @@
  "garde_fous": {
   "jour": "2026-11-19",
   "debut_jour": 21011.66,
-  "plus_haut": 21033.36,
+  "plus_haut": 21035.379999999997,
   "regles": {
    "perte_max_pct": 10.0,
    "perte_jour_pct": 3.0,
@@ -736,70 +740,70 @@
    "nom": "Tesla Inc",
    "note": -0.3,
    "tendance": null,
-   "prix": 378.175,
+   "prix": 377.87,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.48,
    "tendance": null,
-   "prix": 148.19,
+   "prix": 147.97,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
    "note": -0.44,
    "tendance": null,
-   "prix": 349.745,
+   "prix": 349.585,
    "action": "Aucune action"
   },
   "MSFT": {
    "nom": "Microsoft Corp",
    "note": 0.13,
    "tendance": null,
-   "prix": 502.69,
+   "prix": 502.155,
    "action": "Aucune action"
   },
   "GOOGL": {
    "nom": "Alphabet Inc - A",
    "note": -0.13,
    "tendance": null,
-   "prix": 279.14,
+   "prix": 278.405,
    "action": "Aucune action"
   },
   "SPY": {
    "nom": "SPDR S&P 500 ETF",
    "note": -0.56,
    "tendance": null,
-   "prix": 720.21,
+   "prix": 719.495,
    "action": "Aucune action"
   },
   "QQQ": {
    "nom": "Invesco QQQ Trust",
    "note": -0.61,
    "tendance": null,
-   "prix": 650.54,
+   "prix": 650.15,
    "action": "Aucune action"
   },
   "GLD": {
    "nom": "SPDR Gold Shares",
    "note": -0.72,
    "tendance": null,
-   "prix": 336.57500000000005,
+   "prix": 336.225,
    "action": "Aucune action"
   },
   "XLK": {
    "nom": "Technology Select Sector SPDR Fund",
    "note": -0.41,
    "tendance": null,
-   "prix": 161.95,
+   "prix": 161.85,
    "action": "Aucune action"
   },
   "IWM": {
    "nom": "iShares Russell 2000 ETF",
    "note": -0.56,
    "tendance": null,
-   "prix": 265.66999999999996,
+   "prix": 265.485,
    "action": "Aucune action"
   }
  }
