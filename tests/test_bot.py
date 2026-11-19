@@ -236,3 +236,15 @@ def test_rapide_attend_si_la_4h_est_en_sens_inverse(tmp_path, monkeypatch):
     main.un_tour(d, faux)
     assert [o[1] for o in faux.ouvertes] == ["BUY", "BUY"]
     assert d["strategies"]["rapide"]["action"].startswith("En attente")
+
+
+def test_fermeture_manuelle_estimee_au_dernier_prix():
+    from bot.registre import synchroniser
+    o = {"id": "x", "sens": "SELL", "taille": 0.01, "prix_entree": 62832, "stop": 64718,
+         "dernier_prix": 63000, "statut": "ouvert"}
+    d = {"ordres": [dict(o)]}
+    synchroniser(d, [], "2026-11-19T18:30:00Z")
+    assert d["ordres"][0]["prix_sortie"] == 63000 and d["ordres"][0]["resultat"] == -1.68
+    d = {"ordres": [dict(o, dernier_prix=65000)]}  # le prix avait dépassé le stop
+    synchroniser(d, [], "2026-11-19T18:30:00Z")
+    assert d["ordres"][0]["prix_sortie"] == 64718

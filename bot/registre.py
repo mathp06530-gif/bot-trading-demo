@@ -44,9 +44,14 @@ def synchroniser(donnees: dict, positions: list, quand: str):
 
     for o in ordres:
         if o["statut"] == "ouvert" and o["id"] not in ids_ouverts:
-            # Fermée par Capital.com (stop) ou à la main : on estime le résultat au niveau du stop.
-            sortie = o.get("stop") or o.get("dernier_prix") or o["prix_entree"]
+            # Fermée par Capital.com (stop) ou à la main : on estime avec le dernier prix vu,
+            # sauf si ce prix avait déjà franchi le stop (le stop garanti a alors joué à son niveau).
             sens = 1 if o["sens"] == "BUY" else -1
+            dernier, stop = o.get("dernier_prix"), o.get("stop")
+            if dernier and stop and (dernier - stop) * sens <= 0:
+                sortie = stop
+            else:
+                sortie = dernier or stop or o["prix_entree"]
             o.update({
                 "statut": "ferme",
                 "ferme_le": quand,

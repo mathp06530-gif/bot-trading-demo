@@ -1,8 +1,6 @@
 name: Bot de trading démo
 
 on:
-  schedule:
-    - cron: "*/5 * * * *"    # toutes les 5 minutes (GitHub peut avoir quelques minutes de retard)
   workflow_dispatch:          # lancé à la main ou par les boutons de l'application
     inputs:
       action:
@@ -20,7 +18,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: bot-trading
+  group: commandes
   cancel-in-progress: false
 
 jobs:
@@ -50,15 +48,4 @@ jobs:
           RISQUE_RAPIDE_PCT: "0.1"  # stratégie rapide : 0,1 % du capital risqué par trade
           ACTION: ${{ inputs.action }}
           STRATEGIE: ${{ inputs.strategie }}
-        run: python -m bot.main
-
-      - name: Enregistrer les résultats pour le tableau de bord
-        if: always()
-        run: |
-          git config user.name "bot-trading-demo"
-          git config user.email "bot-trading-demo@users.noreply.github.com"
-          git add docs/data.json
-          git diff --cached --quiet && exit 0
-          git commit -m "Tour du bot $(date -u +%Y-%m-%dT%H:%MZ)"
-          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 5; done
-          exit 1
+        run: bash scripts/tour.sh

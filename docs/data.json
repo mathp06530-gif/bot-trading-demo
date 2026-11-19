@@ -545,10 +545,10 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-19T17:48:28Z",
    "statut": "ferme",
-   "resultat": -18.86,
+   "resultat": -1.66,
    "ferme_le": "2026-11-19T18:26:28Z",
-   "prix_sortie": 64718.55,
-   "motif_sortie": "Stop de sécurité ou fermeture manuelle",
+   "prix_sortie": 62998.8,
+   "motif_sortie": "Fermée à la main dans Capital.com (estimation au dernier prix)",
    "dernier_prix": 62998.8,
    "resultat_estime": true,
    "strategie": "tendance_4h"

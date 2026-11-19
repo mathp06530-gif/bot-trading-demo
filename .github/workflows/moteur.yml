@@ -1,0 +1,66 @@
+name: Moteur du bot (en continu)
+
+# Le moteur tourne tout seul, jour et nuit, sans que personne n'ait à intervenir :
+#  - il fait un tour du bot toutes les 5 minutes, juste après la clôture de chaque bougie de 5 min ;
+#  - au bout de 5 h 45, il se relance lui-même (une tâche GitHub ne peut pas durer plus de 6 h) ;
+#  - en filet de sécurité, la planification ci-dessous le redémarre s'il s'est arrêté.
+# Pour l'arrêter complètement : onglet Actions > « Moteur du bot » > « ... » > Disable workflow.
+# Pour juste suspendre les ordres : bouton Pause de l'application.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "7,37 * * * *"
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: moteur        # un seul moteur à la fois ; une relance attend la fin du précédent
+  cancel-in-progress: false
+
+jobs:
+  moteur:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Tourner en continu (environ 5 h 45)
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+          # Réglages modifiables (les mêmes que dans bot.yml) :
+          MARCHES: "BTCUSD"
+          UNITE: "HOUR_4"
+          RISQUE_PCT: "1"
+          TP_PARTIEL_ATR: "1"
+          RAPIDE: "oui"
+          RISQUE_RAPIDE_PCT: "0.1"
+          ACTION: ""
+        run: |
+          fin=$(( $(date +%s) + 345 * 60 ))
+          while [ "$(date +%s)" -lt "$fin" ]; do
+            bash scripts/tour.sh || echo "Tour non enregistré, on réessaie au prochain."
+            # Attendre la prochaine clôture de bougie de 5 min (+20 s de marge)
+            maintenant=$(date +%s)
+            attente=$(( 300 - maintenant % 300 + 20 ))
+            [ $(( maintenant + attente )) -ge "$fin" ] && break
+            sleep "$attente"
+          done
+
+      - name: Se relancer pour la suite
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run moteur.yml --ref main -R "$GITHUB_REPOSITORY"
