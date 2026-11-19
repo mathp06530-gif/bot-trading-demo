@@ -62,7 +62,7 @@ class Resultat:
 
 
 def executer(df: pd.DataFrame, signaux: pd.DataFrame, capital: float, risque_pct: float,
-             cond: Conditions, levier_max: float | None = None) -> Resultat:
+             cond: Conditions, levier_max: float | None = None, taille_fixe: float | None = None) -> Resultat:
     """df : bougies (open_bid, open_ask, high_bid, ..., close_ask) indexées par date UTC.
     signaux : colonnes 'cible' (1 achat, -1 vente, 0 rien), 'stop' (distance en prix),
               'objectif' (distance en prix ou NaN), 'suivi' (distance du stop suiveur ou NaN)."""
@@ -114,6 +114,8 @@ def executer(df: pd.DataFrame, signaux: pd.DataFrame, capital: float, risque_pct
                 if levier_max:
                     t_marge = min(t_marge, np.floor(eq * cond.eurusd * levier_max / prix / cond.pas_taille) * cond.pas_taille)
                 t = round(min(t, t_marge), 8)
+                if taille_fixe:
+                    t = taille_fixe if taille_fixe * prix * cond.marge <= eq * cond.eurusd else 0
                 if t >= cond.taille_min:
                     pos, taille, entree = int(c), t, prix
                     stop = prix - dist * pos

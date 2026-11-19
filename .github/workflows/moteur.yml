@@ -40,19 +40,7 @@ jobs:
           CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
           CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
           CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
-          # Réglages modifiables (les mêmes que dans bot.yml) :
-          MARCHES: "BTCUSD"
-          UNITE: "HOUR_4"
-          RISQUE_PCT: "1"
-          TP_PARTIEL_ATR: "1"
-          RAPIDE: "oui"
-          RISQUE_RAPIDE_PCT: "0.05"  # ≈ 10 € de perte maximale par trade
-          SOUS_BOTS: "TSLA,NVDA,AAPL,MSFT,GOOGL,SPY,QQQ,GLD,XLK,IWM"
-          RISQUE_SOUS_BOT_PCT: "0.5"
-          PERTE_MAX_PCT: "10"
-          PERTE_JOUR_PCT: "3"
-          POSITIONS_MAX: "12"
-          RISQUE_TOTAL_PCT: "6"
+          # Les réglages sont dans reglages.env (relu à chaque tour).
           ACTION: ""
         run: |
           fin=$(( $(date +%s) + 345 * 60 ))

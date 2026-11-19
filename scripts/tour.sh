@@ -7,6 +7,11 @@ git config user.name "bot-trading-demo"
 git config user.email "bot-trading-demo@users.noreply.github.com"
 for essai in 1 2 3; do
   git fetch -q origin main && git reset -q --hard origin/main
+  # Réglages relus à chaque tour : une modification de reglages.env s'applique tout de suite.
+  # (on garde ACTION et STRATEGIE venus de l'appli, même si le fichier essayait de les changer)
+  action_appli="${ACTION:-}"; strategie_appli="${STRATEGIE:-}"
+  set -a; [ -f reglages.env ] && . ./reglages.env; set +a
+  ACTION="$action_appli"; STRATEGIE="$strategie_appli"; export ACTION STRATEGIE
   python -m bot.main || echo "Le tour a signalé une erreur (voir le journal de l'appli)."
   git add docs/data.json
   git diff --cached --quiet && exit 0
