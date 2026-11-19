@@ -16,6 +16,10 @@ from bot.rapide import ACTIVE as RAPIDE_ACTIVE
 from bot.rapide import NOM as NOM_RAPIDE
 from bot.rapide import RISQUE_RAPIDE_PCT, UNITE_RAPIDE
 from bot.rapide import tour_rapide
+from bot.garde_fous import GardeFous
+from bot.sous_bots import LISTE as SOUS_BOTS
+from bot.sous_bots import NOM as NOM_SB
+from bot.sous_bots import RISQUE_SOUS_BOT_PCT, tour_sous_bot
 from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
 from bot.strategie import NOM as NOM_STRATEGIE
 from bot.strategie import EMA_LENTE, EMA_RAPIDE, bougies_vers_df, decider
@@ -59,6 +63,8 @@ def milieu(prix: dict) -> float:
     return (prix["bid"] + prix["ask"]) / 2
 
 
+DESCRIPTION_SB = ("Un sous-bot par action ou ETF : il n'achète que si l'analyse technique (~20 indicateurs) "
+                  "donne un achat fort dans une tendance haussière, avec SL garanti et TP.")
 DESCRIPTIONS = {
     "tendance_4h": "Suit les grosses tendances du Bitcoin sur des bougies de 4 h : peu de trades, la seule gagnante en backtest.",
     "rapide": "Trade souvent sur des bougies de 5 min avec un tout petit risque, pour comparer en direct (perdante en backtest).",
@@ -77,18 +83,20 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     noter_4h = lambda t, m, x: noter(t, m, x, "tendance_4h")
     noter_rapide = lambda t, m, x: noter(t, m, x, "rapide")
 
-    strategie = strategie if strategie in ("tendance_4h", "rapide") else "toutes"
-    cibles = ["tendance_4h", "rapide"] if strategie == "toutes" else [strategie]
+    strategie = strategie if strategie in ("tendance_4h", "rapide", "actions_etf") else "toutes"
+    cibles = ["tendance_4h", "rapide", "actions_etf"] if strategie == "toutes" else [strategie]
     etats = donnees.setdefault("strategies", {})
     etats.setdefault("tendance_4h", {}).setdefault("active", True)
     etats.setdefault("rapide", {}).setdefault("active", RAPIDE_ACTIVE)
-    noms = {"tendance_4h": "Tendance 4 h", "rapide": "Rapide 5 min"}
+    etats.setdefault("actions_etf", {}).setdefault("active", True)
+    noms = {"tendance_4h": "Tendance 4 h", "rapide": "Rapide 5 min", "actions_etf": "Sous-bots actions et ETF"}
     lancer = set(cibles) if action == "lancer" else set()
 
     api.connexion()
     positions = api.positions()
     ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
-    strat_de = lambda p: "rapide" if p["position"]["dealId"] in ids_rapide else "tendance_4h"
+    strat_de = lambda p: ("actions_etf" if p["market"]["epic"] in SOUS_BOTS else
+                          "rapide" if p["position"]["dealId"] in ids_rapide else "tendance_4h")
 
     # --- Commandes envoyées depuis l'application (téléphone, tablette, PC) ---
     if action == "pause":
@@ -107,7 +115,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     elif action == "fermer":
         if strategie == "toutes":
             donnees["pause"] = True
-        for p in [p for p in positions if p["market"]["epic"] in MARCHES and strat_de(p) in cibles]:
+        for p in [p for p in positions if p["market"]["epic"] in MARCHES + SOUS_BOTS and strat_de(p) in cibles]:
             conf = api.fermer(p["position"]["dealId"])
             if conf.get("dealStatus") == "ACCEPTED":
                 noter_fermeture(donnees, p, conf, maintenant(), "Fermée depuis l'application")
@@ -127,6 +135,10 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     capital = float(compte0.get("balance", {}).get("balance") or 0)
     disponible = float(compte0.get("balance", {}).get("available") or capital)
     eurusd = api.taux_eurusd()
+    valeur = capital + float(compte0.get("balance", {}).get("profitLoss") or 0)
+    garde = GardeFous(donnees, valeur, positions, eurusd)
+    if action == "reprendre":
+        garde.rearmer()
     # Qui a le droit de trader à ce tour ? (la pause globale passe avant tout, sauf « lancer »)
     complet_4h = ("tendance_4h" in lancer) or (not en_pause and etats["tendance_4h"]["active"])
     suivi_4h = complet_4h or not en_pause  # désactivée : plus d'entrées ni de sorties, mais le stop suiveur continue
@@ -208,9 +220,14 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                     taille = math.floor(risque_usd / distance / PAS_TAILLE) * PAS_TAILLE
                     taille_marge = math.floor(disponible * eurusd / (prix_entree * MARGE) * 0.9 / PAS_TAILLE) * PAS_TAILLE
                     taille = round(min(taille, taille_marge), 4)
+                    autorise, raison = garde.autoriser(taille * distance / eurusd, distance)
                     if taille < PAS_TAILLE:
                         noter_4h("erreur", epic, f"Capital trop faible pour ouvrir la plus petite position ({PAS_TAILLE} BTC).")
+                    elif not autorise:
+                        noter_4h("analyse", epic, f"{signal['explication']} Ordre REFUSÉ par les garde-fous : {raison}.")
+                        action = "Refusé (garde-fous)"
                     else:
+                        garde.enregistrer({"position": {"level": prix_entree, "stopLevel": prix_entree - distance, "size": taille}})
                         # Sans mode couverture, un ordre inverse annulerait les positions de la rapide :
                         # la stratégie 4 h est prioritaire, on ferme d'abord celles qui sont en sens inverse.
                         for p in [p for p in positions if p["market"]["epic"] == epic
@@ -249,7 +266,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         if tourne_rapide:
             try:
                 positions_now = api.positions()
-                action_rapide = tour_rapide(api, donnees, epic, positions_now, capital, eurusd, noter_rapide, maintenant())
+                action_rapide = tour_rapide(api, donnees, epic, positions_now, capital, eurusd, noter_rapide, maintenant(), garde)
             except Exception as e:  # une erreur de la rapide ne doit pas bloquer la stratégie 4 h
                 action_rapide = "Erreur"
                 noter_rapide("erreur", epic, f"[Rapide] {str(e)[:300]}")
@@ -280,6 +297,22 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
             },
         }
 
+    # --- Sous-bots actions et ETF : un par marché ---
+    actif_sb = ("actions_etf" in lancer) or (not en_pause and etats["actions_etf"]["active"])
+    if actif_sb or not en_pause:
+        noter_sb = lambda t, m, x: noter(t, m, x, "actions_etf")
+        for epic in SOUS_BOTS:
+            try:
+                tour_sous_bot(api, donnees, epic, positions, capital, disponible, eurusd, noter_sb, garde,
+                              maintenant(), peut_entrer=actif_sb)
+            except Exception as e:  # un marché en erreur ne bloque pas les autres
+                donnees.setdefault("sous_bots", {}).setdefault(epic, {})["action"] = "Erreur"
+                noter_sb("erreur", epic, str(e)[:300])
+    etats["actions_etf"].update({"nom": noms["actions_etf"], "description": DESCRIPTION_SB, "unite": "HOUR_4",
+                                 "risque_pct": RISQUE_SOUS_BOT_PCT, "reglages": NOM_SB, "marches": SOUS_BOTS,
+                                 "action": "Actif" if actif_sb else ("En pause" if en_pause else "Désactivée")})
+    donnees.pop("_cache_marches", None)
+
     # État final du compte, après les ordres
     compte = next((c for c in api.comptes() if c.get("preferred")), None) or (api.comptes() or [{}])[0]
     solde = compte.get("balance", {})
@@ -289,7 +322,8 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
     for o in donnees.get("ordres", []):
         if "strategie" not in o:
-            o["strategie"] = "rapide" if o["id"] in ids_rapide else "tendance_4h"
+            o["strategie"] = ("actions_etf" if o["marche"] in SOUS_BOTS else
+                              "rapide" if o["id"] in ids_rapide else "tendance_4h")
 
     donnees["compte"] = {
         "nom": compte.get("accountName", "Démo"),

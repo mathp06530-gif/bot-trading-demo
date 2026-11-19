@@ -12,7 +12,7 @@ on:
         description: "Stratégie visée par la commande"
         type: choice
         default: toutes
-        options: [toutes, tendance_4h, rapide]
+        options: [toutes, tendance_4h, rapide, actions_etf]
 
 permissions:
   contents: write
@@ -46,6 +46,12 @@ jobs:
           TP_PARTIEL_ATR: "1"   # moitié de la position avec un TP à 1 × ATR ("0" = pas de TP)
           RAPIDE: "oui"         # stratégie rapide expérimentale (5 min) : "oui" ou "non"
           RISQUE_RAPIDE_PCT: "0.05" # stratégie rapide : 0,05 % du capital risqué par trade (≈ 10 € max)
+          SOUS_BOTS: "TSLA,NVDA,AAPL,MSFT,GOOGL,SPY,QQQ,GLD,XLK,IWM"  # un sous-bot par action / ETF
+          RISQUE_SOUS_BOT_PCT: "0.5"  # sous-bots : 0,5 % du capital risqué par trade
+          PERTE_MAX_PCT: "10"   # garde-fou : coupe-circuit si -10 % depuis le plus haut
+          PERTE_JOUR_PCT: "3"   # garde-fou : plus de nouvel ordre si -3 % dans la journée
+          POSITIONS_MAX: "12"   # garde-fou : positions ouvertes au maximum
+          RISQUE_TOTAL_PCT: "6" # garde-fou : perte maximale si tous les stops sont touchés
           ACTION: ${{ inputs.action }}
           STRATEGIE: ${{ inputs.strategie }}
         run: bash scripts/tour.sh
