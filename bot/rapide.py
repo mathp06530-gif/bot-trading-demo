@@ -9,6 +9,9 @@ Règles, sur des bougies de 5 minutes (prix milieu) :
   - Stop garanti à 1 % du prix. Si le stop est touché, on repart dans le sens de la tendance.
   - Les positions de cette stratégie sont repérées par leur numéro (dealId), le bot ne les
     mélange jamais avec celles de la stratégie 4 h.
+  - Le compte exige un stop GARANTI, interdit en mode couverture (hedging) : les deux stratégies
+    ne peuvent donc pas être en sens inverse en même temps. La 4 h est prioritaire ; la rapide
+    attend quand la 4 h est dans l'autre sens.
 """
 import math
 import os
@@ -39,7 +42,7 @@ def id_position(conf: dict) -> str | None:
 def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, eurusd: float, noter, quand: str = "") -> str:
     etat = donnees.setdefault("rapide", {"deals": [], "nom": NOM})
     etat["nom"] = NOM
-    mes_ids = set(etat["deals"])
+    mes_ids = set(etat.setdefault("deals", []))
     miennes = [p for p in positions if p["position"]["dealId"] in mes_ids]
     etat["deals"] = [p["position"]["dealId"] for p in miennes]  # oublie celles fermées par le stop
 
@@ -59,6 +62,11 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
               f"(gain/perte : {p['position'].get('upl', 0):.2f}). Statut : {conf.get('dealStatus', '?')}")
     if any(p["position"]["direction"] == voulu for p in miennes):
         return "Position conservée"
+
+    # Sans mode couverture, un ordre inverse fermerait les positions de la stratégie 4 h : on attend.
+    autres = [p for p in positions if p["market"]["epic"] == epic and p["position"]["dealId"] not in mes_ids]
+    if any(p["position"]["direction"] != voulu for p in autres):
+        return "En attente : la stratégie 4 h est en position inverse"
 
     prix = bougies[-1]["closePrice"]["ask" if voulu == "BUY" else "bid"]
     distance = prix * STOP_PCT / 100

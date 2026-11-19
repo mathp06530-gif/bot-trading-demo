@@ -14,6 +14,7 @@ from pathlib import Path
 from bot.capital import CapitalDemo, ErreurCapital
 from bot.rapide import ACTIVE as RAPIDE_ACTIVE
 from bot.rapide import NOM as NOM_RAPIDE
+from bot.rapide import RISQUE_RAPIDE_PCT, UNITE_RAPIDE
 from bot.rapide import tour_rapide
 from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
 from bot.strategie import NOM as NOM_STRATEGIE
@@ -58,12 +59,36 @@ def milieu(prix: dict) -> float:
     return (prix["bid"] + prix["ask"]) / 2
 
 
-def un_tour(donnees: dict, api: CapitalDemo, action: str = ""):
+DESCRIPTIONS = {
+    "tendance_4h": "Suit les grosses tendances du Bitcoin sur des bougies de 4 h : peu de trades, la seule gagnante en backtest.",
+    "rapide": "Trade souvent sur des bougies de 5 min avec un tout petit risque, pour comparer en direct (perdante en backtest).",
+}
+
+
+def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = "toutes"):
     journal = donnees.setdefault("journal", [])
-    noter = lambda type_, marche, texte: journal.append({"date": maintenant(), "type": type_, "marche": marche, "texte": texte})
+
+    def noter(type_, marche, texte, strat=None):
+        ligne = {"date": maintenant(), "type": type_, "marche": marche, "texte": texte}
+        if strat:
+            ligne["strategie"] = strat
+        journal.append(ligne)
+
+    noter_4h = lambda t, m, x: noter(t, m, x, "tendance_4h")
+    noter_rapide = lambda t, m, x: noter(t, m, x, "rapide")
+
+    strategie = strategie if strategie in ("tendance_4h", "rapide") else "toutes"
+    cibles = ["tendance_4h", "rapide"] if strategie == "toutes" else [strategie]
+    etats = donnees.setdefault("strategies", {})
+    etats.setdefault("tendance_4h", {}).setdefault("active", True)
+    etats.setdefault("rapide", {}).setdefault("active", RAPIDE_ACTIVE)
+    noms = {"tendance_4h": "Tendance 4 h", "rapide": "Rapide 5 min"}
+    lancer = set(cibles) if action == "lancer" else set()
 
     api.connexion()
     positions = api.positions()
+    ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
+    strat_de = lambda p: "rapide" if p["position"]["dealId"] in ids_rapide else "tendance_4h"
 
     # --- Commandes envoyées depuis l'application (téléphone, tablette, PC) ---
     if action == "pause":
@@ -72,14 +97,26 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = ""):
     elif action == "reprendre":
         donnees["pause"] = False
         noter("commande", "", "Bot relancé depuis l'application.")
+    elif action in ("activer", "desactiver"):
+        for c in cibles:
+            etats[c]["active"] = action == "activer"
+        mot = "activée" if action == "activer" else "désactivée (elle garde ses positions, le stop suiveur continue)"
+        noter("commande", "", f"Stratégie {' et '.join(noms[c] for c in cibles)} {mot} depuis l'application.")
+    elif action == "lancer":
+        noter("commande", "", f"Tour immédiat demandé pour : {', '.join(noms[c] for c in cibles)}.")
     elif action == "fermer":
-        donnees["pause"] = True
-        for p in [p for p in positions if p["market"]["epic"] in MARCHES]:
+        if strategie == "toutes":
+            donnees["pause"] = True
+        for p in [p for p in positions if p["market"]["epic"] in MARCHES and strat_de(p) in cibles]:
             conf = api.fermer(p["position"]["dealId"])
             if conf.get("dealStatus") == "ACCEPTED":
                 noter_fermeture(donnees, p, conf, maintenant(), "Fermée depuis l'application")
-            noter("fermeture", p["market"]["epic"], f"Position fermée depuis l'application (gain/perte : {p['position'].get('upl', 0):.2f}). Statut : {conf.get('dealStatus', '?')}")
-        noter("commande", "", "Positions fermées et bot mis en pause. Appuie sur « Reprendre » pour le relancer.")
+            noter("fermeture", p["market"]["epic"], f"Position fermée depuis l'application (gain/perte : {p['position'].get('upl', 0):.2f}). Statut : {conf.get('dealStatus', '?')}", strat_de(p))
+        if strategie == "toutes":
+            noter("commande", "", "Positions fermées et bot mis en pause. Appuie sur « Reprendre » pour le relancer.")
+        else:
+            etats[strategie]["active"] = False
+            noter("commande", "", f"Positions de la stratégie {noms[strategie]} fermées, stratégie désactivée.")
         positions = api.positions()
     elif action == "analyser":
         noter("commande", "", "Analyse demandée depuis l'application.")
@@ -90,8 +127,11 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = ""):
     capital = float(compte0.get("balance", {}).get("balance") or 0)
     disponible = float(compte0.get("balance", {}).get("available") or capital)
     eurusd = api.taux_eurusd()
-    couverture = api.mode_couverture() if RAPIDE_ACTIVE else False
-    ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
+    # Qui a le droit de trader à ce tour ? (la pause globale passe avant tout, sauf « lancer »)
+    complet_4h = ("tendance_4h" in lancer) or (not en_pause and etats["tendance_4h"]["active"])
+    suivi_4h = complet_4h or not en_pause  # désactivée : plus d'entrées ni de sorties, mais le stop suiveur continue
+    tourne_rapide = ("rapide" in lancer) or (not en_pause and etats["rapide"]["active"])
+    api.sans_couverture()  # le stop garanti est interdit en mode couverture (hedging)
     entrees = donnees.setdefault("entrees", {})  # bougie du dernier signal utilisé, par marché
     precedentes = donnees.get("analyses", {})
 
@@ -110,20 +150,22 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = ""):
         action = "Aucune action"
         deja_note = precedentes.get(epic, {}).get("explication") == signal["explication"]
 
-        if en_pause:
+        if not suivi_4h:
             action = "En pause (aucun ordre)"
         elif sig is None:
-            noter("info", epic, signal["explication"])
+            noter_4h("info", epic, signal["explication"])
         else:
+            if not complet_4h:
+                action = "Désactivée (positions gardées, stop suiveur actif)"
             # 1) Sortie : la tendance n'est plus dans le sens de la position
-            for p in [p for p in mes_positions if p["position"]["direction"] != voulu]:
+            for p in [p for p in mes_positions if p["position"]["direction"] != voulu and complet_4h]:
                 conf = api.fermer(p["position"]["dealId"])
                 if conf.get("dealStatus") == "ACCEPTED":
                     noter_fermeture(donnees, p, conf, maintenant(), "Fin de la tendance (signal de sortie)")
                 sens = "achat" if p["position"]["direction"] == "BUY" else "vente"
-                noter("fermeture", epic, f"{signal['explication']} Position à l'{sens} fermée (gain/perte : {p['position'].get('upl', 0):.2f}). Statut : {conf.get('dealStatus', '?')}")
+                noter_4h("fermeture", epic, f"{signal['explication']} Position à l'{sens} fermée (gain/perte : {p['position'].get('upl', 0):.2f}). Statut : {conf.get('dealStatus', '?')}")
                 action = "Position fermée"
-            gardees = [p for p in mes_positions if p["position"]["direction"] == voulu]
+            gardees = [p for p in mes_positions if p["position"]["direction"] == voulu or not complet_4h]
 
             # 2) Stop suiveur : on rapproche le stop pour verrouiller les gains (jamais l'inverse)
             derniere = sig.iloc[-1]
@@ -140,7 +182,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = ""):
                 if mieux:
                     conf = api.modifier_stop(pos["dealId"], cible_stop, bool(pos.get("guaranteedStop", True)))
                     ok = conf.get("dealStatus") == "ACCEPTED"
-                    noter("stop" if ok else "erreur", epic,
+                    noter_4h("stop" if ok else "erreur", epic,
                           f"Stop suiveur déplacé de {float(actuel or 0):.2f} à {cible_stop:.2f} pour protéger le gain." if ok
                           else f"Déplacement du stop refusé : {conf.get('reason', conf.get('dealStatus', '?'))}")
                     action = "Stop remonté" if ok else action
@@ -148,14 +190,16 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = ""):
                     action = "Position conservée"
 
             # 3) Entrée : seulement sur un signal NOUVEAU, jamais deux fois le même
-            if voulu and not gardees:
+            if not complet_4h:
+                pass
+            elif voulu and not gardees:
                 if not signal["nouveau"]:
                     if not deja_note:
-                        noter("analyse", epic, f"{signal['explication']} Mais le signal n'est pas récent (il date du "
+                        noter_4h("analyse", epic, f"{signal['explication']} Mais le signal n'est pas récent (il date du "
                               f"{signal['debut_etat'][:16]}) : on attend le prochain pour ne pas entrer en retard.")
                 elif entrees.get(epic) == signal["debut_etat"]:
                     if not deja_note:
-                        noter("analyse", epic, "Ce signal a déjà été utilisé (position fermée par le stop) : on attend un nouveau signal.")
+                        noter_4h("analyse", epic, "Ce signal a déjà été utilisé (position fermée par le stop) : on attend un nouveau signal.")
                 else:
                     mot = "ACHAT" if voulu == "BUY" else "VENTE"
                     prix_entree = prix_achat if voulu == "BUY" else prix_vente
@@ -165,8 +209,17 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = ""):
                     taille_marge = math.floor(disponible * eurusd / (prix_entree * MARGE) * 0.9 / PAS_TAILLE) * PAS_TAILLE
                     taille = round(min(taille, taille_marge), 4)
                     if taille < PAS_TAILLE:
-                        noter("erreur", epic, f"Capital trop faible pour ouvrir la plus petite position ({PAS_TAILLE} BTC).")
+                        noter_4h("erreur", epic, f"Capital trop faible pour ouvrir la plus petite position ({PAS_TAILLE} BTC).")
                     else:
+                        # Sans mode couverture, un ordre inverse annulerait les positions de la rapide :
+                        # la stratégie 4 h est prioritaire, on ferme d'abord celles qui sont en sens inverse.
+                        for p in [p for p in positions if p["market"]["epic"] == epic
+                                  and p["position"]["dealId"] in ids_rapide and p["position"]["direction"] != voulu]:
+                            conf = api.fermer(p["position"]["dealId"])
+                            if conf.get("dealStatus") == "ACCEPTED":
+                                noter_fermeture(donnees, p, conf, maintenant(), "Fermée : la stratégie 4 h est prioritaire")
+                            noter("fermeture", epic, "Position de la stratégie rapide fermée : la stratégie 4 h, prioritaire, "
+                                  "ouvre dans l'autre sens.", "rapide")
                         # Deux moitiés : l'une avec un TP proche (on encaisse vite), l'autre sans TP
                         # qui suit la tendance avec le stop suiveur (on capte les gros mouvements).
                         moitie = round(math.floor(taille / 2 / PAS_TAILLE) * PAS_TAILLE, 4)
@@ -180,23 +233,37 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = ""):
                                 entrees[epic] = signal["debut_etat"]
                                 action = f"{mot} de {taille} {epic}"
                                 texte_tp = f", TP à +{obj:.0f} $" if obj else ", sans TP (stop suiveur)"
-                                noter("ordre", epic, f"{signal['explication']} Ordre {mot} de {t} passé à "
+                                noter_4h("ordre", epic, f"{signal['explication']} Ordre {mot} de {t} passé à "
                                       f"{float(conf.get('level') or prix_entree):.2f}, stop garanti à {distance:.0f} $"
                                       f"{texte_tp} (risque max ≈ {t * distance / eurusd:.2f} €).")
                             else:
-                                noter("erreur", epic, f"Ordre {mot} refusé par Capital.com : {conf.get('reason', statut)}")
-            elif not voulu and not deja_note:
-                noter("analyse", epic, signal["explication"])
+                                noter_4h("erreur", epic, f"Ordre {mot} refusé par Capital.com : {conf.get('reason', statut)}")
+            elif not voulu and (not deja_note or "tendance_4h" in lancer):
+                noter_4h("analyse", epic, signal["explication"])
+            if "tendance_4h" in lancer and action in ("Aucune action", "Position conservée"):
+                noter_4h("analyse", epic, f"Tour immédiat : {signal['explication']} Décision : {action.lower()}.")
 
         clotures = list(sig.cloture) if sig is not None else [milieu(b["closePrice"]) for b in fermees]
         ema_r = [None if x != x else round(float(x), 2) for x in sig.ema_rapide] if sig is not None else []
         ema_l = [None if x != x else round(float(x), 2) for x in sig.ema_lente] if sig is not None else []
-        if RAPIDE_ACTIVE and not en_pause:
-            if couverture:
-                action_rapide = tour_rapide(api, donnees, epic, positions, capital, eurusd, noter, maintenant())
-            else:
-                action_rapide = "Impossible : le mode couverture (hedging) n'a pas pu être activé"
-            donnees.setdefault("rapide", {})["action"] = action_rapide
+        if tourne_rapide:
+            try:
+                positions_now = api.positions()
+                action_rapide = tour_rapide(api, donnees, epic, positions_now, capital, eurusd, noter_rapide, maintenant())
+            except Exception as e:  # une erreur de la rapide ne doit pas bloquer la stratégie 4 h
+                action_rapide = "Erreur"
+                noter_rapide("erreur", epic, f"[Rapide] {str(e)[:300]}")
+            if "rapide" in lancer:
+                noter_rapide("analyse", epic, f"Tour immédiat de la stratégie rapide. Décision : {action_rapide.lower()}.")
+        else:
+            action_rapide = "En pause (aucun ordre)" if en_pause else "Désactivée"
+        donnees.setdefault("rapide", {})["action"] = action_rapide
+        etats["tendance_4h"].update({"nom": noms["tendance_4h"], "description": DESCRIPTIONS["tendance_4h"],
+                                     "unite": UNITE, "risque_pct": RISQUE_PCT, "action": action, "tendance": voulu,
+                                     "reglages": NOM_STRATEGIE})
+        etats["rapide"].update({"nom": noms["rapide"], "description": DESCRIPTIONS["rapide"], "unite": UNITE_RAPIDE,
+                                "risque_pct": RISQUE_RAPIDE_PCT, "action": action_rapide,
+                                "tendance": donnees.get("rapide", {}).get("tendance"), "reglages": NOM_RAPIDE})
 
         mettre_a_jour_prix(donnees, epic, prix)
         n = MAX_BOUGIES_GRAPHIQUE
@@ -268,7 +335,8 @@ def principal() -> int:
         code = 1
     else:
         try:
-            un_tour(donnees, CapitalDemo(cle, ident, mdp), os.getenv("ACTION", "").strip().lower())
+            un_tour(donnees, CapitalDemo(cle, ident, mdp), os.getenv("ACTION", "").strip().lower(),
+                    os.getenv("STRATEGIE", "toutes").strip().lower() or "toutes")
             donnees["statut"] = "ok"
         except (ErreurCapital, Exception) as e:  # on garde une trace lisible de toute erreur
             donnees["journal"].append({"date": maintenant(), "type": "erreur", "marche": "", "texte": str(e)[:400]})
