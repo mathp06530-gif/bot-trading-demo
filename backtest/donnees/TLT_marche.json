@@ -1,0 +1,94 @@
+{
+ "instrument": {
+  "epic": "TLT",
+  "symbol": "TLT",
+  "expiry": "-",
+  "name": "iShares 20+ Year Treasury Bond ETF",
+  "lotSize": 1,
+  "type": "SHARES",
+  "guaranteedStopAllowed": true,
+  "streamingPricesAvailable": true,
+  "currency": "USD",
+  "marginFactor": 20,
+  "marginFactorUnit": "PERCENTAGE",
+  "openingHours": {
+   "mon": [
+    "01:00 - 00:00"
+   ],
+   "tue": [
+    "00:00 - 01:15",
+    "01:15 - 00:00"
+   ],
+   "wed": [
+    "00:00 - 01:15",
+    "01:15 - 00:00"
+   ],
+   "thu": [
+    "00:00 - 01:15",
+    "01:15 - 00:00"
+   ],
+   "fri": [
+    "00:00 - 01:15",
+    "01:15 - 22:00"
+   ],
+   "sat": [],
+   "sun": [],
+   "zone": "UTC"
+  },
+  "country": "United States of America",
+  "overnightFee": {
+   "longRate": -0.0222624,
+   "shortRate": 4.02e-05,
+   "swapChargeTimestamp": 1795125600000,
+   "swapChargeInterval": 1440
+  }
+ },
+ "dealingRules": {
+  "minStepDistance": {
+   "unit": "POINTS",
+   "value": 0.01
+  },
+  "minDealSize": {
+   "unit": "POINTS",
+   "value": 0.1
+  },
+  "maxDealSize": {
+   "unit": "POINTS",
+   "value": 6250
+  },
+  "minSizeIncrement": {
+   "unit": "POINTS",
+   "value": 0.1
+  },
+  "minGuaranteedStopDistance": {
+   "unit": "PERCENTAGE",
+   "value": 7.5
+  },
+  "minStopOrProfitDistance": {
+   "unit": "PERCENTAGE",
+   "value": 0.01
+  },
+  "maxStopOrProfitDistance": {
+   "unit": "PERCENTAGE",
+   "value": 100
+  },
+  "marketOrderPreference": "AVAILABLE_DEFAULT_ON",
+  "trailingStopsPreference": "NOT_AVAILABLE"
+ },
+ "snapshot": {
+  "marketStatus": "TRADEABLE",
+  "netChange": 0.61,
+  "percentageChange": 0.23,
+  "updateTime": "2026-11-19T19:45:59.350",
+  "delayTime": 0,
+  "bid": 80.17,
+  "offer": 80.4,
+  "high": 80.29,
+  "low": 79.68,
+  "decimalPlacesFactor": 2,
+  "scalingFactor": 1,
+  "marketModes": [
+   "REGULAR"
+  ]
+ }
+}

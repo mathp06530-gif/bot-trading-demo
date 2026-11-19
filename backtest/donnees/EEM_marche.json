@@ -1,0 +1,90 @@
+{
+ "instrument": {
+  "epic": "EEM",
+  "symbol": "EEM",
+  "expiry": "-",
+  "name": "iShares MSCI Emerging Markets ETF",
+  "lotSize": 1,
+  "type": "SHARES",
+  "guaranteedStopAllowed": true,
+  "streamingPricesAvailable": true,
+  "currency": "USD",
+  "marginFactor": 20,
+  "marginFactorUnit": "PERCENTAGE",
+  "openingHours": {
+   "mon": [
+    "14:30 - 21:00"
+   ],
+   "tue": [
+    "14:30 - 21:00"
+   ],
+   "wed": [
+    "14:30 - 21:00"
+   ],
+   "thu": [
+    "14:30 - 21:00"
+   ],
+   "fri": [
+    "14:30 - 21:00"
+   ],
+   "sat": [],
+   "sun": [],
+   "zone": "UTC"
+  },
+  "country": "United States of America",
+  "overnightFee": {
+   "longRate": -0.0222624,
+   "shortRate": 4.02e-05,
+   "swapChargeTimestamp": 1795125600000,
+   "swapChargeInterval": 1440
+  }
+ },
+ "dealingRules": {
+  "minStepDistance": {
+   "unit": "POINTS",
+   "value": 0.01
+  },
+  "minDealSize": {
+   "unit": "POINTS",
+   "value": 1
+  },
+  "maxDealSize": {
+   "unit": "POINTS",
+   "value": 16300
+  },
+  "minSizeIncrement": {
+   "unit": "POINTS",
+   "value": 1
+  },
+  "minGuaranteedStopDistance": {
+   "unit": "PERCENTAGE",
+   "value": 7.5
+  },
+  "minStopOrProfitDistance": {
+   "unit": "PERCENTAGE",
+   "value": 0.01
+  },
+  "maxStopOrProfitDistance": {
+   "unit": "PERCENTAGE",
+   "value": 100
+  },
+  "marketOrderPreference": "AVAILABLE_DEFAULT_ON",
+  "trailingStopsPreference": "NOT_AVAILABLE"
+ },
+ "snapshot": {
+  "marketStatus": "TRADEABLE",
+  "netChange": -0.93,
+  "percentageChange": -1.21,
+  "updateTime": "2026-11-19T19:46:32.770",
+  "delayTime": 0,
+  "bid": 57.11,
+  "offer": 57.28,
+  "high": 58.28,
+  "low": 56.61,
+  "decimalPlacesFactor": 2,
+  "scalingFactor": 1,
+  "marketModes": [
+   "REGULAR"
+  ]
+ }
+}
