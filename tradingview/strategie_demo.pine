@@ -1,0 +1,36 @@
+//@version=6
+// Bot démo : croisement de moyennes mobiles exponentielles (EMA 9 / EMA 21).
+// C'est EXACTEMENT la même règle que le bot Python (bot/strategie.py) :
+//   - EMA rapide passe AU-DESSUS de l'EMA lente  -> ACHAT (position longue)
+//   - EMA rapide passe EN DESSOUS de l'EMA lente -> VENTE (position courte)
+// À utiliser sur le graphique BTCUSD (Capital.com) en unité de temps 15 minutes.
+strategy("Bot démo - Croisement EMA", overlay = true,
+     initial_capital = 10000, default_qty_type = strategy.fixed, default_qty_value = 0.01,
+     commission_type = strategy.commission.percent, commission_value = 0.0)
+
+rapide = input.int(9,  "EMA rapide", minval = 1)
+lente  = input.int(21, "EMA lente",  minval = 2)
+
+emaRapide = ta.ema(close, rapide)
+emaLente  = ta.ema(close, lente)
+
+achat = ta.crossover(emaRapide, emaLente)
+vente = ta.crossunder(emaRapide, emaLente)
+
+plot(emaRapide, "EMA rapide", color = color.new(color.teal, 0), linewidth = 2)
+plot(emaLente,  "EMA lente",  color = color.new(color.orange, 0), linewidth = 2)
+
+plotshape(achat, "Achat", shape.labelup,   location.belowbar, color.new(color.green, 0), text = "ACHAT", textcolor = color.white, size = size.small)
+plotshape(vente, "Vente", shape.labeldown, location.abovebar, color.new(color.red, 0),   text = "VENTE", textcolor = color.white, size = size.small)
+
+if achat
+    strategy.entry("Long", strategy.long)
+if vente
+    strategy.entry("Short", strategy.short)
+
+// Alertes (facultatif) : notification sur ton téléphone quand un signal apparaît.
+// Le bot n'en a PAS besoin pour fonctionner.
+if achat
+    alert("Bot démo : signal d'ACHAT sur " + syminfo.ticker + " à " + str.tostring(close), alert.freq_once_per_bar_close)
+if vente
+    alert("Bot démo : signal de VENTE sur " + syminfo.ticker + " à " + str.tostring(close), alert.freq_once_per_bar_close)

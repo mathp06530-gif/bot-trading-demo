@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f1720">
+<title>Bot de trading démo</title>
+<style>
+  :root {
+    --fond: #f5f7fa; --carte: #ffffff; --texte: #17202b; --doux: #5f6b7a; --bord: #e2e7ee;
+    --vert: #0f9d6b; --rouge: #d64545; --bleu: #1f6feb; --orange: #e08a1e; --grille: #edf0f4;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fond: #0f1720; --carte: #17212c; --texte: #e8edf3; --doux: #93a1b2; --bord: #263342;
+      --vert: #2fc48d; --rouge: #f06a6a; --bleu: #5a9bff; --orange: #f0a54a; --grille: #1f2b38;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--fond); color: var(--texte);
+         font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+  header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 16px; }
+  h1 { font-size: 22px; margin: 0; }
+  h2 { font-size: 15px; margin: 0 0 12px; color: var(--doux); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px;
+           background: var(--carte); border: 1px solid var(--bord); font-size: 13px; }
+  .point { width: 9px; height: 9px; border-radius: 50%; background: var(--doux); }
+  .point.ok { background: var(--vert); box-shadow: 0 0 0 3px color-mix(in srgb, var(--vert) 25%, transparent); }
+  .point.ko { background: var(--rouge); }
+  .demo { background: var(--orange); color: #fff; border: 0; font-weight: 700; }
+  .grille { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-bottom: 12px; }
+  .grille .carte { margin-bottom: 0; }
+  @media (max-width: 480px) { .kpi .val { font-size: 20px; } }
+  .carte { background: var(--carte); border: 1px solid var(--bord); border-radius: 14px; padding: 16px; margin-bottom: 12px; min-width: 0; }
+  .kpi .val { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .kpi .lab { color: var(--doux); font-size: 13px; }
+  .pos { color: var(--vert); } .neg { color: var(--rouge); }
+  svg { width: 100%; height: auto; display: block; }
+  .legende { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--doux); margin-top: 6px; }
+  .legende i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 5px; }
+  .tableau { width: 100%; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--bord); white-space: nowrap; }
+  th { color: var(--doux); font-weight: 600; font-size: 13px; }
+  .journal { list-style: none; padding: 0; margin: 0; max-height: 460px; overflow-y: auto; }
+  .journal li { padding: 9px 0; border-bottom: 1px solid var(--bord); display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; }
+  .journal time { color: var(--doux); font-size: 12px; grid-column: 1 / -1; }
+  .tag { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 6px; align-self: start; text-transform: uppercase; }
+  .t-ordre { background: color-mix(in srgb, var(--bleu) 18%, transparent); color: var(--bleu); }
+  .t-fermeture { background: color-mix(in srgb, var(--orange) 20%, transparent); color: var(--orange); }
+  .t-erreur { background: color-mix(in srgb, var(--rouge) 18%, transparent); color: var(--rouge); }
+  .t-analyse, .t-info { background: var(--grille); color: var(--doux); }
+  .vide { color: var(--doux); }
+  .marche-tete { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px; margin-bottom: 8px; }
+  .marche-tete b { font-size: 18px; }
+  .explic { color: var(--doux); margin: 4px 0 10px; }
+  footer { color: var(--doux); font-size: 12px; text-align: center; padding: 12px 0 24px; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Bot de trading</h1>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <span class="badge demo">COMPTE DÉMO</span>
+      <span class="badge"><span id="point" class="point"></span><span id="statut">Chargement…</span></span>
+    </div>
+  </header>
+
+  <section class="grille" id="kpis"></section>
+  <div id="marches"></div>
+
+  <section class="carte">
+    <h2>Positions ouvertes</h2>
+    <div class="tableau" id="positions"></div>
+  </section>
+
+  <section class="carte">
+    <h2>Évolution du compte</h2>
+    <div id="courbe"></div>
+  </section>
+
+  <section class="carte">
+    <h2>Journal du bot</h2>
+    <ul class="journal" id="journal"></ul>
+  </section>
+
+  <footer id="pied"></footer>
+</main>
+
+<script>
+const fmt = (n, d = 2) => n == null || isNaN(n) ? "—" : Number(n).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const signe = n => n > 0 ? "pos" : n < 0 ? "neg" : "";
+const quand = iso => iso ? new Date(iso.endsWith("Z") ? iso : iso + "Z").toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" }) : "—";
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+function depuis(iso) {
+  const min = Math.round((Date.now() - new Date(iso)) / 60000);
+  if (min < 1) return "à l'instant";
+  if (min < 60) return `il y a ${min} min`;
+  const h = Math.floor(min / 60);
+  return h < 48 ? `il y a ${h} h ${min % 60} min` : `il y a ${Math.floor(h / 24)} jours`;
+}
+
+// Petit graphique en lignes (sans bibliothèque externe)
+function lignes(series, { hauteur = 220 } = {}) {
+  const L = 640, H = hauteur, m = { g: 8, d: 64, h: 10, b: 10 };
+  const tout = series.flatMap(s => s.valeurs).filter(v => v != null);
+  if (tout.length < 2) return '<p class="vide">Pas encore assez de données.</p>';
+  let min = Math.min(...tout), max = Math.max(...tout);
+  if (min === max) { min -= 1; max += 1; }
+  const pad = (max - min) * 0.06; min -= pad; max += pad;
+  const n = Math.max(...series.map(s => s.valeurs.length));
+  const x = i => m.g + (i / (n - 1)) * (L - m.g - m.d);
+  const y = v => m.h + (1 - (v - min) / (max - min)) * (H - m.h - m.b);
+  let svg = `<svg viewBox="0 0 ${L} ${H}" role="img">`;
+  for (let k = 0; k <= 4; k++) {
+    const v = min + (k / 4) * (max - min), yy = y(v);
+    svg += `<line x1="${m.g}" x2="${L - m.d}" y1="${yy}" y2="${yy}" stroke="${css("--grille")}"/>`;
+    svg += `<text x="${L - m.d + 6}" y="${yy + 4}" font-size="11" fill="${css("--doux")}">${fmt(v, v > 1000 ? 0 : 2)}</text>`;
+  }
+  for (const s of series) {
+    let d = "";
+    s.valeurs.forEach((v, i) => { if (v != null) d += (d ? "L" : "M") + x(i).toFixed(1) + "," + y(v).toFixed(1); });
+    svg += `<path d="${d}" fill="none" stroke="${s.couleur}" stroke-width="${s.epaisseur || 2}" stroke-linejoin="round"/>`;
+  }
+  return svg + "</svg>";
+}
+
+function afficher(d) {
+  const ok = d.statut === "ok";
+  document.getElementById("point").className = "point " + (ok ? "ok" : "ko");
+  document.getElementById("statut").textContent = d.derniere_execution
+    ? `${ok ? "Actif" : "Problème"} · dernier tour ${depuis(d.derniere_execution)}` : "Pas encore lancé";
+
+  const c = d.compte || {};
+  const dev = c.devise ? " " + c.devise : "";
+  document.getElementById("kpis").innerHTML = [
+    ["Solde du compte démo", fmt(c.solde) + dev, ""],
+    ["Résultat des positions en cours", (c.resultat_latent > 0 ? "+" : "") + fmt(c.resultat_latent) + dev, signe(c.resultat_latent)],
+    ["Disponible", fmt(c.disponible) + dev, ""],
+    ["Stratégie", esc(d.reglages?.strategie || "—"), ""],
+  ].map(([lab, val, cl]) => `<div class="carte kpi"><div class="lab">${lab}</div><div class="val ${cl}" style="${lab === "Stratégie" ? "font-size:17px" : ""}">${val}</div></div>`).join("");
+
+  document.getElementById("marches").innerHTML = Object.entries(d.analyses || {}).map(([epic, a]) => {
+    const g = a.graphique || {};
+    const tend = a.tendance === "BUY" ? '<span class="pos">▲ Haussière (acheteur)</span>' : a.tendance === "SELL" ? '<span class="neg">▼ Baissière (vendeur)</span>' : "—";
+    return `<section class="carte">
+      <div class="marche-tete"><span><b>${esc(epic)}</b> · ${fmt(a.prix)}</span><span>${tend}</span></div>
+      <p class="explic">${esc(a.explication)} <strong>${esc(a.action)}</strong></p>
+      ${lignes([
+        { valeurs: g.clotures || [], couleur: css("--texte"), epaisseur: 1.6 },
+        { valeurs: g.ema_rapide || [], couleur: css("--bleu") },
+        { valeurs: g.ema_lente || [], couleur: css("--orange") },
+      ])}
+      <div class="legende"><span><i style="background:${css("--texte")}"></i>Prix (24 dernières heures)</span>
+        <span><i style="background:${css("--bleu")}"></i>EMA rapide</span><span><i style="background:${css("--orange")}"></i>EMA lente</span></div>
+    </section>`;
+  }).join("");
+
+  const p = d.positions || [];
+  document.getElementById("positions").innerHTML = p.length ? `<table><thead><tr>
+      <th>Marché</th><th>Sens</th><th>Taille</th><th>Prix d'entrée</th><th>Résultat</th><th>Ouverte le</th></tr></thead><tbody>
+      ${p.map(x => `<tr><td>${esc(x.nom)}</td><td class="${x.sens === "BUY" ? "pos" : "neg"}">${x.sens === "BUY" ? "Achat" : "Vente"}</td>
+        <td>${x.taille}</td><td>${fmt(x.prix_entree)}</td><td class="${signe(x.resultat)}">${fmt(x.resultat)}</td><td>${quand(x.ouverte_le)}</td></tr>`).join("")}
+      </tbody></table>` : '<p class="vide">Aucune position ouverte pour le moment.</p>';
+
+  document.getElementById("courbe").innerHTML = lignes([{ valeurs: (d.historique || []).map(h => h.valeur), couleur: css("--vert") }], { hauteur: 180 });
+
+  const j = (d.journal || []).slice().reverse();
+  document.getElementById("journal").innerHTML = j.length ? j.map(l => `<li><time>${quand(l.date)}${l.marche ? " · " + esc(l.marche) : ""}</time>
+      <span class="tag t-${esc(l.type)}">${esc(l.type)}</span><span>${esc(l.texte)}</span></li>`).join("") : '<li class="vide">Le journal est vide pour l\'instant.</li>';
+
+  document.getElementById("pied").textContent = `Argent fictif uniquement · Capital.com démo · page actualisée ${new Date().toLocaleTimeString("fr-FR")}`;
+}
+
+async function charger() {
+  try {
+    const r = await fetch("data.json?t=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) throw new Error(r.status);
+    afficher(await r.json());
+  } catch (e) {
+    document.getElementById("statut").textContent = "Le bot n'a pas encore produit de données";
+  }
+}
+charger();
+setInterval(charger, 60000);
+</script>
+</body>
+</html>

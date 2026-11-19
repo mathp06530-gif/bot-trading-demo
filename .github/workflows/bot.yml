@@ -1,0 +1,49 @@
+name: Bot de trading démo
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"   # toutes les 15 minutes (GitHub peut avoir quelques minutes de retard)
+  workflow_dispatch: {}       # bouton « Run workflow » pour le lancer à la main
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bot-trading
+  cancel-in-progress: false
+
+jobs:
+  tour:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Lancer un tour du bot
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+          # Réglages modifiables :
+          MARCHES: "BTCUSD"     # plusieurs marchés possibles, séparés par des virgules
+          TAILLE: "0.01"        # taille de chaque position
+          UNITE: "MINUTE_15"    # unité de temps des bougies
+          STOP_PCT: "3"         # stop de sécurité à 3 % du prix
+        run: python -m bot.main
+
+      - name: Enregistrer les résultats pour le tableau de bord
+        if: always()
+        run: |
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          git add docs/data.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Tour du bot $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3; do git pull --rebase -q && git push -q && exit 0; sleep 5; done
+          exit 1
