@@ -3,8 +3,10 @@ import json
 import math
 import os
 
+from datetime import datetime, timedelta, timezone
+
 import bot.main as main
-from bot.strategie import decider, ema
+from bot.strategie import bougies_vers_df, decider, ema
 
 
 def test_ema_comme_tradingview():
@@ -14,35 +16,68 @@ def test_ema_comme_tradingview():
     assert math.isclose(v[3], 0.5 * 4 + 0.5 * 2)
 
 
+def bougie(i, p, unite="HOUR_4"):
+    pas = 4 * 3600 if unite == "HOUR_4" else 300
+    t = datetime(2026, 1, 1, tzinfo=timezone.utc) + timedelta(seconds=pas * i)
+    prix = lambda x: {"bid": x - 1, "ask": x + 1}
+    return {"snapshotTimeUTC": t.strftime("%Y-%m-%dT%H:%M:%S"), "openPrice": prix(p), "highPrice": prix(p + 30),
+            "lowPrice": prix(p - 30), "closePrice": prix(p)}
+
+
+def serie_achat():
+    """Baisse puis forte hausse ; renvoie les prix jusqu'à la bougie où le signal d'ACHAT apparaît."""
+    prix = [20000 - 20 * i for i in range(250)] + [15000 + 120 * i for i in range(150)]
+    for n in range(260, len(prix)):
+        s = decider(bougies_vers_df([bougie(i, p) for i, p in enumerate(prix[:n])]))
+        if s["direction"] == "BUY":
+            assert s["nouveau"]
+            return prix[:n], prix[n:]
+    raise AssertionError("pas de signal d'achat")
+
+
 def test_decider_tendance():
-    hausse = [100 + i for i in range(60)]
-    assert decider(hausse)["direction"] == "BUY"
-    baisse = [200 - i for i in range(60)]
-    assert decider(baisse)["direction"] == "SELL"
-    assert decider([1, 2, 3])["direction"] is None
+    debut, suite = serie_achat()
+    s = decider(bougies_vers_df([bougie(i, p) for i, p in enumerate(debut)]))
+    assert s["direction"] == "BUY" and "ACHETEUR" in s["explication"]
+    tard = decider(bougies_vers_df([bougie(i, p) for i, p in enumerate(debut + suite[:20])]))
+    assert tard["direction"] == "BUY" and not tard["nouveau"]  # signal trop vieux : pas d'entrée en retard
+    assert decider(bougies_vers_df([bougie(i, 100) for i in range(50)]))["direction"] is None
 
 
 class FauxCapital:
-    def __init__(self, prix):
+    def __init__(self, prix, prix_rapide=None):
         self.prix = prix
-        self.ouvertes = []
+        self.prix_rapide = prix_rapide or [100 + i for i in range(80)]
+        self.ouvertes = []  # (dealId, sens, taille, stop)
         self.fermees = []
+        self.stops = []
+        self.n = 0
 
     def connexion(self): pass
     def deconnexion(self): pass
-    def marche(self, epic): return {"dealingRules": {"minDealSize": {"value": 0.01}}}
+    def taux_eurusd(self): return 1.0
+    def mode_couverture(self): return True
+    def marche(self, epic): return {"dealingRules": {"minDealSize": {"value": 0.0001}}}
 
     def bougies(self, epic, unite, n):
-        return [{"snapshotTimeUTC": f"2026-11-19T{i // 4:02d}:{(i % 4) * 15:02d}:00",
-                 "closePrice": {"bid": p - 1, "ask": p + 1}} for i, p in enumerate(self.prix)]
+        serie = self.prix if unite == "HOUR_4" else self.prix_rapide
+        return [bougie(i, p, unite) for i, p in enumerate(serie)] + [bougie(len(serie), serie[-1], unite)]
 
     def positions(self):
-        return [{"position": {"dealId": d, "direction": s, "size": t, "level": 100, "upl": 1.5},
-                 "market": {"epic": "BTCUSD", "instrumentName": "Bitcoin"}} for d, s, t in self.ouvertes]
+        return [{"position": {"dealId": d, "direction": s, "size": t, "level": 100, "upl": 1.5, "stopLevel": st,
+                              "guaranteedStop": True},
+                 "market": {"epic": "BTCUSD", "instrumentName": "Bitcoin"}} for d, s, t, st in self.ouvertes]
 
-    def ouvrir(self, epic, direction, taille, stop, prix):
-        self.ouvertes.append((f"d{len(self.ouvertes) + len(self.fermees)}", direction, taille))
-        return {"dealStatus": "ACCEPTED", "level": prix}
+    def ouvrir(self, epic, direction, taille, stop_pct=None, prix=None, stop_distance=None, garanti=False):
+        d = f"d{self.n}"
+        self.n += 1
+        self.ouvertes.append((d, direction, taille, prix - stop_distance if direction == "BUY" else prix + stop_distance))
+        return {"dealStatus": "ACCEPTED", "level": prix, "affectedDeals": [{"dealId": d}]}
+
+    def modifier_stop(self, deal_id, niveau, garanti=True):
+        self.stops.append((deal_id, niveau))
+        self.ouvertes = [(d, s, t, niveau if d == deal_id else st) for d, s, t, st in self.ouvertes]
+        return {"dealStatus": "ACCEPTED"}
 
     def fermer(self, deal_id):
         self.fermees.append(deal_id)
@@ -54,34 +89,57 @@ class FauxCapital:
                  "balance": {"balance": 10000, "deposit": 10000, "profitLoss": 1.5, "available": 9900}}]
 
 
-def test_un_tour_ouvre_puis_retourne(tmp_path, monkeypatch):
+def test_un_tour_entre_suit_et_sort(tmp_path, monkeypatch):
     monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    faux = FauxCapital([100 + i for i in range(80)])
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
+    debut, suite = serie_achat()
+    faux = FauxCapital(debut)
     d = {}
     main.un_tour(d, faux)
     assert [o[1] for o in faux.ouvertes] == ["BUY"]
+    deal, _, taille, stop = faux.ouvertes[0]
+    distance = debut[-1] + 1 - stop
+    assert math.isclose(taille * distance, 100, rel_tol=0.02)  # 1 % de 10 000 € risqué
 
-    main.un_tour(d, faux)  # même tendance : on ne fait rien
+    main.un_tour(d, faux)  # même signal : pas de 2e achat
     assert len(faux.ouvertes) == 1 and not faux.fermees
 
-    faux.prix = faux.prix + [180 - 3 * i for i in range(40)]  # le marché se retourne
+    faux.prix = debut + suite[:30]  # le prix monte : le stop suiveur remonte
     main.un_tour(d, faux)
-    assert faux.fermees == ["d0"]
-    assert [o[1] for o in faux.ouvertes] == ["SELL"]
-    assert d["compte"]["solde"] == 10000
-    assert len(d["historique"]) == 3
-    assert any(l["type"] == "fermeture" for l in d["journal"])
-    # Registre des ordres : 1 achat fermé par le bot, 1 vente ouverte
-    assert [(o["sens"], o["statut"]) for o in d["ordres"]] == [("BUY", "ferme"), ("SELL", "ouvert")]
-    assert d["ordres"][0]["resultat"] == 1.5 and d["ordres"][0]["resultat_estime"] is False
-    assert d["valeur_depart"] == 10001.5 and len(d["historique_jour"]) == 1
+    assert faux.stops and faux.stops[-1][1] > stop and not faux.fermees
 
-    # La vente disparaît sans que le bot la ferme (stop touché)
-    from bot.registre import synchroniser
-    d["ordres"][1]["stop"] = 110
-    synchroniser(d, [], "2026-11-20T00:00:00Z")
-    assert d["ordres"][1]["statut"] == "ferme" and d["ordres"][1]["resultat_estime"] is True
-    assert d["ordres"][1]["resultat"] == round((110 - 100) * 0.01 * -1, 2)
+    faux.prix = faux.prix + [faux.prix[-1] - 150 * i for i in range(1, 120)]  # retournement
+    main.un_tour(d, faux)
+    assert deal in faux.fermees
+    assert d["compte"]["solde"] == 10000
+    assert any(l["type"] == "fermeture" for l in d["journal"])
+    assert d["ordres"][0]["statut"] == "ferme" and d["ordres"][0]["strategie"] == "tendance_4h"
+
+
+def test_apres_un_stop_pas_de_reentree_sur_le_meme_signal(tmp_path, monkeypatch):
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
+    debut, _ = serie_achat()
+    faux = FauxCapital(debut)
+    d = {}
+    main.un_tour(d, faux)
+    faux.ouvertes = []  # stop touché chez Capital.com
+    main.un_tour(d, faux)
+    assert not faux.ouvertes
+
+
+def test_strategie_rapide_separee(tmp_path, monkeypatch):
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", True)
+    faux = FauxCapital([20000] * 300, [100 + i for i in range(80)])
+    d = {}
+    main.un_tour(d, faux)
+    assert [o[1] for o in faux.ouvertes] == ["BUY"]  # seule la rapide trade (pas de tendance 4 h)
+    assert d["rapide"]["deals"] == ["d0"]
+    faux.prix_rapide = faux.prix_rapide + [180 - 3 * i for i in range(60)]
+    main.un_tour(d, faux)
+    assert faux.fermees == ["d0"] and [o[1] for o in faux.ouvertes] == ["SELL"]
+    assert {o["strategie"] for o in d["ordres"]} == {"rapide"}
 
 
 def test_sans_secrets_ecrit_une_erreur(tmp_path, monkeypatch):
@@ -115,7 +173,8 @@ def test_stop_garanti_si_exige(monkeypatch):
 
 def test_commandes_pause_fermer_reprendre(tmp_path, monkeypatch):
     monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    faux = FauxCapital([100 + i for i in range(80)])
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
+    faux = FauxCapital(serie_achat()[0])
     d = {}
     main.un_tour(d, faux)
     assert len(faux.ouvertes) == 1
@@ -123,6 +182,6 @@ def test_commandes_pause_fermer_reprendre(tmp_path, monkeypatch):
     assert not faux.ouvertes and d["pause"] is True
     main.un_tour(d, faux)  # en pause : aucun nouvel ordre
     assert not faux.ouvertes and d["analyses"]["BTCUSD"]["action"].startswith("En pause")
-    main.un_tour(d, faux, "reprendre")
-    assert len(faux.ouvertes) == 1 and d["pause"] is False
+    main.un_tour(d, faux, "reprendre")  # relancé, mais ce signal a déjà servi : on attend le suivant
+    assert not faux.ouvertes and d["pause"] is False
     assert d["ordres"][0]["motif_sortie"] == "Fermée depuis l'application"

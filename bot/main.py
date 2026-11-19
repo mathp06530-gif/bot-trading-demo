@@ -1,32 +1,40 @@
 """Un tour de bot : se connecte au compte DÉMO Capital.com, analyse le marché,
 passe les ordres si besoin, puis met à jour docs/data.json pour le tableau de bord.
 
-GitHub lance ce fichier automatiquement toutes les 15 minutes environ.
+GitHub lance ce fichier automatiquement toutes les 5 minutes environ.
 Lancement manuel :  python -m bot.main
 """
 import json
+import math
 import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 from bot.capital import CapitalDemo, ErreurCapital
+from bot.rapide import ACTIVE as RAPIDE_ACTIVE
+from bot.rapide import NOM as NOM_RAPIDE
+from bot.rapide import tour_rapide
 from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
-from bot.strategie import EMA_LENTE, EMA_RAPIDE, decider
+from bot.strategie import NOM as NOM_STRATEGIE
+from bot.strategie import bougies_vers_df, decider
 
 RACINE = Path(__file__).resolve().parent.parent
 FICHIER_DONNEES = RACINE / "docs" / "data.json"
 
 # Réglages (modifiables dans .github/workflows/bot.yml sans toucher au code)
 MARCHES = [m.strip() for m in os.getenv("MARCHES", "BTCUSD").split(",") if m.strip()]
-TAILLE = float(os.getenv("TAILLE", "0.01"))
-UNITE = os.getenv("UNITE", "MINUTE_15")
-STOP_PCT = float(os.getenv("STOP_PCT", "3"))  # stop de sécurité en % du prix (0 = aucun)
+UNITE = os.getenv("UNITE", "HOUR_4")  # bougies de 4 h : c'est l'unité testée en backtest
+RISQUE_PCT = float(os.getenv("RISQUE_PCT", "1"))  # % du capital perdu au maximum si le stop est touché
+NB_BOUGIES = 1000  # ~5 mois de bougies 4 h, pour que l'EMA 200 soit fiable
+STOP_GARANTI_MIN_PCT = 0.55  # Capital.com impose un stop garanti à 0,5 % minimum du prix (+ marge)
+PAS_TAILLE = 0.0001  # plus petite taille de position en BTC chez Capital.com
+MARGE = 0.5  # levier crypto 2:1 en Europe : il faut bloquer 50 % de la valeur
 
 MAX_JOURNAL = 1000
 MAX_HISTORIQUE = 3000  # ~1 mois de points à raison d'un toutes les 15 min
 MAX_JOURS = 3650  # un point par jour, sur 10 ans
-MAX_BOUGIES_GRAPHIQUE = 96  # 24 h en bougies de 15 min
+MAX_BOUGIES_GRAPHIQUE = 96  # 16 jours en bougies de 4 h
 
 
 def maintenant() -> str:
@@ -47,15 +55,6 @@ def sauver(donnees: dict):
 
 def milieu(prix: dict) -> float:
     return (prix["bid"] + prix["ask"]) / 2
-
-
-def taille_valide(api: CapitalDemo, epic: str) -> float:
-    """Respecte la taille minimale imposée par Capital.com pour ce marché."""
-    try:
-        mini = api.marche(epic)["dealingRules"]["minDealSize"]["value"]
-        return max(TAILLE, float(mini))
-    except Exception:
-        return TAILLE
 
 
 def un_tour(donnees: dict, api: CapitalDemo, action: str = ""):
@@ -86,43 +85,110 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = ""):
     en_pause = donnees.get("pause", False)
     analyses = {}
 
-    for epic in MARCHES:
-        bougies = api.bougies(epic, UNITE, 200)
-        fermees = bougies[:-1]  # la dernière bougie n'est pas encore terminée
-        clotures = [milieu(b["closePrice"]) for b in fermees]
-        signal = decider(clotures)
-        prix = milieu(bougies[-1]["closePrice"]) if bougies else None
+    compte0 = next((c for c in api.comptes() if c.get("preferred")), None) or (api.comptes() or [{}])[0]
+    capital = float(compte0.get("balance", {}).get("balance") or 0)
+    disponible = float(compte0.get("balance", {}).get("available") or capital)
+    eurusd = api.taux_eurusd()
+    couverture = api.mode_couverture() if RAPIDE_ACTIVE else False
+    ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
+    entrees = donnees.setdefault("entrees", {})  # bougie du dernier signal utilisé, par marché
+    precedentes = donnees.get("analyses", {})
 
-        mes_positions = [p for p in positions if p["market"]["epic"] == epic]
+    for epic in MARCHES:
+        bougies = api.bougies(epic, UNITE, NB_BOUGIES)
+        fermees = bougies[:-1]  # la dernière bougie n'est pas encore terminée
+        df = bougies_vers_df(fermees)
+        signal = decider(df)
+        prix = milieu(bougies[-1]["closePrice"]) if bougies else None
+        prix_achat = bougies[-1]["closePrice"]["ask"] if bougies else None
+        prix_vente = bougies[-1]["closePrice"]["bid"] if bougies else None
+        sig = signal["sig"]
+
+        mes_positions = [p for p in positions if p["market"]["epic"] == epic and p["position"]["dealId"] not in ids_rapide]
         voulu = signal["direction"]
         action = "Aucune action"
+        deja_note = precedentes.get(epic, {}).get("explication") == signal["explication"]
 
         if en_pause:
             action = "En pause (aucun ordre)"
-        elif voulu is None:
+        elif sig is None:
             noter("info", epic, signal["explication"])
         else:
-            a_fermer = [p for p in mes_positions if p["position"]["direction"] != voulu]
-            for p in a_fermer:
+            # 1) Sortie : la tendance n'est plus dans le sens de la position
+            for p in [p for p in mes_positions if p["position"]["direction"] != voulu]:
                 conf = api.fermer(p["position"]["dealId"])
                 if conf.get("dealStatus") == "ACCEPTED":
-                    noter_fermeture(donnees, p, conf, maintenant(), "Signal inverse de la stratégie")
+                    noter_fermeture(donnees, p, conf, maintenant(), "Fin de la tendance (signal de sortie)")
                 sens = "achat" if p["position"]["direction"] == "BUY" else "vente"
-                noter("fermeture", epic, f"Position à l'{sens} fermée (gain/perte : {p['position'].get('upl', 0):.2f}). Statut : {conf.get('dealStatus', '?')}")
-            deja_bon = any(p["position"]["direction"] == voulu for p in mes_positions)
-            if not deja_bon:
-                taille = taille_valide(api, epic)
-                conf = api.ouvrir(epic, voulu, taille, STOP_PCT, prix)
-                mot = "ACHAT" if voulu == "BUY" else "VENTE"
-                statut = conf.get("dealStatus", "?")
-                action = f"{mot} de {taille} {epic}"
-                if statut == "ACCEPTED":
-                    noter("ordre", epic, f"{signal['explication']} Ordre {mot} de {taille} passé à {float(conf.get('level') or prix):.2f}.")
+                noter("fermeture", epic, f"{signal['explication']} Position à l'{sens} fermée (gain/perte : {p['position'].get('upl', 0):.2f}). Statut : {conf.get('dealStatus', '?')}")
+                action = "Position fermée"
+            gardees = [p for p in mes_positions if p["position"]["direction"] == voulu]
+
+            # 2) Stop suiveur : on rapproche le stop pour verrouiller les gains (jamais l'inverse)
+            derniere = sig.iloc[-1]
+            for p in gardees:
+                pos = p["position"]
+                actuel = pos.get("stopLevel")
+                marge_mini = prix * STOP_GARANTI_MIN_PCT / 100
+                if pos["direction"] == "BUY":
+                    cible_stop = min(derniere.cloture - derniere.suivi, prix_vente - marge_mini)
+                    mieux = actuel is None or cible_stop > float(actuel) + 1
                 else:
-                    noter("erreur", epic, f"Ordre {mot} refusé par Capital.com : {conf.get('reason', statut)}")
+                    cible_stop = max(derniere.cloture + derniere.suivi, prix_achat + marge_mini)
+                    mieux = actuel is None or cible_stop < float(actuel) - 1
+                if mieux:
+                    conf = api.modifier_stop(pos["dealId"], cible_stop, bool(pos.get("guaranteedStop", True)))
+                    ok = conf.get("dealStatus") == "ACCEPTED"
+                    noter("stop" if ok else "erreur", epic,
+                          f"Stop suiveur déplacé de {float(actuel or 0):.2f} à {cible_stop:.2f} pour protéger le gain." if ok
+                          else f"Déplacement du stop refusé : {conf.get('reason', conf.get('dealStatus', '?'))}")
+                    action = "Stop remonté" if ok else action
+                if action == "Aucune action":
+                    action = "Position conservée"
+
+            # 3) Entrée : seulement sur un signal NOUVEAU, jamais deux fois le même
+            if voulu and not gardees:
+                if not signal["nouveau"]:
+                    if not deja_note:
+                        noter("analyse", epic, f"{signal['explication']} Mais le signal n'est pas récent (il date du "
+                              f"{signal['debut_etat'][:16]}) : on attend le prochain pour ne pas entrer en retard.")
+                elif entrees.get(epic) == signal["debut_etat"]:
+                    if not deja_note:
+                        noter("analyse", epic, "Ce signal a déjà été utilisé (position fermée par le stop) : on attend un nouveau signal.")
+                else:
+                    mot = "ACHAT" if voulu == "BUY" else "VENTE"
+                    prix_entree = prix_achat if voulu == "BUY" else prix_vente
+                    distance = max(float(derniere.stop), prix_entree * STOP_GARANTI_MIN_PCT / 100)
+                    risque_usd = capital * RISQUE_PCT / 100 * eurusd
+                    taille = math.floor(risque_usd / distance / PAS_TAILLE) * PAS_TAILLE
+                    taille_marge = math.floor(disponible * eurusd / (prix_entree * MARGE) * 0.9 / PAS_TAILLE) * PAS_TAILLE
+                    taille = round(min(taille, taille_marge), 4)
+                    if taille < PAS_TAILLE:
+                        noter("erreur", epic, f"Capital trop faible pour ouvrir la plus petite position ({PAS_TAILLE} BTC).")
+                    else:
+                        conf = api.ouvrir(epic, voulu, taille, prix=prix_entree, stop_distance=distance, garanti=True)
+                        statut = conf.get("dealStatus", "?")
+                        action = f"{mot} de {taille} {epic}"
+                        if statut == "ACCEPTED":
+                            entrees[epic] = signal["debut_etat"]
+                            risque = taille * distance / eurusd
+                            noter("ordre", epic, f"{signal['explication']} Ordre {mot} de {taille} passé à "
+                                  f"{float(conf.get('level') or prix_entree):.2f}, stop garanti à {distance:.0f} $ "
+                                  f"(risque max ≈ {risque:.2f} €, soit {RISQUE_PCT:g} % du capital).")
+                        else:
+                            noter("erreur", epic, f"Ordre {mot} refusé par Capital.com : {conf.get('reason', statut)}")
+            elif not voulu and not deja_note:
+                noter("analyse", epic, signal["explication"])
+
+        clotures = list(sig.cloture) if sig is not None else [milieu(b["closePrice"]) for b in fermees]
+        ema_r = [None if x != x else round(float(x), 2) for x in sig.ema_rapide] if sig is not None else []
+        ema_l = [None if x != x else round(float(x), 2) for x in sig.ema_lente] if sig is not None else []
+        if RAPIDE_ACTIVE and not en_pause:
+            if couverture:
+                action_rapide = tour_rapide(api, donnees, epic, positions, capital, eurusd, noter, maintenant())
             else:
-                action = "Position conservée"
-                noter("analyse", epic, f"{signal['explication']} On garde la position.")
+                action_rapide = "Impossible : le mode couverture (hedging) n'a pas pu être activé"
+            donnees.setdefault("rapide", {})["action"] = action_rapide
 
         mettre_a_jour_prix(donnees, epic, prix)
         n = MAX_BOUGIES_GRAPHIQUE
@@ -134,8 +200,8 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = ""):
             "graphique": {
                 "dates": [b["snapshotTimeUTC"] for b in fermees][-n:],
                 "clotures": clotures[-n:],
-                "ema_rapide": signal["ema_rapide"][-n:],
-                "ema_lente": signal["ema_lente"][-n:],
+                "ema_rapide": ema_r[-n:],
+                "ema_lente": ema_l[-n:],
             },
         }
 
@@ -145,6 +211,10 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = ""):
     positions = api.positions()
     api.deconnexion()
     synchroniser(donnees, positions, maintenant())
+    ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
+    for o in donnees.get("ordres", []):
+        if "strategie" not in o:
+            o["strategie"] = "rapide" if o["id"] in ids_rapide else "tendance_4h"
 
     donnees["compte"] = {
         "nom": compte.get("accountName", "Démo"),
@@ -177,8 +247,8 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = ""):
 
 def principal() -> int:
     donnees = charger()
-    donnees["reglages"] = {"marches": MARCHES, "taille": TAILLE, "unite": UNITE, "stop_pct": STOP_PCT,
-                           "strategie": f"Croisement EMA {EMA_RAPIDE} / EMA {EMA_LENTE}"}
+    donnees["reglages"] = {"marches": MARCHES, "unite": UNITE, "risque_pct": RISQUE_PCT,
+                           "strategie": NOM_STRATEGIE, "strategie_rapide": NOM_RAPIDE if RAPIDE_ACTIVE else None}
     donnees.setdefault("journal", [])
     code = 0
 

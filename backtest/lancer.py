@@ -31,6 +31,17 @@ GRILLES = {
                   "sortie_ema": [5, 10], "stop_atr": [2.0, 3.0], "ventes": [True, False]},
 }
 
+# Stratégies « minute par minute » (scalping) : grilles plus petites, le calcul est long
+GRILLES_MINUTE = {
+    "ema_croisement": {"rapide": [5, 9, 20], "lente": [21, 50], "stop_pct": [0.5, 1.0]},
+    "tendance": {"rapide": [20, 50], "lente": [200], "adx_min": [25], "stop_atr": [3.0, 6.0],
+                 "suivi_atr": [6.0, 10.0], "ventes": [True]},
+    "donchian": {"entree": [30, 60, 120], "sortie": [15, 30], "stop_atr": [3.0, 6.0],
+                 "filtre_ema": [200], "ventes": [True]},
+    "rsi_repli": {"n_rsi": [2], "bas": [5, 10], "haut": [90, 95], "tendance": [200],
+                  "sortie_ema": [5], "stop_atr": [3.0, 6.0], "ventes": [True]},
+}
+
 
 def charger(unite):
     df = pd.read_csv(DOSSIER / f"BTCUSD_{unite}.csv", parse_dates=["date"]).set_index("date")
@@ -107,18 +118,23 @@ def principal():
     resultats = {"conditions": cond.__dict__, "strategies": {}}
     donnees = {"15min": charger("MINUTE_15"), "1h": charger("HOUR")}
     donnees["4h"] = regrouper(donnees["1h"], "4h")
+    if (DOSSIER / "BTCUSD_MINUTE.csv").exists():
+        donnees["1min"] = charger("MINUTE")
     for k, d in donnees.items():
         print(k, len(d), d.index[0], "->", d.index[-1])
 
     capital, risque = 20000.0, 1.0
     for nom, fn in STRATEGIES.items():
         unites = ["15min"] if nom == "ema_croisement" else ["1h", "4h"]
+        if "1min" in donnees:
+            unites = ["1min"] + unites
         for u in unites:
             df = donnees[u]
             coupe = df.index[len(df) // 2]
             ent, tst = df[df.index < coupe], df[df.index >= coupe]
             meilleurs = []
-            for p in combinaisons(GRILLES[nom]):
+            grille = GRILLES_MINUTE[nom] if u == "1min" else GRILLES[nom]
+            for p in combinaisons(grille):
                 st = executer(ent, fn(ent, **p), capital, risque, cond).stats()
                 meilleurs.append((score(st), p, st))
             meilleurs.sort(key=lambda x: -x[0])

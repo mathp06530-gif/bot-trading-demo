@@ -38,9 +38,10 @@ jobs:
           CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
           # Réglages modifiables :
           MARCHES: "BTCUSD"     # plusieurs marchés possibles, séparés par des virgules
-          TAILLE: "0.01"        # taille de chaque position
-          UNITE: "MINUTE_15"    # unité de temps des bougies
-          STOP_PCT: "3"         # stop de sécurité à 3 % du prix
+          UNITE: "HOUR_4"       # stratégie principale : bougies de 4 h (testée en backtest)
+          RISQUE_PCT: "1"       # stratégie principale : 1 % du capital risqué par trade
+          RAPIDE: "oui"         # stratégie rapide expérimentale (5 min) : "oui" ou "non"
+          RISQUE_RAPIDE_PCT: "0.1"  # stratégie rapide : 0,1 % du capital risqué par trade
           ACTION: ${{ inputs.action }}
         run: python -m bot.main
 

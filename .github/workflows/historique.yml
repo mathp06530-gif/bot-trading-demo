@@ -24,7 +24,8 @@ jobs:
           CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
           CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
           CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
-          UNITES: "MINUTE"
+          UNITES: "HOUR"
+          EPICS: "ETHUSD,US500,US100,DE40,GOLD,SILVER,OIL_CRUDE,EURUSD,GBPUSD,USDJPY,AUDUSD,SOLUSD"
         run: python backtest/telecharger.py
       - name: Enregistrer les données sur la branche
         run: |

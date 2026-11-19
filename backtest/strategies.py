@@ -1,8 +1,14 @@
 """Stratégies candidates. Chacune reçoit des bougies (prix milieu o/h/l/c) et renvoie
 un DataFrame 'cible' (1, -1, 0), 'stop' (distance en $), 'objectif', 'suivi'.
 Le signal d'une bougie n'utilise que des bougies terminées."""
+import sys
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from bot.strategie import signaux_tendance  # noqa: E402
 
 
 def milieu(df):
@@ -104,28 +110,9 @@ def retour_moyenne_rsi(df, n_rsi=2, bas=10, haut=90, tendance=200, sortie_ema=5,
     return _sortie(cible, a * stop_atr)
 
 
-def etat_tendance(df, rapide=50, lente=200, adx_min=20, stop_atr=2.5, suivi_atr=3.0, ventes=True):
-    """Version à états de tendance_ema : entrée si tendance nette, sortie au croisement inverse
-    ou au stop suiveur."""
-    m = milieu(df)
-    f, s, a, x = ema(m.close, rapide), ema(m.close, lente), atr(m), adx(m)
-    cible = np.zeros(len(m), dtype=int)
-    etat = 0
-    for i in range(len(m)):
-        if s.isna().iat[i]:
-            continue
-        hausse = f.iat[i] > s.iat[i]
-        if etat == 1 and not hausse:
-            etat = 0
-        elif etat == -1 and hausse:
-            etat = 0
-        if etat == 0 and x.iat[i] > adx_min:
-            if hausse and m.close.iat[i] > f.iat[i]:
-                etat = 1
-            elif ventes and not hausse and m.close.iat[i] < f.iat[i]:
-                etat = -1
-        cible[i] = etat
-    return _sortie(cible, a * stop_atr, suivi=a * suivi_atr)
+def etat_tendance(df, **reglages):
+    """La stratégie retenue : c'est le code du bot lui-même (bot/strategie.py)."""
+    return signaux_tendance(df, **reglages)
 
 
 STRATEGIES = {

@@ -15,12 +15,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from bot.capital import CapitalDemo  # noqa: E402
 
 DOSSIER = Path(__file__).resolve().parent / "donnees"
-EPIC = os.getenv("EPIC", "BTCUSD")
+EPICS = [e.strip() for e in os.getenv("EPICS", "BTCUSD").split(",") if e.strip()]
 TOUTES = {"MINUTE": (1, 90), "MINUTE_15": (15, 400), "HOUR": (60, 730)}  # unité : (minutes, jours d'historique)
 DEMANDES = {u: TOUTES[u] for u in os.getenv("UNITES", "MINUTE,MINUTE_15,HOUR").split(",")}
 
 
-def telecharger(api, unite, minutes, jours):
+def telecharger(api, EPIC, unite, minutes, jours):
     fin = datetime.now(timezone.utc).replace(second=0, microsecond=0)
     debut_total = fin - timedelta(days=jours)
     pas = timedelta(minutes=minutes * 900)
@@ -60,10 +60,15 @@ def principal():
     api = CapitalDemo(cle, ident, mdp)
     api.connexion()
     DOSSIER.mkdir(parents=True, exist_ok=True)
-    marche = api.marche(EPIC)
-    (DOSSIER / f"{EPIC}_marche.json").write_text(json.dumps(marche, indent=1, ensure_ascii=False))
-    for unite, (minutes, jours) in DEMANDES.items():
-        telecharger(api, unite, minutes, jours)
+    for epic in EPICS:
+        try:
+            marche = api.marche(epic)
+        except Exception as e:
+            print(f"{epic} : marché introuvable ({e})")
+            continue
+        (DOSSIER / f"{epic}_marche.json").write_text(json.dumps(marche, indent=1, ensure_ascii=False))
+        for unite, (minutes, jours) in DEMANDES.items():
+            telecharger(api, epic, unite, minutes, jours)
     api.deconnexion()
 
 

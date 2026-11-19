@@ -1,20 +1,43 @@
-"""Stratégie de DÉMONSTRATION : croisement de deux moyennes mobiles exponentielles.
+"""Stratégie « Tendance 4 h » : suivi de tendance filtré, avec stop garanti et stop suiveur.
 
-Même règle que le script TradingView (tradingview/strategie_demo.pine) :
-  - EMA rapide au-dessus de l'EMA lente -> on veut être ACHETEUR (BUY)
-  - EMA rapide en dessous de l'EMA lente -> on veut être VENDEUR (SELL)
+Choisie après backtest sur 2 ans d'historique Capital.com (voir backtest/ et le rapport).
+Le backtest et le bot utilisent EXACTEMENT ce fichier : ce qui a été testé est ce qui tourne.
 
-Pour changer de stratégie plus tard, il suffit de remplacer la fonction `decider`.
+Règles, sur des bougies de 4 heures (prix milieu entre achat et vente) :
+  ENTRÉE ACHAT : EMA 20 au-dessus de l'EMA 200 (tendance haussière)
+                 ET le prix au-dessus de l'EMA 20
+                 ET ADX > 20 (la tendance est nette, pas un marché qui fait du yo-yo)
+  ENTRÉE VENTE : l'inverse (EMA 20 sous l'EMA 200, prix sous l'EMA 20, ADX > 20)
+  SORTIE       : l'EMA 20 recroise l'EMA 200 dans l'autre sens,
+                 ou le stop est touché.
+  STOP (SL)    : stop GARANTI à 2 × ATR (mouvement moyen d'une bougie) du prix d'entrée.
+  STOP SUIVEUR : à chaque bougie, le stop est remonté à 5 × ATR derrière le prix
+                 pour verrouiller les gains. Il ne recule jamais. C'est lui qui joue le rôle
+                 de « prise de bénéfice » (TP) : un TP fixe coupait les gros gains en backtest.
+  FRAIS        : pas d'entrée si le spread dépasse 10 % de la distance du stop.
+  TAILLE       : calculée pour ne perdre que RISQUE_PCT % du capital si le stop est touché.
+  Après un stop, on attend un NOUVEAU signal avant de reprendre position.
 """
+import numpy as np
+import pandas as pd
 
-EMA_RAPIDE = 9
-EMA_LENTE = 21
+EMA_RAPIDE = 20
+EMA_LENTE = 200
+ADX_MIN = 20
+STOP_ATR = 2.0
+SUIVI_ATR = 5.0
+SPREAD_MAX_PCT = 10.0
+VENTES = True
+NOM = f"Tendance 4 h : EMA {EMA_RAPIDE}/{EMA_LENTE} + ADX > {ADX_MIN}, stop {STOP_ATR:g} ATR, suiveur {SUIVI_ATR:g} ATR"
 
 
-def ema(valeurs: list[float], periode: int) -> list[float | None]:
-    """Moyenne mobile exponentielle, calculée comme ta.ema de TradingView
-    (démarrage sur une moyenne simple des `periode` premières valeurs)."""
-    resultat: list[float | None] = [None] * len(valeurs)
+# --- Indicateurs (identiques à TradingView) -------------------------------------
+def ema(valeurs, periode: int):
+    """Moyenne mobile exponentielle. Accepte une liste (renvoie une liste, None au début)
+    ou une Series pandas."""
+    if isinstance(valeurs, pd.Series):
+        return valeurs.ewm(span=periode, adjust=False, min_periods=periode).mean()
+    resultat = [None] * len(valeurs)
     if len(valeurs) < periode:
         return resultat
     alpha = 2 / (periode + 1)
@@ -26,21 +49,101 @@ def ema(valeurs: list[float], periode: int) -> list[float | None]:
     return resultat
 
 
-def decider(clotures: list[float]) -> dict:
-    """Renvoie la direction souhaitée et une explication en français."""
-    rapide = ema(clotures, EMA_RAPIDE)
-    lente = ema(clotures, EMA_LENTE)
-    if rapide[-1] is None or lente[-1] is None or len(clotures) < EMA_LENTE + 2:
-        return {"direction": None, "croisement": False, "ema_rapide": rapide, "ema_lente": lente,
-                "explication": "Pas assez de bougies pour calculer les moyennes."}
+def milieu(df: pd.DataFrame) -> pd.DataFrame:
+    return pd.DataFrame({k: (df[f"{k}_bid"] + df[f"{k}_ask"]) / 2 for k in ("open", "high", "low", "close")})
 
-    direction = "BUY" if rapide[-1] > lente[-1] else "SELL"
-    avant = "BUY" if rapide[-2] > lente[-2] else "SELL"
-    croisement = direction != avant
-    tendance = "haussière" if direction == "BUY" else "baissière"
-    if croisement:
-        explication = f"Croisement détecté : la tendance devient {tendance}."
+
+def atr(m: pd.DataFrame, n: int = 14) -> pd.Series:
+    pc = m.close.shift()
+    tr = pd.concat([m.high - m.low, (m.high - pc).abs(), (m.low - pc).abs()], axis=1).max(axis=1)
+    return tr.ewm(alpha=1 / n, adjust=False, min_periods=n).mean()
+
+
+def adx(m: pd.DataFrame, n: int = 14) -> pd.Series:
+    up, down = m.high.diff(), -m.low.diff()
+    pdm = np.where((up > down) & (up > 0), up, 0.0)
+    ndm = np.where((down > up) & (down > 0), down, 0.0)
+    a = atr(m, n)
+    pdi = 100 * pd.Series(pdm, index=m.index).ewm(alpha=1 / n, adjust=False).mean() / a
+    ndi = 100 * pd.Series(ndm, index=m.index).ewm(alpha=1 / n, adjust=False).mean() / a
+    dx = 100 * (pdi - ndi).abs() / (pdi + ndi)
+    return dx.ewm(alpha=1 / n, adjust=False).mean()
+
+
+# --- Stratégie -----------------------------------------------------------------
+def signaux_tendance(df: pd.DataFrame, rapide=EMA_RAPIDE, lente=EMA_LENTE, adx_min=ADX_MIN,
+                     stop_atr=STOP_ATR, suivi_atr=SUIVI_ATR, ventes=VENTES,
+                     objectif_atr=None, frais_max_pct=SPREAD_MAX_PCT) -> pd.DataFrame:
+    """df : bougies avec colonnes open/high/low/close en _bid et _ask.
+    Renvoie par bougie : cible (1 achat, -1 vente, 0 rien), stop (distance en $),
+    objectif (distance ou NaN), suivi (distance du stop suiveur), et les indicateurs."""
+    m = milieu(df)
+    f, s, a, x = ema(m.close, rapide), ema(m.close, lente), atr(m), adx(m)
+    spread = (df.close_ask - df.close_bid).values
+    cible = np.zeros(len(m), dtype=int)
+    etat = 0
+    for i in range(len(m)):
+        if np.isnan(s.iat[i]) or np.isnan(a.iat[i]):
+            continue
+        hausse = f.iat[i] > s.iat[i]
+        if etat == 1 and not hausse:
+            etat = 0
+        elif etat == -1 and hausse:
+            etat = 0
+        if etat == 0 and x.iat[i] > adx_min:
+            trop_cher = frais_max_pct and spread[i] > a.iat[i] * stop_atr * frais_max_pct / 100
+            if not trop_cher:
+                if hausse and m.close.iat[i] > f.iat[i]:
+                    etat = 1
+                elif ventes and not hausse and m.close.iat[i] < f.iat[i]:
+                    etat = -1
+        cible[i] = etat
+    out = pd.DataFrame({"cible": cible, "stop": a * stop_atr,
+                        "objectif": a * objectif_atr if objectif_atr else np.nan,
+                        "suivi": a * suivi_atr, "ema_rapide": f, "ema_lente": s, "atr": a, "adx": x,
+                        "cloture": m.close}, index=df.index)
+    out.attrs["entree_nouvelle"] = True
+    return out
+
+
+def bougies_vers_df(bougies: list) -> pd.DataFrame:
+    """Bougies de l'API Capital.com -> DataFrame (colonnes _bid / _ask)."""
+    lignes = []
+    for b in bougies:
+        ligne = {"date": pd.Timestamp(b["snapshotTimeUTC"], tz="UTC")}
+        for cle, nom in (("openPrice", "open"), ("highPrice", "high"), ("lowPrice", "low"), ("closePrice", "close")):
+            ligne[f"{nom}_bid"] = b[cle]["bid"]
+            ligne[f"{nom}_ask"] = b[cle]["ask"]
+        lignes.append(ligne)
+    return pd.DataFrame(lignes).set_index("date") if lignes else pd.DataFrame()
+
+
+def decider(df: pd.DataFrame) -> dict:
+    """À partir des bougies TERMINÉES, renvoie ce que le bot doit faire maintenant."""
+    if len(df) < EMA_LENTE + 20:
+        return {"direction": None, "nouveau": False, "debut_etat": None, "sig": None,
+                "explication": f"Pas assez de bougies ({len(df)}) pour calculer l'EMA {EMA_LENTE}."}
+    sig = signaux_tendance(df)
+    c = sig.cible.values
+    etat = int(c[-1])
+    # bougie où l'état actuel a commencé
+    j = len(c) - 1
+    while j > 0 and c[j - 1] == etat:
+        j -= 1
+    derniere = sig.iloc[-1]
+    tendance = "haussière" if derniere.ema_rapide > derniere.ema_lente else "baissière"
+    if etat == 1:
+        explication = f"Tendance haussière nette (ADX {derniere.adx:.0f}) : on veut être ACHETEUR."
+    elif etat == -1:
+        explication = f"Tendance baissière nette (ADX {derniere.adx:.0f}) : on veut être VENDEUR."
+    elif derniere.adx <= ADX_MIN:
+        explication = f"Tendance {tendance} mais trop faible (ADX {derniere.adx:.0f} ≤ {ADX_MIN}) : on attend."
     else:
-        explication = f"Pas de nouveau croisement, la tendance reste {tendance}."
-    return {"direction": direction, "croisement": croisement, "ema_rapide": rapide, "ema_lente": lente,
-            "explication": explication}
+        explication = f"Tendance {tendance}, mais le prix n'est pas encore du bon côté de l'EMA {EMA_RAPIDE} : on attend."
+    return {
+        "direction": {1: "BUY", -1: "SELL"}.get(etat),
+        "nouveau": j >= len(c) - 2,  # l'état vient de commencer (dernière ou avant-dernière bougie)
+        "debut_etat": str(sig.index[j]),
+        "sig": sig,
+        "explication": explication,
+    }
