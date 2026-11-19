@@ -71,6 +71,17 @@ def test_un_tour_ouvre_puis_retourne(tmp_path, monkeypatch):
     assert d["compte"]["solde"] == 10000
     assert len(d["historique"]) == 3
     assert any(l["type"] == "fermeture" for l in d["journal"])
+    # Registre des ordres : 1 achat fermé par le bot, 1 vente ouverte
+    assert [(o["sens"], o["statut"]) for o in d["ordres"]] == [("BUY", "ferme"), ("SELL", "ouvert")]
+    assert d["ordres"][0]["resultat"] == 1.5 and d["ordres"][0]["resultat_estime"] is False
+    assert d["valeur_depart"] == 10001.5 and len(d["historique_jour"]) == 1
+
+    # La vente disparaît sans que le bot la ferme (stop touché)
+    from bot.registre import synchroniser
+    d["ordres"][1]["stop"] = 110
+    synchroniser(d, [], "2026-11-20T00:00:00Z")
+    assert d["ordres"][1]["statut"] == "ferme" and d["ordres"][1]["resultat_estime"] is True
+    assert d["ordres"][1]["resultat"] == round((110 - 100) * 0.01 * -1, 2)
 
 
 def test_sans_secrets_ecrit_une_erreur(tmp_path, monkeypatch):
@@ -100,3 +111,18 @@ def test_stop_garanti_si_exige(monkeypatch):
     monkeypatch.setattr(api, "_requete", faux)
     assert api.ouvrir("BTCUSD", "BUY", 0.01, 3, 1000)["dealStatus"] == "ACCEPTED"
     assert envoyes[-1]["guaranteedStop"] is True and envoyes[-1]["stopDistance"] == 55.0
+
+
+def test_commandes_pause_fermer_reprendre(tmp_path, monkeypatch):
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    faux = FauxCapital([100 + i for i in range(80)])
+    d = {}
+    main.un_tour(d, faux)
+    assert len(faux.ouvertes) == 1
+    main.un_tour(d, faux, "fermer")
+    assert not faux.ouvertes and d["pause"] is True
+    main.un_tour(d, faux)  # en pause : aucun nouvel ordre
+    assert not faux.ouvertes and d["analyses"]["BTCUSD"]["action"].startswith("En pause")
+    main.un_tour(d, faux, "reprendre")
+    assert len(faux.ouvertes) == 1 and d["pause"] is False
+    assert d["ordres"][0]["motif_sortie"] == "Fermée depuis l'application"

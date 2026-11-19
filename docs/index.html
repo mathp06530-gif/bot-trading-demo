@@ -2,191 +2,683 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f1720">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bot trading">
 <title>Bot de trading démo</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icone-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
   :root {
-    --fond: #f5f7fa; --carte: #ffffff; --texte: #17202b; --doux: #5f6b7a; --bord: #e2e7ee;
-    --vert: #0f9d6b; --rouge: #d64545; --bleu: #1f6feb; --orange: #e08a1e; --grille: #edf0f4;
+    --fond: #f4f6f9; --carte: #ffffff; --texte: #17202b; --doux: #5f6b7a; --bord: #e2e7ee;
+    --vert: #0d9466; --rouge: #d23f3f; --bleu: #1f6feb; --orange: #d9800f; --grille: #edf0f4; --accent: #1f6feb;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --fond: #0f1720; --carte: #17212c; --texte: #e8edf3; --doux: #93a1b2; --bord: #263342;
-      --vert: #2fc48d; --rouge: #f06a6a; --bleu: #5a9bff; --orange: #f0a54a; --grille: #1f2b38;
+      --fond: #0d141c; --carte: #151f2a; --texte: #e8edf3; --doux: #93a1b2; --bord: #243140;
+      --vert: #2fc48d; --rouge: #f06a6a; --bleu: #5a9bff; --orange: #f0a54a; --grille: #1d2936; --accent: #5a9bff;
     }
   }
   * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
   body { margin: 0; background: var(--fond); color: var(--texte);
          font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-  main { max-width: 1100px; margin: 0 auto; padding: 16px; }
-  header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 16px; }
-  h1 { font-size: 22px; margin: 0; }
-  h2 { font-size: 15px; margin: 0 0 12px; color: var(--doux); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
-  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px;
-           background: var(--carte); border: 1px solid var(--bord); font-size: 13px; }
-  .point { width: 9px; height: 9px; border-radius: 50%; background: var(--doux); }
+  .num { font-variant-numeric: tabular-nums; }
+  header.haut { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--fond) 88%, transparent);
+                backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--bord); }
+  .haut-int { max-width: 1100px; margin: 0 auto; padding: 12px 16px 0; }
+  .ligne-titre { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  h1 { font-size: 20px; margin: 0; }
+  .badges { display: flex; gap: 6px; flex-wrap: wrap; }
+  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px;
+           background: var(--carte); border: 1px solid var(--bord); font-size: 12.5px; }
+  .demo { background: var(--orange); color: #fff; border: 0; font-weight: 700; }
+  .point { width: 8px; height: 8px; border-radius: 50%; background: var(--doux); }
   .point.ok { background: var(--vert); box-shadow: 0 0 0 3px color-mix(in srgb, var(--vert) 25%, transparent); }
   .point.ko { background: var(--rouge); }
-  .demo { background: var(--orange); color: #fff; border: 0; font-weight: 700; }
-  .grille { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-bottom: 12px; }
-  .grille .carte { margin-bottom: 0; }
-  @media (max-width: 480px) { .kpi .val { font-size: 20px; } }
+
+  nav.onglets { display: flex; gap: 2px; margin-top: 10px; overflow-x: auto; scrollbar-width: none; }
+  nav.onglets::-webkit-scrollbar { display: none; }
+  nav.onglets button { appearance: none; border: 0; background: none; color: var(--doux); font: inherit; font-weight: 600;
+                       padding: 10px 12px; border-bottom: 2px solid transparent; cursor: pointer; white-space: nowrap;
+                       display: flex; align-items: center; gap: 6px; }
+  nav.onglets button[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+  nav.onglets svg { width: 18px; height: 18px; }
+
+  main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+  section.page { display: none; }
+  section.page.active { display: block; }
+  h2 { font-size: 13px; margin: 0 0 12px; color: var(--doux); font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
   .carte { background: var(--carte); border: 1px solid var(--bord); border-radius: 14px; padding: 16px; margin-bottom: 12px; min-width: 0; }
-  .kpi .val { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
-  .kpi .lab { color: var(--doux); font-size: 13px; }
+  .grille { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-bottom: 12px; }
+  .grille .carte { margin: 0; }
+  .lab { color: var(--doux); font-size: 13px; }
+  .val { font-size: 22px; font-weight: 700; }
+  .sous { font-size: 13px; color: var(--doux); }
   .pos { color: var(--vert); } .neg { color: var(--rouge); }
-  svg { width: 100%; height: auto; display: block; }
+  .hero .val { font-size: 34px; }
+  .entete-carte { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  .entete-carte h2 { margin: 0; }
+  .puces { display: flex; gap: 4px; flex-wrap: wrap; }
+  .puces button { appearance: none; border: 1px solid var(--bord); background: none; color: var(--doux); font: inherit; font-size: 13px;
+                  font-weight: 600; padding: 4px 11px; border-radius: 999px; cursor: pointer; }
+  .puces button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  svg.graph { width: 100%; height: auto; display: block; }
   .legende { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--doux); margin-top: 6px; }
   .legende i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 5px; }
-  .tableau { width: 100%; overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
-  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--bord); white-space: nowrap; }
-  th { color: var(--doux); font-weight: 600; font-size: 13px; }
-  .journal { list-style: none; padding: 0; margin: 0; max-height: 460px; overflow-y: auto; }
-  .journal li { padding: 9px 0; border-bottom: 1px solid var(--bord); display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; }
-  .journal time { color: var(--doux); font-size: 12px; grid-column: 1 / -1; }
-  .tag { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 6px; align-self: start; text-transform: uppercase; }
-  .t-ordre { background: color-mix(in srgb, var(--bleu) 18%, transparent); color: var(--bleu); }
-  .t-fermeture { background: color-mix(in srgb, var(--orange) 20%, transparent); color: var(--orange); }
-  .t-erreur { background: color-mix(in srgb, var(--rouge) 18%, transparent); color: var(--rouge); }
+  .vide { color: var(--doux); padding: 8px 0; }
+
+  .liste { display: flex; flex-direction: column; }
+  .ordre { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 12px 0; border-bottom: 1px solid var(--bord); }
+  .ordre:last-child { border-bottom: 0; }
+  .ordre .titre { font-weight: 600; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .ordre .res { text-align: right; font-weight: 700; }
+  .ordre .det { color: var(--doux); font-size: 13px; }
+  .tag { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 6px; text-transform: uppercase; letter-spacing: .02em; }
+  .t-achat { background: color-mix(in srgb, var(--vert) 16%, transparent); color: var(--vert); }
+  .t-vente { background: color-mix(in srgb, var(--rouge) 15%, transparent); color: var(--rouge); }
+  .t-ouvert { background: color-mix(in srgb, var(--bleu) 16%, transparent); color: var(--bleu); }
+  .t-ferme { background: var(--grille); color: var(--doux); }
+  .t-ordre { background: color-mix(in srgb, var(--bleu) 16%, transparent); color: var(--bleu); }
+  .t-fermeture { background: color-mix(in srgb, var(--orange) 18%, transparent); color: var(--orange); }
+  .t-erreur { background: color-mix(in srgb, var(--rouge) 15%, transparent); color: var(--rouge); }
   .t-analyse, .t-info { background: var(--grille); color: var(--doux); }
-  .vide { color: var(--doux); }
-  .marche-tete { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px; margin-bottom: 8px; }
+  .t-commande { background: color-mix(in srgb, var(--orange) 18%, transparent); color: var(--orange); }
+
+  .journal li { list-style: none; padding: 10px 0; border-bottom: 1px solid var(--bord); display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; }
+  .journal { padding: 0; margin: 0; }
+  .journal time { color: var(--doux); font-size: 12px; grid-column: 1 / -1; }
+  .journal .tag { align-self: start; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--bord); }
+  th { color: var(--doux); font-weight: 600; font-size: 13px; }
+  td.d, th.d { text-align: right; }
+  .tableau { overflow-x: auto; }
+  dl.reglages { display: grid; grid-template-columns: minmax(120px, 200px) 1fr; gap: 10px 16px; margin: 0; }
+  dl.reglages dt { color: var(--doux); }
+  dl.reglages dd { margin: 0; font-weight: 600; }
+  a { color: var(--accent); }
+  .marche-tete { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px; margin-bottom: 6px; }
   .marche-tete b { font-size: 18px; }
-  .explic { color: var(--doux); margin: 4px 0 10px; }
-  footer { color: var(--doux); font-size: 12px; text-align: center; padding: 12px 0 24px; }
+  .bouton { appearance: none; border: 1px solid var(--bord); background: var(--carte); color: var(--texte); font: inherit; font-weight: 600;
+            padding: 10px 14px; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+  .bouton:hover { border-color: var(--accent); }
+  .bouton:disabled { opacity: .5; cursor: default; }
+  .bouton.primaire { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .bouton.danger { color: var(--rouge); }
+  .commandes { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
+  .etat-cmd { margin-top: 10px; font-size: 13.5px; color: var(--doux); min-height: 1.4em; }
+  .pause { background: var(--orange); color: #fff; border: 0; font-weight: 700; }
+  .direct { display: inline-flex; align-items: center; gap: 6px; }
+  .direct .clignote { width: 7px; height: 7px; border-radius: 50%; background: var(--rouge); animation: clig 1.6s infinite; }
+  @keyframes clig { 50% { opacity: .25; } }
+  .flash-h { animation: fh .8s; } .flash-b { animation: fb .8s; }
+  @keyframes fh { from { color: var(--vert); } } @keyframes fb { from { color: var(--rouge); } }
+  #tv { height: 520px; border-radius: 10px; overflow: hidden; }
+  input.champ { width: 100%; font: inherit; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--bord); background: var(--fond); color: var(--texte); }
+  ol.etapes { padding-left: 20px; margin: 8px 0; } ol.etapes li { margin-bottom: 6px; }
+  .note { font-size: 13px; color: var(--doux); }
+  footer { color: var(--doux); font-size: 12px; text-align: center; padding: 8px 0 24px; }
+
+  #stats .val { font-size: 19px; }
+  @media (max-width: 640px) {
+    header.haut { backdrop-filter: none; -webkit-backdrop-filter: none; background: var(--fond); }
+    nav.onglets { position: fixed; bottom: 0; left: 0; right: 0; margin: 0; background: var(--carte); border-top: 1px solid var(--bord);
+                  justify-content: space-around; padding-bottom: env(safe-area-inset-bottom); z-index: 6; }
+    nav.onglets button { flex-direction: column; gap: 2px; font-size: 10.5px; padding: 8px 2px 6px; border-bottom: 0; flex: 1; }
+    nav.onglets button[aria-selected="true"] { border-bottom: 0; }
+    nav.onglets svg { width: 22px; height: 22px; }
+    .haut-int { padding-bottom: 10px; }
+    main { padding-bottom: 90px; }
+    .hero .val { font-size: 30px; }
+    .val, #stats .val { font-size: 17px; }
+    #tv { height: 420px; }
+    dl.reglages { grid-template-columns: 1fr; gap: 2px; }
+    dl.reglages dd { margin-bottom: 10px; }
+  }
 </style>
 </head>
 <body>
-<main>
-  <header>
-    <h1>Bot de trading</h1>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <span class="badge demo">COMPTE DÉMO</span>
-      <span class="badge"><span id="point" class="point"></span><span id="statut">Chargement…</span></span>
+<header class="haut">
+  <div class="haut-int">
+    <div class="ligne-titre">
+      <h1>Bot de trading</h1>
+      <div class="badges">
+        <button class="badge" id="installer" hidden style="cursor:pointer;font:inherit;font-size:12.5px">⬇ Installer</button>
+        <span class="badge direct num" id="prix-direct" hidden><span class="clignote"></span><span id="prix-direct-txt"></span></span>
+        <span class="badge pause" id="badge-pause" hidden>EN PAUSE</span>
+        <span class="badge demo">DÉMO</span>
+        <span class="badge"><span id="point" class="point"></span><span id="statut">Chargement…</span></span>
+      </div>
     </div>
-  </header>
+    <nav class="onglets" role="tablist" id="onglets"></nav>
+  </div>
+</header>
 
-  <section class="grille" id="kpis"></section>
-  <div id="marches"></div>
-
-  <section class="carte">
-    <h2>Positions ouvertes</h2>
-    <div class="tableau" id="positions"></div>
+<main>
+  <!-- ACCUEIL -->
+  <section class="page" id="p-accueil">
+    <div class="carte hero">
+      <div class="lab">Valeur du portefeuille démo</div>
+      <div class="val num" id="valeur">—</div>
+      <div class="sous num" id="valeur-sous"></div>
+    </div>
+    <div class="carte" id="commandes">
+      <h2>Commander le bot</h2>
+      <div class="commandes">
+        <button class="bouton" data-cmd="analyser">🔄 Analyser maintenant</button>
+        <button class="bouton" data-cmd="pause" id="b-pause">⏸️ Pause</button>
+        <button class="bouton primaire" data-cmd="reprendre" id="b-reprendre">▶️ Reprendre</button>
+        <button class="bouton danger" data-cmd="fermer">❌ Fermer la position</button>
+      </div>
+      <div class="etat-cmd" id="etat-cmd"></div>
+    </div>
+    <div class="grille" id="gains"></div>
+    <div class="carte">
+      <div class="entete-carte"><h2>Évolution du portefeuille</h2><div class="puces" id="periode"></div></div>
+      <div id="courbe"></div>
+    </div>
+    <div class="carte">
+      <h2>Positions ouvertes</h2>
+      <div class="liste" id="positions"></div>
+    </div>
+    <div class="grille" id="infos"></div>
   </section>
 
-  <section class="carte">
-    <h2>Évolution du compte</h2>
-    <div id="courbe"></div>
+  <!-- ORDRES -->
+  <section class="page" id="p-ordres">
+    <div class="carte">
+      <div class="entete-carte"><h2 id="titre-ordres">Tous les ordres</h2><div class="puces" id="filtre-ordres"></div></div>
+      <div class="liste" id="ordres"></div>
+    </div>
   </section>
 
-  <section class="carte">
-    <h2>Journal du bot</h2>
-    <ul class="journal" id="journal"></ul>
+  <!-- MARCHÉ -->
+  <section class="page" id="p-marche">
+    <div class="carte">
+      <div class="entete-carte"><h2>Graphique TradingView en direct</h2><span class="sous">CAPITALCOM:BTCUSD · 15 min · EMA 9 et 21</span></div>
+      <div id="tv"></div>
+    </div>
+    <h2 style="margin-top:18px">Ce que le bot a analysé à son dernier passage</h2>
+    <div id="marches"></div>
+  </section>
+
+  <!-- STATISTIQUES -->
+  <section class="page" id="p-stats">
+    <div class="grille" id="stats"></div>
+    <div class="carte"><h2>Résultat de chaque ordre fermé</h2><div id="barres"></div></div>
+    <div class="carte"><h2>Résultat par mois</h2><div class="tableau" id="mois"></div></div>
+  </section>
+
+  <!-- JOURNAL -->
+  <section class="page" id="p-journal">
+    <div class="carte">
+      <div class="entete-carte"><h2>Ce que le bot a fait</h2><div class="puces" id="filtre-journal"></div></div>
+      <ul class="journal" id="journal"></ul>
+    </div>
+  </section>
+
+  <!-- RÉGLAGES -->
+  <section class="page" id="p-reglages">
+    <div class="carte">
+      <h2>Clé pour commander le bot depuis cet appareil</h2>
+      <p id="cle-etat" class="note"></p>
+      <input class="champ" id="cle" type="password" autocomplete="off" placeholder="Colle ici ta clé GitHub (github_pat_…)">
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <button class="bouton primaire" id="cle-ok">Enregistrer et tester</button>
+        <button class="bouton" id="cle-suppr">Effacer la clé de cet appareil</button>
+      </div>
+      <details style="margin-top:12px"><summary>Comment créer cette clé (une seule fois, 2 minutes)</summary>
+        <ol class="etapes">
+          <li>Ouvre <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">github.com → Fine-grained token</a>.</li>
+          <li><b>Token name</b> : <code>appli-bot</code> · <b>Expiration</b> : 1 an.</li>
+          <li><b>Repository access</b> : <i>Only select repositories</i> → <code>bot-trading-demo</code>.</li>
+          <li><b>Permissions → Repository</b> : <i>Actions</i> = <b>Read and write</b>, <i>Contents</i> = <b>Read-only</b>.</li>
+          <li><b>Generate token</b>, copie-le et colle-le ci-dessus. Fais pareil sur ton téléphone et ta tablette (la même clé).</li>
+        </ol>
+        <p class="note">La clé reste uniquement sur tes appareils. Elle ne permet que de lancer le bot et lire ses résultats. Ne l'envoie à personne.</p>
+      </details>
+    </div>
+    <div class="carte"><h2>Installer l'application</h2><div id="aide-install"></div></div>
+    <div class="carte"><h2>Réglages du bot</h2><dl class="reglages" id="reglages"></dl></div>
+    <div class="carte">
+      <h2>Comment ça marche</h2>
+      <p>Toutes les 15 minutes environ, le bot se connecte à ton <b>compte démo Capital.com</b> (argent fictif), regarde les dernières bougies,
+         applique la stratégie, puis achète, vend ou ne fait rien. Chaque décision est notée dans le Journal, et chaque position dans Ordres.</p>
+      <p>Le même signal s'affiche sur ton graphique TradingView grâce au script <code>tradingview/strategie_demo.pine</code>.</p>
+      <p>Pour changer la stratégie ou les réglages, demande-le à Claude dans le projet.</p>
+    </div>
   </section>
 
   <footer id="pied"></footer>
 </main>
 
 <script>
+// ---------- Outils ----------
 const fmt = (n, d = 2) => n == null || isNaN(n) ? "—" : Number(n).toLocaleString("fr-FR", { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmtS = (n, d = 2) => n == null || isNaN(n) ? "—" : (n > 0 ? "+" : "") + fmt(n, d);
 const signe = n => n > 0 ? "pos" : n < 0 ? "neg" : "";
-const quand = iso => iso ? new Date(iso.endsWith("Z") ? iso : iso + "Z").toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" }) : "—";
+const iso = s => s ? new Date(/Z$|[+-]\d\d:\d\d$/.test(s) ? s : s + "Z") : null;
+const quand = s => s ? iso(s).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" }) : "—";
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
-
-function depuis(iso) {
-  const min = Math.round((Date.now() - new Date(iso)) / 60000);
+const JOUR = 864e5;
+const memo = { get(k, d) { try { return localStorage.getItem(k) ?? d; } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+function depuis(s) {
+  const min = Math.round((Date.now() - iso(s)) / 60000);
   if (min < 1) return "à l'instant";
   if (min < 60) return `il y a ${min} min`;
   const h = Math.floor(min / 60);
   return h < 48 ? `il y a ${h} h ${min % 60} min` : `il y a ${Math.floor(h / 24)} jours`;
 }
+function duree(ms) {
+  const min = Math.round(ms / 60000);
+  if (min < 60) return `${min} min`;
+  const h = Math.floor(min / 60);
+  return h < 48 ? `${h} h ${min % 60} min` : `${Math.floor(h / 24)} j ${h % 24} h`;
+}
 
-// Petit graphique en lignes (sans bibliothèque externe)
-function lignes(series, { hauteur = 220 } = {}) {
-  const L = 640, H = hauteur, m = { g: 8, d: 64, h: 10, b: 10 };
+// ---------- Icônes et onglets ----------
+const IC = {
+  accueil: '<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
+  ordres: '<path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/>',
+  marche: '<path d="M3 17l5-5 4 4 8-8M15 8h5v5"/>',
+  stats: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  journal: '<path d="M6 3h11a2 2 0 0 1 2 2v16l-4-2-4 2-4-2-3 2V5a2 2 0 0 1 2-2zM9 8h6M9 12h6"/>',
+  reglages: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+};
+const ONGLETS = [["accueil", "Accueil"], ["ordres", "Ordres"], ["marche", "Marché"], ["stats", "Stats"], ["journal", "Journal"], ["reglages", "Réglages"]];
+document.getElementById("onglets").innerHTML = ONGLETS.map(([id, nom]) =>
+  `<button role="tab" data-p="${id}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IC[id]}</svg><span>${nom}</span></button>`).join("");
+function ouvrir(id) {
+  const ancre = id === "commandes" ? "commandes" : null;
+  if (!ONGLETS.some(o => o[0] === id)) id = "accueil";
+  if (id === "marche") chargerTV();
+  document.querySelectorAll("nav.onglets button").forEach(b => b.setAttribute("aria-selected", b.dataset.p === id));
+  document.querySelectorAll("section.page").forEach(s => s.classList.toggle("active", s.id === "p-" + id));
+  if (location.hash !== "#" + id) history.replaceState(null, "", "#" + id);
+  if (ancre) document.getElementById(ancre)?.scrollIntoView(); else window.scrollTo(0, 0);
+}
+document.getElementById("onglets").addEventListener("click", e => { const b = e.target.closest("button"); if (b) ouvrir(b.dataset.p); });
+window.addEventListener("hashchange", () => ouvrir(location.hash.slice(1)));
+
+function puces(conteneur, options, actuel, surChoix) {
+  const el = document.getElementById(conteneur);
+  el.innerHTML = options.map(([v, n]) => `<button data-v="${v}" aria-pressed="${v === actuel}">${n}</button>`).join("");
+  el.onclick = e => { const b = e.target.closest("button"); if (b) surChoix(b.dataset.v); };
+}
+
+// ---------- Graphiques (SVG, sans bibliothèque) ----------
+function lignes(series, { hauteur = 220, dates = null } = {}) {
+  const L = 640, H = hauteur, m = { g: 8, d: 66, h: 10, b: dates ? 22 : 10 };
   const tout = series.flatMap(s => s.valeurs).filter(v => v != null);
-  if (tout.length < 2) return '<p class="vide">Pas encore assez de données.</p>';
+  if (tout.length < 2) return '<p class="vide">Pas encore assez de données. Reviens après quelques tours du bot.</p>';
   let min = Math.min(...tout), max = Math.max(...tout);
   if (min === max) { min -= 1; max += 1; }
-  const pad = (max - min) * 0.06; min -= pad; max += pad;
+  const pad = (max - min) * 0.08; min -= pad; max += pad;
   const n = Math.max(...series.map(s => s.valeurs.length));
-  const x = i => m.g + (i / (n - 1)) * (L - m.g - m.d);
+  const x = i => m.g + (n === 1 ? 0 : i / (n - 1)) * (L - m.g - m.d);
   const y = v => m.h + (1 - (v - min) / (max - min)) * (H - m.h - m.b);
-  let svg = `<svg viewBox="0 0 ${L} ${H}" role="img">`;
+  let svg = `<svg class="graph num" viewBox="0 0 ${L} ${H}" role="img">`;
   for (let k = 0; k <= 4; k++) {
     const v = min + (k / 4) * (max - min), yy = y(v);
     svg += `<line x1="${m.g}" x2="${L - m.d}" y1="${yy}" y2="${yy}" stroke="${css("--grille")}"/>`;
-    svg += `<text x="${L - m.d + 6}" y="${yy + 4}" font-size="11" fill="${css("--doux")}">${fmt(v, v > 1000 ? 0 : 2)}</text>`;
+    svg += `<text x="${L - m.d + 6}" y="${yy + 4}" font-size="11" fill="${css("--doux")}">${fmt(v, Math.abs(v) >= 1000 ? 0 : 2)}</text>`;
+  }
+  if (dates && dates.length > 1) {
+    [0, Math.floor((dates.length - 1) / 2), dates.length - 1].forEach((i, k) => {
+      const t = dates[i]; if (!t) return;
+      const lab = iso(t).toLocaleString("fr-FR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+      svg += `<text x="${x(i)}" y="${H - 4}" font-size="11" fill="${css("--doux")}" text-anchor="${["start", "middle", "end"][k]}">${lab}</text>`;
+    });
   }
   for (const s of series) {
     let d = "";
     s.valeurs.forEach((v, i) => { if (v != null) d += (d ? "L" : "M") + x(i).toFixed(1) + "," + y(v).toFixed(1); });
+    if (s.aire) svg += `<path d="${d}L${x(s.valeurs.length - 1)},${H - m.b}L${x(0)},${H - m.b}Z" fill="${s.couleur}" opacity=".10"/>`;
     svg += `<path d="${d}" fill="none" stroke="${s.couleur}" stroke-width="${s.epaisseur || 2}" stroke-linejoin="round"/>`;
   }
   return svg + "</svg>";
 }
-
-function afficher(d) {
-  const ok = d.statut === "ok";
-  document.getElementById("point").className = "point " + (ok ? "ok" : "ko");
-  document.getElementById("statut").textContent = d.derniere_execution
-    ? `${ok ? "Actif" : "Problème"} · dernier tour ${depuis(d.derniere_execution)}` : "Pas encore lancé";
-
-  const c = d.compte || {};
-  const dev = c.devise ? " " + c.devise : "";
-  document.getElementById("kpis").innerHTML = [
-    ["Solde du compte démo", fmt(c.solde) + dev, ""],
-    ["Résultat des positions en cours", (c.resultat_latent > 0 ? "+" : "") + fmt(c.resultat_latent) + dev, signe(c.resultat_latent)],
-    ["Disponible", fmt(c.disponible) + dev, ""],
-    ["Stratégie", esc(d.reglages?.strategie || "—"), ""],
-  ].map(([lab, val, cl]) => `<div class="carte kpi"><div class="lab">${lab}</div><div class="val ${cl}" style="${lab === "Stratégie" ? "font-size:17px" : ""}">${val}</div></div>`).join("");
-
-  document.getElementById("marches").innerHTML = Object.entries(d.analyses || {}).map(([epic, a]) => {
-    const g = a.graphique || {};
-    const tend = a.tendance === "BUY" ? '<span class="pos">▲ Haussière (acheteur)</span>' : a.tendance === "SELL" ? '<span class="neg">▼ Baissière (vendeur)</span>' : "—";
-    return `<section class="carte">
-      <div class="marche-tete"><span><b>${esc(epic)}</b> · ${fmt(a.prix)}</span><span>${tend}</span></div>
-      <p class="explic">${esc(a.explication)} <strong>${esc(a.action)}</strong></p>
-      ${lignes([
-        { valeurs: g.clotures || [], couleur: css("--texte"), epaisseur: 1.6 },
-        { valeurs: g.ema_rapide || [], couleur: css("--bleu") },
-        { valeurs: g.ema_lente || [], couleur: css("--orange") },
-      ])}
-      <div class="legende"><span><i style="background:${css("--texte")}"></i>Prix (24 dernières heures)</span>
-        <span><i style="background:${css("--bleu")}"></i>EMA rapide</span><span><i style="background:${css("--orange")}"></i>EMA lente</span></div>
-    </section>`;
-  }).join("");
-
-  const p = d.positions || [];
-  document.getElementById("positions").innerHTML = p.length ? `<table><thead><tr>
-      <th>Marché</th><th>Sens</th><th>Taille</th><th>Prix d'entrée</th><th>Résultat</th><th>Ouverte le</th></tr></thead><tbody>
-      ${p.map(x => `<tr><td>${esc(x.nom)}</td><td class="${x.sens === "BUY" ? "pos" : "neg"}">${x.sens === "BUY" ? "Achat" : "Vente"}</td>
-        <td>${x.taille}</td><td>${fmt(x.prix_entree)}</td><td class="${signe(x.resultat)}">${fmt(x.resultat)}</td><td>${quand(x.ouverte_le)}</td></tr>`).join("")}
-      </tbody></table>` : '<p class="vide">Aucune position ouverte pour le moment.</p>';
-
-  document.getElementById("courbe").innerHTML = lignes([{ valeurs: (d.historique || []).map(h => h.valeur), couleur: css("--vert") }], { hauteur: 180 });
-
-  const j = (d.journal || []).slice().reverse();
-  document.getElementById("journal").innerHTML = j.length ? j.map(l => `<li><time>${quand(l.date)}${l.marche ? " · " + esc(l.marche) : ""}</time>
-      <span class="tag t-${esc(l.type)}">${esc(l.type)}</span><span>${esc(l.texte)}</span></li>`).join("") : '<li class="vide">Le journal est vide pour l\'instant.</li>';
-
-  document.getElementById("pied").textContent = `Argent fictif uniquement · Capital.com démo · page actualisée ${new Date().toLocaleTimeString("fr-FR")}`;
+function barres(valeurs, etiquettes) {
+  if (!valeurs.length) return '<p class="vide">Aucun ordre fermé pour l\'instant.</p>';
+  const L = 640, H = 200, m = { g: 8, d: 66, h: 10, b: 10 };
+  const maxAbs = Math.max(...valeurs.map(Math.abs), 0.01);
+  const y0 = m.h + (H - m.h - m.b) / 2, k = (H - m.h - m.b) / 2 / maxAbs;
+  const w = (L - m.g - m.d) / valeurs.length;
+  let svg = `<svg class="graph num" viewBox="0 0 ${L} ${H}" role="img">`;
+  svg += `<line x1="${m.g}" x2="${L - m.d}" y1="${y0}" y2="${y0}" stroke="${css("--bord")}"/>`;
+  [maxAbs, 0, -maxAbs].forEach(v => svg += `<text x="${L - m.d + 6}" y="${y0 - v * k + 4}" font-size="11" fill="${css("--doux")}">${fmtS(v)}</text>`);
+  valeurs.forEach((v, i) => {
+    const h = Math.max(Math.abs(v) * k, 1.5), bx = m.g + i * w + w * 0.15;
+    svg += `<rect x="${bx}" y="${v >= 0 ? y0 - h : y0}" width="${Math.max(w * 0.7, 1)}" height="${h}" rx="2" fill="${v >= 0 ? css("--vert") : css("--rouge")}"><title>${esc(etiquettes[i])} : ${fmtS(v)}</title></rect>`;
+  });
+  return svg + "</svg>";
 }
 
+// ---------- Calculs ----------
+function serieValeur(d) {
+  const pts = [];
+  for (const [jour, v] of Object.entries(d.historique_jour || {})) pts.push({ t: iso(jour + "T23:59:59"), v });
+  for (const h of d.historique || []) pts.push({ t: iso(h.date), v: h.valeur });
+  pts.sort((a, b) => a.t - b.t);
+  // un seul point par jour pour les jours déjà couverts en détail : on garde tout, l'ordre suffit
+  return pts;
+}
+function gainSur(pts, actuelle, ms) {
+  if (!pts.length || actuelle == null) return null;
+  const limite = Date.now() - ms;
+  let ref = null;
+  for (const p of pts) { if (p.t <= limite) ref = p; else break; }
+  const partiel = !ref;
+  if (!ref) ref = pts[0];
+  const diff = actuelle - ref.v;
+  return { diff, pct: ref.v ? diff / ref.v * 100 : 0, partiel };
+}
+
+// ---------- Rendu ----------
+let D = null;
+let periode = memo.get("periode", "30");
+let filtreOrdres = memo.get("filtreOrdres", "tous");
+let filtreJournal = memo.get("filtreJournal", "tout");
+
+function afficher() {
+  const d = D, c = d.compte || {}, dev = c.devise ? " " + c.devise : "";
+  const ok = d.statut === "ok";
+  document.getElementById("point").className = "point " + (ok ? "ok" : "ko");
+  document.getElementById("statut").textContent = d.derniere_execution ? `${ok ? "Actif" : "Problème"} · ${depuis(d.derniere_execution)}` : "Pas encore lancé";
+  document.getElementById("badge-pause").hidden = !d.pause;
+  document.getElementById("b-pause").hidden = !!d.pause;
+  document.getElementById("b-reprendre").hidden = !d.pause;
+
+  const actuelle = c.solde != null ? c.solde + (c.resultat_latent || 0) : null;
+  const pts = serieValeur(d);
+  const depart = d.valeur_depart ?? pts[0]?.v;
+
+  // Accueil
+  document.getElementById("valeur").textContent = fmt(actuelle) + dev;
+  if (depart != null && actuelle != null) {
+    const g = actuelle - depart;
+    document.getElementById("valeur-sous").innerHTML = `<span class="${signe(g)}">${fmtS(g)}${dev} (${fmtS(g / depart * 100)} %)</span> depuis le lancement du bot · solde ${fmt(c.solde)}${dev} · disponible ${fmt(c.disponible)}${dev}`;
+  }
+  const PER = [["24 heures", JOUR], ["7 jours", 7 * JOUR], ["30 jours", 30 * JOUR], ["1 an", 365 * JOUR]];
+  document.getElementById("gains").innerHTML = PER.map(([nom, ms]) => {
+    const g = gainSur(pts, actuelle, ms);
+    if (!g) return `<div class="carte"><div class="lab">Gain sur ${nom}</div><div class="val">—</div></div>`;
+    return `<div class="carte"><div class="lab">Gain sur ${nom}</div><div class="val num ${signe(g.diff)}">${fmtS(g.diff)}${dev}</div>
+      <div class="sous num"><span class="${signe(g.pct)}">${fmtS(g.pct)} %</span>${g.partiel ? " · depuis le lancement" : ""}</div></div>`;
+  }).join("");
+
+  puces("periode", [["1", "24H"], ["7", "7J"], ["30", "1M"], ["365", "1A"], ["0", "Tout"]], periode, v => { periode = v; memo.set("periode", v); afficher(); });
+  const ptsP = periode === "0" ? pts : pts.filter(p => p.t >= Date.now() - Number(periode) * JOUR);
+  const coul = ptsP.length > 1 && ptsP.at(-1).v < ptsP[0].v ? css("--rouge") : css("--vert");
+  document.getElementById("courbe").innerHTML = lignes([{ valeurs: ptsP.map(p => p.v), couleur: coul, aire: true }], { hauteur: 200, dates: ptsP.map(p => p.t.toISOString()) });
+
+  const ordres = d.ordres || [];
+  const ouverts = ordres.filter(o => o.statut === "ouvert");
+  document.getElementById("positions").innerHTML = ouverts.length ? ouverts.map(carteOrdre).join("") : '<p class="vide">Aucune position ouverte pour le moment.</p>';
+
+  const dernier = ordres.at(-1);
+  const prochain = d.derniere_execution ? new Date(iso(d.derniere_execution).getTime() + 5 * 60000) : null;
+  document.getElementById("infos").innerHTML = [
+    ["Dernier ordre", dernier ? `${dernier.sens === "BUY" ? "Achat" : "Vente"} ${esc(dernier.marche)}` : "—", dernier ? quand(dernier.ouvert_le) : ""],
+    ["Prochaine analyse", prochain ? (prochain < new Date() ? "imminente" : "vers " + prochain.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })) : "—", "toutes les 5 min environ"],
+    ["Stratégie", esc(d.reglages?.strategie || "—"), esc((d.reglages?.marches || []).join(", "))],
+  ].map(([l, v, s]) => `<div class="carte"><div class="lab">${l}</div><div class="val" style="font-size:17px">${v}</div><div class="sous">${s}</div></div>`).join("");
+
+  // Ordres
+  puces("filtre-ordres", [["tous", `Tous (${ordres.length})`], ["ouvert", `Ouverts (${ouverts.length})`], ["ferme", `Fermés (${ordres.length - ouverts.length})`]],
+    filtreOrdres, v => { filtreOrdres = v; memo.set("filtreOrdres", v); afficher(); });
+  const choix = ordres.filter(o => filtreOrdres === "tous" || o.statut === filtreOrdres).slice().reverse();
+  document.getElementById("ordres").innerHTML = choix.length ? choix.map(carteOrdre).join("") : '<p class="vide">Aucun ordre dans cette catégorie.</p>';
+
+  // Marché
+  document.getElementById("marches").innerHTML = Object.entries(d.analyses || {}).map(([epic, a]) => {
+    const g = a.graphique || {};
+    const tend = a.tendance === "BUY" ? '<span class="pos">▲ Tendance haussière</span>' : a.tendance === "SELL" ? '<span class="neg">▼ Tendance baissière</span>' : "—";
+    return `<div class="carte">
+      <div class="marche-tete"><span><b>${esc(epic)}</b> <span class="num">${fmt(a.prix)}</span></span>${tend}</div>
+      <p class="sous">${esc(a.explication)} <b>${esc(a.action)}</b></p>
+      ${lignes([{ valeurs: g.clotures || [], couleur: css("--texte"), epaisseur: 1.6 }, { valeurs: g.ema_rapide || [], couleur: css("--bleu") }, { valeurs: g.ema_lente || [], couleur: css("--orange") }], { dates: g.dates })}
+      <div class="legende"><span><i style="background:${css("--texte")}"></i>Prix (24 h, bougies 15 min)</span>
+        <span><i style="background:${css("--bleu")}"></i>EMA rapide</span><span><i style="background:${css("--orange")}"></i>EMA lente</span></div>
+      <p class="sous">Règle : quand la ligne bleue passe au-dessus de l'orange, le bot achète. Quand elle passe en dessous, il vend.</p>
+    </div>`;
+  }).join("") || '<div class="carte vide">Pas encore d\'analyse.</div>';
+
+  // Stats
+  const fermes = ordres.filter(o => o.statut === "ferme" && o.resultat != null);
+  const res = fermes.map(o => o.resultat);
+  const gagnants = res.filter(r => r > 0), perdants = res.filter(r => r < 0);
+  const somme = a => a.reduce((x, y) => x + y, 0);
+  const durees = fermes.filter(o => o.ouvert_le && o.ferme_le).map(o => iso(o.ferme_le) - iso(o.ouvert_le));
+  const total = somme(res);
+  const facteur = perdants.length ? somme(gagnants) / Math.abs(somme(perdants)) : null;
+  document.getElementById("stats").innerHTML = [
+    ["Ordres passés", ordres.length, `${ouverts.length} ouvert(s)`, ""],
+    ["Ordres gagnants", fermes.length ? fmt(gagnants.length / fermes.length * 100, 0) + " %" : "—", `${gagnants.length} gagnant(s) · ${perdants.length} perdant(s)`, ""],
+    ["Gain réalisé total", fmtS(total) + dev, "sur les ordres fermés", signe(total)],
+    ["Gain moyen par ordre", fermes.length ? fmtS(total / fermes.length) + dev : "—", "", signe(total)],
+    ["Meilleur ordre", res.length ? fmtS(Math.max(...res)) + dev : "—", "", "pos"],
+    ["Pire ordre", res.length ? fmtS(Math.min(...res)) + dev : "—", "", "neg"],
+    ["Facteur de profit", facteur == null ? "—" : fmt(facteur), "gains ÷ pertes (au-dessus de 1 = rentable)", ""],
+    ["Durée moyenne", durees.length ? duree(somme(durees) / durees.length) : "—", "d'une position", ""],
+  ].map(([l, v, s, cl]) => `<div class="carte"><div class="lab">${l}</div><div class="val num ${cl}">${v}</div><div class="sous">${s}</div></div>`).join("");
+  document.getElementById("barres").innerHTML = barres(res, fermes.map(o => `${o.sens === "BUY" ? "Achat" : "Vente"} ${o.marche} du ${quand(o.ouvert_le)}`));
+
+  const parMois = {};
+  for (const p of pts) { const k = p.t.toISOString().slice(0, 7); (parMois[k] ||= []).push(p.v); }
+  const moisCles = Object.keys(parMois).sort();
+  let prec = null;
+  const lignesMois = moisCles.map(k => { const fin = parMois[k].at(-1), deb = prec ?? parMois[k][0]; prec = fin; return [k, deb, fin]; }).reverse();
+  document.getElementById("mois").innerHTML = lignesMois.length ? `<table class="num"><thead><tr><th>Mois</th><th class="d">Début</th><th class="d">Fin</th><th class="d">Gain</th><th class="d">%</th></tr></thead><tbody>
+    ${lignesMois.map(([k, a, b]) => `<tr><td>${new Date(k + "-01T12:00:00Z").toLocaleDateString("fr-FR", { month: "long", year: "numeric" })}</td><td class="d">${fmt(a)}</td><td class="d">${fmt(b)}</td>
+      <td class="d ${signe(b - a)}">${fmtS(b - a)}</td><td class="d ${signe(b - a)}">${fmtS((b - a) / a * 100)} %</td></tr>`).join("")}</tbody></table>` : '<p class="vide">Pas encore de données.</p>';
+
+  // Journal
+  const j = d.journal || [];
+  const nb = t => j.filter(l => t === "ordre" ? ["ordre", "fermeture"].includes(l.type) : l.type === t).length;
+  puces("filtre-journal", [["tout", "Tout"], ["ordre", `Ordres (${nb("ordre")})`], ["erreur", `Erreurs (${nb("erreur")})`]], filtreJournal,
+    v => { filtreJournal = v; memo.set("filtreJournal", v); afficher(); });
+  const jf = j.filter(l => filtreJournal === "tout" || (filtreJournal === "ordre" ? ["ordre", "fermeture"].includes(l.type) : l.type === filtreJournal)).slice().reverse();
+  document.getElementById("journal").innerHTML = jf.length ? jf.map(l => `<li><time>${quand(l.date)}${l.marche ? " · " + esc(l.marche) : ""}</time>
+    <span class="tag t-${esc(l.type)}">${esc(l.type)}</span><span>${esc(l.texte)}</span></li>`).join("") : '<li class="vide">Rien à afficher.</li>';
+
+  // Réglages
+  const r = d.reglages || {};
+  const unites = { MINUTE: "1 minute", MINUTE_5: "5 minutes", MINUTE_15: "15 minutes", MINUTE_30: "30 minutes", HOUR: "1 heure", HOUR_4: "4 heures", DAY: "1 jour" };
+  document.getElementById("reglages").innerHTML = [
+    ["Compte", `Capital.com <b style="color:var(--orange)">DÉMO</b> (argent fictif uniquement)`],
+    ["Stratégie", esc(r.strategie || "—")],
+    ["Marchés", esc((r.marches || []).join(", ") || "—")],
+    ["Taille par position", esc(r.taille ?? "—")],
+    ["Bougies", esc(unites[r.unite] || r.unite || "—")],
+    ["Stop de sécurité", r.stop_pct ? `${esc(r.stop_pct)} % du prix (stop garanti si le compte l'exige)` : "aucun"],
+    ["Fréquence", "toutes les 5 minutes environ, 24 h/24"],
+    ["Code du bot", '<a href="https://github.com/mathp06530-gif/bot-trading-demo" target="_blank" rel="noopener">dépôt GitHub</a>'],
+    ["Ordres en direct", '<a href="https://capital.com/trading/platform/" target="_blank" rel="noopener">plateforme Capital.com</a> (choisis « Démo » en haut à droite)'],
+  ].map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
+
+  document.getElementById("pied").textContent = `Argent fictif uniquement · données du ${quand(d.derniere_execution)} · page actualisée à ${new Date().toLocaleTimeString("fr-FR")}`;
+}
+
+function carteOrdre(o) {
+  const achat = o.sens === "BUY";
+  const res = o.resultat;
+  const live = PRIX_DIRECT[o.marche];
+  const enDirect = o.statut === "ouvert" && live ? (live - o.prix_entree) * o.taille * (achat ? 1 : -1) : null;
+  const sortie = o.statut === "ferme" ? ` → ${fmt(o.prix_sortie)}` : "";
+  const detail = o.statut === "ferme"
+    ? `Ouvert le ${quand(o.ouvert_le)} · fermé le ${quand(o.ferme_le)}${o.motif_sortie ? " · " + esc(o.motif_sortie) : ""}`
+    : `Ouvert le ${quand(o.ouvert_le)}${o.stop ? " · stop à " + fmt(o.stop) : ""}`;
+  return `<div class="ordre">
+    <div class="titre">${esc(o.nom || o.marche)} <span class="tag ${achat ? "t-achat" : "t-vente"}">${achat ? "Achat" : "Vente"}</span>
+      <span class="tag ${o.statut === "ouvert" ? "t-ouvert" : "t-ferme"}">${o.statut === "ouvert" ? "En cours" : "Fermé"}</span></div>
+    <div class="res num ${signe(res)}">${fmtS(res)}${o.resultat_estime ? " *" : ""}</div>
+    <div class="det num">${esc(o.taille)} à ${fmt(o.prix_entree)}${sortie}</div>
+    <div class="det" style="text-align:right">${o.statut === "ouvert" ? (enDirect != null ? `<span class="${signe(enDirect)}" data-live="${esc(o.id)}">≈ ${fmtS(enDirect)} $ en direct</span>` : "en cours") : o.resultat_estime ? "* estimé" : "réalisé"}</div>
+    <div class="det" style="grid-column:1/-1">${detail}</div>
+  </div>`;
+}
+
+const DEPOT = "mathp06530-gif/bot-trading-demo";
+const cle = () => memo.get("cleGithub", "");
+const gh = (chemin, opts = {}) => fetch("https://api.github.com/repos/" + DEPOT + chemin, {
+  ...opts, cache: "no-store",
+  headers: { Accept: "application/vnd.github+json", Authorization: "Bearer " + cle(), "X-GitHub-Api-Version": "2022-11-28", ...(opts.headers || {}) },
+});
 async function charger() {
   try {
-    const r = await fetch("data.json?t=" + Date.now(), { cache: "no-store" });
+    const r = cle()
+      ? await gh("/contents/docs/data.json?ref=main", { headers: { Accept: "application/vnd.github.raw+json" } })
+      : await fetch("data.json?t=" + Date.now(), { cache: "no-store" });
     if (!r.ok) throw new Error(r.status);
-    afficher(await r.json());
+    D = await r.json();
+    afficher();
   } catch (e) {
-    document.getElementById("statut").textContent = "Le bot n'a pas encore produit de données";
+    document.getElementById("statut").textContent = "Pas encore de données";
   }
 }
 charger();
-setInterval(charger, 60000);
+setInterval(charger, cle() ? 20000 : 60000);
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => D && afficher());
+
+// ---------- Prix en direct (flux public Binance, sans clé) ----------
+const PRIX_DIRECT = {};
+const FLUX = { BTCUSD: "btcusdt", ETHUSD: "ethusdt", SOLUSD: "solusdt", XRPUSD: "xrpusdt" };
+let dernierRendu = 0;
+function fluxDirect(epic = "BTCUSD") {
+  const sym = FLUX[epic]; if (!sym) return;
+  let ws;
+  try { ws = new WebSocket(`wss://data-stream.binance.vision/ws/${sym}@miniTicker`); } catch { return; }
+  ws.onmessage = ev => {
+    const m = JSON.parse(ev.data), p = +m.c, avant = PRIX_DIRECT[epic];
+    PRIX_DIRECT[epic] = p;
+    const el = document.getElementById("prix-direct"), txt = document.getElementById("prix-direct-txt");
+    el.hidden = false; txt.textContent = `BTC ${fmt(p, 0)} $`;
+    if (avant) { txt.classList.remove("flash-h", "flash-b"); void txt.offsetWidth; txt.classList.add(p >= avant ? "flash-h" : "flash-b"); }
+    if (D && Date.now() - dernierRendu > 2000) { dernierRendu = Date.now(); majDirect(); }
+  };
+  ws.onclose = () => setTimeout(() => fluxDirect(epic), 5000);
+}
+function majDirect() {
+  for (const o of (D.ordres || []).filter(o => o.statut === "ouvert")) {
+    const live = PRIX_DIRECT[o.marche]; if (!live) continue;
+    const v = (live - o.prix_entree) * o.taille * (o.sens === "BUY" ? 1 : -1);
+    document.querySelectorAll(`[data-live="${CSS.escape(o.id)}"]`).forEach(e => { e.textContent = `≈ ${fmtS(v)} $ en direct`; e.className = signe(v); });
+    if (!document.querySelector(`[data-live="${CSS.escape(o.id)}"]`)) afficher();
+  }
+}
+fluxDirect("BTCUSD");
+
+// ---------- Graphique TradingView intégré ----------
+let tvCharge = false;
+function chargerTV() {
+  if (tvCharge) return; tvCharge = true;
+  const sc = document.createElement("script");
+  sc.src = "https://s3.tradingview.com/tv.js";
+  sc.onload = () => new TradingView.widget({
+    container_id: "tv", autosize: true, symbol: "CAPITALCOM:BTCUSD", interval: "15", timezone: "Europe/Paris",
+    theme: matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light", style: "1", locale: "fr",
+    hide_side_toolbar: false, allow_symbol_change: true, withdateranges: true,
+    studies: [{ id: "MAExp@tv-basicstudies", inputs: { length: 9 } }, { id: "MAExp@tv-basicstudies", inputs: { length: 21 } }],
+  });
+  sc.onerror = () => { document.getElementById("tv").innerHTML = '<p class="vide">Impossible de charger TradingView (connexion ?).</p>'; tvCharge = false; };
+  document.head.appendChild(sc);
+}
+
+// ---------- Commandes ----------
+const NOMS_CMD = { analyser: "Analyse", pause: "Pause", reprendre: "Reprise", fermer: "Fermeture de la position" };
+const etatCmd = t => document.getElementById("etat-cmd").innerHTML = t;
+document.getElementById("commandes").addEventListener("click", async e => {
+  const b = e.target.closest("button[data-cmd]"); if (!b) return;
+  const cmd = b.dataset.cmd;
+  if (!cle()) { etatCmd('Pour commander le bot depuis cet appareil, ajoute d\'abord ta clé dans <a href="#reglages">Réglages</a>.'); return; }
+  if (cmd === "fermer" && !confirmerFermeture(b)) return;
+  document.querySelectorAll("#commandes button").forEach(x => x.disabled = true);
+  etatCmd(`⏳ Envoi de la commande « ${NOMS_CMD[cmd]} »…`);
+  try {
+    const depart = new Date();
+    const r = await gh("/actions/workflows/bot.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main", inputs: { action: cmd } }) });
+    if (r.status !== 204) throw new Error(r.status === 401 || r.status === 403 || r.status === 404 ? "clé refusée par GitHub (vérifie ses permissions)" : "erreur " + r.status);
+    etatCmd(`✅ Commande « ${NOMS_CMD[cmd]} » envoyée. Le bot démarre (environ 30 à 60 secondes)…`);
+    suivreExecution(depart, cmd);
+  } catch (err) {
+    etatCmd("❌ " + esc(err.message));
+    document.querySelectorAll("#commandes button").forEach(x => x.disabled = false);
+  }
+});
+function confirmerFermeture(b) {
+  // double appui au lieu d'une boîte de dialogue
+  if (b.dataset.arme) { delete b.dataset.arme; b.textContent = "❌ Fermer la position"; return true; }
+  b.dataset.arme = "1"; b.textContent = "Appuie encore pour confirmer";
+  setTimeout(() => { delete b.dataset.arme; b.textContent = "❌ Fermer la position"; }, 4000);
+  return false;
+}
+async function suivreExecution(depart, cmd) {
+  for (let i = 0; i < 40; i++) {
+    await new Promise(r => setTimeout(r, 6000));
+    try {
+      const r = await gh("/actions/runs?event=workflow_dispatch&per_page=1");
+      const run = (await r.json()).workflow_runs?.[0];
+      if (!run || new Date(run.created_at) < depart - 5000) continue;
+      if (run.status !== "completed") { etatCmd(`⚙️ Le bot travaille sur « ${NOMS_CMD[cmd]} »…`); continue; }
+      if (run.conclusion === "success") {
+        etatCmd(`✅ « ${NOMS_CMD[cmd]} » terminée. Les données se mettent à jour…`);
+        setTimeout(charger, 8000); setTimeout(charger, 20000);
+      } else etatCmd(`❌ Le bot a rencontré une erreur. Regarde l'onglet <a href="#journal">Journal</a>.`);
+      break;
+    } catch {}
+  }
+  document.querySelectorAll("#commandes button").forEach(x => x.disabled = false);
+}
+
+// ---------- Clé GitHub ----------
+function majCle(msg) {
+  document.getElementById("cle-etat").innerHTML = msg || (cle()
+    ? "✅ Une clé est enregistrée sur cet appareil : les boutons de commande sont actifs."
+    : "Aucune clé sur cet appareil : tu peux tout voir, mais pas commander le bot.");
+}
+document.getElementById("cle-ok").onclick = async () => {
+  const v = document.getElementById("cle").value.trim();
+  if (!v) return majCle("Colle d'abord ta clé dans le champ.");
+  memo.set("cleGithub", v);
+  majCle("⏳ Test de la clé…");
+  try {
+    const r = await gh("/actions/workflows");
+    if (!r.ok) throw 0;
+    document.getElementById("cle").value = "";
+    majCle("✅ Clé valide et enregistrée sur cet appareil. Les boutons de commande sont actifs.");
+    charger();
+  } catch { memo.set("cleGithub", ""); majCle("❌ GitHub refuse cette clé. Vérifie le dépôt choisi et la permission Actions."); }
+};
+document.getElementById("cle-suppr").onclick = () => { memo.set("cleGithub", ""); majCle(); };
+majCle();
+
+// ---------- Installation ----------
+let invite = null;
+const installee = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); invite = e; document.getElementById("installer").hidden = false; aideInstall(); });
+document.getElementById("installer").onclick = async () => { if (!invite) return ouvrir("reglages"); invite.prompt(); await invite.userChoice; invite = null; document.getElementById("installer").hidden = true; };
+function aideInstall() {
+  document.getElementById("aide-install").innerHTML = installee
+    ? "<p>✅ L'application est installée sur cet appareil.</p>"
+    : `<ul class="etapes">
+        ${invite ? '<li><button class="bouton primaire" onclick="document.getElementById(\'installer\').click()">⬇ Installer maintenant</button></li>' : ""}
+        <li><b>PC (Chrome ou Edge)</b> : clique sur l'icône d'installation à droite de la barre d'adresse, ou menu ⋮ → <i>Installer « Bot de trading démo »</i>. Un raccourci est créé sur le bureau.</li>
+        <li><b>iPhone / iPad (Safari)</b> : bouton Partager → <i>Sur l'écran d'accueil</i>.</li>
+        <li><b>Android (Chrome)</b> : menu ⋮ → <i>Installer l'application</i>.</li>
+      </ul>`;
+}
+aideInstall();
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+
+ouvrir(location.hash.slice(1));
 </script>
 </body>
 </html>
