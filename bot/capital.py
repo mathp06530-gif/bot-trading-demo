@@ -76,7 +76,11 @@ class CapitalDemo:
 
     def bougies(self, epic: str, resolution: str = "MINUTE_15", nombre: int = 200):
         donnees = self._requete("GET", f"/prices/{epic}", params={"resolution": resolution, "max": nombre})
-        return donnees.get("prices", [])
+        # Capital.com renvoie parfois une bougie sans prix d'achat ou de vente (marché qui ouvre ou ferme) :
+        # on l'ignore plutôt que de planter.
+        return [b for b in donnees.get("prices", [])
+                if all(isinstance(b.get(k), dict) and b[k].get("bid") is not None and b[k].get("ask") is not None
+                       for k in ("openPrice", "highPrice", "lowPrice", "closePrice"))]
 
     # --- Positions ---------------------------------------------------------
     def positions(self):
