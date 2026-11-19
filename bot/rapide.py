@@ -5,7 +5,10 @@ Le backtest prévoit qu'elle PERD de l'argent : le spread (~50 $) mange les peti
 Son risque est donc minuscule : RISQUE_RAPIDE_PCT (0,1 %) du capital par trade.
 
 Règles, sur des bougies de 5 minutes (prix milieu) :
-  - EMA 9 au-dessus de l'EMA 50 -> on est ACHETEUR ; en dessous -> VENDEUR. Toujours en position.
+  - EMA 9 au-dessus de l'EMA 50 -> signal ACHAT ; en dessous -> signal VENTE.
+  - FILTRE « analyse du marché » : le signal n'est suivi que s'il va dans le sens des tendances
+    de fond 1 h (EMA 50/200) ET 4 h (EMA 20/200). Sinon le bot reste à l'écart (et ferme sa position).
+    Backtest 90 jours (0,1 % de risque) : examen -2,7 % sans filtre -> +0,1 % avec, 9 -> 3,4 trades/jour.
   - Stop garanti à 1 % du prix. Si le stop est touché, on repart dans le sens de la tendance.
   - Les positions de cette stratégie sont repérées par leur numéro (dealId), le bot ne les
     mélange jamais avec celles de la stratégie 4 h.
@@ -24,7 +27,7 @@ UNITE_RAPIDE = "MINUTE_5"
 EMA_R, EMA_L = 9, 50
 STOP_PCT = 1.0
 RISQUE_RAPIDE_PCT = float(os.getenv("RISQUE_RAPIDE_PCT", "0.1"))
-NOM = f"Rapide 5 min : EMA {EMA_R}/{EMA_L}, stop {STOP_PCT:g} %, risque {RISQUE_RAPIDE_PCT:g} % (expérimentale)"
+NOM = f"Rapide 5 min : EMA {EMA_R}/{EMA_L} dans le sens des tendances 1 h et 4 h, stop {STOP_PCT:g} %, risque {RISQUE_RAPIDE_PCT:g} % (expérimentale)"
 
 
 def decider_rapide(clotures: list[float]) -> str | None:
@@ -32,6 +35,20 @@ def decider_rapide(clotures: list[float]) -> str | None:
     if len(clotures) < EMA_L + 2 or r[-1] is None or l[-1] is None:
         return None
     return "BUY" if r[-1] > l[-1] else "SELL"
+
+
+def sens_ema(clotures: list[float], rapide: int, lente: int) -> str | None:
+    r, l = ema(clotures, rapide), ema(clotures, lente)
+    if r[-1] is None or l[-1] is None:
+        return None
+    return "BUY" if r[-1] > l[-1] else "SELL"
+
+
+def tendances_superieures(api, epic: str) -> tuple[str | None, str | None]:
+    """Sens de la tendance de fond en 1 h (EMA 50/200) et en 4 h (EMA 20/200), bougies terminées."""
+    milieux = lambda bs: [(b["closePrice"]["bid"] + b["closePrice"]["ask"]) / 2 for b in bs[:-1]]
+    return (sens_ema(milieux(api.bougies(epic, "HOUR", 400)), 50, 200),
+            sens_ema(milieux(api.bougies(epic, "HOUR_4", 400)), 20, 200))
 
 
 def id_position(conf: dict) -> str | None:
@@ -48,18 +65,26 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
 
     bougies = api.bougies(epic, UNITE_RAPIDE, 300)
     clotures = [(b["closePrice"]["bid"] + b["closePrice"]["ask"]) / 2 for b in bougies[:-1]]
-    voulu = decider_rapide(clotures)
-    if voulu is None or not bougies:
+    signal = decider_rapide(clotures)
+    if signal is None or not bougies:
         return "Pas assez de bougies"
-    etat["tendance"] = voulu
+    t1, t4 = tendances_superieures(api, epic)
+    etat["tendance"] = signal
+    etat["filtre"] = {"signal_5min": signal, "tendance_1h": t1, "tendance_4h": t4}
+    voulu = signal if signal == t1 == t4 else None
 
     for p in [p for p in miennes if p["position"]["direction"] != voulu]:
         conf = api.fermer(p["position"]["dealId"])
         if conf.get("dealStatus") == "ACCEPTED":
             noter_fermeture(donnees, p, conf, quand, "[Rapide] Croisement inverse")
         etat["deals"].remove(p["position"]["dealId"])
-        noter("fermeture", epic, f"[Rapide] Croisement EMA {EMA_R}/{EMA_L} : position fermée "
+        raison = f"Croisement EMA {EMA_R}/{EMA_L}" if voulu else "Plus d'accord avec la tendance de fond 1 h / 4 h"
+        noter("fermeture", epic, f"[Rapide] {raison} : position fermée "
               f"(gain/perte : {p['position'].get('upl', 0):.2f}). Statut : {conf.get('dealStatus', '?')}")
+    if voulu is None:
+        mots = {"BUY": "hausse", "SELL": "baisse", None: "?"}
+        return (f"À l'écart : signal 5 min en {mots[signal]}, mais tendance 1 h en {mots[t1]} "
+                f"et 4 h en {mots[t4]} (pas d'accord)")
     if any(p["position"]["direction"] == voulu for p in miennes):
         return "Position conservée"
 
