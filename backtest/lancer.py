@@ -49,6 +49,37 @@ def charger(unite):
     return df[~df.index.duplicated()].sort_index().dropna()
 
 
+def charger_marche(epic, unite):
+    df = pd.read_csv(DOSSIER / f"{epic}_{unite}.csv", parse_dates=["date"]).set_index("date")
+    df.index = pd.to_datetime(df.index, utc=True)
+    return df[~df.index.duplicated()].sort_index().dropna()
+
+
+def conditions_marche(epic, dernier_prix):
+    """Conditions réelles Capital.com d'un marché (taille mini, stop garanti, frais de nuit, marge, devise)."""
+    c = Conditions()
+    m = json.loads((DOSSIER / f"{epic}_marche.json").read_text())
+    r, inst = m.get("dealingRules", {}), m.get("instrument", {})
+    c.taille_min = float(r.get("minDealSize", {}).get("value", 1))
+    c.pas_taille = float(r.get("minSizeIncrement", {}).get("value", c.taille_min))
+    g = r.get("minGuaranteedStopDistance", {})
+    if g.get("unit") == "PERCENTAGE":
+        c.stop_garanti_min_pct = float(g["value"])
+    elif g.get("value"):
+        c.stop_garanti_min_pct = float(g["value"]) / dernier_prix * 100
+    of = inst.get("overnightFee", {})
+    c.frais_nuit_achat_pct = -float(of.get("longRate", -0.02))
+    c.frais_nuit_vente_pct = -float(of.get("shortRate", -0.02))
+    if inst.get("marginFactorUnit") == "PERCENTAGE" and inst.get("marginFactor"):
+        c.marge = float(inst["marginFactor"]) / 100
+    c.prime_stop_garanti_pct = 0.1
+    devise = inst.get("currency", "USD")
+    c.eurusd = {"USD": 1.08, "EUR": 1.0, "JPY": 1.08 * dernier_prix, "GBP": 0.85}.get(devise, 1.08)
+    if epic == "USDJPY":
+        c.eurusd = 1.08 * dernier_prix
+    return c
+
+
 def regrouper(df, regle):
     agg = {}
     for c in df.columns:

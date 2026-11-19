@@ -1,0 +1,151 @@
+{
+ "marches": [
+  {
+   "marche": "AUDUSD",
+   "gain_pct": -24.91,
+   "drawdown_max_pct": -26.8,
+   "trades": 40,
+   "reussite_pct": 10.0,
+   "profit_factor": 0.24,
+   "mois_positifs": "3/23",
+   "gain_2e_annee_pct": -1.15,
+   "spread_pct": 0.009
+  },
+  {
+   "marche": "BTCUSD",
+   "gain_pct": 23.43,
+   "drawdown_max_pct": -8.92,
+   "trades": 33,
+   "reussite_pct": 30.3,
+   "profit_factor": 2.03,
+   "mois_positifs": "9/23",
+   "gain_2e_annee_pct": 13.02,
+   "spread_pct": 0.057
+  },
+  {
+   "marche": "DE40",
+   "gain_pct": -3.32,
+   "drawdown_max_pct": -15.77,
+   "trades": 31,
+   "reussite_pct": 29.0,
+   "profit_factor": 0.84,
+   "mois_positifs": "8/23",
+   "gain_2e_annee_pct": -5.27,
+   "spread_pct": 0.007
+  },
+  {
+   "marche": "ETHUSD",
+   "gain_pct": -6.17,
+   "drawdown_max_pct": -15.78,
+   "trades": 21,
+   "reussite_pct": 14.3,
+   "profit_factor": 0.62,
+   "mois_positifs": "1/23",
+   "gain_2e_annee_pct": -8.84,
+   "spread_pct": 0.07
+  },
+  {
+   "marche": "EURUSD",
+   "gain_pct": -4.0,
+   "drawdown_max_pct": -13.14,
+   "trades": 20,
+   "reussite_pct": 20.0,
+   "profit_factor": 0.71,
+   "mois_positifs": "5/23",
+   "gain_2e_annee_pct": 2.37,
+   "spread_pct": 0.006
+  },
+  {
+   "marche": "GBPUSD",
+   "gain_pct": -0.24,
+   "drawdown_max_pct": -11.51,
+   "trades": 28,
+   "reussite_pct": 35.7,
+   "profit_factor": 0.99,
+   "mois_positifs": "9/23",
+   "gain_2e_annee_pct": 1.39,
+   "spread_pct": 0.01
+  },
+  {
+   "marche": "GOLD",
+   "gain_pct": 44.83,
+   "drawdown_max_pct": -11.35,
+   "trades": 14,
+   "reussite_pct": 42.9,
+   "profit_factor": 5.8,
+   "mois_positifs": "9/23",
+   "gain_2e_annee_pct": 15.03,
+   "spread_pct": 0.01
+  },
+  {
+   "marche": "OIL_CRUDE",
+   "gain_pct": -2.33,
+   "drawdown_max_pct": -14.37,
+   "trades": 27,
+   "reussite_pct": 33.3,
+   "profit_factor": 0.86,
+   "mois_positifs": "8/23",
+   "gain_2e_annee_pct": -1.4,
+   "spread_pct": 0.047
+  },
+  {
+   "marche": "SILVER",
+   "gain_pct": -14.53,
+   "drawdown_max_pct": -15.51,
+   "trades": 25,
+   "reussite_pct": 12.0,
+   "profit_factor": 0.22,
+   "mois_positifs": "3/23",
+   "gain_2e_annee_pct": -7.68,
+   "spread_pct": 0.077
+  },
+  {
+   "marche": "SOLUSD",
+   "gain_pct": 5.54,
+   "drawdown_max_pct": -7.55,
+   "trades": 18,
+   "reussite_pct": 38.9,
+   "profit_factor": 1.56,
+   "mois_positifs": "7/23",
+   "gain_2e_annee_pct": 4.99,
+   "spread_pct": 0.501
+  },
+  {
+   "marche": "US100",
+   "gain_pct": -7.38,
+   "drawdown_max_pct": -11.09,
+   "trades": 23,
+   "reussite_pct": 13.0,
+   "profit_factor": 0.58,
+   "mois_positifs": "3/23",
+   "gain_2e_annee_pct": -2.92,
+   "spread_pct": 0.007
+  },
+  {
+   "marche": "US500",
+   "gain_pct": -10.29,
+   "drawdown_max_pct": -17.32,
+   "trades": 28,
+   "reussite_pct": 17.9,
+   "profit_factor": 0.51,
+   "mois_positifs": "6/23",
+   "gain_2e_annee_pct": -12.48,
+   "spread_pct": 0.008
+  },
+  {
+   "marche": "USDJPY",
+   "gain_pct": -23.43,
+   "drawdown_max_pct": -23.45,
+   "trades": 37,
+   "reussite_pct": 16.2,
+   "profit_factor": 0.2,
+   "mois_positifs": "3/23",
+   "gain_2e_annee_pct": -8.03,
+   "spread_pct": 0.007
+  }
+ ],
+ "portefeuille": {
+  "gain_eur": -4557.49,
+  "trades_par_mois": 15.0
+ }
+}
