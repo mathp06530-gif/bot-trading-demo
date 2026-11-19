@@ -916,11 +916,23 @@ async function suivreExecution(depart, nom, strat) {
   for (let i = 0; i < 40; i++) {
     await new Promise(r => setTimeout(r, 6000));
     try {
-      const r = await gh("/actions/runs?event=workflow_dispatch&per_page=1");
+      const r = await gh("/actions/workflows/bot.yml/runs?per_page=1");
       const run = (await r.json()).workflow_runs?.[0];
       if (!run || new Date(run.created_at) < depart - 5000) continue;
       if (run.status !== "completed") { etatCmd(strat, `⚙️ Le bot travaille : ${nom}…`); continue; }
-      if (run.conclusion === "success") { etatCmd(strat, `✅ ${nom} : terminé. Regarde le <a href="#journal">Journal</a> pour sa décision.`); setTimeout(charger, 5000); setTimeout(charger, 20000); }
+      if (run.conclusion === "success") {
+        etatCmd(strat, `✅ ${nom} : terminé, je récupère la décision du bot…`);
+        await charger();
+        const lignes = (D?.journal || []).filter(l => iso(l.date) >= depart - 60000 && l.type !== "commande"
+          && (!strat || l.strategie === strat || (strat === "rapide" && /^\[Rapide\]/.test(l.texte || ""))));
+        const der = lignes.at(-1);
+        if (der) {
+          const rien = /aucune action|position conservée|on attend|on garde/i.test(der.texte);
+          etatCmd(strat, `✅ ${nom} fait à ${new Date(der.date).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}. <b>Décision du bot :</b> ${esc(der.texte.replace(/^Tour immédiat : /, "").replace(/^\[Rapide\] /, ""))}`
+            + (rien ? "<br><small>Pas de trade cette fois : c'est normal, la stratégie n'ouvre une position que sur un signal clair.</small>" : ""));
+        } else etatCmd(strat, `✅ ${nom} : terminé. Le détail apparaîtra dans le <a href="#journal">Journal</a> d'ici une minute.`);
+        setTimeout(charger, 20000);
+      }
       else etatCmd(strat, `❌ Le bot a rencontré une erreur. Regarde le <a href="#journal">Journal</a>.`);
       return;
     } catch {}
