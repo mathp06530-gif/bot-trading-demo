@@ -190,3 +190,29 @@ def test_commandes_pause_fermer_reprendre(tmp_path, monkeypatch):
     main.un_tour(d, faux, "reprendre")  # relancé, mais ce signal a déjà servi : on attend le suivant
     assert not faux.ouvertes and d["pause"] is False
     assert d["ordres"][0]["motif_sortie"] == "Fermée depuis l'application"
+
+
+def test_commandes_par_strategie(tmp_path, monkeypatch):
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", True)
+    debut, suite = serie_achat()
+    faux = FauxCapital(debut, [100 + i for i in range(80)])
+    d = {}
+    main.un_tour(d, faux, "desactiver", "rapide")  # la rapide ne trade plus, la 4 h oui
+    assert d["strategies"]["rapide"]["active"] is False and d["strategies"]["tendance_4h"]["active"] is True
+    assert len(faux.ouvertes) == 2 and not d["rapide"].get("deals")
+    assert d["strategies"]["rapide"]["action"] == "Désactivée"
+    assert {"nom", "description", "unite", "risque_pct", "action", "tendance"} <= set(d["strategies"]["tendance_4h"])
+
+    main.un_tour(d, faux, "lancer", "rapide")  # tour immédiat de la rapide même désactivée
+    assert len(faux.ouvertes) == 3 and d["rapide"]["deals"] == ["d2"]
+    assert any(l.get("strategie") == "rapide" for l in d["journal"])
+    assert any(l.get("strategie") == "tendance_4h" for l in d["journal"])
+
+    main.un_tour(d, faux, "fermer", "tendance_4h")  # ferme seulement la 4 h et la désactive
+    assert faux.fermees == ["d0", "d1"] and [o[0] for o in faux.ouvertes] == ["d2"]
+    assert d["strategies"]["tendance_4h"]["active"] is False and not d.get("pause")
+
+    faux.prix = debut + suite[:30]
+    main.un_tour(d, faux, "activer", "toutes")
+    assert d["strategies"]["tendance_4h"]["active"] and d["strategies"]["rapide"]["active"]

@@ -9,7 +9,12 @@ on:
         description: "Commande pour le bot"
         type: choice
         default: analyser
-        options: [analyser, pause, reprendre, fermer]
+        options: [analyser, pause, reprendre, fermer, activer, desactiver, lancer]
+      strategie:
+        description: "Stratégie visée par la commande"
+        type: choice
+        default: toutes
+        options: [toutes, tendance_4h, rapide]
 
 permissions:
   contents: write
@@ -44,6 +49,7 @@ jobs:
           RAPIDE: "oui"         # stratégie rapide expérimentale (5 min) : "oui" ou "non"
           RISQUE_RAPIDE_PCT: "0.1"  # stratégie rapide : 0,1 % du capital risqué par trade
           ACTION: ${{ inputs.action }}
+          STRATEGIE: ${{ inputs.strategie }}
         run: python -m bot.main
 
       - name: Enregistrer les résultats pour le tableau de bord

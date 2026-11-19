@@ -39,7 +39,7 @@ def id_position(conf: dict) -> str | None:
 def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, eurusd: float, noter, quand: str = "") -> str:
     etat = donnees.setdefault("rapide", {"deals": [], "nom": NOM})
     etat["nom"] = NOM
-    mes_ids = set(etat["deals"])
+    mes_ids = set(etat.setdefault("deals", []))
     miennes = [p for p in positions if p["position"]["dealId"] in mes_ids]
     etat["deals"] = [p["position"]["dealId"] for p in miennes]  # oublie celles fermées par le stop
 
