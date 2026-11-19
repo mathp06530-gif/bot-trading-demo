@@ -86,10 +86,23 @@
    "type": "commande",
    "marche": "",
    "texte": "Analyse demandée depuis l'application."
+  },
+  {
+   "date": "2026-11-19T18:48:59Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Tour immédiat demandé pour : Tendance 4 h."
+  },
+  {
+   "date": "2026-11-19T18:49:00Z",
+   "type": "analyse",
+   "marche": "BTCUSD",
+   "texte": "Tour immédiat : Tendance baissière nette (ADX 47) : on veut être VENDEUR. Décision : aucune action.",
+   "strategie": "tendance_4h"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-19T18:45:23Z",
+ "derniere_execution": "2026-11-19T18:49:01Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -118,15 +131,19 @@
   {
    "date": "2026-11-19T18:45:23Z",
    "valeur": 20998.68
+  },
+  {
+   "date": "2026-11-19T18:49:01Z",
+   "valeur": 21006.72
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 20998.86,
+  "solde": 21002.88,
   "depot": 20999.04,
-  "resultat_latent": -0.18,
-  "disponible": 19946.15
+  "resultat_latent": 3.84,
+  "disponible": 19952.31
  },
  "positions": [
   {
@@ -135,13 +152,13 @@
    "sens": "SELL",
    "taille": 0.0365,
    "prix_entree": 63020.05,
-   "resultat": -0.19,
+   "resultat": 3.5,
    "ouverte_le": "2026-11-19T18:26:28.191"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 63073.8,
+   "prix": 62998.75,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -572,16 +589,16 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-19T18:26:28Z",
    "statut": "ouvert",
-   "resultat": -0.19,
+   "resultat": 3.5,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
    "strategie": "rapide",
-   "dernier_prix": 63073.8
+   "dernier_prix": 62998.75
   }
  ],
  "historique_jour": {
-  "2026-11-19": 20998.68
+  "2026-11-19": 21006.72
  },
  "valeur_depart": 21000.0,
  "entrees": {},
