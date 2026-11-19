@@ -14,9 +14,15 @@
    "type": "erreur",
    "marche": "",
    "texte": "Connexion refusée (401). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.invalid.details\"}"
+  },
+  {
+   "date": "2026-11-19T17:47:47Z",
+   "type": "erreur",
+   "marche": "",
+   "texte": "POST /positions -> 400 : {\"errorCode\":\"error.vallidation.guaranteed-stop-loss.required\"}"
   }
  ],
  "statut": "erreur",
- "derniere_execution": "2026-11-19T17:47:09Z",
+ "derniere_execution": "2026-11-19T17:47:47Z",
  "historique": []
 }
