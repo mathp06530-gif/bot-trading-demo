@@ -26,7 +26,7 @@ ACTIVE = os.getenv("RAPIDE", "oui").strip().lower() in ("oui", "1", "true", "on"
 UNITE_RAPIDE = "MINUTE_5"
 EMA_R, EMA_L = 9, 50
 STOP_PCT = 1.0
-RISQUE_RAPIDE_PCT = float(os.getenv("RISQUE_RAPIDE_PCT", "0.1"))
+RISQUE_RAPIDE_PCT = float(os.getenv("RISQUE_RAPIDE_PCT", "0.05"))
 NOM = f"Rapide 5 min : EMA {EMA_R}/{EMA_L} dans le sens des tendances 1 h et 4 h, stop {STOP_PCT:g} %, risque {RISQUE_RAPIDE_PCT:g} % (expérimentale)"
 
 
