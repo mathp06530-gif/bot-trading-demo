@@ -151,7 +151,7 @@ def principal() -> int:
     donnees.setdefault("journal", [])
     code = 0
 
-    cle, ident, mdp = (os.getenv(n, "") for n in ("CAPITAL_API_KEY", "CAPITAL_IDENTIFIER", "CAPITAL_PASSWORD"))
+    cle, ident, mdp = (os.getenv(n, "").strip() for n in ("CAPITAL_API_KEY", "CAPITAL_IDENTIFIER", "CAPITAL_PASSWORD"))
     if not (cle and ident and mdp):
         msg = "Les secrets CAPITAL_API_KEY, CAPITAL_IDENTIFIER et CAPITAL_PASSWORD ne sont pas encore configurés sur GitHub."
         donnees["journal"].append({"date": maintenant(), "type": "erreur", "marche": "", "texte": msg})
