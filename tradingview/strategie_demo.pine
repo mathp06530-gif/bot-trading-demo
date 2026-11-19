@@ -1,36 +1,62 @@
 //@version=6
-// Bot démo : croisement de moyennes mobiles exponentielles (EMA 9 / EMA 21).
-// C'est EXACTEMENT la même règle que le bot Python (bot/strategie.py) :
-//   - EMA rapide passe AU-DESSUS de l'EMA lente  -> ACHAT (position longue)
-//   - EMA rapide passe EN DESSOUS de l'EMA lente -> VENTE (position courte)
-// À utiliser sur le graphique BTCUSD (Capital.com) en unité de temps 15 minutes.
-strategy("Bot démo - Croisement EMA", overlay = true,
-     initial_capital = 10000, default_qty_type = strategy.fixed, default_qty_value = 0.01,
-     commission_type = strategy.commission.percent, commission_value = 0.0)
+// Stratégie « Tendance 4 h », la même que le bot Python (bot/strategie.py).
+// À utiliser sur le graphique BTCUSD (Capital.com) en unité de temps 4 heures.
+//   ACHAT  : EMA 20 > EMA 200, prix > EMA 20 et ADX > 20 (tendance nette)
+//   VENTE  : EMA 20 < EMA 200, prix < EMA 20 et ADX > 20
+//   SORTIE : l'EMA 20 recroise l'EMA 200, ou le stop est touché
+//   STOP   : 2 × ATR, puis stop suiveur à 5 × ATR qui ne recule jamais
+// Le bot n'a pas besoin de ce script pour trader : il sert à VOIR les signaux sur TradingView.
+strategy("Bot - Tendance 4 h", overlay = true, initial_capital = 20000,
+     default_qty_type = strategy.fixed, default_qty_value = 0.01,
+     commission_type = strategy.commission.cash_per_contract, commission_value = 0.0)
 
-rapide = input.int(9,  "EMA rapide", minval = 1)
-lente  = input.int(21, "EMA lente",  minval = 2)
+rapide   = input.int(20,  "EMA rapide")
+lente    = input.int(200, "EMA lente")
+adxMin   = input.float(20, "ADX minimum")
+stopAtr  = input.float(2.0, "Stop (× ATR)")
+suiviAtr = input.float(5.0, "Stop suiveur (× ATR)")
+ventes   = input.bool(true, "Autoriser les ventes")
 
-emaRapide = ta.ema(close, rapide)
-emaLente  = ta.ema(close, lente)
+emaR = ta.ema(close, rapide)
+emaL = ta.ema(close, lente)
+atr  = ta.atr(14)
+[diPlus, diMoins, adx] = ta.dmi(14, 14)
 
-achat = ta.crossover(emaRapide, emaLente)
-vente = ta.crossunder(emaRapide, emaLente)
+hausse = emaR > emaL
+entreeAchat = hausse and close > emaR and adx > adxMin and strategy.position_size == 0
+entreeVente = ventes and not hausse and close < emaR and adx > adxMin and strategy.position_size == 0
 
-plot(emaRapide, "EMA rapide", color = color.new(color.teal, 0), linewidth = 2)
-plot(emaLente,  "EMA lente",  color = color.new(color.orange, 0), linewidth = 2)
+var float stopNiveau = na
+var int dernierEtat = 0
+etat = hausse ? 1 : -1
 
-plotshape(achat, "Achat", shape.labelup,   location.belowbar, color.new(color.green, 0), text = "ACHAT", textcolor = color.white, size = size.small)
-plotshape(vente, "Vente", shape.labeldown, location.abovebar, color.new(color.red, 0),   text = "VENTE", textcolor = color.white, size = size.small)
+// Sortie quand la tendance s'inverse
+if strategy.position_size > 0 and not hausse
+    strategy.close("Achat", comment = "Fin de tendance")
+if strategy.position_size < 0 and hausse
+    strategy.close("Vente", comment = "Fin de tendance")
 
-if achat
-    strategy.entry("Long", strategy.long)
-if vente
-    strategy.entry("Short", strategy.short)
+// Entrée seulement sur un signal nouveau (pas deux fois la même tendance après un stop)
+if entreeAchat and dernierEtat != 1
+    strategy.entry("Achat", strategy.long)
+    stopNiveau := close - stopAtr * atr
+    dernierEtat := 1
+if entreeVente and dernierEtat != -1
+    strategy.entry("Vente", strategy.short)
+    stopNiveau := close + stopAtr * atr
+    dernierEtat := -1
+if (dernierEtat == 1 and not hausse) or (dernierEtat == -1 and hausse)
+    dernierEtat := 0
 
-// Alertes (facultatif) : notification sur ton téléphone quand un signal apparaît.
-// Le bot n'en a PAS besoin pour fonctionner.
-if achat
-    alert("Bot démo : signal d'ACHAT sur " + syminfo.ticker + " à " + str.tostring(close), alert.freq_once_per_bar_close)
-if vente
-    alert("Bot démo : signal de VENTE sur " + syminfo.ticker + " à " + str.tostring(close), alert.freq_once_per_bar_close)
+// Stop suiveur
+if strategy.position_size > 0
+    stopNiveau := math.max(stopNiveau, close - suiviAtr * atr)
+    strategy.exit("Stop A", "Achat", stop = stopNiveau)
+if strategy.position_size < 0
+    stopNiveau := math.min(stopNiveau, close + suiviAtr * atr)
+    strategy.exit("Stop V", "Vente", stop = stopNiveau)
+
+plot(emaR, "EMA 20",  color = color.new(color.teal, 0), linewidth = 2)
+plot(emaL, "EMA 200", color = color.new(color.orange, 0), linewidth = 2)
+plot(strategy.position_size != 0 ? stopNiveau : na, "Stop", color = color.new(color.red, 0), style = plot.style_linebr)
+bgcolor(adx > adxMin ? (hausse ? color.new(color.green, 92) : color.new(color.red, 92)) : na, title = "Tendance nette")

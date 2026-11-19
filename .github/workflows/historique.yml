@@ -1,0 +1,39 @@
+name: Télécharger l'historique (backtest)
+
+on:
+  workflow_dispatch:   # bouton « Run workflow » dans l'onglet Actions
+    inputs:
+      unites:
+        description: "Unités de temps (MINUTE, MINUTE_15, HOUR)"
+        default: "HOUR"
+      marches:
+        description: "Marchés, séparés par des virgules"
+        default: "BTCUSD"
+
+permissions:
+  contents: read
+
+jobs:
+  historique:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Télécharger l'historique Capital.com (démo)
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+          UNITES: ${{ inputs.unites }}
+          EPICS: ${{ inputs.marches }}
+        run: python backtest/telecharger.py
+      - name: Garder les données téléchargées (onglet « Artifacts » du run, 30 jours)
+        uses: actions/upload-artifact@v4
+        with:
+          name: historique
+          path: backtest/donnees
+          retention-days: 30

@@ -61,6 +61,17 @@ class CapitalDemo:
     def comptes(self):
         return self._requete("GET", "/accounts").get("accounts", [])
 
+    def mode_couverture(self) -> bool:
+        """Active le « hedging » : permet d'avoir un achat ET une vente en même temps sur le
+        même marché, pour que les stratégies 4 h et rapide ne se gênent pas."""
+        try:
+            if self._requete("GET", "/accounts/preferences").get("hedgingMode"):
+                return True
+            self._requete("PUT", "/accounts/preferences", json={"hedgingMode": True})
+            return True
+        except ErreurCapital:
+            return False
+
     def marche(self, epic: str):
         return self._requete("GET", f"/markets/{epic}")
 
@@ -72,10 +83,18 @@ class CapitalDemo:
     def positions(self):
         return self._requete("GET", "/positions").get("positions", [])
 
-    def ouvrir(self, epic: str, direction: str, taille: float, stop_pct: float | None = None, prix: float | None = None):
+    def ouvrir(self, epic: str, direction: str, taille: float, stop_pct: float | None = None, prix: float | None = None,
+               stop_distance: float | None = None, garanti: bool = False, objectif_distance: float | None = None):
         corps = {"epic": epic, "direction": direction, "size": taille}
-        if stop_pct and prix:
+        if objectif_distance:
+            corps["profitDistance"] = round(objectif_distance, 2)  # prise de bénéfice (TP) chez Capital.com
+        if stop_distance:
+            corps["stopDistance"] = round(stop_distance, 2)
+        elif stop_pct and prix:
             corps["stopDistance"] = round(prix * stop_pct / 100, 2)
+        if garanti and prix:
+            corps["guaranteedStop"] = True
+            corps["stopDistance"] = max(corps.get("stopDistance", 0), self.distance_stop_garanti(epic, prix))
         try:
             ref = self._requete("POST", "/positions", json=corps)["dealReference"]
         except ErreurCapital as e:
@@ -96,6 +115,22 @@ class CapitalDemo:
             return round(distance * 1.1, 2)
         except Exception:
             return round(prix * 0.05, 2)
+
+    def modifier_stop(self, deal_id: str, niveau: float, garanti: bool = True):
+        """Déplace le stop d'une position ouverte (stop suiveur géré par le bot)."""
+        corps = {"stopLevel": round(niveau, 2)}
+        if garanti:
+            corps["guaranteedStop"] = True
+        ref = self._requete("PUT", f"/positions/{deal_id}", json=corps).get("dealReference")
+        return self.confirmation(ref) if ref else {}
+
+    def taux_eurusd(self) -> float:
+        """Combien de dollars vaut 1 euro (pour convertir le risque en euros vers le BTCUSD)."""
+        try:
+            s = self.marche("EURUSD")["snapshot"]
+            return (float(s["bid"]) + float(s["offer"])) / 2
+        except Exception:
+            return 1.08
 
     def fermer(self, deal_id: str):
         ref = self._requete("DELETE", f"/positions/{deal_id}").get("dealReference")
