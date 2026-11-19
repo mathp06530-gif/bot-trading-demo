@@ -51,6 +51,7 @@ class FauxCapital:
         self.ouvertes = []  # (dealId, sens, taille, stop)
         self.fermees = []
         self.stops = []
+        self.objectifs = []
         self.n = 0
 
     def connexion(self): pass
@@ -68,7 +69,9 @@ class FauxCapital:
                               "guaranteedStop": True},
                  "market": {"epic": "BTCUSD", "instrumentName": "Bitcoin"}} for d, s, t, st in self.ouvertes]
 
-    def ouvrir(self, epic, direction, taille, stop_pct=None, prix=None, stop_distance=None, garanti=False):
+    def ouvrir(self, epic, direction, taille, stop_pct=None, prix=None, stop_distance=None, garanti=False,
+               objectif_distance=None):
+        self.objectifs.append(objectif_distance)
         d = f"d{self.n}"
         self.n += 1
         self.ouvertes.append((d, direction, taille, prix - stop_distance if direction == "BUY" else prix + stop_distance))
@@ -96,13 +99,15 @@ def test_un_tour_entre_suit_et_sort(tmp_path, monkeypatch):
     faux = FauxCapital(debut)
     d = {}
     main.un_tour(d, faux)
-    assert [o[1] for o in faux.ouvertes] == ["BUY"]
-    deal, _, taille, stop = faux.ouvertes[0]
+    assert [o[1] for o in faux.ouvertes] == ["BUY", "BUY"]  # 2 moitiés : une avec TP, une sans
+    assert faux.objectifs[0] > 0 and faux.objectifs[1] is None
+    deal, _, _, stop = faux.ouvertes[0]
     distance = debut[-1] + 1 - stop
-    assert math.isclose(taille * distance, 100, rel_tol=0.02)  # 1 % de 10 000 € risqué
+    taille = sum(o[2] for o in faux.ouvertes)
+    assert math.isclose(taille * distance, 100, rel_tol=0.02)  # 1 % de 10 000 € risqué au total
 
-    main.un_tour(d, faux)  # même signal : pas de 2e achat
-    assert len(faux.ouvertes) == 1 and not faux.fermees
+    main.un_tour(d, faux)  # même signal : pas de nouvel achat
+    assert len(faux.ouvertes) == 2 and not faux.fermees
 
     faux.prix = debut + suite[:30]  # le prix monte : le stop suiveur remonte
     main.un_tour(d, faux)
@@ -110,7 +115,7 @@ def test_un_tour_entre_suit_et_sort(tmp_path, monkeypatch):
 
     faux.prix = faux.prix + [faux.prix[-1] - 150 * i for i in range(1, 120)]  # retournement
     main.un_tour(d, faux)
-    assert deal in faux.fermees
+    assert faux.fermees == ["d0", "d1"] and not faux.ouvertes
     assert d["compte"]["solde"] == 10000
     assert any(l["type"] == "fermeture" for l in d["journal"])
     assert d["ordres"][0]["statut"] == "ferme" and d["ordres"][0]["strategie"] == "tendance_4h"
@@ -177,7 +182,7 @@ def test_commandes_pause_fermer_reprendre(tmp_path, monkeypatch):
     faux = FauxCapital(serie_achat()[0])
     d = {}
     main.un_tour(d, faux)
-    assert len(faux.ouvertes) == 1
+    assert len(faux.ouvertes) == 2
     main.un_tour(d, faux, "fermer")
     assert not faux.ouvertes and d["pause"] is True
     main.un_tour(d, faux)  # en pause : aucun nouvel ordre

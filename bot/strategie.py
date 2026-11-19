@@ -11,9 +11,12 @@ Règles, sur des bougies de 4 heures (prix milieu entre achat et vente) :
   SORTIE       : l'EMA 20 recroise l'EMA 200 dans l'autre sens,
                  ou le stop est touché.
   STOP (SL)    : stop GARANTI à 2 × ATR (mouvement moyen d'une bougie) du prix d'entrée.
+  TP PARTIEL   : la position est ouverte en 2 moitiés. La 1re a un TP à 1 × ATR (on encaisse
+                 vite), la 2e n'a pas de TP et suit la tendance (on capte les gros mouvements).
+                 Backtest : gain un peu plus faible (+8 % au lieu de +13 % sur l'examen) mais
+                 pire baisse divisée par 2 (-4 % au lieu de -9 %). Réglage TP_PARTIEL_ATR.
   STOP SUIVEUR : à chaque bougie, le stop est remonté à 5 × ATR derrière le prix
-                 pour verrouiller les gains. Il ne recule jamais. C'est lui qui joue le rôle
-                 de « prise de bénéfice » (TP) : un TP fixe coupait les gros gains en backtest.
+                 pour verrouiller les gains. Il ne recule jamais.
   FRAIS        : pas d'entrée si le spread dépasse 10 % de la distance du stop.
   TAILLE       : calculée pour ne perdre que RISQUE_PCT % du capital si le stop est touché.
   Après un stop, on attend un NOUVEAU signal avant de reprendre position.

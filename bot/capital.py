@@ -84,8 +84,10 @@ class CapitalDemo:
         return self._requete("GET", "/positions").get("positions", [])
 
     def ouvrir(self, epic: str, direction: str, taille: float, stop_pct: float | None = None, prix: float | None = None,
-               stop_distance: float | None = None, garanti: bool = False):
+               stop_distance: float | None = None, garanti: bool = False, objectif_distance: float | None = None):
         corps = {"epic": epic, "direction": direction, "size": taille}
+        if objectif_distance:
+            corps["profitDistance"] = round(objectif_distance, 2)  # prise de bénéfice (TP) chez Capital.com
         if stop_distance:
             corps["stopDistance"] = round(stop_distance, 2)
         elif stop_pct and prix:

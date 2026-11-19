@@ -29,6 +29,7 @@ RISQUE_PCT = float(os.getenv("RISQUE_PCT", "1"))  # % du capital perdu au maximu
 NB_BOUGIES = 1000  # ~5 mois de bougies 4 h, pour que l'EMA 200 soit fiable
 STOP_GARANTI_MIN_PCT = 0.55  # Capital.com impose un stop garanti à 0,5 % minimum du prix (+ marge)
 PAS_TAILLE = 0.0001  # plus petite taille de position en BTC chez Capital.com
+TP_PARTIEL_ATR = float(os.getenv("TP_PARTIEL_ATR", "1"))  # moitié de la position avec un TP à N × ATR (0 = aucun)
 MARGE = 0.5  # levier crypto 2:1 en Europe : il faut bloquer 50 % de la valeur
 
 MAX_JOURNAL = 1000
@@ -166,17 +167,24 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = ""):
                     if taille < PAS_TAILLE:
                         noter("erreur", epic, f"Capital trop faible pour ouvrir la plus petite position ({PAS_TAILLE} BTC).")
                     else:
-                        conf = api.ouvrir(epic, voulu, taille, prix=prix_entree, stop_distance=distance, garanti=True)
-                        statut = conf.get("dealStatus", "?")
-                        action = f"{mot} de {taille} {epic}"
-                        if statut == "ACCEPTED":
-                            entrees[epic] = signal["debut_etat"]
-                            risque = taille * distance / eurusd
-                            noter("ordre", epic, f"{signal['explication']} Ordre {mot} de {taille} passé à "
-                                  f"{float(conf.get('level') or prix_entree):.2f}, stop garanti à {distance:.0f} $ "
-                                  f"(risque max ≈ {risque:.2f} €, soit {RISQUE_PCT:g} % du capital).")
-                        else:
-                            noter("erreur", epic, f"Ordre {mot} refusé par Capital.com : {conf.get('reason', statut)}")
+                        # Deux moitiés : l'une avec un TP proche (on encaisse vite), l'autre sans TP
+                        # qui suit la tendance avec le stop suiveur (on capte les gros mouvements).
+                        moitie = round(math.floor(taille / 2 / PAS_TAILLE) * PAS_TAILLE, 4)
+                        tp = float(derniere.atr) * TP_PARTIEL_ATR if TP_PARTIEL_ATR > 0 and moitie >= PAS_TAILLE else None
+                        parts = [(moitie, tp), (round(taille - moitie, 4), None)] if tp else [(taille, None)]
+                        for t, obj in parts:
+                            conf = api.ouvrir(epic, voulu, t, prix=prix_entree, stop_distance=distance, garanti=True,
+                                              objectif_distance=obj)
+                            statut = conf.get("dealStatus", "?")
+                            if statut == "ACCEPTED":
+                                entrees[epic] = signal["debut_etat"]
+                                action = f"{mot} de {taille} {epic}"
+                                texte_tp = f", TP à +{obj:.0f} $" if obj else ", sans TP (stop suiveur)"
+                                noter("ordre", epic, f"{signal['explication']} Ordre {mot} de {t} passé à "
+                                      f"{float(conf.get('level') or prix_entree):.2f}, stop garanti à {distance:.0f} $"
+                                      f"{texte_tp} (risque max ≈ {t * distance / eurusd:.2f} €).")
+                            else:
+                                noter("erreur", epic, f"Ordre {mot} refusé par Capital.com : {conf.get('reason', statut)}")
             elif not voulu and not deja_note:
                 noter("analyse", epic, signal["explication"])
 
