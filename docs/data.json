@@ -89,7 +89,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-19T18:39:43Z",
+ "derniere_execution": "2026-11-19T18:41:08Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -110,15 +110,19 @@
   {
    "date": "2026-11-19T18:39:43Z",
    "valeur": 20986.94
+  },
+  {
+   "date": "2026-11-19T18:41:08Z",
+   "valeur": 20994.46
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 20992.99,
+  "solde": 20996.75,
   "depot": 20999.04,
-  "resultat_latent": -6.05,
-  "disponible": 19937.58
+  "resultat_latent": -2.29,
+  "disponible": 19943.26
  },
  "positions": [
   {
@@ -127,13 +131,13 @@
    "sens": "SELL",
    "taille": 0.0365,
    "prix_entree": 63020.05,
-   "resultat": -6.05,
+   "resultat": -2.21,
    "ouverte_le": "2026-11-19T18:26:28.191"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 63100.65,
+   "prix": 63073.8,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -564,16 +568,16 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-19T18:26:28Z",
    "statut": "ouvert",
-   "resultat": -6.05,
+   "resultat": -2.21,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
    "strategie": "rapide",
-   "dernier_prix": 63100.65
+   "dernier_prix": 63073.8
   }
  ],
  "historique_jour": {
-  "2026-11-19": 20986.94
+  "2026-11-19": 20994.46
  },
  "valeur_depart": 21000.0,
  "entrees": {},
