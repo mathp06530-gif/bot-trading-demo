@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from bot.capital import CapitalDemo, ErreurCapital
+from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
 from bot.strategie import EMA_LENTE, EMA_RAPIDE, decider
 
 RACINE = Path(__file__).resolve().parent.parent
@@ -24,6 +25,7 @@ STOP_PCT = float(os.getenv("STOP_PCT", "3"))  # stop de sécurité en % du prix 
 
 MAX_JOURNAL = 300
 MAX_HISTORIQUE = 3000  # ~1 mois de points à raison d'un toutes les 15 min
+MAX_JOURS = 3650  # un point par jour, sur 10 ans
 MAX_BOUGIES_GRAPHIQUE = 96  # 24 h en bougies de 15 min
 
 
@@ -81,6 +83,8 @@ def un_tour(donnees: dict, api: CapitalDemo):
             a_fermer = [p for p in mes_positions if p["position"]["direction"] != voulu]
             for p in a_fermer:
                 conf = api.fermer(p["position"]["dealId"])
+                if conf.get("dealStatus") == "ACCEPTED":
+                    noter_fermeture(donnees, p, conf, maintenant(), "Signal inverse de la stratégie")
                 sens = "achat" if p["position"]["direction"] == "BUY" else "vente"
                 noter("fermeture", epic, f"Position à l'{sens} fermée (gain/perte : {p['position'].get('upl', 0):.2f}). Statut : {conf.get('dealStatus', '?')}")
             deja_bon = any(p["position"]["direction"] == voulu for p in mes_positions)
@@ -98,6 +102,7 @@ def un_tour(donnees: dict, api: CapitalDemo):
                 action = "Position conservée"
                 noter("analyse", epic, f"{signal['explication']} On garde la position.")
 
+        mettre_a_jour_prix(donnees, epic, prix)
         n = MAX_BOUGIES_GRAPHIQUE
         analyses[epic] = {
             "prix": prix,
@@ -117,6 +122,7 @@ def un_tour(donnees: dict, api: CapitalDemo):
     solde = compte.get("balance", {})
     positions = api.positions()
     api.deconnexion()
+    synchroniser(donnees, positions, maintenant())
 
     donnees["compte"] = {
         "nom": compte.get("accountName", "Démo"),
@@ -141,7 +147,10 @@ def un_tour(donnees: dict, api: CapitalDemo):
     donnees["analyses"] = analyses
     historique = donnees.setdefault("historique", [])
     if solde.get("balance") is not None:
-        historique.append({"date": maintenant(), "valeur": round(solde["balance"] + (solde.get("profitLoss") or 0), 2)})
+        valeur = round(solde["balance"] + (solde.get("profitLoss") or 0), 2)
+        historique.append({"date": maintenant(), "valeur": valeur})
+        donnees.setdefault("historique_jour", {})[maintenant()[:10]] = valeur
+        donnees.setdefault("valeur_depart", historique[0]["valeur"])
 
 
 def principal() -> int:
@@ -170,6 +179,8 @@ def principal() -> int:
     donnees["derniere_execution"] = maintenant()
     donnees["journal"] = donnees["journal"][-MAX_JOURNAL:]
     donnees["historique"] = donnees.get("historique", [])[-MAX_HISTORIQUE:]
+    jours = donnees.get("historique_jour", {})
+    donnees["historique_jour"] = dict(sorted(jours.items())[-MAX_JOURS:])
     sauver(donnees)
     for ligne in donnees["journal"][-5:]:
         print(ligne["date"], ligne["type"], ligne["marche"], ligne["texte"])

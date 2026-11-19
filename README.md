@@ -9,7 +9,7 @@ Il tourne tout seul, 24 h/24, gratuitement grâce à GitHub, et tu le suis sur t
 |---|---|---|
 | Script TradingView (`tradingview/strategie_demo.pine`) | Affiche les signaux ACHAT / VENTE sur ton graphique | Appli et site TradingView |
 | Bot (`bot/`) | Toutes les 15 minutes, il analyse le Bitcoin et passe les ordres sur ton compte démo | Appli Capital.com (mode Démo) |
-| Tableau de bord (`docs/index.html`) | Solde, positions, graphique et journal de chaque décision du bot | Un lien web, sur tous tes appareils |
+| Tableau de bord (`docs/index.html`) | 6 onglets : Accueil (valeur, gains 24 h / 7 j / 30 j / 1 an, courbe), Ordres, Marché, Stats, Journal, Réglages | Un lien web, sur tous tes appareils |
 
 La stratégie de démonstration est un **croisement de moyennes mobiles (EMA 9 / EMA 21)** en bougies de 15 minutes :
 quand la moyenne rapide passe au-dessus de la lente, le bot achète ; quand elle passe en dessous, il vend.
