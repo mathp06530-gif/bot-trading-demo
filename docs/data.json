@@ -1,0 +1,22 @@
+{
+ "reglages": {
+  "marches": [
+   "BTCUSD"
+  ],
+  "taille": 0.01,
+  "unite": "MINUTE_15",
+  "stop_pct": 3.0,
+  "strategie": "Croisement EMA 9 / EMA 21"
+ },
+ "journal": [
+  {
+   "date": "2026-11-19T17:47:09Z",
+   "type": "erreur",
+   "marche": "",
+   "texte": "Connexion refusée (401). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.invalid.details\"}"
+  }
+ ],
+ "statut": "erreur",
+ "derniere_execution": "2026-11-19T17:47:09Z",
+ "historique": []
+}
