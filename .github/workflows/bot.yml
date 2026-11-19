@@ -2,8 +2,14 @@ name: Bot de trading démo
 
 on:
   schedule:
-    - cron: "*/15 * * * *"   # toutes les 15 minutes (GitHub peut avoir quelques minutes de retard)
-  workflow_dispatch: {}       # bouton « Run workflow » pour le lancer à la main
+    - cron: "*/5 * * * *"    # toutes les 5 minutes (GitHub peut avoir quelques minutes de retard)
+  workflow_dispatch:          # lancé à la main ou par les boutons de l'application
+    inputs:
+      action:
+        description: "Commande pour le bot"
+        type: choice
+        default: analyser
+        options: [analyser, pause, reprendre, fermer]
 
 permissions:
   contents: write
@@ -35,6 +41,7 @@ jobs:
           TAILLE: "0.01"        # taille de chaque position
           UNITE: "MINUTE_15"    # unité de temps des bougies
           STOP_PCT: "3"         # stop de sécurité à 3 % du prix
+          ACTION: ${{ inputs.action }}
         run: python -m bot.main
 
       - name: Enregistrer les résultats pour le tableau de bord

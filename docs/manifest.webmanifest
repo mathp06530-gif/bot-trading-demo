@@ -1,0 +1,22 @@
+{
+  "name": "Bot de trading démo",
+  "short_name": "Bot trading",
+  "description": "Suivi et commande du bot de trading (compte démo Capital.com).",
+  "lang": "fr",
+  "start_url": "./#accueil",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0d141c",
+  "theme_color": "#0d141c",
+  "icons": [
+    { "src": "icone-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icone-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icone-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Ordres", "url": "./#ordres" },
+    { "name": "Marché", "url": "./#marche" },
+    { "name": "Réglages", "url": "./#reglages" }
+  ]
+}

@@ -111,3 +111,18 @@ def test_stop_garanti_si_exige(monkeypatch):
     monkeypatch.setattr(api, "_requete", faux)
     assert api.ouvrir("BTCUSD", "BUY", 0.01, 3, 1000)["dealStatus"] == "ACCEPTED"
     assert envoyes[-1]["guaranteedStop"] is True and envoyes[-1]["stopDistance"] == 55.0
+
+
+def test_commandes_pause_fermer_reprendre(tmp_path, monkeypatch):
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    faux = FauxCapital([100 + i for i in range(80)])
+    d = {}
+    main.un_tour(d, faux)
+    assert len(faux.ouvertes) == 1
+    main.un_tour(d, faux, "fermer")
+    assert not faux.ouvertes and d["pause"] is True
+    main.un_tour(d, faux)  # en pause : aucun nouvel ordre
+    assert not faux.ouvertes and d["analyses"]["BTCUSD"]["action"].startswith("En pause")
+    main.un_tour(d, faux, "reprendre")
+    assert len(faux.ouvertes) == 1 and d["pause"] is False
+    assert d["ordres"][0]["motif_sortie"] == "Fermée depuis l'application"

@@ -8,7 +8,7 @@ Il tourne tout seul, 24 h/24, gratuitement grâce à GitHub, et tu le suis sur t
 | Élément | Rôle | Où le voir |
 |---|---|---|
 | Script TradingView (`tradingview/strategie_demo.pine`) | Affiche les signaux ACHAT / VENTE sur ton graphique | Appli et site TradingView |
-| Bot (`bot/`) | Toutes les 15 minutes, il analyse le Bitcoin et passe les ordres sur ton compte démo | Appli Capital.com (mode Démo) |
+| Bot (`bot/`) | Toutes les 5 minutes, il analyse le Bitcoin et passe les ordres sur ton compte démo | Appli Capital.com (mode Démo) |
 | Tableau de bord (`docs/index.html`) | 6 onglets : Accueil (valeur, gains 24 h / 7 j / 30 j / 1 an, courbe), Ordres, Marché, Stats, Journal, Réglages | Un lien web, sur tous tes appareils |
 
 La stratégie de démonstration est un **croisement de moyennes mobiles (EMA 9 / EMA 21)** en bougies de 15 minutes :
@@ -60,7 +60,7 @@ Dans le dépôt : **Settings → Secrets and variables → Actions → New repos
 
 1. Onglet **Actions** du dépôt → accepte d'activer les workflows si GitHub le demande.
 2. Clique sur **Bot de trading démo** → **Run workflow** pour un premier tour tout de suite.
-3. Ensuite il se lance seul toutes les 15 minutes (GitHub a parfois quelques minutes de retard).
+3. Ensuite il se lance seul toutes les 5 minutes (GitHub a parfois quelques minutes de retard).
 
 ### 5. Le tableau de bord sur tous tes appareils
 
@@ -79,6 +79,15 @@ Dans le dépôt : **Settings → Secrets and variables → Actions → New repos
 4. (Facultatif) Panneau **Trading** en bas du graphique → **Capital.com** pour relier ton compte.
 
 ---
+
+### 7. L'application (PC, téléphone, tablette) et les commandes
+
+1. Ouvre `https://mathp06530-gif.github.io/bot-trading-demo/`.
+2. **Installer** : sur PC (Chrome/Edge), clique sur **⬇ Installer** en haut ou sur l'icône d'installation dans la barre d'adresse.
+   Un raccourci « Bot de trading démo » est créé sur le bureau. Sur iPhone/iPad : Partager → *Sur l'écran d'accueil*. Sur Android : ⋮ → *Installer l'application*.
+3. **Commander le bot** (Pause, Reprendre, Analyser maintenant, Fermer la position) : crée une clé GitHub *fine-grained*
+   ([lien](https://github.com/settings/personal-access-tokens/new)) limitée au dépôt `bot-trading-demo`, avec
+   *Actions : Read and write* et *Contents : Read-only*, puis colle-la dans l'onglet **Réglages** de l'application, sur chaque appareil.
 
 ## Réglages
 

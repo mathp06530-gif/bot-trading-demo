@@ -23,7 +23,7 @@ TAILLE = float(os.getenv("TAILLE", "0.01"))
 UNITE = os.getenv("UNITE", "MINUTE_15")
 STOP_PCT = float(os.getenv("STOP_PCT", "3"))  # stop de sécurité en % du prix (0 = aucun)
 
-MAX_JOURNAL = 300
+MAX_JOURNAL = 1000
 MAX_HISTORIQUE = 3000  # ~1 mois de points à raison d'un toutes les 15 min
 MAX_JOURS = 3650  # un point par jour, sur 10 ans
 MAX_BOUGIES_GRAPHIQUE = 96  # 24 h en bougies de 15 min
@@ -58,12 +58,32 @@ def taille_valide(api: CapitalDemo, epic: str) -> float:
         return TAILLE
 
 
-def un_tour(donnees: dict, api: CapitalDemo):
+def un_tour(donnees: dict, api: CapitalDemo, action: str = ""):
     journal = donnees.setdefault("journal", [])
     noter = lambda type_, marche, texte: journal.append({"date": maintenant(), "type": type_, "marche": marche, "texte": texte})
 
     api.connexion()
     positions = api.positions()
+
+    # --- Commandes envoyées depuis l'application (téléphone, tablette, PC) ---
+    if action == "pause":
+        donnees["pause"] = True
+        noter("commande", "", "Bot mis en pause depuis l'application : il surveille mais ne passe plus d'ordres.")
+    elif action == "reprendre":
+        donnees["pause"] = False
+        noter("commande", "", "Bot relancé depuis l'application.")
+    elif action == "fermer":
+        donnees["pause"] = True
+        for p in [p for p in positions if p["market"]["epic"] in MARCHES]:
+            conf = api.fermer(p["position"]["dealId"])
+            if conf.get("dealStatus") == "ACCEPTED":
+                noter_fermeture(donnees, p, conf, maintenant(), "Fermée depuis l'application")
+            noter("fermeture", p["market"]["epic"], f"Position fermée depuis l'application (gain/perte : {p['position'].get('upl', 0):.2f}). Statut : {conf.get('dealStatus', '?')}")
+        noter("commande", "", "Positions fermées et bot mis en pause. Appuie sur « Reprendre » pour le relancer.")
+        positions = api.positions()
+    elif action == "analyser":
+        noter("commande", "", "Analyse demandée depuis l'application.")
+    en_pause = donnees.get("pause", False)
     analyses = {}
 
     for epic in MARCHES:
@@ -77,7 +97,9 @@ def un_tour(donnees: dict, api: CapitalDemo):
         voulu = signal["direction"]
         action = "Aucune action"
 
-        if voulu is None:
+        if en_pause:
+            action = "En pause (aucun ordre)"
+        elif voulu is None:
             noter("info", epic, signal["explication"])
         else:
             a_fermer = [p for p in mes_positions if p["position"]["direction"] != voulu]
@@ -168,7 +190,7 @@ def principal() -> int:
         code = 1
     else:
         try:
-            un_tour(donnees, CapitalDemo(cle, ident, mdp))
+            un_tour(donnees, CapitalDemo(cle, ident, mdp), os.getenv("ACTION", "").strip().lower())
             donnees["statut"] = "ok"
         except (ErreurCapital, Exception) as e:  # on garde une trace lisible de toute erreur
             donnees["journal"].append({"date": maintenant(), "type": "erreur", "marche": "", "texte": str(e)[:400]})
