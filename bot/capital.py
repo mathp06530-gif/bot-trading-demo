@@ -61,13 +61,12 @@ class CapitalDemo:
     def comptes(self):
         return self._requete("GET", "/accounts").get("accounts", [])
 
-    def mode_couverture(self) -> bool:
-        """Active le « hedging » : permet d'avoir un achat ET une vente en même temps sur le
-        même marché, pour que les stratégies 4 h et rapide ne se gênent pas."""
+    def sans_couverture(self) -> bool:
+        """Désactive le « hedging » : Capital.com refuse le stop GARANTI (obligatoire sur ce compte)
+        quand ce mode est actif. Renvoie True si le mode est bien désactivé."""
         try:
             if self._requete("GET", "/accounts/preferences").get("hedgingMode"):
-                return True
-            self._requete("PUT", "/accounts/preferences", json={"hedgingMode": True})
+                self._requete("PUT", "/accounts/preferences", json={"hedgingMode": False})
             return True
         except ErreurCapital:
             return False

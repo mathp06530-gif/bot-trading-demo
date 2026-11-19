@@ -57,7 +57,7 @@ class FauxCapital:
     def connexion(self): pass
     def deconnexion(self): pass
     def taux_eurusd(self): return 1.0
-    def mode_couverture(self): return True
+    def sans_couverture(self): return True
     def marche(self, epic): return {"dealingRules": {"minDealSize": {"value": 0.0001}}}
 
     def bougies(self, epic, unite, n):
@@ -216,3 +216,14 @@ def test_commandes_par_strategie(tmp_path, monkeypatch):
     faux.prix = debut + suite[:30]
     main.un_tour(d, faux, "activer", "toutes")
     assert d["strategies"]["tendance_4h"]["active"] and d["strategies"]["rapide"]["active"]
+
+
+def test_rapide_attend_si_la_4h_est_en_sens_inverse(tmp_path, monkeypatch):
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", True)
+    debut, _ = serie_achat()
+    faux = FauxCapital(debut, [200 - i for i in range(80)])  # 4 h : achat ; rapide : vente
+    d = {}
+    main.un_tour(d, faux)
+    assert [o[1] for o in faux.ouvertes] == ["BUY", "BUY"]
+    assert d["strategies"]["rapide"]["action"].startswith("En attente")

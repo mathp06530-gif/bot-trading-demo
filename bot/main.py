@@ -131,7 +131,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     complet_4h = ("tendance_4h" in lancer) or (not en_pause and etats["tendance_4h"]["active"])
     suivi_4h = complet_4h or not en_pause  # désactivée : plus d'entrées ni de sorties, mais le stop suiveur continue
     tourne_rapide = ("rapide" in lancer) or (not en_pause and etats["rapide"]["active"])
-    couverture = api.mode_couverture() if tourne_rapide else False
+    api.sans_couverture()  # le stop garanti est interdit en mode couverture (hedging)
     entrees = donnees.setdefault("entrees", {})  # bougie du dernier signal utilisé, par marché
     precedentes = donnees.get("analyses", {})
 
@@ -211,6 +211,15 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                     if taille < PAS_TAILLE:
                         noter_4h("erreur", epic, f"Capital trop faible pour ouvrir la plus petite position ({PAS_TAILLE} BTC).")
                     else:
+                        # Sans mode couverture, un ordre inverse annulerait les positions de la rapide :
+                        # la stratégie 4 h est prioritaire, on ferme d'abord celles qui sont en sens inverse.
+                        for p in [p for p in positions if p["market"]["epic"] == epic
+                                  and p["position"]["dealId"] in ids_rapide and p["position"]["direction"] != voulu]:
+                            conf = api.fermer(p["position"]["dealId"])
+                            if conf.get("dealStatus") == "ACCEPTED":
+                                noter_fermeture(donnees, p, conf, maintenant(), "Fermée : la stratégie 4 h est prioritaire")
+                            noter("fermeture", epic, "Position de la stratégie rapide fermée : la stratégie 4 h, prioritaire, "
+                                  "ouvre dans l'autre sens.", "rapide")
                         # Deux moitiés : l'une avec un TP proche (on encaisse vite), l'autre sans TP
                         # qui suit la tendance avec le stop suiveur (on capte les gros mouvements).
                         moitie = round(math.floor(taille / 2 / PAS_TAILLE) * PAS_TAILLE, 4)
@@ -238,10 +247,12 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         ema_r = [None if x != x else round(float(x), 2) for x in sig.ema_rapide] if sig is not None else []
         ema_l = [None if x != x else round(float(x), 2) for x in sig.ema_lente] if sig is not None else []
         if tourne_rapide:
-            if couverture:
-                action_rapide = tour_rapide(api, donnees, epic, positions, capital, eurusd, noter_rapide, maintenant())
-            else:
-                action_rapide = "Impossible : le mode couverture (hedging) n'a pas pu être activé"
+            try:
+                positions_now = api.positions()
+                action_rapide = tour_rapide(api, donnees, epic, positions_now, capital, eurusd, noter_rapide, maintenant())
+            except Exception as e:  # une erreur de la rapide ne doit pas bloquer la stratégie 4 h
+                action_rapide = "Erreur"
+                noter_rapide("erreur", epic, f"[Rapide] {str(e)[:300]}")
             if "rapide" in lancer:
                 noter_rapide("analyse", epic, f"Tour immédiat de la stratégie rapide. Décision : {action_rapide.lower()}.")
         else:
