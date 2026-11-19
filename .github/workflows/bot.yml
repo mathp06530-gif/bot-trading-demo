@@ -45,7 +45,7 @@ jobs:
           RISQUE_PCT: "1"       # stratégie principale : 1 % du capital risqué par trade
           TP_PARTIEL_ATR: "1"   # moitié de la position avec un TP à 1 × ATR ("0" = pas de TP)
           RAPIDE: "oui"         # stratégie rapide expérimentale (5 min) : "oui" ou "non"
-          RISQUE_RAPIDE_PCT: "0.1"  # stratégie rapide : 0,1 % du capital risqué par trade
+          RISQUE_RAPIDE_PCT: "0.05" # stratégie rapide : 0,05 % du capital risqué par trade (≈ 10 € max)
           ACTION: ${{ inputs.action }}
           STRATEGIE: ${{ inputs.strategie }}
         run: bash scripts/tour.sh
