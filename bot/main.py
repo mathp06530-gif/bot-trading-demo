@@ -17,7 +17,7 @@ from bot.rapide import NOM as NOM_RAPIDE
 from bot.rapide import tour_rapide
 from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
 from bot.strategie import NOM as NOM_STRATEGIE
-from bot.strategie import bougies_vers_df, decider
+from bot.strategie import EMA_LENTE, EMA_RAPIDE, bougies_vers_df, decider
 
 RACINE = Path(__file__).resolve().parent.parent
 FICHIER_DONNEES = RACINE / "docs" / "data.json"
@@ -256,7 +256,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = ""):
 def principal() -> int:
     donnees = charger()
     donnees["reglages"] = {"marches": MARCHES, "unite": UNITE, "risque_pct": RISQUE_PCT,
-                           "strategie": NOM_STRATEGIE, "strategie_rapide": NOM_RAPIDE if RAPIDE_ACTIVE else None}
+                           "strategie": NOM_STRATEGIE, "ema": [EMA_RAPIDE, EMA_LENTE], "strategie_rapide": NOM_RAPIDE if RAPIDE_ACTIVE else None}
     donnees.setdefault("journal", [])
     code = 0
 
