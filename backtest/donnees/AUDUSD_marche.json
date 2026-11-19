@@ -1,0 +1,96 @@
+{
+ "instrument": {
+  "epic": "AUDUSD",
+  "symbol": "AUD/USD",
+  "expiry": "-",
+  "name": "AUD/USD",
+  "lotSize": 1,
+  "type": "CURRENCIES",
+  "guaranteedStopAllowed": true,
+  "streamingPricesAvailable": true,
+  "currency": "USD",
+  "marginFactor": 5,
+  "marginFactorUnit": "PERCENTAGE",
+  "openingHours": {
+   "mon": [
+    "00:00 - 21:59:50",
+    "22:05 - 00:00"
+   ],
+   "tue": [
+    "00:00 - 21:59:50",
+    "22:05 - 00:00"
+   ],
+   "wed": [
+    "00:00 - 21:59:50",
+    "22:05 - 00:00"
+   ],
+   "thu": [
+    "00:00 - 21:59:50",
+    "22:05 - 00:00"
+   ],
+   "fri": [
+    "00:00 - 21:59:50"
+   ],
+   "sat": [],
+   "sun": [
+    "22:00 - 00:00"
+   ],
+   "zone": "UTC"
+  },
+  "country": "",
+  "overnightFee": {
+   "longRate": -0.00162,
+   "shortRate": -0.0066,
+   "swapChargeTimestamp": 1795125600000,
+   "swapChargeInterval": 1440
+  }
+ },
+ "dealingRules": {
+  "minStepDistance": {
+   "unit": "POINTS",
+   "value": 1e-05
+  },
+  "minDealSize": {
+   "unit": "POINTS",
+   "value": 100
+  },
+  "maxDealSize": {
+   "unit": "POINTS",
+   "value": 75000000
+  },
+  "minSizeIncrement": {
+   "unit": "POINTS",
+   "value": 100
+  },
+  "minGuaranteedStopDistance": {
+   "unit": "PERCENTAGE",
+   "value": 0.1
+  },
+  "minStopOrProfitDistance": {
+   "unit": "PERCENTAGE",
+   "value": 0.01
+  },
+  "maxStopOrProfitDistance": {
+   "unit": "PERCENTAGE",
+   "value": 100
+  },
+  "marketOrderPreference": "AVAILABLE_DEFAULT_ON",
+  "trailingStopsPreference": "NOT_AVAILABLE"
+ },
+ "snapshot": {
+  "marketStatus": "TRADEABLE",
+  "netChange": -0.00717,
+  "percentageChange": -0.69,
+  "updateTime": "2026-11-19T19:15:34.709",
+  "delayTime": 0,
+  "bid": 0.66658,
+  "offer": 0.66664,
+  "high": 0.67204,
+  "low": 0.66566,
+  "decimalPlacesFactor": 5,
+  "scalingFactor": 1,
+  "marketModes": [
+   "REGULAR"
+  ]
+ }
+}
