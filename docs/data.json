@@ -10,7 +10,7 @@
    20,
    200
   ],
-  "strategie_rapide": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, stop 1 %, risque 0.1 % (expérimentale)"
+  "strategie_rapide": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, stop 1 %, risque 0.05 % (expérimentale)"
  },
  "journal": [
   {
@@ -99,10 +99,23 @@
    "marche": "BTCUSD",
    "texte": "Tour immédiat : Tendance baissière nette (ADX 47) : on veut être VENDEUR. Décision : aucune action.",
    "strategie": "tendance_4h"
+  },
+  {
+   "date": "2026-11-19T18:58:18Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Analyse demandée depuis l'application."
+  },
+  {
+   "date": "2026-11-19T20:00:23Z",
+   "type": "erreur",
+   "marche": "AAPL",
+   "texte": "'ask'",
+   "strategie": "actions_etf"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-19T18:50:23Z",
+ "derniere_execution": "2026-11-19T20:25:26Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -139,15 +152,99 @@
   {
    "date": "2026-11-19T18:50:23Z",
    "valeur": 21010.86
+  },
+  {
+   "date": "2026-11-19T18:54:38Z",
+   "valeur": 21003.32
+  },
+  {
+   "date": "2026-11-19T18:55:23Z",
+   "valeur": 21008.04
+  },
+  {
+   "date": "2026-11-19T18:58:24Z",
+   "valeur": 21011.16
+  },
+  {
+   "date": "2026-11-19T19:00:27Z",
+   "valeur": 21012.6
+  },
+  {
+   "date": "2026-11-19T19:05:26Z",
+   "valeur": 21021.46
+  },
+  {
+   "date": "2026-11-19T19:10:26Z",
+   "valeur": 21020.12
+  },
+  {
+   "date": "2026-11-19T19:15:26Z",
+   "valeur": 21023.26
+  },
+  {
+   "date": "2026-11-19T19:20:26Z",
+   "valeur": 21019.64
+  },
+  {
+   "date": "2026-11-19T19:25:26Z",
+   "valeur": 21016.62
+  },
+  {
+   "date": "2026-11-19T19:30:26Z",
+   "valeur": 21017.98
+  },
+  {
+   "date": "2026-11-19T19:35:26Z",
+   "valeur": 21031.82
+  },
+  {
+   "date": "2026-11-19T19:40:26Z",
+   "valeur": 21030.2
+  },
+  {
+   "date": "2026-11-19T19:45:26Z",
+   "valeur": 21033.26
+  },
+  {
+   "date": "2026-11-19T19:50:26Z",
+   "valeur": 21035.64
+  },
+  {
+   "date": "2026-11-19T19:55:25Z",
+   "valeur": 21043.86
+  },
+  {
+   "date": "2026-11-19T20:00:26Z",
+   "valeur": 21049.32
+  },
+  {
+   "date": "2026-11-19T20:05:25Z",
+   "valeur": 21053.54
+  },
+  {
+   "date": "2026-11-19T20:10:26Z",
+   "valeur": 21055.62
+  },
+  {
+   "date": "2026-11-19T20:15:26Z",
+   "valeur": 21052.4
+  },
+  {
+   "date": "2026-11-19T20:20:26Z",
+   "valeur": 21047.66
+  },
+  {
+   "date": "2026-11-19T20:25:26Z",
+   "valeur": 21048.04
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 21004.95,
+  "solde": 21023.54,
   "depot": 20999.04,
-  "resultat_latent": 5.91,
-  "disponible": 19955.34
+  "resultat_latent": 24.5,
+  "disponible": 19982.61
  },
  "positions": [
   {
@@ -156,19 +253,18 @@
    "sens": "SELL",
    "taille": 0.0365,
    "prix_entree": 63020.05,
-   "resultat": 5.91,
+   "resultat": 24.49,
    "ouverte_le": "2026-11-19T18:26:28.191"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 62998.75,
+   "prix": 62218.5,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
    "graphique": {
     "dates": [
-     "2026-11-03T16:00:00",
      "2026-11-03T20:00:00",
      "2026-11-04T00:00:00",
      "2026-11-04T04:00:00",
@@ -263,10 +359,10 @@
      "2026-11-19T00:00:00",
      "2026-11-19T04:00:00",
      "2026-11-19T08:00:00",
-     "2026-11-19T12:00:00"
+     "2026-11-19T12:00:00",
+     "2026-11-19T16:00:00"
     ],
     "clotures": [
-     77518.7,
      77339.5,
      76372.25,
      78018.55,
@@ -361,10 +457,10 @@
      63135.05,
      63669.4,
      63879.0,
-     63030.8
+     63030.8,
+     62294.2
     ],
     "ema_rapide": [
-     77545.99,
      77526.32,
      77416.41,
      77473.76,
@@ -459,105 +555,106 @@
      64400.41,
      64330.79,
      64287.76,
-     64168.05
+     64168.05,
+     63989.59
     ],
     "ema_lente": [
-     80489.42,
-     80458.08,
-     80417.42,
-     80393.56,
-     80373.48,
-     80371.91,
-     80367.35,
-     80368.02,
-     80368.94,
-     80368.24,
-     80367.62,
-     80323.4,
-     80282.71,
-     80239.82,
-     80195.58,
-     80148.76,
-     80107.79,
-     80064.48,
-     80021.83,
-     79979.24,
-     79937.64,
-     79897.81,
-     79857.91,
-     79816.17,
-     79775.12,
-     79735.12,
-     79696.03,
-     79657.84,
-     79620.15,
-     79583.84,
-     79546.49,
-     79498.82,
-     79451.7,
-     79395.22,
-     79344.24,
-     79305.35,
-     79260.36,
-     79220.55,
-     79173.21,
-     79129.08,
-     79081.28,
-     79022.09,
-     78966.03,
-     78913.59,
-     78861.43,
-     78812.96,
-     78764.25,
-     78715.97,
-     78672.38,
-     78625.15,
-     78576.23,
-     78526.31,
-     78469.92,
-     78401.79,
-     78334.11,
-     78264.81,
-     78171.43,
-     78075.4,
-     77987.6,
-     77896.47,
-     77807.87,
-     77712.63,
-     77602.91,
-     77499.11,
-     77396.75,
-     77280.26,
-     77164.79,
-     77034.99,
-     76913.04,
-     76784.31,
-     76670.19,
-     76551.15,
-     76435.31,
-     76324.66,
-     76212.51,
-     76100.13,
-     75983.49,
-     75868.24,
-     75760.1,
-     75651.23,
-     75545.2,
-     75437.04,
-     75332.46,
-     75220.17,
-     75105.31,
-     75003.54,
-     74897.83,
-     74797.44,
-     74691.55,
-     74575.7,
-     74457.19,
-     74343.05,
-     74231.52,
-     74126.43,
-     74024.46,
-     73915.07
+     80458.17,
+     80417.51,
+     80393.64,
+     80373.57,
+     80372.0,
+     80367.43,
+     80368.11,
+     80369.02,
+     80368.33,
+     80367.7,
+     80323.48,
+     80282.79,
+     80239.9,
+     80195.66,
+     80148.84,
+     80107.87,
+     80064.56,
+     80021.91,
+     79979.31,
+     79937.72,
+     79897.88,
+     79857.98,
+     79816.24,
+     79775.19,
+     79735.2,
+     79696.1,
+     79657.91,
+     79620.22,
+     79583.91,
+     79546.56,
+     79498.89,
+     79451.77,
+     79395.28,
+     79344.3,
+     79305.41,
+     79260.42,
+     79220.61,
+     79173.27,
+     79129.14,
+     79081.34,
+     79022.15,
+     78966.09,
+     78913.64,
+     78861.49,
+     78813.01,
+     78764.31,
+     78716.03,
+     78672.43,
+     78625.2,
+     78576.28,
+     78526.37,
+     78469.97,
+     78401.84,
+     78334.17,
+     78264.87,
+     78171.49,
+     78075.45,
+     77987.66,
+     77896.52,
+     77807.92,
+     77712.68,
+     77602.96,
+     77499.16,
+     77396.8,
+     77280.3,
+     77164.84,
+     77035.04,
+     76913.09,
+     76784.36,
+     76670.24,
+     76551.2,
+     76435.36,
+     76324.7,
+     76212.56,
+     76100.17,
+     75983.53,
+     75868.29,
+     75760.15,
+     75651.27,
+     75545.24,
+     75437.08,
+     75332.5,
+     75220.21,
+     75105.35,
+     75003.58,
+     74897.86,
+     74797.48,
+     74691.59,
+     74575.73,
+     74457.23,
+     74343.08,
+     74231.56,
+     74126.46,
+     74024.5,
+     73915.11,
+     73799.48
     ]
    }
   }
@@ -593,16 +690,16 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-19T18:26:28Z",
    "statut": "ouvert",
-   "resultat": 5.91,
+   "resultat": 24.49,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
    "strategie": "rapide",
-   "dernier_prix": 62998.75
+   "dernier_prix": 62218.5
   }
  ],
  "historique_jour": {
-  "2026-11-19": 21010.86
+  "2026-11-19": 21048.04
  },
  "valeur_depart": 21000.0,
  "entrees": {},
@@ -610,7 +707,7 @@
   "deals": [
    "00000000-74d0-7cfb-049f-c46d0015549e"
   ],
-  "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, stop 1 %, risque 0.1 % (expérimentale)",
+  "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, stop 1 %, risque 0.05 % (expérimentale)",
   "tendance": "SELL",
   "action": "Position conservée",
   "filtre": {
@@ -635,10 +732,114 @@
    "nom": "Rapide 5 min",
    "description": "Trade souvent sur des bougies de 5 min avec un tout petit risque, pour comparer en direct (perdante en backtest).",
    "unite": "MINUTE_5",
-   "risque_pct": 0.1,
+   "risque_pct": 0.05,
    "action": "Position conservée",
    "tendance": "SELL",
-   "reglages": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, stop 1 %, risque 0.1 % (expérimentale)"
+   "reglages": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, stop 1 %, risque 0.05 % (expérimentale)"
+  },
+  "actions_etf": {
+   "active": true,
+   "nom": "Sous-bots actions et ETF",
+   "description": "Un sous-bot par action ou ETF : il n'achète que si l'analyse technique (~20 indicateurs) donne un achat fort dans une tendance haussière, avec SL garanti et TP.",
+   "unite": "HOUR_4",
+   "risque_pct": 0.5,
+   "reglages": "Note technique 4 h (achat seulement), SL garanti 2 ATR, TP 2 ATR sur la moitié, suiveur 5 ATR",
+   "marches": [
+    "TSLA",
+    "NVDA",
+    "AAPL",
+    "MSFT",
+    "GOOGL",
+    "SPY",
+    "QQQ",
+    "GLD",
+    "XLK",
+    "IWM"
+   ],
+   "action": "Actif"
+  }
+ },
+ "garde_fous": {
+  "jour": "2026-11-19",
+  "debut_jour": 21011.66,
+  "plus_haut": 21055.52,
+  "regles": {
+   "perte_max_pct": 10.0,
+   "perte_jour_pct": 3.0,
+   "positions_max": 12,
+   "risque_total_pct": 6.0
+  }
+ },
+ "sous_bots": {
+  "TSLA": {
+   "nom": "Tesla Inc",
+   "note": -0.67,
+   "tendance": null,
+   "prix": 375.28,
+   "action": "Aucune action"
+  },
+  "NVDA": {
+   "nom": "NVIDIA Corp",
+   "note": -0.67,
+   "tendance": null,
+   "prix": 147.39999999999998,
+   "action": "Aucune action"
+  },
+  "AAPL": {
+   "nom": "Apple Inc",
+   "note": -0.27,
+   "tendance": null,
+   "prix": 349.26,
+   "action": "Aucune action"
+  },
+  "MSFT": {
+   "nom": "Microsoft Corp",
+   "note": -0.56,
+   "tendance": null,
+   "prix": 500.74,
+   "action": "Aucune action"
+  },
+  "GOOGL": {
+   "nom": "Alphabet Inc - A",
+   "note": -0.56,
+   "tendance": null,
+   "prix": 274.2,
+   "action": "Aucune action"
+  },
+  "SPY": {
+   "nom": "SPDR S&P 500 ETF",
+   "note": -0.72,
+   "tendance": null,
+   "prix": 717.325,
+   "action": "Aucune action"
+  },
+  "QQQ": {
+   "nom": "Invesco QQQ Trust",
+   "note": -0.61,
+   "tendance": null,
+   "prix": 646.3599999999999,
+   "action": "Aucune action"
+  },
+  "GLD": {
+   "nom": "SPDR Gold Shares",
+   "note": -0.56,
+   "tendance": null,
+   "prix": 336.115,
+   "action": "Aucune action"
+  },
+  "XLK": {
+   "nom": "Technology Select Sector SPDR Fund",
+   "note": -0.56,
+   "tendance": null,
+   "prix": 160.98,
+   "action": "Aucune action"
+  },
+  "IWM": {
+   "nom": "iShares Russell 2000 ETF",
+   "note": -0.72,
+   "tendance": null,
+   "prix": 265.28499999999997,
+   "action": "Aucune action"
   }
  }
 }
