@@ -86,6 +86,7 @@
   .t-fermeture { background: color-mix(in srgb, var(--orange) 18%, transparent); color: var(--orange); }
   .t-erreur { background: color-mix(in srgb, var(--rouge) 15%, transparent); color: var(--rouge); }
   .t-analyse, .t-info { background: var(--grille); color: var(--doux); }
+  .t-stop { background: color-mix(in srgb, var(--bleu) 12%, transparent); color: var(--bleu); }
   .t-commande { background: color-mix(in srgb, var(--orange) 18%, transparent); color: var(--orange); }
 
   .journal li { list-style: none; padding: 10px 0; border-bottom: 1px solid var(--bord); display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; }
@@ -193,6 +194,7 @@
   <section class="page" id="p-ordres">
     <div class="carte">
       <div class="entete-carte"><h2 id="titre-ordres">Tous les ordres</h2><div class="puces" id="filtre-ordres"></div></div>
+      <div class="puces" id="filtre-strat" hidden style="margin-bottom:8px"></div>
       <div class="liste" id="ordres"></div>
     </div>
   </section>
@@ -200,7 +202,7 @@
   <!-- MARCHÉ -->
   <section class="page" id="p-marche">
     <div class="carte">
-      <div class="entete-carte"><h2>Graphique TradingView en direct</h2><span class="sous">CAPITALCOM:BTCUSD · 15 min · EMA 9 et 21</span></div>
+      <div class="entete-carte"><h2>Graphique TradingView en direct</h2><span class="sous" id="tv-info"></span></div>
       <div id="tv"></div>
     </div>
     <h2 style="margin-top:18px">Ce que le bot a analysé à son dernier passage</h2>
@@ -385,6 +387,9 @@ let D = null;
 let periode = memo.get("periode", "30");
 let filtreOrdres = memo.get("filtreOrdres", "tous");
 let filtreJournal = memo.get("filtreJournal", "tout");
+let filtreStrat = memo.get("filtreStrat", "toutes");
+const UNITES = { MINUTE: ["1 min", "1"], MINUTE_5: ["5 min", "5"], MINUTE_15: ["15 min", "15"], MINUTE_30: ["30 min", "30"], HOUR: ["1 h", "60"], HOUR_4: ["4 h", "240"], DAY: ["1 jour", "D"] };
+const emas = r => r?.ema || (r?.unite === "HOUR_4" ? [20, 200] : [9, 21]);
 
 function afficher() {
   const d = D, c = d.compte || {}, dev = c.devise ? " " + c.devise : "";
@@ -433,18 +438,29 @@ function afficher() {
   // Ordres
   puces("filtre-ordres", [["tous", `Tous (${ordres.length})`], ["ouvert", `Ouverts (${ouverts.length})`], ["ferme", `Fermés (${ordres.length - ouverts.length})`]],
     filtreOrdres, v => { filtreOrdres = v; memo.set("filtreOrdres", v); afficher(); });
-  const choix = ordres.filter(o => filtreOrdres === "tous" || o.statut === filtreOrdres).slice().reverse();
+  const strategies = [...new Set(ordres.map(o => o.strategie).filter(Boolean))];
+  const NOMS_STRAT = { tendance_4h: "Tendance 4 h", rapide: "Rapide" };
+  if (strategies.length > 1) puces("filtre-strat", [["toutes", "Toutes stratégies"], ...strategies.map(x => [x, NOMS_STRAT[x] || x])], filtreStrat,
+    v => { filtreStrat = v; memo.set("filtreStrat", v); afficher(); });
+  document.getElementById("filtre-strat").hidden = strategies.length < 2;
+  const choix = ordres.filter(o => (filtreOrdres === "tous" || o.statut === filtreOrdres) && (strategies.length < 2 || filtreStrat === "toutes" || o.strategie === filtreStrat)).slice().reverse();
   document.getElementById("ordres").innerHTML = choix.length ? choix.map(carteOrdre).join("") : '<p class="vide">Aucun ordre dans cette catégorie.</p>';
 
   // Marché
-  document.getElementById("marches").innerHTML = Object.entries(d.analyses || {}).map(([epic, a]) => {
+  const [ur, ul] = emas(d.reglages);
+  document.getElementById("tv-info").textContent = `CAPITALCOM:BTCUSD · ${(UNITES[d.reglages?.unite] || ["15 min"])[0]} · EMA ${ur} et ${ul}`;
+  const rap = d.rapide;
+  const carteRapide = rap ? `<div class="carte"><div class="marche-tete"><b>${esc(rap.nom || "Stratégie rapide")}</b>
+      ${rap.tendance === "BUY" ? '<span class="pos">▲ Haussière</span>' : rap.tendance === "SELL" ? '<span class="neg">▼ Baissière</span>' : ""}</div>
+      <p class="sous">${esc(rap.action || "")}</p></div>` : "";
+  document.getElementById("marches").innerHTML = carteRapide + Object.entries(d.analyses || {}).map(([epic, a]) => {
     const g = a.graphique || {};
     const tend = a.tendance === "BUY" ? '<span class="pos">▲ Tendance haussière</span>' : a.tendance === "SELL" ? '<span class="neg">▼ Tendance baissière</span>' : "—";
     return `<div class="carte">
       <div class="marche-tete"><span><b>${esc(epic)}</b> <span class="num">${fmt(a.prix)}</span></span>${tend}</div>
       <p class="sous">${esc(a.explication)} <b>${esc(a.action)}</b></p>
       ${lignes([{ valeurs: g.clotures || [], couleur: css("--texte"), epaisseur: 1.6 }, { valeurs: g.ema_rapide || [], couleur: css("--bleu") }, { valeurs: g.ema_lente || [], couleur: css("--orange") }], { dates: g.dates })}
-      <div class="legende"><span><i style="background:${css("--texte")}"></i>Prix (24 h, bougies 15 min)</span>
+      <div class="legende"><span><i style="background:${css("--texte")}"></i>Prix (bougies ${esc((UNITES[d.reglages?.unite] || ["15 min"])[0])})</span>
         <span><i style="background:${css("--bleu")}"></i>EMA rapide</span><span><i style="background:${css("--orange")}"></i>EMA lente</span></div>
       <p class="sous">Règle : quand la ligne bleue passe au-dessus de l'orange, le bot achète. Quand elle passe en dessous, il vend.</p>
     </div>`;
@@ -495,9 +511,11 @@ function afficher() {
     ["Compte", `Capital.com <b style="color:var(--orange)">DÉMO</b> (argent fictif uniquement)`],
     ["Stratégie", esc(r.strategie || "—")],
     ["Marchés", esc((r.marches || []).join(", ") || "—")],
-    ["Taille par position", esc(r.taille ?? "—")],
+    ...(r.taille != null ? [["Taille par position", esc(r.taille)]] : []),
+    ...(r.risque_pct != null ? [["Risque par trade", `${esc(r.risque_pct)} % du compte`]] : []),
+    ...(r.strategie_rapide ? [["Stratégie rapide", esc(r.strategie_rapide)]] : []),
     ["Bougies", esc(unites[r.unite] || r.unite || "—")],
-    ["Stop de sécurité", r.stop_pct ? `${esc(r.stop_pct)} % du prix (stop garanti si le compte l'exige)` : "aucun"],
+    ...(r.stop_pct != null ? [["Stop de sécurité", r.stop_pct ? `${esc(r.stop_pct)} % du prix (stop garanti si le compte l'exige)` : "aucun"]] : []),
     ["Fréquence", "toutes les 5 minutes environ, 24 h/24"],
     ["Code du bot", '<a href="https://github.com/mathp06530-gif/bot-trading-demo" target="_blank" rel="noopener">dépôt GitHub</a>'],
     ["Ordres en direct", '<a href="https://capital.com/trading/platform/" target="_blank" rel="noopener">plateforme Capital.com</a> (choisis « Démo » en haut à droite)'],
@@ -582,10 +600,10 @@ function chargerTV() {
   const sc = document.createElement("script");
   sc.src = "https://s3.tradingview.com/tv.js";
   sc.onload = () => new TradingView.widget({
-    container_id: "tv", autosize: true, symbol: "CAPITALCOM:BTCUSD", interval: "15", timezone: "Europe/Paris",
+    container_id: "tv", autosize: true, symbol: "CAPITALCOM:BTCUSD", interval: (UNITES[D?.reglages?.unite] || ["", "15"])[1], timezone: "Europe/Paris",
     theme: matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light", style: "1", locale: "fr",
     hide_side_toolbar: false, allow_symbol_change: true, withdateranges: true,
-    studies: [{ id: "MAExp@tv-basicstudies", inputs: { length: 9 } }, { id: "MAExp@tv-basicstudies", inputs: { length: 21 } }],
+    studies: emas(D?.reglages).map(n => ({ id: "MAExp@tv-basicstudies", inputs: { length: n } })),
   });
   sc.onerror = () => { document.getElementById("tv").innerHTML = '<p class="vide">Impossible de charger TradingView (connexion ?).</p>'; tvCharge = false; };
   document.head.appendChild(sc);
