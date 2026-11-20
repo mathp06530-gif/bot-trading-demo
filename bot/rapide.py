@@ -10,6 +10,9 @@ Règles, sur des bougies de 5 minutes (prix milieu) :
     de fond 1 h (EMA 50/200) ET 4 h (EMA 20/200). Sinon le bot reste à l'écart (et ferme sa position).
     Backtest 90 jours (0,1 % de risque) : examen -2,7 % sans filtre -> +0,1 % avec, 9 -> 3,4 trades/jour.
   - Stop garanti à 1 % du prix. Si le stop est touché, on repart dans le sens de la tendance.
+  - STOP SUIVEUR à SUIVI_RAPIDE_PCT (2 %) derrière le prix : quand le trade gagne beaucoup, le stop
+    le suit pour garder une partie du gain (il ne recule jamais). Backtest 90 jours : résultat
+    quasi identique (+14 € au lieu de +15 € sur l'examen), mais protège les gros mouvements.
   - Les positions de cette stratégie sont repérées par leur numéro (dealId), le bot ne les
     mélange jamais avec celles de la stratégie 4 h.
   - Le compte exige un stop GARANTI, interdit en mode couverture (hedging) : les deux stratégies
@@ -26,8 +29,9 @@ ACTIVE = os.getenv("RAPIDE", "oui").strip().lower() in ("oui", "1", "true", "on"
 UNITE_RAPIDE = "MINUTE_5"
 EMA_R, EMA_L = 9, 50
 STOP_PCT = 1.0
+SUIVI_RAPIDE_PCT = float(os.getenv("SUIVI_RAPIDE_PCT", "2"))  # "0" = pas de stop suiveur
 RISQUE_RAPIDE_PCT = float(os.getenv("RISQUE_RAPIDE_PCT", "0.05"))
-NOM = f"Rapide 5 min : EMA {EMA_R}/{EMA_L} dans le sens des tendances 1 h et 4 h, stop {STOP_PCT:g} %, risque {RISQUE_RAPIDE_PCT:g} % (expérimentale)"
+NOM = f"Rapide 5 min : EMA {EMA_R}/{EMA_L} dans le sens des tendances 1 h et 4 h, stop {STOP_PCT:g} %, suiveur {SUIVI_RAPIDE_PCT:g} %, risque {RISQUE_RAPIDE_PCT:g} % (expérimentale)"
 
 
 def decider_rapide(clotures: list[float]) -> str | None:
@@ -86,8 +90,9 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
         mots = {"BUY": "hausse", "SELL": "baisse", None: "?"}
         return (f"À l'écart : signal 5 min en {mots[signal]}, mais tendance 1 h en {mots[t1]} "
                 f"et 4 h en {mots[t4]} (pas d'accord)")
-    if any(p["position"]["direction"] == voulu for p in miennes):
-        return "Position conservée"
+    gardees = [p for p in miennes if p["position"]["direction"] == voulu]
+    if gardees:
+        return suivre_stop(api, gardees, bougies[-1]["closePrice"], epic, noter)
 
     # Sans mode couverture, un ordre inverse fermerait les positions de la stratégie 4 h : on attend.
     autres = [p for p in positions if p["market"]["epic"] == epic and p["position"]["dealId"] not in mes_ids]
@@ -114,3 +119,32 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
         return f"{mot} de {taille}"
     noter("erreur", epic, f"[Rapide] Ordre {mot} refusé : {conf.get('reason', conf.get('dealStatus', '?'))}")
     return "Ordre refusé"
+
+
+def suivre_stop(api, gardees: list, prix: dict, epic: str, noter) -> str:
+    """Stop suiveur : rapproche le stop garanti à SUIVI_RAPIDE_PCT % du prix actuel s'il protège mieux.
+    Le stop ne recule jamais et reste au moins à STOP_PCT % du prix (minimum du stop garanti)."""
+    if SUIVI_RAPIDE_PCT <= 0:
+        return "Position conservée"
+    resultat = "Position conservée"
+    milieu = (prix["bid"] + prix["ask"]) / 2
+    ecart = milieu * max(SUIVI_RAPIDE_PCT, STOP_PCT) / 100
+    for p in gardees:
+        pos = p["position"]
+        actuel = pos.get("stopLevel")
+        if pos["direction"] == "BUY":
+            cible = milieu - ecart
+            mieux = actuel is None or cible > float(actuel) + 1
+        else:
+            cible = milieu + ecart
+            mieux = actuel is None or cible < float(actuel) - 1
+        if not mieux:
+            continue
+        conf = api.modifier_stop(pos["dealId"], cible, bool(pos.get("guaranteedStop", True)))
+        if conf.get("dealStatus") == "ACCEPTED":
+            noter("stop", epic, f"[Rapide] Stop suiveur déplacé de {float(actuel or 0):.2f} à {cible:.2f} "
+                  "pour garder le gain.")
+            resultat = "Stop suiveur déplacé"
+        else:
+            noter("erreur", epic, f"[Rapide] Déplacement du stop refusé : {conf.get('reason', conf.get('dealStatus', '?'))}")
+    return resultat
