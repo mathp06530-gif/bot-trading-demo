@@ -16,7 +16,7 @@ from bot.capital import CapitalDemo  # noqa: E402
 
 DOSSIER = Path(__file__).resolve().parent / "donnees"
 EPICS = [e.strip() for e in os.getenv("EPICS", "BTCUSD").split(",") if e.strip()]
-TOUTES = {"MINUTE": (1, 90), "MINUTE_5": (5, 150), "MINUTE_15": (15, 400), "HOUR": (60, 730)}  # unité : (minutes, jours d'historique)
+TOUTES = {"MINUTE": (1, 90), "MINUTE_15": (15, 400), "HOUR": (60, 730)}  # unité : (minutes, jours d'historique)
 DEMANDES = {u: TOUTES[u] for u in os.getenv("UNITES", "MINUTE,MINUTE_15,HOUR").split(",")}
 
 
