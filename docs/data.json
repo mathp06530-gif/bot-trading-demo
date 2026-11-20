@@ -829,10 +829,114 @@
    "type": "commande",
    "marche": "",
    "texte": "Stratégie Objectif x5 sur l'argent (50 €) activée depuis l'application."
+  },
+  {
+   "date": "2026-11-20T13:26:21Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Bot relancé depuis l'application."
+  },
+  {
+   "date": "2026-11-20T13:26:32Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "[Challenge] Tentative n° 1 lancée : 10000 € virtuels, objectif +10 %, perte max 5 % par jour et 10 % au total.",
+   "strategie": "challenge"
+  },
+  {
+   "date": "2026-11-20T13:26:32Z",
+   "type": "analyse",
+   "marche": "GOLD",
+   "texte": "[Challenge] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-11 12:00).",
+   "strategie": "challenge"
+  },
+  {
+   "date": "2026-11-20T13:26:32Z",
+   "type": "analyse",
+   "marche": "SILVER",
+   "texte": "[Challenge] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-12 08:00).",
+   "strategie": "challenge"
+  },
+  {
+   "date": "2026-11-20T13:26:33Z",
+   "type": "ordre",
+   "marche": "GOLD",
+   "texte": "[Challenge] Tendance 1 mois : le prix est plus bas qu'il y a 30 jours (-13.2 %) : VENTE de 0.17 à 3554.91, stop garanti à 244.43.",
+   "strategie": "challenge"
+  },
+  {
+   "date": "2026-11-20T13:26:34Z",
+   "type": "ordre",
+   "marche": "SILVER",
+   "texte": "[Challenge] Tendance 1 mois : le prix est plus bas qu'il y a 30 jours (-25.5 %) : VENTE de 7.4 à 41.58, stop garanti à 5.93.",
+   "strategie": "challenge"
+  },
+  {
+   "date": "2026-11-20T13:26:34Z",
+   "type": "ordre",
+   "marche": "ETHUSD",
+   "texte": "[Challenge] Tendance 1 mois : le prix est plus bas qu'il y a 30 jours (-28.2 %) : VENTE de 0.147 à 1730.12, stop garanti à 299.10.",
+   "strategie": "challenge"
+  },
+  {
+   "date": "2026-11-20T13:26:35Z",
+   "type": "analyse",
+   "marche": "US100",
+   "texte": "[Challenge] Tendance 1 mois (VENTE) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-30.8 % du prix) : marché écarté.",
+   "strategie": "challenge"
+  },
+  {
+   "date": "2026-11-20T13:26:35Z",
+   "type": "analyse",
+   "marche": "US500",
+   "texte": "[Challenge] Tendance 1 mois (VENTE) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-27.7 % du prix) : marché écarté.",
+   "strategie": "challenge"
+  },
+  {
+   "date": "2026-11-20T13:26:35Z",
+   "type": "analyse",
+   "marche": "DE40",
+   "texte": "[Challenge] Tendance 1 mois (VENTE) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-13.7 % du prix) : marché écarté.",
+   "strategie": "challenge"
+  },
+  {
+   "date": "2026-11-20T13:26:36Z",
+   "type": "ordre",
+   "marche": "OIL_CRUDE",
+   "texte": "[Challenge] Tendance 1 mois : le prix est plus bas qu'il y a 30 jours (-14.0 %) : VENTE de 4.1 à 82.35, stop garanti à 10.54.",
+   "strategie": "challenge"
+  },
+  {
+   "date": "2026-11-20T13:26:37Z",
+   "type": "ordre",
+   "marche": "EURUSD",
+   "texte": "[Challenge] Tendance 1 mois : le prix est plus bas qu'il y a 30 jours (-2.2 %) : VENTE de 2600.0 à 1.10, stop garanti à 0.02.",
+   "strategie": "challenge"
+  },
+  {
+   "date": "2026-11-20T13:26:38Z",
+   "type": "ordre",
+   "marche": "GBPUSD",
+   "texte": "[Challenge] Tendance 1 mois : le prix est plus bas qu'il y a 30 jours (-1.4 %) : VENTE de 2300.0 à 1.31, stop garanti à 0.02.",
+   "strategie": "challenge"
+  },
+  {
+   "date": "2026-11-20T13:26:38Z",
+   "type": "ordre",
+   "marche": "AUDUSD",
+   "texte": "[Challenge] Tendance 1 mois : le prix est plus bas qu'il y a 30 jours (-3.8 %) : VENTE de 3200.0 à 0.67, stop garanti à 0.01.",
+   "strategie": "challenge"
+  },
+  {
+   "date": "2026-11-20T13:26:39Z",
+   "type": "analyse",
+   "marche": "USDJPY",
+   "texte": "[Challenge] Tendance 1 mois (ACHAT) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-3.2 % du prix) : marché écarté.",
+   "strategie": "challenge"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T13:25:37Z",
+ "derniere_execution": "2026-11-20T13:26:39Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -1797,23 +1901,91 @@
   {
    "date": "2026-11-20T13:25:37Z",
    "valeur": 20972.85
+  },
+  {
+   "date": "2026-11-20T13:26:39Z",
+   "valeur": 20970.01
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 20972.85,
+  "solde": 20971.43,
   "depot": 20972.85,
-  "resultat_latent": 0.0,
-  "disponible": 20972.85
+  "resultat_latent": -1.42,
+  "disponible": 20559.05
  },
- "positions": [],
+ "positions": [
+  {
+   "marche": "GOLD",
+   "nom": "Gold",
+   "sens": "SELL",
+   "taille": 0.17,
+   "prix_entree": 3554.91,
+   "resultat": -0.09,
+   "ouverte_le": "2026-11-20T13:26:33.180"
+  },
+  {
+   "marche": "SILVER",
+   "nom": "Silver",
+   "sens": "SELL",
+   "taille": 7.4,
+   "prix_entree": 41.581,
+   "resultat": -0.27,
+   "ouverte_le": "2026-11-20T13:26:33.967"
+  },
+  {
+   "marche": "AUDUSD",
+   "nom": "AUD/USD",
+   "sens": "SELL",
+   "taille": 3200,
+   "prix_entree": 0.66644,
+   "resultat": -0.15,
+   "ouverte_le": "2026-11-20T13:26:38.647"
+  },
+  {
+   "marche": "ETHUSD",
+   "nom": "Ethereum/USD",
+   "sens": "SELL",
+   "taille": 0.147,
+   "prix_entree": 1730.12,
+   "resultat": -0.28,
+   "ouverte_le": "2026-11-20T13:26:34.758"
+  },
+  {
+   "marche": "OIL_CRUDE",
+   "nom": "Crude Oil Spot",
+   "sens": "SELL",
+   "taille": 4.1,
+   "prix_entree": 82.348,
+   "resultat": -0.07,
+   "ouverte_le": "2026-11-20T13:26:36.256"
+  },
+  {
+   "marche": "EURUSD",
+   "nom": "EUR/USD",
+   "sens": "SELL",
+   "taille": 2600,
+   "prix_entree": 1.09973,
+   "resultat": -0.33,
+   "ouverte_le": "2026-11-20T13:26:37.047"
+  },
+  {
+   "marche": "GBPUSD",
+   "nom": "GBP/USD",
+   "sens": "SELL",
+   "taille": 2300,
+   "prix_entree": 1.31251,
+   "resultat": -0.27,
+   "ouverte_le": "2026-11-20T13:26:37.852"
+  }
+ ],
  "analyses": {
   "BTCUSD": {
    "prix": 61416.4,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
-   "action": "En pause (aucun ordre)",
+   "action": "Désactivée (positions gardées, stop suiveur actif)",
    "graphique": {
     "dates": [
      "2026-11-04T12:00:00",
@@ -2649,11 +2821,130 @@
    "motif_sortie": "Fermée depuis l'application",
    "strategie": "tendance_mois",
    "resultat_estime": false
+  },
+  {
+   "id": "00000000-750a-4e12-049f-c46d0015549e",
+   "marche": "GOLD",
+   "nom": "Gold",
+   "sens": "SELL",
+   "taille": 0.17,
+   "prix_entree": 3554.91,
+   "stop": 3799.34,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T13:26:33Z",
+   "statut": "ouvert",
+   "resultat": -0.09,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "challenge"
+  },
+  {
+   "id": "00000000-750a-4e26-049f-c46d0015549e",
+   "marche": "SILVER",
+   "nom": "Silver",
+   "sens": "SELL",
+   "taille": 7.4,
+   "prix_entree": 41.581,
+   "stop": 47.511,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T13:26:33Z",
+   "statut": "ouvert",
+   "resultat": -0.27,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "challenge"
+  },
+  {
+   "id": "00000000-750a-4e8f-049f-c46d0015549e",
+   "marche": "AUDUSD",
+   "nom": "AUD/USD",
+   "sens": "SELL",
+   "taille": 3200,
+   "prix_entree": 0.66644,
+   "stop": 0.67644,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T13:26:38Z",
+   "statut": "ouvert",
+   "resultat": -0.15,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "challenge"
+  },
+  {
+   "id": "00000000-750a-4e41-049f-c46d0015549e",
+   "marche": "ETHUSD",
+   "nom": "Ethereum/USD",
+   "sens": "SELL",
+   "taille": 0.147,
+   "prix_entree": 1730.12,
+   "stop": 2029.22,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T13:26:34Z",
+   "statut": "ouvert",
+   "resultat": -0.28,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "challenge"
+  },
+  {
+   "id": "00000000-750a-4e4f-049f-c46d0015549e",
+   "marche": "OIL_CRUDE",
+   "nom": "Crude Oil Spot",
+   "sens": "SELL",
+   "taille": 4.1,
+   "prix_entree": 82.348,
+   "stop": 92.888,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T13:26:36Z",
+   "statut": "ouvert",
+   "resultat": -0.07,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "challenge"
+  },
+  {
+   "id": "00000000-750a-4e5b-049f-c46d0015549e",
+   "marche": "EURUSD",
+   "nom": "EUR/USD",
+   "sens": "SELL",
+   "taille": 2600,
+   "prix_entree": 1.09973,
+   "stop": 1.11973,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T13:26:37Z",
+   "statut": "ouvert",
+   "resultat": -0.33,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "challenge"
+  },
+  {
+   "id": "00000000-750a-4e6d-049f-c46d0015549e",
+   "marche": "GBPUSD",
+   "nom": "GBP/USD",
+   "sens": "SELL",
+   "taille": 2300,
+   "prix_entree": 1.31251,
+   "stop": 1.33251,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T13:26:37Z",
+   "statut": "ouvert",
+   "resultat": -0.27,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "challenge"
   }
  ],
  "historique_jour": {
   "2026-11-19": 21069.4,
-  "2026-11-20": 20972.85
+  "2026-11-20": 20970.01
  },
  "valeur_depart": 21000.0,
  "entrees": {
@@ -2673,7 +2964,14 @@
   "tendance_mois:MSFT": "2026-11-19 00:00:00+00:00",
   "tendance_mois:NFLX": "2026-11-19 00:00:00+00:00",
   "tendance_mois:SLV": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:SOLUSD": "2026-11-19 00:00:00+00:00"
+  "tendance_mois:SOLUSD": "2026-11-19 00:00:00+00:00",
+  "challenge_tm:GOLD": "2026-11-19 00:00:00+00:00",
+  "challenge_tm:SILVER": "2026-11-19 00:00:00+00:00",
+  "challenge_tm:ETHUSD": "2026-11-19 00:00:00+00:00",
+  "challenge_tm:OIL_CRUDE": "2026-11-19 00:00:00+00:00",
+  "challenge_tm:EURUSD": "2026-11-19 00:00:00+00:00",
+  "challenge_tm:GBPUSD": "2026-11-19 00:00:00+00:00",
+  "challenge_tm:AUDUSD": "2026-11-19 00:00:00+00:00"
  },
  "rapide": {
   "deals": [
@@ -2681,7 +2979,7 @@
   ],
   "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, , Bollinger qui s'élargissent, stop 1 %, suiveur 2 %, risque 0.072 % (expérimentale)",
   "tendance": "SELL",
-  "action": "En pause (aucun ordre)",
+  "action": "Désactivée",
   "filtre": {
    "signal_5min": "SELL",
    "tendance_1h": "SELL",
@@ -2695,7 +2993,7 @@
    "description": "Suit les grosses tendances du Bitcoin sur des bougies de 4 h : peu de trades, la seule gagnante en backtest.",
    "unite": "HOUR_4",
    "risque_pct": 1.0,
-   "action": "En pause (aucun ordre)",
+   "action": "Désactivée (positions gardées, stop suiveur actif)",
    "tendance": "SELL",
    "reglages": "Tendance 4 h : EMA 20/200 + ADX > 20, stop 2 ATR, suiveur 5 ATR"
   },
@@ -2705,7 +3003,7 @@
    "description": "Trade souvent sur des bougies de 5 min avec un tout petit risque, pour comparer en direct (perdante en backtest).",
    "unite": "MINUTE_5",
    "risque_pct": 0.072,
-   "action": "En pause (aucun ordre)",
+   "action": "Désactivée",
    "tendance": "SELL",
    "reglages": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, , Bollinger qui s'élargissent, stop 1 %, suiveur 2 %, risque 0.072 % (expérimentale)"
   },
@@ -2728,7 +3026,7 @@
     "XLK",
     "IWM"
    ],
-   "action": "En pause"
+   "action": "Désactivée"
   },
   "cassure_4h": {
    "active": false,
@@ -2741,7 +3039,7 @@
     "GOLD",
     "SILVER"
    ],
-   "action": "En pause"
+   "action": "Désactivée"
   },
   "petit_compte": {
    "active": false,
@@ -2755,7 +3053,7 @@
     "SILVER"
    ],
    "capital_depart": 100.0,
-   "action": "En pause",
+   "action": "Désactivée",
    "capital": 100.0
   },
   "tendance_mois": {
@@ -2778,7 +3076,7 @@
     "AUDUSD",
     "USDJPY"
    ],
-   "action": "En pause"
+   "action": "Désactivée"
   },
   "x5_or": {
    "active": true,
@@ -2791,7 +3089,7 @@
     "GOLD"
    ],
    "capital_depart": 50.0,
-   "action": "En pause",
+   "action": "Actif",
    "capital": 50.0
   },
   "x5_argent": {
@@ -2805,7 +3103,7 @@
     "SILVER"
    ],
    "capital_depart": 50.0,
-   "action": "En pause",
+   "action": "Actif",
    "capital": 50.0
   },
   "cassure_tous": {
@@ -2816,89 +3114,127 @@
    "description": "La cassure 4 h sur tous les autres marchés (actions, ETF, indices, devises, crypto, pétrole). Avant chaque entrée, le bot rejoue la stratégie sur les 12 derniers mois de ce marché et ne trade que s'il y a gagné. Petit risque.",
    "reglages": "Cassure 20 bougies 4 h dans le sens de l'EMA 200, stop garanti 2 ATR",
    "marches": [],
-   "action": "En pause"
+   "action": "Désactivée"
+  },
+  "challenge": {
+   "active": true,
+   "nom": "Challenge prop firm (10 000 € virtuels)",
+   "unite": "HOUR_4",
+   "risque_pct": 0.5,
+   "description": "Faux challenge de prop firm en direct sur le compte démo : 10000 € virtuels, réussi à +10 %, raté à -5 % dans une journée ou -10 % au total. Joue la cassure 4 h (or, argent) et la tendance 1 mois (11 marchés). Une nouvelle tentative démarre le lendemain de chaque fin.",
+   "reglages": "Cassure 20 bougies 4 h dans le sens de l'EMA 200, stop garanti 2 ATR",
+   "marches": [
+    "AUDUSD",
+    "DE40",
+    "ETHUSD",
+    "EURUSD",
+    "GBPUSD",
+    "GOLD",
+    "OIL_CRUDE",
+    "SILVER",
+    "US100",
+    "US500",
+    "USDJPY"
+   ],
+   "capital_depart": 10000.0,
+   "action": "Actif",
+   "capital": 9998.54,
+   "suivi": {
+    "tentative": 1,
+    "statut": "en cours",
+    "raison": null,
+    "debut": "2026-11-20T13:26:32Z",
+    "debut_jour": 10000.0,
+    "plus_bas": 9998.54,
+    "plus_haut": 10000.0
+   },
+   "tentatives": [],
+   "tentatives_finies": 0,
+   "reussies": 0,
+   "ratees": 0
   }
  },
  "garde_fous": {
   "jour": "2026-11-20",
   "debut_jour": 21069.480000000003,
-  "plus_haut": 21102.3,
+  "plus_haut": 20972.85,
   "regles": {
    "perte_max_pct": 10.0,
    "perte_jour_pct": 3.0,
    "positions_max": 40,
    "risque_total_pct": 12.0
-  }
+  },
+  "coupe_circuit": false
  },
  "sous_bots": {
   "TSLA": {
    "nom": "Tesla Inc",
    "note": -0.6,
    "tendance": null,
-   "prix": 366.09000000000003,
+   "prix": 364.70000000000005,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.48,
    "tendance": null,
-   "prix": 141.195,
+   "prix": 140.71,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
    "note": -0.14,
    "tendance": null,
-   "prix": 350.075,
+   "prix": 350.195,
    "action": "Aucune action"
   },
   "MSFT": {
    "nom": "Microsoft Corp",
    "note": -0.54,
    "tendance": null,
-   "prix": 487.69,
+   "prix": 485.78499999999997,
    "action": "Aucune action"
   },
   "GOOGL": {
    "nom": "Alphabet Inc - A",
    "note": -0.48,
    "tendance": null,
-   "prix": 271.08,
+   "prix": 271.07,
    "action": "Aucune action"
   },
   "SPY": {
    "nom": "SPDR S&P 500 ETF",
    "note": -0.54,
    "tendance": null,
-   "prix": 709.8,
+   "prix": 708.895,
    "action": "Aucune action"
   },
   "QQQ": {
    "nom": "Invesco QQQ Trust",
    "note": -0.6,
    "tendance": null,
-   "prix": 633.95,
+   "prix": 633.355,
    "action": "Aucune action"
   },
   "GLD": {
    "nom": "SPDR Gold Shares",
    "note": -0.37,
    "tendance": null,
-   "prix": 327.70000000000005,
+   "prix": 325.79999999999995,
    "action": "Aucune action"
   },
   "XLK": {
    "nom": "Technology Select Sector SPDR Fund",
    "note": -0.6,
    "tendance": null,
-   "prix": 156.85,
+   "prix": 156.58,
    "action": "Aucune action"
   },
   "IWM": {
    "nom": "iShares Russell 2000 ETF",
    "note": -0.54,
    "tendance": null,
-   "prix": 263.3,
+   "prix": 263.005,
    "action": "Aucune action"
   }
  },
@@ -2930,22 +3266,22 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3579.4449999999997,
+   "prix": 3560.58,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 4003.25,
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)",
-   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)"
+   "action": "Désactivé"
   },
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 42.33,
+   "prix": 41.804,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.78,
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)",
-   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)"
+   "action": "Désactivé"
   }
  },
  "deals_par_strategie": {
@@ -2972,7 +3308,17 @@
   ],
   "x5_or": [],
   "x5_argent": [],
-  "cassure_tous": []
+  "cassure_tous": [],
+  "challenge": [],
+  "challenge_tm": [
+   "00000000-750a-4e12-049f-c46d0015549e",
+   "00000000-750a-4e26-049f-c46d0015549e",
+   "00000000-750a-4e41-049f-c46d0015549e",
+   "00000000-750a-4e4f-049f-c46d0015549e",
+   "00000000-750a-4e5b-049f-c46d0015549e",
+   "00000000-750a-4e6d-049f-c46d0015549e",
+   "00000000-750a-4e8f-049f-c46d0015549e"
+  ]
  },
  "petit_compte": {
   "GOLD": {
@@ -3001,112 +3347,112 @@
    "nom": "Gold",
    "momentum_pct": -13.2,
    "tendance": "SELL",
-   "prix": 3579.71,
+   "prix": 3558.69,
    "plus_haut_20": 4148.59,
    "plus_bas_20": 3719.87,
    "ema200": 3989.7,
-   "action": "Position conservée"
+   "action": "Désactivé"
   },
   "SILVER": {
    "nom": "Silver",
    "momentum_pct": -25.46,
    "tendance": "SELL",
-   "prix": 42.3055,
+   "prix": 41.881,
    "plus_haut_20": 54.63,
    "plus_bas_20": 44.76,
    "ema200": 51.9,
-   "action": "Position conservée"
+   "action": "Désactivé"
   },
   "ETHUSD": {
    "nom": "Ethereum/USD",
    "momentum_pct": -28.25,
    "tendance": "SELL",
-   "prix": 1736.915,
+   "prix": 1734.475,
    "plus_haut_20": 2447.34,
    "plus_bas_20": 1710.64,
    "ema200": 2156.51,
-   "action": "Position conservée"
+   "action": "Désactivé"
   },
   "US100": {
    "nom": "US Tech 100",
    "momentum_pct": -11.19,
    "tendance": "SELL",
-   "prix": 26050.800000000003,
+   "prix": 26042.7,
    "plus_haut_20": 30016.7,
    "plus_bas_20": 26256.1,
    "ema200": 28357.2,
-   "action": "Position conservée"
+   "action": "Désactivé"
   },
   "US500": {
    "nom": "US 500",
    "momentum_pct": -7.23,
    "tendance": "SELL",
-   "prix": 7116.6,
+   "prix": 7106.0,
    "plus_haut_20": 7784.5,
    "plus_bas_20": 7285.5,
    "ema200": 7570.57,
-   "action": "Position conservée"
+   "action": "Désactivé"
   },
   "DE40": {
    "nom": "Germany 40",
    "momentum_pct": -0.73,
    "tendance": "SELL",
-   "prix": 24900.9,
+   "prix": 24846.75,
    "plus_haut_20": 27003.1,
    "plus_bas_20": 25317.7,
    "ema200": 25904.41,
-   "action": "Position conservée"
+   "action": "Désactivé"
   },
   "OIL_CRUDE": {
    "nom": "Crude Oil Spot",
    "momentum_pct": -14.02,
    "tendance": "SELL",
-   "prix": 82.043,
+   "prix": 82.3955,
    "plus_haut_20": 104.2,
    "plus_bas_20": 81.16,
    "ema200": 93.36,
-   "action": "Position conservée"
+   "action": "Désactivé"
   },
   "EURUSD": {
    "nom": "EUR/USD",
    "momentum_pct": -2.18,
    "tendance": "SELL",
-   "prix": 1.098535,
+   "prix": 1.099825,
    "plus_haut_20": 1.13,
    "plus_bas_20": 1.1,
    "ema200": 1.11,
-   "action": "Position conservée"
+   "action": "Désactivé"
   },
   "GBPUSD": {
    "nom": "GBP/USD",
    "momentum_pct": -1.39,
    "tendance": "SELL",
-   "prix": 1.311955,
+   "prix": 1.312425,
    "plus_haut_20": 1.35,
    "plus_bas_20": 1.31,
    "ema200": 1.33,
-   "action": "Position conservée"
+   "action": "Désactivé"
   },
   "AUDUSD": {
    "nom": "AUD/USD",
    "momentum_pct": -3.79,
    "tendance": "SELL",
-   "prix": 0.666695,
+   "prix": 0.666585,
    "plus_haut_20": 0.71,
    "plus_bas_20": 0.67,
    "ema200": 0.69,
-   "action": "Position conservée"
+   "action": "Désactivé"
   },
   "USDJPY": {
    "nom": "USD/JPY",
    "momentum_pct": 1.0,
    "tendance": "BUY",
-   "prix": 158.7305,
+   "prix": 158.6135,
    "plus_haut_20": 160.19,
    "plus_bas_20": 156.97,
    "ema200": 158.35,
    "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-3.2 % du prix) : marché écarté",
-   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-3.2 % du prix) : marché écarté",
+   "action": "Désactivé",
    "analyse": "sur 365 jours, la stratégie aurait perdu (-3.2 % du prix) : marché écarté"
   },
   "AAPL": {
@@ -3380,7 +3726,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3579.4449999999997,
+   "prix": 3560.58,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 4003.25,
@@ -3392,7 +3738,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 42.33,
+   "prix": 41.804,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.78,
@@ -3724,5 +4070,168 @@
    "action": "Refusé : cassure trop ancienne (depuis le 2026-11-17 12:00)"
   }
  },
- "pause": true
+ "pause": false,
+ "challenge_suivi": {
+  "tentatives": [],
+  "tentative": 1,
+  "statut": "en cours",
+  "debut": "2026-11-20T13:26:32Z",
+  "fin": null,
+  "base_realise": 0,
+  "jour": "2026-11-20",
+  "debut_jour": 10000.0,
+  "valeur": 9998.54,
+  "plus_bas": 9998.54,
+  "plus_haut": 10000.0,
+  "a_fermer": false
+ },
+ "challenge": {
+  "GOLD": {
+   "nom": "Gold",
+   "tendance": "SELL",
+   "prix": 3560.58,
+   "plus_haut_20": 3890.96,
+   "plus_bas_20": 3514.59,
+   "ema200": 4003.25,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)"
+  },
+  "SILVER": {
+   "nom": "Silver",
+   "tendance": "SELL",
+   "prix": 41.804,
+   "plus_haut_20": 48.01,
+   "plus_bas_20": 41.11,
+   "ema200": 52.78,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)"
+  }
+ },
+ "challenge_tm": {
+  "GOLD": {
+   "nom": "Gold",
+   "momentum_pct": -13.2,
+   "tendance": "SELL",
+   "prix": 3558.69,
+   "plus_haut_20": 4148.59,
+   "plus_bas_20": 3719.87,
+   "ema200": 3989.7,
+   "analyse": "sur 365 jours, la stratégie aurait gagné +46.7 % du prix (20 changements)",
+   "action": "VENTE de 0.17"
+  },
+  "SILVER": {
+   "nom": "Silver",
+   "momentum_pct": -25.46,
+   "tendance": "SELL",
+   "prix": 41.881,
+   "plus_haut_20": 54.63,
+   "plus_bas_20": 44.76,
+   "ema200": 51.9,
+   "analyse": "sur 365 jours, la stratégie aurait gagné +38.3 % du prix (32 changements)",
+   "action": "VENTE de 7.4"
+  },
+  "ETHUSD": {
+   "nom": "Ethereum/USD",
+   "momentum_pct": -28.25,
+   "tendance": "SELL",
+   "prix": 1734.475,
+   "plus_haut_20": 2447.34,
+   "plus_bas_20": 1710.64,
+   "ema200": 2156.51,
+   "analyse": "sur 365 jours, la stratégie aurait gagné +69.2 % du prix (32 changements)",
+   "action": "VENTE de 0.147"
+  },
+  "US100": {
+   "nom": "US Tech 100",
+   "momentum_pct": -11.19,
+   "tendance": "SELL",
+   "prix": 26042.7,
+   "plus_haut_20": 30016.7,
+   "plus_bas_20": 26256.1,
+   "ema200": 28357.2,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-30.8 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-30.8 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-30.8 % du prix) : marché écarté"
+  },
+  "US500": {
+   "nom": "US 500",
+   "momentum_pct": -7.23,
+   "tendance": "SELL",
+   "prix": 7106.0,
+   "plus_haut_20": 7784.5,
+   "plus_bas_20": 7285.5,
+   "ema200": 7570.57,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-27.7 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-27.7 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-27.7 % du prix) : marché écarté"
+  },
+  "DE40": {
+   "nom": "Germany 40",
+   "momentum_pct": -0.73,
+   "tendance": "SELL",
+   "prix": 24841.0,
+   "plus_haut_20": 27003.1,
+   "plus_bas_20": 25317.7,
+   "ema200": 25904.41,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-13.7 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-13.7 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-13.7 % du prix) : marché écarté"
+  },
+  "OIL_CRUDE": {
+   "nom": "Crude Oil Spot",
+   "momentum_pct": -14.02,
+   "tendance": "SELL",
+   "prix": 82.3955,
+   "plus_haut_20": 104.2,
+   "plus_bas_20": 81.16,
+   "ema200": 93.36,
+   "analyse": "sur 365 jours, la stratégie aurait gagné +17.9 % du prix (25 changements)",
+   "action": "VENTE de 4.1"
+  },
+  "EURUSD": {
+   "nom": "EUR/USD",
+   "momentum_pct": -2.18,
+   "tendance": "SELL",
+   "prix": 1.099825,
+   "plus_haut_20": 1.13,
+   "plus_bas_20": 1.1,
+   "ema200": 1.11,
+   "analyse": "sur 365 jours, la stratégie aurait gagné +6.5 % du prix (12 changements)",
+   "action": "VENTE de 2600.0"
+  },
+  "GBPUSD": {
+   "nom": "GBP/USD",
+   "momentum_pct": -1.39,
+   "tendance": "SELL",
+   "prix": 1.312425,
+   "plus_haut_20": 1.35,
+   "plus_bas_20": 1.31,
+   "ema200": 1.33,
+   "analyse": "sur 365 jours, la stratégie aurait gagné +1.8 % du prix (16 changements)",
+   "action": "VENTE de 2300.0"
+  },
+  "AUDUSD": {
+   "nom": "AUD/USD",
+   "momentum_pct": -3.79,
+   "tendance": "SELL",
+   "prix": 0.666585,
+   "plus_haut_20": 0.71,
+   "plus_bas_20": 0.67,
+   "ema200": 0.69,
+   "analyse": "sur 365 jours, la stratégie aurait gagné +0.5 % du prix (29 changements)",
+   "action": "VENTE de 3200.0"
+  },
+  "USDJPY": {
+   "nom": "USD/JPY",
+   "momentum_pct": 1.0,
+   "tendance": "BUY",
+   "prix": 158.6135,
+   "plus_haut_20": 160.19,
+   "plus_bas_20": 156.97,
+   "ema200": 158.35,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-3.2 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-3.2 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-3.2 % du prix) : marché écarté"
+  }
+ }
 }
