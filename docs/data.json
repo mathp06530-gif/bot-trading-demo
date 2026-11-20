@@ -178,7 +178,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T10:30:28Z",
+ "derniere_execution": "2026-11-20T10:35:28Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -983,6 +983,10 @@
   {
    "date": "2026-11-20T10:30:28Z",
    "valeur": 21000.31
+  },
+  {
+   "date": "2026-11-20T10:35:28Z",
+   "valeur": 21000.31
   }
  ],
  "compte": {
@@ -996,7 +1000,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 61830.75,
+   "prix": 61947.55,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1588,56 +1592,56 @@
    "nom": "Tesla Inc",
    "note": -0.48,
    "tendance": null,
-   "prix": 368.265,
+   "prix": 368.31,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.48,
    "tendance": null,
-   "prix": 142.675,
+   "prix": 142.795,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
    "note": -0.31,
    "tendance": null,
-   "prix": 350.625,
+   "prix": 350.39,
    "action": "Aucune action"
   },
   "MSFT": {
    "nom": "Microsoft Corp",
    "note": -0.6,
    "tendance": null,
-   "prix": 492.555,
+   "prix": 492.75,
    "action": "Aucune action"
   },
   "GOOGL": {
    "nom": "Alphabet Inc - A",
    "note": -0.6,
    "tendance": null,
-   "prix": 274.29,
+   "prix": 274.595,
    "action": "Aucune action"
   },
   "SPY": {
    "nom": "SPDR S&P 500 ETF",
    "note": -0.48,
    "tendance": null,
-   "prix": 713.3499999999999,
+   "prix": 713.56,
    "action": "Aucune action"
   },
   "QQQ": {
    "nom": "Invesco QQQ Trust",
    "note": -0.48,
    "tendance": null,
-   "prix": 638.0,
+   "prix": 638.66,
    "action": "Aucune action"
   },
   "GLD": {
    "nom": "SPDR Gold Shares",
    "note": -0.32,
    "tendance": null,
-   "prix": 328.04,
+   "prix": 328.37,
    "action": "Aucune action"
   },
   "XLK": {
@@ -1651,7 +1655,7 @@
    "nom": "iShares Russell 2000 ETF",
    "note": -0.54,
    "tendance": null,
-   "prix": 264.385,
+   "prix": 264.485,
    "action": "Aucune action"
   }
  },
