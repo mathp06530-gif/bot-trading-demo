@@ -133,7 +133,7 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
     if regles["statut"] != "TRADEABLE":
         return "Marché fermé"
     mini = prix * (regles["stop_min_pct"] or 0) / 100 or (regles["stop_min_points"] or 0)
-    distance = max(prix * STOP_PCT / 100, mini * 1.05)
+    distance = max(prix * STOP_PCT / 100, mini * 1.25)  # Capital.com mesure le minimum un peu plus loin (argent : ~1,12 %)
     taux = taux_devise(regles, eurusd, prix)
     pas = regles["pas"]
     taille = round(math.floor(capital * RISQUE_RAPIDE_PCT / 100 * taux / distance / pas) * pas, 6)
