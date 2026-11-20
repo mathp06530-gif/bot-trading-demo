@@ -1066,7 +1066,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T18:25:25Z",
+ "derniere_execution": "2026-11-20T18:30:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -1179,15 +1179,19 @@
   {
    "date": "2026-11-20T18:25:25Z",
    "valeur": 98.29
+  },
+  {
+   "date": "2026-11-20T18:30:25Z",
+   "valeur": 98.73
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 98.25,
+  "solde": 98.47,
   "depot": 98.21,
-  "resultat_latent": 0.04,
-  "disponible": 93.4
+  "resultat_latent": 0.26,
+  "disponible": 93.64
  },
  "positions": [
   {
@@ -1196,13 +1200,13 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3523.59,
-   "resultat": 0.03,
+   "resultat": 0.25,
    "ouverte_le": "2026-11-20T17:50:24.893"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 59116.325,
+   "prix": 59042.55,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 48) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1614,7 +1618,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T17:50:24Z",
    "statut": "ouvert",
-   "resultat": 0.03,
+   "resultat": 0.25,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1622,7 +1626,7 @@
   }
  ],
  "historique_jour": {
-  "2026-11-20": 98.29
+  "2026-11-20": 98.73
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -1697,7 +1701,7 @@
  },
  "garde_fous": {
   "debut_jour": 98.21,
-  "plus_haut": 98.29,
+  "plus_haut": 98.67,
   "regles": {
    "perte_max_pct": 20.0,
    "perte_jour_pct": 6.0,
@@ -1735,7 +1739,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3525.95,
+   "prix": 3513.4,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 3998.75,
@@ -1746,7 +1750,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.202,
+   "prix": 41.022999999999996,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.67,
@@ -1772,7 +1776,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3522.19,
+    "prix": 3514.82,
     "action": "Position conservée"
    },
    "SILVER": {
@@ -1781,9 +1785,9 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 0.77
+     "bollinger": 0.76
     },
-    "prix": 41.2225,
+    "prix": 41.031499999999994,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)"
    }
   },
