@@ -811,10 +811,16 @@
    "type": "commande",
    "marche": "",
    "texte": "Positions fermées et bot mis en pause. Appuie sur « Reprendre » pour le relancer."
+  },
+  {
+   "date": "2026-11-20T13:22:30Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Stratégie Tendance 4 h et Rapide 5 min et Sous-bots actions et ETF et Cassure 4 h (or et argent) et Petit compte risqué (100 €) et Tendance 1 mois (11 marchés) et Objectif x5 sur l'or (50 €) et Objectif x5 sur l'argent (50 €) et Cassure 4 h (tous les marchés) désactivée (elle garde ses positions, le stop suiveur continue) depuis l'application."
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T13:20:23Z",
+ "derniere_execution": "2026-11-20T13:22:32Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -1763,6 +1769,10 @@
   {
    "date": "2026-11-20T13:20:23Z",
    "valeur": 20972.85
+  },
+  {
+   "date": "2026-11-20T13:22:32Z",
+   "valeur": 20972.85
   }
  ],
  "compte": {
@@ -2656,7 +2666,7 @@
  },
  "strategies": {
   "tendance_4h": {
-   "active": true,
+   "active": false,
    "nom": "Tendance 4 h",
    "description": "Suit les grosses tendances du Bitcoin sur des bougies de 4 h : peu de trades, la seule gagnante en backtest.",
    "unite": "HOUR_4",
@@ -2666,7 +2676,7 @@
    "reglages": "Tendance 4 h : EMA 20/200 + ADX > 20, stop 2 ATR, suiveur 5 ATR"
   },
   "rapide": {
-   "active": true,
+   "active": false,
    "nom": "Rapide 5 min",
    "description": "Trade souvent sur des bougies de 5 min avec un tout petit risque, pour comparer en direct (perdante en backtest).",
    "unite": "MINUTE_5",
@@ -2676,7 +2686,7 @@
    "reglages": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, , Bollinger qui s'élargissent, stop 1 %, suiveur 2 %, risque 0.072 % (expérimentale)"
   },
   "actions_etf": {
-   "active": true,
+   "active": false,
    "nom": "Sous-bots actions et ETF",
    "description": "Un sous-bot par action ou ETF : il n'achète que si l'analyse technique (~20 indicateurs) donne un achat fort dans une tendance haussière, avec SL garanti et TP.",
    "unite": "HOUR_4",
@@ -2697,7 +2707,7 @@
    "action": "En pause"
   },
   "cassure_4h": {
-   "active": true,
+   "active": false,
    "nom": "Cassure 4 h (or et argent)",
    "description": "Un sous-bot pour l'or et un pour l'argent : il achète quand le prix casse le plus haut des 20 dernières bougies de 4 h (vend sous le plus bas), dans le sens de l'EMA 200, avec stop garanti. Environ 4 trades par mois.",
    "unite": "HOUR_4",
@@ -2710,7 +2720,7 @@
    "action": "En pause"
   },
   "petit_compte": {
-   "active": true,
+   "active": false,
    "nom": "Petit compte risqué (100 €)",
    "unite": "HOUR_4",
    "risque_pct": 10.0,
@@ -2725,7 +2735,7 @@
    "capital": 100.0
   },
   "tendance_mois": {
-   "active": true,
+   "active": false,
    "nom": "Tendance 1 mois (11 marchés)",
    "unite": "DAY",
    "risque_pct": 0.4,
@@ -2747,7 +2757,7 @@
    "action": "En pause"
   },
   "x5_or": {
-   "active": true,
+   "active": false,
    "nom": "Objectif x5 sur l'or (50 €)",
    "unite": "HOUR_4",
    "risque_pct": 50.0,
@@ -2761,7 +2771,7 @@
    "capital": 50.0
   },
   "x5_argent": {
-   "active": true,
+   "active": false,
    "nom": "Objectif x5 sur l'argent (50 €)",
    "unite": "HOUR_4",
    "risque_pct": 50.0,
@@ -2775,7 +2785,7 @@
    "capital": 50.0
   },
   "cassure_tous": {
-   "active": true,
+   "active": false,
    "nom": "Cassure 4 h (tous les marchés)",
    "unite": "HOUR_4",
    "risque_pct": 0.25,
