@@ -164,7 +164,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T08:20:28Z",
+ "derniere_execution": "2026-11-20T08:25:29Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -865,6 +865,10 @@
   {
    "date": "2026-11-20T08:20:28Z",
    "valeur": 21005.82
+  },
+  {
+   "date": "2026-11-20T08:25:29Z",
+   "valeur": 21005.82
   }
  ],
  "compte": {
@@ -878,7 +882,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 61818.55,
+   "prix": 61846.05,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1451,56 +1455,56 @@
    "nom": "Tesla Inc",
    "note": -0.48,
    "tendance": null,
-   "prix": 370.5,
+   "prix": 370.53499999999997,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.48,
    "tendance": null,
-   "prix": 144.485,
+   "prix": 144.62,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
    "note": -0.31,
    "tendance": null,
-   "prix": 350.88,
+   "prix": 351.175,
    "action": "Aucune action"
   },
   "MSFT": {
    "nom": "Microsoft Corp",
    "note": -0.6,
    "tendance": null,
-   "prix": 493.52,
+   "prix": 494.20000000000005,
    "action": "Aucune action"
   },
   "GOOGL": {
    "nom": "Alphabet Inc - A",
    "note": -0.6,
    "tendance": null,
-   "prix": 272.94500000000005,
+   "prix": 273.095,
    "action": "Aucune action"
   },
   "SPY": {
    "nom": "SPDR S&P 500 ETF",
    "note": -0.48,
    "tendance": null,
-   "prix": 714.26,
+   "prix": 714.66,
    "action": "Aucune action"
   },
   "QQQ": {
    "nom": "Invesco QQQ Trust",
    "note": -0.48,
    "tendance": null,
-   "prix": 640.79,
+   "prix": 641.1800000000001,
    "action": "Aucune action"
   },
   "GLD": {
    "nom": "SPDR Gold Shares",
    "note": -0.32,
    "tendance": null,
-   "prix": 327.44,
+   "prix": 327.905,
    "action": "Aucune action"
   },
   "XLK": {
@@ -1514,7 +1518,7 @@
    "nom": "iShares Russell 2000 ETF",
    "note": -0.54,
    "tendance": null,
-   "prix": 264.17,
+   "prix": 264.24,
    "action": "Aucune action"
   }
  }
