@@ -146,8 +146,8 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     elif action == "fermer":
         if strategie == "toutes":
             donnees["pause"] = True
-        for p in [p for p in positions if p["market"]["epic"] in MARCHES + SOUS_BOTS + MARCHES_CASSURE + module_tm.LISTE + module_cassure.LISTE_TOUS + ["GOLD", "SILVER"]
-                  and strat_de(p) in cibles]:
+        # « toutes » : on ferme TOUT ce qui est ouvert sur le compte, quel que soit le marché
+        for p in [p for p in positions if strategie == "toutes" or strat_de(p) in cibles]:
             conf = api.fermer(p["position"]["dealId"])
             if conf.get("dealStatus") == "ACCEPTED":
                 noter_fermeture(donnees, p, conf, maintenant(), "Fermée depuis l'application")
