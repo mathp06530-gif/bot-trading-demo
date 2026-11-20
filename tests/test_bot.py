@@ -8,7 +8,6 @@ import pytest
 from datetime import datetime, timedelta, timezone
 
 import bot.main as main
-import bot.rapide as rapide
 from bot.strategie import bougies_vers_df, decider, ema
 
 
@@ -101,7 +100,6 @@ class FauxCapital:
 
 def test_un_tour_entre_suit_et_sort(tmp_path, monkeypatch):
     monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
     debut, suite = serie_achat()
     faux = FauxCapital(debut)
     d = {}
@@ -130,7 +128,6 @@ def test_un_tour_entre_suit_et_sort(tmp_path, monkeypatch):
 
 def test_apres_un_stop_pas_de_reentree_sur_le_meme_signal(tmp_path, monkeypatch):
     monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
     debut, _ = serie_achat()
     faux = FauxCapital(debut)
     d = {}
@@ -138,26 +135,6 @@ def test_apres_un_stop_pas_de_reentree_sur_le_meme_signal(tmp_path, monkeypatch)
     faux.ouvertes = []  # stop touché chez Capital.com
     main.un_tour(d, faux)
     assert not faux.ouvertes
-
-
-def test_strategie_rapide_separee(tmp_path, monkeypatch):
-    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    tendances = {"t": ("BUY", "BUY")}
-    monkeypatch.setattr(rapide, "tendances_superieures", lambda api, epic: tendances["t"])
-    monkeypatch.setattr(main, "RAPIDE_ACTIVE", True)
-    faux = FauxCapital([20000] * 300, [100 + i for i in range(80)])
-    d = {}
-    main.un_tour(d, faux)
-    assert [o[1] for o in faux.ouvertes] == ["BUY"]  # seule la rapide trade (pas de tendance 4 h)
-    assert d["rapide"]["deals"] == ["d0"]
-    faux.prix_rapide = faux.prix_rapide + [180 - 3 * i for i in range(60)]
-    main.un_tour(d, faux)  # signal 5 min en baisse mais tendance de fond en hausse : on sort et on reste à l'écart
-    assert faux.fermees == ["d0"] and not faux.ouvertes
-    assert d["strategies"]["rapide"]["action"].startswith("À l'écart")
-    tendances["t"] = ("SELL", "SELL")
-    main.un_tour(d, faux)
-    assert [o[1] for o in faux.ouvertes] == ["SELL"]
-    assert {o["strategie"] for o in d["ordres"]} == {"rapide"}
 
 
 def test_sans_secrets_ecrit_une_erreur(tmp_path, monkeypatch):
@@ -191,7 +168,6 @@ def test_stop_garanti_si_exige(monkeypatch):
 
 def test_commandes_pause_fermer_reprendre(tmp_path, monkeypatch):
     monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
     faux = FauxCapital(serie_achat()[0])
     d = {}
     main.un_tour(d, faux)
@@ -203,45 +179,6 @@ def test_commandes_pause_fermer_reprendre(tmp_path, monkeypatch):
     main.un_tour(d, faux, "reprendre")  # relancé, mais ce signal a déjà servi : on attend le suivant
     assert not faux.ouvertes and d["pause"] is False
     assert d["ordres"][0]["motif_sortie"] == "Fermée depuis l'application"
-
-
-def test_commandes_par_strategie(tmp_path, monkeypatch):
-    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    monkeypatch.setattr(rapide, "tendances_superieures", lambda api, epic: ("BUY", "BUY"))
-    monkeypatch.setattr(main, "RAPIDE_ACTIVE", True)
-    debut, suite = serie_achat()
-    faux = FauxCapital(debut, [100 + i for i in range(80)])
-    d = {}
-    main.un_tour(d, faux, "desactiver", "rapide")  # la rapide ne trade plus, la 4 h oui
-    assert d["strategies"]["rapide"]["active"] is False and d["strategies"]["tendance_4h"]["active"] is True
-    assert len(faux.ouvertes) == 2 and not d["rapide"].get("deals")
-    assert d["strategies"]["rapide"]["action"] == "Désactivée"
-    assert {"nom", "description", "unite", "risque_pct", "action", "tendance"} <= set(d["strategies"]["tendance_4h"])
-
-    main.un_tour(d, faux, "lancer", "rapide")  # tour immédiat de la rapide même désactivée
-    assert len(faux.ouvertes) == 3 and d["rapide"]["deals"] == ["d2"]
-    assert any(l.get("strategie") == "rapide" for l in d["journal"])
-    assert any(l.get("strategie") == "tendance_4h" for l in d["journal"])
-
-    main.un_tour(d, faux, "fermer", "tendance_4h")  # ferme seulement la 4 h et la désactive
-    assert faux.fermees == ["d0", "d1"] and [o[0] for o in faux.ouvertes] == ["d2"]
-    assert d["strategies"]["tendance_4h"]["active"] is False and not d.get("pause")
-
-    faux.prix = debut + suite[:30]
-    main.un_tour(d, faux, "activer", "toutes")
-    assert d["strategies"]["tendance_4h"]["active"] and d["strategies"]["rapide"]["active"]
-
-
-def test_rapide_attend_si_la_4h_est_en_sens_inverse(tmp_path, monkeypatch):
-    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    monkeypatch.setattr(rapide, "tendances_superieures", lambda api, epic: ("SELL", "SELL"))
-    monkeypatch.setattr(main, "RAPIDE_ACTIVE", True)
-    debut, _ = serie_achat()
-    faux = FauxCapital(debut, [200 - i for i in range(80)])  # 4 h : achat ; rapide : vente
-    d = {}
-    main.un_tour(d, faux)
-    assert [o[1] for o in faux.ouvertes] == ["BUY", "BUY"]
-    assert d["strategies"]["rapide"]["action"].startswith("En attente")
 
 
 def test_fermeture_manuelle_estimee_au_dernier_prix():
@@ -313,49 +250,6 @@ def serie_note_achat():
     raise AssertionError("pas de signal")
 
 
-def test_sous_bot_achete_avec_stop_et_tp(tmp_path, monkeypatch):
-    import bot.sous_bots as sb
-    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
-    monkeypatch.setattr(main, "SOUS_BOTS", ["NVDA"])
-    faux = FauxCapitalActions(serie_note_achat())
-    d = {"strategies": {"rapide": {"active": False}}}
-    main.un_tour(d, faux)
-    assert [o[1] for o in faux.ouvertes] == ["BUY", "BUY"]
-    assert faux.objectifs[0] > 0 and faux.objectifs[1] is None  # TP sur la moitié
-    prix = faux.prix_action[-1] + 1
-    assert all(prix - st >= prix * 0.05 for _, _, _, st in faux.ouvertes)  # stop >= minimum imposé (5 %)
-    risque = sum(t * (prix - st) for _, _, t, st in faux.ouvertes)
-    assert risque <= 10000 * sb.RISQUE_SOUS_BOT_PCT / 100 * 1.02
-    assert d["sous_bots"]["NVDA"]["note"] >= 0.5 and d["ordres"][0]["strategie"] == "actions_etf"
-
-
-def test_sous_bot_refuse_si_marche_ferme(tmp_path, monkeypatch):
-    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
-    monkeypatch.setattr(main, "SOUS_BOTS", ["NVDA"])
-    faux = FauxCapitalActions(serie_note_achat(), statut="CLOSED")
-    d = {"strategies": {"rapide": {"active": False}}}
-    main.un_tour(d, faux)
-    assert not faux.ouvertes and "marché fermé" in d["sous_bots"]["NVDA"]["action"]
-
-
-def test_rapide_stop_suiveur_garde_le_gain():
-    """Une vente rapide qui gagne beaucoup : le stop suit le prix à 2 % et ne recule jamais."""
-    from bot import rapide
-    api = FauxCapital([20000] * 10)
-    api.ouvertes = [("r1", "SELL", 0.01, 101000.0)]  # vente à 100 000, stop à +1 %
-    pos = api.positions()
-    notes = []
-    noter = lambda *a: notes.append(a)
-    r = rapide.suivre_stop(api, pos, {"bid": 94990.0, "ask": 95010.0}, "BTCUSD", noter)
-    assert r == "Stop suiveur déplacé"
-    assert api.stops == [("r1", 95000.0 * 1.02)]  # 96 900 : le gain est en partie verrouillé
-    # le prix remonte : le stop ne recule pas
-    r = rapide.suivre_stop(api, api.positions(), {"bid": 97990.0, "ask": 98010.0}, "BTCUSD", noter)
-    assert r == "Position conservée" and len(api.stops) == 1
-
-
 def test_pause_autour_des_grandes_annonces():
     from datetime import datetime, timezone
     from bot import actualites
@@ -399,8 +293,6 @@ def test_cassure_identique_au_backtest():
 def test_cassure_achete_or_avec_stop_garanti(tmp_path, monkeypatch):
     from bot.cassure import signaux_cassure
     monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
-    monkeypatch.setattr(main, "SOUS_BOTS", [])
     monkeypatch.setattr(main, "MARCHES_CASSURE", ["GOLD"])
     prix = [2000 + 25 * ((i % 8) - 4) for i in range(250)] + [2000 + 45 * i for i in range(40)]
     for n in range(240, 290):
@@ -408,7 +300,7 @@ def test_cassure_achete_or_avec_stop_garanti(tmp_path, monkeypatch):
         if c[-1] == 1 and c[-2] == 0:
             break
     faux = FauxCapitalActions(prix[:n])
-    d = {"strategies": {"rapide": {"active": False}}}
+    d = {}
     main.un_tour(d, faux)
     assert [o[1] for o in faux.ouvertes] == ["BUY"]
     _, _, taille, stop = faux.ouvertes[0]
@@ -419,197 +311,16 @@ def test_cassure_achete_or_avec_stop_garanti(tmp_path, monkeypatch):
     assert len(faux.ouvertes) == 1
 
 
-def test_petit_compte_taille_sur_capital_virtuel(tmp_path, monkeypatch):
-    """Le petit compte risque 5 % de 100 € virtuels, et la cassure normale garde ses propres positions."""
-    from bot import cassure
-    from bot.cassure import signaux_cassure
+
+
+def test_commandes_par_strategie(tmp_path, monkeypatch):
     monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
-    monkeypatch.setattr(main, "SOUS_BOTS", [])
-    monkeypatch.setattr(main, "MARCHES_CASSURE", ["GOLD"])
-    monkeypatch.setattr(cassure, "PETIT_RISQUE_PCT", 5.0)
-    prix = [2000 + 25 * ((i % 8) - 4) for i in range(250)] + [2000 + 45 * i for i in range(40)]
-    for n in range(240, 290):
-        c = signaux_cassure(bougies_vers_df([bougie(i, p) for i, p in enumerate(prix[:n])])).cible.values
-        if c[-1] == 1 and c[-2] == 0:
-            break
-    faux = FauxCapitalActions(prix[:n])
-    faux.marche = lambda epic: {"snapshot": {"marketStatus": "TRADEABLE"}, "instrument": {"name": epic, "marginFactor": 5},
-                                "dealingRules": {"minDealSize": {"value": 0.01}, "minSizeIncrement": {"value": 0.01},
-                                                 "minGuaranteedStopDistance": {"unit": "PERCENTAGE", "value": 0.25}}}
-    d = {"strategies": {"rapide": {"active": False}, "petit_compte": {"active": True}}}
-    main.un_tour(d, faux)
-    assert len(faux.ouvertes) == 2  # un ordre « cassure », un ordre « petit compte »
-    (d1, _, t1, s1), (d2, _, t2, s2) = faux.ouvertes
-    entree = prix[n - 1] + 1
-    assert t2 * (entree - s2) <= 100 * 0.05 * 1.02 and t2 < t1  # 5 € de risque sur 100 € virtuels
-    assert d["deals_par_strategie"] == {"cassure": [d1], "petit_compte": [d2]}
-    assert {o["id"]: o["strategie"] for o in d["ordres"]} == {d1: "cassure_4h", d2: "petit_compte"}
-    assert d["strategies"]["petit_compte"]["capital"] == 100 + 1.5  # résultat en cours du faux courtier
-
-
-def test_rapide_filtre_bollinger():
-    """Le filtre Bollinger calcule comme le backtest, et bloque l'entrée quand le marché est calme."""
-    calme = [100 + (i % 2) * 0.1 for i in range(200)]
-    agite = calme[:-20] + [100 + (i % 2) * 3 for i in range(20)]
-    assert rapide.bollinger_relatif(calme) == pytest.approx(1.0)
-    assert rapide.bollinger_relatif(agite) > 1.5
-    assert rapide.bollinger_relatif(calme[:50]) is None
-
-
-def test_tendance_mois_achete_en_hausse_et_compte_la_devise(tmp_path, monkeypatch):
-    """Tendance 1 mois : prix plus haut qu'il y a 30 jours -> ACHAT avec stop garanti, risque 0,4 % converti
-    dans la devise du marché (le DAX est en euros), ordres comptés à part ; pas de 2e ordre le même jour."""
-    from bot import tendance_mois
-    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
-    monkeypatch.setattr(main, "SOUS_BOTS", [])
-    monkeypatch.setattr(tendance_mois, "LISTE", ["DE40"])
-    monkeypatch.setattr(tendance_mois, "RISQUE_TENDANCE_MOIS_PCT", 0.4)
-    monkeypatch.setattr(tendance_mois, "ANALYSER", False)
-    prix = [18000 + 20 * i for i in range(120)]
-    faux = FauxCapitalActions(prix)
-    marche = faux.marche
-    faux.marche = lambda epic: {**marche(epic), "instrument": {"name": epic, "marginFactor": 5, "currency": "EUR"},
-                                "dealingRules": {"minDealSize": {"value": 0.1}, "minSizeIncrement": {"value": 0.1},
-                                                 "minGuaranteedStopDistance": {"unit": "PERCENTAGE", "value": 0.1}}}
-    d = {"strategies": {"rapide": {"active": False}, "tendance_mois": {"active": True}}}
-    main.un_tour(d, faux)
-    assert [o[1] for o in faux.ouvertes] == ["BUY"]
-    _, _, taille, stop = faux.ouvertes[0]
-    risque_eur = taille * (prix[-1] + 1 - stop)       # en euros : pas de division par EUR/USD
-    assert 10000 * 0.4 / 100 * 0.5 < risque_eur <= 10000 * 0.4 / 100 * 1.05
-    assert d["ordres"][0]["strategie"] == "tendance_mois" and d["tendance_mois"]["DE40"]["momentum_pct"] > 0
-    main.un_tour(d, faux)
-    assert len(faux.ouvertes) == 1
-
-
-def test_tendance_mois_signal_comme_le_backtest():
-    from bot.tendance_mois import signaux_tendance
-    baisse = bougies_vers_df([bougie(i, 2000 - 3 * i) for i in range(80)])
-    s = signaux_tendance(baisse)
-    assert s.cible.iloc[-1] == -1 and (s.cible.iloc[:-1] == 0).all() and s.attrs["momentum_pct"] < 0
-    assert signaux_tendance(baisse.iloc[:20]).cible.iloc[-1] == 0  # pas assez d'historique
-
-
-def test_objectif_x5_or_levier_max_sur_50_euros(tmp_path, monkeypatch):
-    """Objectif x5 : 50 € virtuels × levier 20 sur l'or, TP +20 % et stop garanti -2,5 % du prix,
-    suivi à part ; la fin de la cassure ne ferme PAS la position (seuls le TP ou le stop la ferment)."""
-    from bot import cassure
-    from bot.cassure import signaux_cassure
-    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
-    monkeypatch.setattr(main, "SOUS_BOTS", [])
-    prix = [2000 + 25 * ((i % 8) - 4) for i in range(250)] + [2000 + 45 * i for i in range(40)]
-    for n in range(240, 290):
-        c = signaux_cassure(bougies_vers_df([bougie(i, p) for i, p in enumerate(prix[:n])])).cible.values
-        if c[-1] == 1 and c[-2] == 0:
-            break
-    faux = FauxCapitalActions(prix[:n])
-    marche = faux.marche
-    faux.marche = lambda epic: {**marche(epic), "dealingRules": {
-        "minDealSize": {"value": 0.01}, "minSizeIncrement": {"value": 0.01},
-        "minGuaranteedStopDistance": {"unit": "PERCENTAGE", "value": 0.25}}}
-    d = {"strategies": {"rapide": {"active": False}, "x5_or": {"active": True}}}
-    main.un_tour(d, faux)
-    assert [o[1] for o in faux.ouvertes] == ["BUY"]
-    _, _, taille, stop = faux.ouvertes[0]
-    entree = prix[n - 1] + 1
-    assert taille == pytest.approx(50 * 20 / entree, abs=0.01)            # 1 000 € exposés avec 50 €
-    assert entree - stop == pytest.approx(entree * 0.025, rel=0.01)       # stop garanti -2,5 %
-    assert faux.objectifs[0] == pytest.approx(entree * 0.20, rel=0.01)    # objectif +20 % (x5)
-    assert d["ordres"][0]["strategie"] == "x5_or"
-    assert d["strategies"]["x5_or"]["capital"] == 50 + 1.5
-    # La cassure se termine (le prix s'effondre) : la position reste ouverte, seuls TP / stop décident
-    faux.prix_action = prix[:n] + [prix[n - 1] - 60 * k for k in range(1, 25)]
-    main.un_tour(d, faux)
-    assert faux.fermees == []
-    assert d["x5_or"]["GOLD"]["action"] == "Position conservée"
-
-
-def test_objectif_x5_argent_levier_10(tmp_path, monkeypatch):
-    """Même essai sur l'argent : levier 10, objectif +40 %, stop garanti -5 %, 50 € virtuels à part."""
-
-    from bot import cassure
-    from bot.cassure import signaux_cassure
-    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
-    monkeypatch.setattr(main, "SOUS_BOTS", [])
-    prix = [2000 + 25 * ((i % 8) - 4) for i in range(250)] + [2000 + 45 * i for i in range(40)]
-    for n in range(240, 290):
-        c = signaux_cassure(bougies_vers_df([bougie(i, p) for i, p in enumerate(prix[:n])])).cible.values
-        if c[-1] == 1 and c[-2] == 0:
-            break
-    faux = FauxCapitalActions(prix[:n])
-    marche = faux.marche
-    faux.marche = lambda epic: {**marche(epic), "dealingRules": {
-        "minDealSize": {"value": 0.01}, "minSizeIncrement": {"value": 0.01},
-        "minGuaranteedStopDistance": {"unit": "PERCENTAGE", "value": 0.25}}}
-    d = {"strategies": {"rapide": {"active": False}, "x5_argent": {"active": True}}}
-    main.un_tour(d, faux)
-    assert [o[1] for o in faux.ouvertes] == ["BUY"]
-    _, _, taille, stop = faux.ouvertes[0]
-    entree = prix[n - 1] + 1
-    assert taille == pytest.approx(50 * 10 / entree, abs=0.01)
-    assert entree - stop == pytest.approx(entree * 0.05, rel=0.01)
-    assert faux.objectifs[0] == pytest.approx(entree * 0.40, rel=0.01)
-    assert d["ordres"][0]["strategie"] == "x5_argent" and d["x5_argent"]["SILVER"]["action"].startswith("ACHAT")
-
-
-def test_analyser_d_abord_ecarte_un_marche_perdant(tmp_path, monkeypatch):
-    """Analyse du marché : en tendance régulière la stratégie aurait gagné -> on trade ; sur un marché qui fait
-    des allers-retours elle aurait perdu -> marché écarté, aucun ordre."""
-    from bot import tendance_mois
-    from bot.analyse_marche import verdict
-    hausse = bougies_vers_df([bougie(i, 1000 + 2 * i, "DAY") for i in range(400)])
-    ok, texte = tendance_mois.analyse_tendance(hausse)
-    assert ok and "gagné" in texte
-    zigzag = [1000 + 60 * ((i // 31) % 2) * (1 if (i // 62) % 2 else -1) for i in range(400)]
-    ok2, texte2 = tendance_mois.analyse_tendance(bougies_vers_df([bougie(i, p, "DAY") for i, p in enumerate(zigzag)]))
-    assert not ok2 and "écarté" in texte2
-    assert not verdict(hausse.iloc[:50], [1] * 50)[0]  # trop peu d'historique
-
-    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
-    monkeypatch.setattr(main, "SOUS_BOTS", [])
-    monkeypatch.setattr(tendance_mois, "LISTE", ["DE40"])
-    monkeypatch.setattr(tendance_mois, "ANALYSER", True)
-    monkeypatch.setattr(tendance_mois, "analyse_tendance", lambda df: (False, "aurait perdu : marché écarté"))
-    faux = FauxCapitalActions([18000 + 20 * i for i in range(120)])
-    d = {"strategies": {"rapide": {"active": False}, "tendance_mois": {"active": True}}}
-    main.un_tour(d, faux)
-    assert faux.ouvertes == [] and "analyse du marché" in d["tendance_mois"]["DE40"]["action"]
-
-
-def test_sous_bot_ne_touche_pas_les_positions_des_autres(tmp_path, monkeypatch):
-    """Une vente « tendance 1 mois » sur une action n'est ni fermée ni gérée par le sous-bot de cette action."""
-    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
-    monkeypatch.setattr(main, "SOUS_BOTS", ["TSLA"])
-    faux = FauxCapitalActions([300 - i for i in range(300)])
-    pos = {"market": {"epic": "TSLA", "instrumentName": "Tesla"},
-           "position": {"dealId": "TM1", "direction": "SELL", "size": 1, "level": 10, "upl": 0,
-                        "stopLevel": 20, "createdDateUTC": "2026-01-01T00:00:00"}}
-    faux.positions = lambda: [pos]
-    d = {"strategies": {"rapide": {"active": False}}, "deals_par_strategie": {"tendance_mois": ["TM1"]}}
-    main.un_tour(d, faux)
-    assert faux.fermees == [] and faux.stops == []
-
-
-def test_tendance_mois_gere_une_position_hors_liste(tmp_path, monkeypatch):
-    """Un marché retiré de la liste garde sa position gérée (sortie au retournement), sans nouvelle entrée."""
-    from bot import tendance_mois
-    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
-    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
-    monkeypatch.setattr(main, "SOUS_BOTS", [])
-    monkeypatch.setattr(tendance_mois, "LISTE", [])
-    monkeypatch.setattr(tendance_mois, "ANALYSER", False)
-    faux = FauxCapitalActions([18000 + 20 * i for i in range(120)])  # hausse : la vente doit être fermée
-    pos = {"market": {"epic": "AMD", "instrumentName": "AMD"},
-           "position": {"dealId": "TM1", "direction": "SELL", "size": 1, "level": 20000, "upl": -5,
-                        "stopLevel": 21000, "createdDateUTC": "2026-01-01T00:00:00"}}
-    faux.positions = lambda: [pos] if "TM1" not in faux.fermees else []
-    d = {"strategies": {"rapide": {"active": False}, "tendance_mois": {"active": True}},
-         "deals_par_strategie": {"tendance_mois": ["TM1"]}}
-    main.un_tour(d, faux)
-    assert faux.fermees == ["TM1"] and faux.ouvertes == []
+    debut, _ = serie_achat()
+    faux = FauxCapital(debut)
+    d = {"strategies": {"rapide": {"active": True}, "londres": {"active": True}}, "londres": {}}
+    main.un_tour(d, faux, "desactiver", "tendance_4h")
+    assert set(d["strategies"]) == {"tendance_4h", "cassure_4h"}  # anciennes stratégies supprimées
+    assert "londres" not in d
+    assert d["strategies"]["tendance_4h"]["active"] is False and not faux.ouvertes
+    main.un_tour(d, faux, "activer", "tendance_4h")
+    assert d["strategies"]["tendance_4h"]["active"] and len(faux.ouvertes) == 2

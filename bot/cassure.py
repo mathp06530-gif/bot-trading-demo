@@ -23,36 +23,10 @@ import numpy as np
 import pandas as pd
 
 from bot.registre import noter_fermeture
-from bot.sous_bots import regles_marche
 from bot.strategie import atr, bougies_vers_df, ema, milieu
 
 LISTE = [m.strip() for m in os.getenv("CASSURE_MARCHES", "GOLD,SILVER").split(",") if m.strip()]
 RISQUE_CASSURE_PCT = float(os.getenv("RISQUE_CASSURE_PCT", "0.5"))
-# « Petit compte risqué » : même stratégie, mais tailles calculées sur un capital VIRTUEL
-# (100 € au départ) avec un risque élevé, suivi à part. Les ordres sont réels sur le compte démo.
-PETIT_COMPTE = os.getenv("PETIT_COMPTE", "non").strip().lower() in ("oui", "1", "true", "on")
-PETIT_CAPITAL_DEPART = float(os.getenv("PETIT_CAPITAL_DEPART", "100"))
-PETIT_RISQUE_PCT = float(os.getenv("PETIT_RISQUE_PCT", "5"))
-# « Objectif x5 sur l'or » : capital VIRTUEL de 50 €, levier maximum (1:20), un seul trade à la fois.
-# Entrée sur une cassure 4 h de l'or ; prise de bénéfice à +20 % du prix (≈ +400 %, 50 € -> 250 €),
-# stop garanti à -2,5 % du prix (≈ -50 %, la coupure de marge du courtier). Pas de sortie sur signal.
-# Test 2 ans (20/11/2026) : x5 atteint ~28 % des fois, coupé ~63 %, ~3 mois pour gagner. Loterie, en démo.
-X5_OR = os.getenv("X5_OR", "non").strip().lower() in ("oui", "1", "true", "on")
-X5_CAPITAL_DEPART = float(os.getenv("X5_CAPITAL_DEPART", "50"))
-X5_LEVIER = float(os.getenv("X5_LEVIER", "20"))
-X5_OBJECTIF_PCT = float(os.getenv("X5_OBJECTIF_PCT", "20"))
-X5_STOP_PCT = float(os.getenv("X5_STOP_PCT", "2.5"))
-# Même essai sur l'argent (levier max 1:10) : objectif +40 %, stop -5 %. Test 35 marchés : seuls l'or et
-# l'argent gagnent les deux années (argent : x5 46 % puis 15 % des fois, ~4 mois).
-X5_ARGENT = os.getenv("X5_ARGENT", "non").strip().lower() in ("oui", "1", "true", "on")
-X5_ARGENT_LEVIER = float(os.getenv("X5_ARGENT_LEVIER", "10"))
-X5_ARGENT_OBJECTIF_PCT = float(os.getenv("X5_ARGENT_OBJECTIF_PCT", "40"))
-X5_ARGENT_STOP_PCT = float(os.getenv("X5_ARGENT_STOP_PCT", "5"))
-X5_ESSAIS = [  # (stratégie, marché, levier, objectif %, stop %, résultat du test)
-    ("x5_or", "GOLD", X5_LEVIER, X5_OBJECTIF_PCT, X5_STOP_PCT, "Test 2 ans : x5 40 % puis 19 % des fois, ~3 mois."),
-    ("x5_argent", "SILVER", X5_ARGENT_LEVIER, X5_ARGENT_OBJECTIF_PCT, X5_ARGENT_STOP_PCT,
-     "Test 2 ans : x5 46 % puis 15 % des fois, ~4 mois."),
-]
 ENTREE, SORTIE, STOP_ATR, FILTRE_EMA = 20, 20, 2.0, 200
 UNITE = "HOUR_4"
 NOM = f"Cassure {ENTREE} bougies 4 h dans le sens de l'EMA {FILTRE_EMA}, stop garanti {STOP_ATR:g} ATR"
@@ -95,28 +69,22 @@ def taux_devise(regles: dict, eurusd: float, prix: float) -> float:
     return eurusd
 
 
-TOUS_MARCHES = ("AAPL,AMD,AMZN,ARKK,AUDUSD,DE40,EEM,ETHUSD,EURUSD,GBPUSD,GLD,GOLD,GOOGL,IWM,JPM,META,MSFT,NFLX,"
-                "NVDA,OIL_CRUDE,QQQ,SILVER,SLV,SOLUSD,SPY,TLT,TSLA,US100,US500,USDJPY,VTI,XLE,XLF,XLK")
-# « Cassure tous marchés » : la même cassure 4 h sur les autres marchés, avec un risque plus petit et
-# l'analyse du marché avant chaque entrée (bot/analyse_marche.py). Test 35 marchés : 14 sur 35 gagnent.
-CASSURE_TOUS = os.getenv("CASSURE_TOUS", "non").strip().lower() in ("oui", "1", "true", "on")
-LISTE_TOUS = [m.strip() for m in os.getenv("CASSURE_TOUS_MARCHES", TOUS_MARCHES).split(",")
-              if m.strip() and m.strip() not in LISTE]
-RISQUE_CASSURE_TOUS_PCT = float(os.getenv("RISQUE_CASSURE_TOUS_PCT", "0.25"))
-
-
-def analyse_cassure(df: pd.DataFrame) -> tuple[bool, str]:
-    """Rejoue la cassure 4 h sur les 12 derniers mois de ce marché."""
-    from bot.analyse_marche import verdict
-    return verdict(df, signaux_cassure(df).cible.values)
-
-
-def capital_petit_compte(donnees: dict, cle: str = "petit_compte", depart: float | None = None) -> float:
-    """Capital virtuel = départ + résultats (encaissés et en cours) de ses propres ordres."""
-    depart = PETIT_CAPITAL_DEPART if depart is None else depart
-    ids = set(donnees.get("deals_par_strategie", {}).get(cle, []))
-    gains = sum(float(o.get("resultat") or 0) for o in donnees.get("ordres", []) if o["id"] in ids)
-    return round(depart + gains, 2)
+def regles_marche(api, epic: str, cache: dict) -> dict:
+    if epic not in cache:
+        m = api.marche(epic)
+        r = m.get("dealingRules", {})
+        g = r.get("minGuaranteedStopDistance", {})
+        cache[epic] = {
+            "statut": m.get("snapshot", {}).get("marketStatus", "TRADEABLE"),
+            "taille_min": float(r.get("minDealSize", {}).get("value", 1)),
+            "pas": float(r.get("minSizeIncrement", {}).get("value", r.get("minDealSize", {}).get("value", 1))),
+            "stop_min_pct": float(g["value"]) if g.get("unit") == "PERCENTAGE" else None,
+            "stop_min_points": float(g["value"]) if g.get("value") and g.get("unit") != "PERCENTAGE" else None,
+            "marge": float(m.get("instrument", {}).get("marginFactor", 20)) / 100,
+            "nom": m.get("instrument", {}).get("name", epic),
+            "devise": m.get("instrument", {}).get("currency", "USD"),
+        }
+    return cache[epic]
 
 
 def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float, disponible: float, eurusd: float,

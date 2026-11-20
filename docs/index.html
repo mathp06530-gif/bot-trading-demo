@@ -561,17 +561,8 @@ const emas = r => r?.ema || (r?.unite === "HOUR_4" ? [20, 200] : [9, 21]);
 const STRAT_INFO = {
   tendance_4h: { ico: "🧭", couleur: COUL.cyan, titre: "Tendance 4 h",
     desc: "Suit les grandes tendances du Bitcoin sur des bougies de 4 heures. Peu de trades, chacun visé pour durer, avec un stop garanti et un stop suiveur." },
-  rapide: { ico: "⚡", couleur: COUL.violet, titre: "Rapide 5 min",
-    desc: "Expérimentale : trade souvent (bougies de 5 minutes) pour voir le bot travailler en direct. Risque minuscule : 0,1 % du compte par trade." },
-  actions_etf: { ico: "🏦", couleur: COUL.orange, titre: "Actions et ETF",
-    desc: "Une équipe de petits bots, un par action ou ETF : chacun note son marché et n'achète que les plus solides, avec des garde-fous communs." },
   cassure_4h: { ico: "🥇", couleur: "#eab308", titre: "Cassure 4 h",
     desc: "Surveille l'or et l'argent sur des bougies de 4 h : elle entre quand le prix casse son plus haut ou son plus bas des 20 dernières bougies, dans le sens de la tendance." },
-  petit_compte: { ico: "🎯", couleur: "#ec4899", titre: "Petit compte risqué",
-    desc: "Une expérience à part : un capital virtuel de 100 € joué de façon risquée sur l'or et l'argent, pour voir ce que donnerait un petit compte." },  londres: { ico: "🌅", couleur: "#f97316", titre: "Cassure de Londres",
-    desc: "Note le plus haut et le plus bas de la nuit sur le dollar/yen, suit la sortie de cette zone le matin et ferme tout le soir." },
-  challenge: { ico: "🏆", couleur: "#14b8a6", titre: "Challenge prop firm",
-    desc: "Un faux challenge de société de trading : 10 000 € virtuels, réussi à +10 %, raté à -5 % dans une journée ou -10 % au total." },
 };
 const nomStrat = id => (STRAT_INFO[id] || {}).titre || id;
 function stratDe(o) { return o.strategie || (/^\[Rapide\]/.test(o.motif_sortie || "") ? "rapide" : "tendance_4h"); }
@@ -812,9 +803,7 @@ function carteStrat(s) {
       <div><span>Réussite</span><b>${isNaN(s.reussite) ? "—" : fmt(s.reussite, 0) + " %"}</b></div>
       <div><span>En cours</span><b>${s.ouverts.length}</b></div>
     </div>
-    ${s.id === "petit_compte" || /^x5_/.test(s.id) ? capitalVirtuel(s) : ""}
-    ${s.id === "challenge" ? capitalVirtuel(s) + bilanChallenge(s) : ""}
-    ${s.id === "actions_etf" ? listeSousBots() : s.id === "cassure_4h" ? listeCassure(D?.cassure) : s.id === "petit_compte" ? listeCassure(D?.petit_compte) : s.id === "londres" ? listeCassure(D?.londres) : ""}
+    ${s.id === "cassure_4h" ? listeCassure(D?.cassure) : ""}
     ${sparkline(s.courbe, s.couleur)}
     <div class="actions">
       <button class="bouton primaire" data-cmd="lancer" data-strat="${esc(s.id)}">▶ Lancer maintenant</button>
