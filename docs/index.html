@@ -239,7 +239,6 @@
       <h1 id="titre-page">Accueil</h1>
       <div class="pastilles">
         <button class="pastille" id="installer" hidden>⬇ Installer</button>
-        <span class="pastille num" id="prix-direct" hidden><span class="point live"></span><span id="prix-direct-txt"></span></span>
         <span class="pastille pause" id="badge-pause" hidden>⏸ EN PAUSE</span>
         <span class="pastille demo">DÉMO</span>
         <span class="pastille"><span id="point" class="point"></span><span id="statut">Chargement…</span></span>
@@ -277,12 +276,8 @@
             </div>
           </div>
           <div class="kpis" id="gains"></div>
-          <div class="carte" id="carte-actus" hidden>
-            <div class="titre-carte"><h2>Grandes annonces économiques<small>Le bot ne prend pas de nouvelle position autour des annonces américaines importantes</small></h2></div>
-            <div id="actus"></div>
-          </div>
           <div class="carte">
-            <div class="titre-carte"><h2>Positions ouvertes<small>Le gain bouge en direct avec le prix du Bitcoin</small></h2></div>
+            <div class="titre-carte"><h2>Positions ouvertes<small>Le gain est mis à jour à chaque tour du bot (toutes les 5 minutes)</small></h2></div>
             <div id="positions"></div>
           </div>
         </div>
@@ -326,51 +321,6 @@
         </div>
       </section>
 
-      <!-- ============ MARCHÉ ============ -->
-      <section class="page" id="p-marche">
-        <div class="pile">
-          <div class="carte">
-            <div class="titre-carte">
-              <h2>Le Bitcoin vu par le bot<small>Prix, moyennes mobiles et ordres passés (▲ achat, ▼ vente)</small></h2>
-              <div class="pastilles" id="info-marche"></div>
-            </div>
-            <div class="graph grand" id="g-marche"></div>
-            <div class="legende" id="leg-marche"></div>
-          </div>
-          <div class="carte">
-            <div class="titre-carte"><h2>Graphique TradingView en direct<small id="tv-info"></small></h2></div>
-            <div id="tv"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ============ STATS ============ -->
-      <section class="page" id="p-stats">
-        <div class="pile">
-          <div class="kpis" id="stats"></div>
-          <div class="g2">
-            <div class="carte">
-              <div class="titre-carte"><h2>Résultat de chaque ordre fermé<small>Vert = gagnant, rouge = perdant</small></h2></div>
-              <div class="graph petit" id="g-trades"></div>
-            </div>
-            <div class="carte">
-              <div class="titre-carte"><h2>Taux de réussite</h2></div>
-              <div id="donut"></div>
-            </div>
-          </div>
-          <div class="g2e">
-            <div class="carte">
-              <div class="titre-carte"><h2>Gain par mois</h2></div>
-              <div class="graph petit" id="g-mois"></div>
-            </div>
-            <div class="carte">
-              <div class="titre-carte"><h2>Baisse depuis le plus haut<small>Les moments difficiles du portefeuille</small></h2></div>
-              <div class="graph petit" id="g-baisse"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- ============ JOURNAL ============ -->
       <section class="page" id="p-journal">
         <div class="carte">
@@ -404,11 +354,6 @@
           </div>
           <div class="carte"><div class="titre-carte"><h2>Installer l'application</h2></div><div id="aide-install"></div></div>
           <div class="carte"><div class="titre-carte"><h2>Réglages du bot</h2></div><dl class="reglages" id="reglages"></dl></div>
-          <div class="carte">
-            <div class="titre-carte"><h2>Comment ça marche</h2></div>
-            <p class="sous" style="margin:0">Toutes les 5 minutes environ, le bot se connecte à ton <b>compte démo Capital.com</b> (argent fictif), applique chaque stratégie active,
-              puis achète, vend ou ne fait rien. Les signaux s'affichent aussi sur TradingView. Pour ajouter ou changer une stratégie, demande-le à Claude dans le projet.</p>
-          </div>
         </div>
       </section>
 
@@ -460,16 +405,14 @@ const IC = {
   accueil: '<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
   strategies: '<path d="M12 2l3 6 6 1-4.5 4.4 1 6.6L12 17l-5.5 3 1-6.6L3 9l6-1z"/>',
   ordres: '<path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/>',
-  marche: '<path d="M3 17l5-5 4 4 8-8M15 8h5v5"/>',
-  stats: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
   journal: '<path d="M6 3h11a2 2 0 0 1 2 2v16l-4-2-4 2-4-2-3 2V5a2 2 0 0 1 2-2zM9 8h6M9 12h6"/>',
   reglages: '<circle cx="12" cy="12" r="3"/><path d="M12 1v3M12 20v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1 12h3M20 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',
   plus: '<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',
 };
 const svg = id => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IC[id]}</svg>`;
-const PAGES = { accueil: "Accueil", strategies: "Stratégies", ordres: "Ordres", marche: "Marché", stats: "Statistiques", journal: "Journal", reglages: "Réglages", plus: "Plus" };
-$("menu").innerHTML = ["accueil", "strategies", "ordres", "marche", "stats", "journal", "reglages"].map(p => `<button data-p="${p}">${svg(p)}${PAGES[p]}</button>`).join("");
-$("nav-bas").innerHTML = [["accueil", "Accueil"], ["strategies", "Stratégies"], ["ordres", "Ordres"], ["marche", "Marché"], ["stats", "Stats"], ["plus", "Plus"]]
+const PAGES = { accueil: "Accueil", strategies: "Stratégies", ordres: "Ordres", journal: "Journal", reglages: "Réglages", plus: "Plus" };
+$("menu").innerHTML = ["accueil", "strategies", "ordres", "journal", "reglages"].map(p => `<button data-p="${p}">${svg(p)}${PAGES[p]}</button>`).join("");
+$("nav-bas").innerHTML = [["accueil", "Accueil"], ["strategies", "Stratégies"], ["ordres", "Ordres"], ["plus", "Plus"]]
   .map(([p, n]) => `<button data-p="${p}">${svg(p)}${n}</button>`).join("");
 $("plus-liens").innerHTML = ["journal", "reglages"].map(p => `<button data-p="${p}">${svg(p)}${PAGES[p]}</button>`).join("");
 let pageActive = "accueil";
@@ -482,7 +425,6 @@ function ouvrir(id) {
   $("titre-page").textContent = PAGES[id];
   if (location.hash !== "#" + id) history.replaceState(null, "", "#" + id);
   window.scrollTo(0, 0);
-  if (id === "marche") chargerTV();
   if (D) requestAnimationFrame(dessinerGraphiques);
 }
 document.addEventListener("click", e => { const b = e.target.closest("[data-p]"); if (b) ouvrir(b.dataset.p); });
@@ -534,16 +476,6 @@ function sparkline(valeurs, couleur) {
     <line x1="0" x2="${L}" y1="${y(0)}" y2="${y(0)}" stroke="rgba(255,255,255,.14)" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"/>
     <path d="${d}L${L},${H}L0,${H}Z" fill="url(#${id})"/><path d="${d}" fill="none" stroke="${couleur}" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>`;
 }
-function donut(pct, gagnants, perdants) {
-  const r = 52, c = 2 * Math.PI * r, v = isNaN(pct) ? 0 : pct;
-  return `<div class="donut"><svg width="150" height="150" viewBox="0 0 140 140">
-    <circle cx="70" cy="70" r="${r}" fill="none" stroke="${perdants ? COUL.rouge : "#182133"}" stroke-width="16" opacity="${perdants ? .85 : 1}"/>
-    ${v > 0 ? `<circle cx="70" cy="70" r="${r}" fill="none" stroke="${COUL.vert}" stroke-width="16" stroke-linecap="${v < 100 ? "round" : "butt"}" stroke-dasharray="${c * v / 100} ${c}" transform="rotate(-90 70 70)"/>` : ""}
-    <text x="70" y="70" text-anchor="middle" fill="${COUL.texte}" font-size="26" font-weight="800" font-family="Inter">${isNaN(pct) ? "—" : fmt(pct, 0) + "%"}</text>
-    <text x="70" y="90" text-anchor="middle" fill="${COUL.doux}" font-size="11" font-family="Inter">gagnants</text></svg>
-    <div class="sous"><div><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${COUL.vert};margin-right:6px"></i>${gagnants} gagnant(s)</div>
-    <div style="margin-top:6px"><i style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${COUL.rouge};margin-right:6px"></i>${perdants} perdant(s)</div></div></div>`;
-}
 
 // =====================================================================
 // Données
@@ -559,9 +491,11 @@ const emas = r => r?.ema || (r?.unite === "HOUR_4" ? [20, 200] : [9, 21]);
 
 // Les stratégies : celles décrites par le bot (donnees.strategies), sinon déduites des réglages.
 const STRAT_INFO = {
-  tendance_4h: { ico: "🧭", couleur: COUL.cyan, titre: "Tendance 4 h",
+  tendance_4h: { ico: "🧭", couleur: COUL.cyan, titre: "Tendance 4 h (Bitcoin)",
     desc: "Suit les grandes tendances du Bitcoin sur des bougies de 4 heures. Peu de trades, chacun visé pour durer, avec un stop garanti et un stop suiveur." },
-  cassure_4h: { ico: "🥇", couleur: "#eab308", titre: "Cassure 4 h",
+  rapide: { ico: "⚡", couleur: COUL.violet, titre: "Rapide 5 min",
+    desc: "Trade souvent sur l'or et l'argent avec des bougies de 5 minutes, seulement dans le sens des tendances 1 h et 4 h." },
+  cassure_4h: { ico: "🥇", couleur: "#eab308", titre: "Cassure 4 h (or, argent)",
     desc: "Surveille l'or et l'argent sur des bougies de 4 h : elle entre quand le prix casse son plus haut ou son plus bas des 20 dernières bougies, dans le sens de la tendance." },
 };
 const nomStrat = id => (STRAT_INFO[id] || {}).titre || id;
@@ -644,7 +578,6 @@ function afficher() {
   $("positions").innerHTML = ouverts.length ? ouverts.map(carteOrdre).join("") : '<p class="vide">Aucune position ouverte pour le moment. Le bot attend un signal.</p>';
 
   // ---- Stratégies
-  afficherActus(d);
   $("strats").innerHTML = strats.map(carteStrat).join("");
   $("garde").innerHTML = bandeauGardeFous() + bandeauActus();
 
@@ -662,35 +595,6 @@ function afficher() {
   $("filtre-strat").hidden = strats.length < 2;
   const choix = ordres.filter(o => (filtreOrdres === "tous" || o.statut === filtreOrdres) && (filtreStrat === "toutes" || stratDe(o) === filtreStrat)).slice().reverse();
   $("ordres").innerHTML = choix.length ? choix.map(carteOrdre).join("") : '<p class="vide">Aucun ordre dans cette catégorie pour l\'instant.</p>';
-
-  // ---- Marché (textes)
-  const [er, el] = emas(d.reglages);
-  const unite = (UNITES[d.reglages?.unite] || ["15 min"])[0];
-  $("tv-info").textContent = `CAPITALCOM:BTCUSD · bougies ${unite} · EMA ${er} et ${el}`;
-  const an = Object.entries(d.analyses || {})[0];
-  $("info-marche").innerHTML = an ? `<span class="pastille num">${esc(an[0])} ${fmt(an[1].prix, 0)} $</span>
-    <span class="pastille ${an[1].tendance === "BUY" ? "pos" : an[1].tendance === "SELL" ? "neg" : ""}">${an[1].tendance === "BUY" ? "▲ Haussière" : an[1].tendance === "SELL" ? "▼ Baissière" : "Neutre"}</span>` : "";
-  $("leg-marche").innerHTML = `<span><i style="background:${COUL.texte}"></i>Prix (bougies ${unite})</span><span><i style="background:${COUL.cyan}"></i>EMA ${er}</span>
-    <span><i style="background:${COUL.orange}"></i>EMA ${el}</span>${an ? `<span style="flex-basis:100%;color:var(--texte)">${esc(an[1].explication || "")} <b>${esc(an[1].action || "")}</b></span>` : ""}`;
-
-  // ---- Stats (textes)
-  const res = fermesTous.map(o => o.resultat);
-  const gagnants = res.filter(r => r > 0), perdants = res.filter(r => r < 0);
-  const durees = fermesTous.filter(o => o.ouvert_le && o.ferme_le).map(o => iso(o.ferme_le) - iso(o.ouvert_le));
-  const facteur = perdants.length ? somme(gagnants) / Math.abs(somme(perdants)) : null;
-  let pic = -Infinity, pireBaisse = 0;
-  for (const p of pts) { pic = Math.max(pic, p.v); pireBaisse = Math.min(pireBaisse, (p.v - pic) / pic * 100); }
-  $("stats").innerHTML = [
-    ["Gain réalisé total", fmtS(gainTotal) + dev, "ordres fermés", signe(gainTotal)],
-    ["Gain moyen", fermesTous.length ? fmtS(gainTotal / fermesTous.length) + dev : "—", "par ordre fermé", signe(gainTotal)],
-    ["Meilleur ordre", res.length ? fmtS(Math.max(...res)) + dev : "—", "", "pos"],
-    ["Pire ordre", res.length ? fmtS(Math.min(...res)) + dev : "—", "", "neg"],
-    ["Facteur de profit", facteur == null ? "—" : fmt(facteur), "au-dessus de 1 = rentable", facteur == null ? "" : facteur >= 1 ? "pos" : "neg"],
-    ["Pire baisse", pts.length ? fmt(pireBaisse) + " %" : "—", "depuis un plus haut", pireBaisse < 0 ? "neg" : ""],
-    ["Durée moyenne", durees.length ? duree(somme(durees) / durees.length) : "—", "d'une position", ""],
-    ["Ordres fermés", fermesTous.length, `${ouverts.length} en cours`, ""],
-  ].map(([l, v, s, cl]) => `<div class="carte kpi"><div class="lab">${l}</div><div class="gros num ${cl}">${v}</div><div class="sous">${s}</div></div>`).join("");
-  $("donut").innerHTML = donut(fermesTous.length ? gagnants.length / fermesTous.length * 100 : NaN, gagnants.length, perdants.length);
 
   // ---- Journal
   const j = d.journal || [];
@@ -726,31 +630,24 @@ function afficher() {
 function etatChip(s) {
   return D.pause ? `<span class="chip neutre">⏸ Pause</span>` : s.active === false ? `<span class="chip neutre">○ Désactivée</span>` : `<span class="chip pos">● Active</span>`;
 }
-function listeSousBots() {
-  const sb = Object.entries(D?.sous_bots || {});
-  if (!sb.length) return `<div class="sous-bots vide">Les petits bots apparaîtront ici après leur premier tour.</div>`;
-  sb.sort((a, b) => (b[1].note ?? -2) - (a[1].note ?? -2));
-  return `<div class="sous-bots">${sb.map(([epic, b]) => {
-    const n = Math.max(-1, Math.min(1, +b.note || 0)), pct = Math.abs(n) * 50;
-    const coul = n >= 0 ? "var(--vert)" : "var(--rouge)";
-    return `<div class="sb" title="${esc(b.dernier_refus || "")}">
-      <div class="sb-nom"><b>${esc(b.nom || epic)}</b><small>${b.prix != null ? fmt(b.prix, 2) : ""}</small></div>
-      <div class="sb-note" title="Note ${fmt(n, 2)} (de -1 à +1)"><i style="${n >= 0 ? "left:50%" : `left:${50 - pct}%`};width:${pct}%;background:${coul}"></i></div>
-      <div class="sb-act">${esc(b.action || "—")}</div></div>`;
-  }).join("")}</div>`;
-}
-function capitalVirtuel(s) {
-  const dep = +(s.capital_depart ?? 100), cap = +(s.capital ?? dep), ecart = cap - dep, pct = dep ? ecart / dep * 100 : 0;
-  return `<div class="capital-virtuel"><span class="lab">Capital virtuel</span>
-    <div class="num"><span style="color:var(--doux)">${fmt(dep, 0)} €</span> → <b class="${signe(ecart)}">${fmt(cap, 2)} €</b>
-    <span class="chip ${ecart >= 0 ? "pos" : "neg"}">${fmtS(pct)} %</span></div></div>`;
-}
-function bilanChallenge(s) {
-  const v = s.suivi || {}, statut = v.statut === "en cours" ? `Tentative n° ${v.tentative} en cours` : v.statut ? `Tentative n° ${v.tentative} ${v.statut} (${v.raison || ""})` : "Démarre au prochain tour";
-  const lignes = (s.tentatives || []).slice().reverse().map(t => `<div class="sb"><div class="sb-nom"><b>N° ${t.n} : ${esc(t.statut)}</b><small>${esc(t.raison || "")}</small></div><div class="sb-act">${fmtS(t.resultat)} € en ${fmt(t.jours, 1)} j</div></div>`).join("");
-  return `<div class="capital-virtuel"><span class="lab">${esc(statut)}</span>
-    <div class="num">Réussies : <b class="pos">${s.reussies || 0}</b> · Ratées : <b class="neg">${s.ratees || 0}</b></div></div>
-    ${lignes ? `<div class="sous-bots">${lignes}</div>` : ""}`;
+function indicateurs(s) {
+  const fl = v => v === "BUY" ? "▲ hausse" : v === "SELL" ? "▼ baisse" : "—";
+  const chip = (k, v) => `<span class="tag">${esc(k)} : <b>${esc(v)}</b></span>`;
+  const NOMS = { GOLD: "Or", SILVER: "Argent" };
+  const bloc = (titre, chips, action) => `<div class="sb" style="display:block"><div class="sb-nom"><b>${esc(titre)}</b></div>
+    <div class="tags" style="margin:6px 0">${chips.join("")}</div><div class="sb-act" style="text-align:left">${esc(action || "—")}</div></div>`;
+  let html = "";
+  if (s.id === "tendance_4h" && s.indicateurs)
+    html = bloc("Bitcoin", Object.entries(s.indicateurs).map(([k, v]) => chip(k, fmt(v, k.startsWith("ADX") ? 0 : 2))), s.action);
+  if (s.id === "cassure_4h")
+    html = Object.entries(D?.cassure || {}).map(([e, b]) => bloc(NOMS[e] || b.nom || e, [chip("Prix", fmt(b.prix, 2)), chip("Plus haut 20 bougies", fmt(b.plus_haut_20, 2)),
+      chip("Plus bas 20 bougies", fmt(b.plus_bas_20, 2)), chip("EMA 200", fmt(b.ema200, 2)), ...(b.atr != null ? [chip("ATR", fmt(b.atr, 2))] : [])], b.action)).join("");
+  if (s.id === "rapide")
+    html = Object.entries(D?.rapide?.marches || {}).map(([e, b]) => { const f = b.filtre || {};
+      return bloc(NOMS[e] || e, [chip("Prix", fmt(b.prix, 2)), chip("EMA 9/50 (5 min)", fl(f.signal_5min)), chip("Tendance 1 h", fl(f.tendance_1h)),
+        chip("Tendance 4 h", fl(f.tendance_4h)), ...(f.bollinger != null ? [chip("Bollinger", fmt(f.bollinger, 2) + (f.bollinger > 1 ? " ✓" : ""))] : []),
+        ...(f.adx != null ? [chip("ADX", fmt(f.adx, 0) + (f.adx > 20 ? " ✓" : ""))] : [])], b.action); }).join("");
+  return html ? `<div class="lab" style="margin:12px 0 6px">Ce que le bot regarde</div><div style="display:grid;gap:8px">${html}</div>` : "";
 }
 function listeCassure(src) {
   const m = Object.entries(src || {});
@@ -769,15 +666,6 @@ function bandeauActus() {
   const p = D?.actualites?.pause;
   return p ? `<div class="garde alerte">📰 <b>Pause annonce :</b> ${esc(p)}</div>` : "";
 }
-function afficherActus(d) {
-  const a = d.actualites;
-  $("carte-actus").hidden = !a;
-  if (!a) return;
-  const heure = t => new Date(iso(t)).toLocaleString("fr-FR", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
-  const liste = (a.prochaines || []).map(x => `<div class="actu"><span class="actu-date">${esc(heure(x.date))}</span><span>${esc(x.titre)}</span></div>`).join("");
-  $("actus").innerHTML = (a.pause ? `<div class="garde alerte" style="margin:0 0 10px">📰 <b>Nouvelles entrées en pause :</b> ${esc(a.pause)}</div>` : `<div class="garde" style="margin:0 0 10px">✅ Pas d'annonce importante en ce moment : le bot peut trader normalement.</div>`)
-    + (liste ? `<div class="lab" style="margin:4px 0 6px">Prochaines annonces</div>${liste}` : `<div class="sous" style="color:var(--doux);font-size:13px">Aucune autre grande annonce prévue cette semaine.</div>`);
-}
 function bandeauGardeFous() {
   const g = D?.garde_fous; if (!g) return "";
   const r = g.regles || {};
@@ -786,8 +674,7 @@ function bandeauGardeFous() {
 }
 function carteStrat(s) {
   const active = s.active !== false;
-  const nbSb = Object.keys(D?.sous_bots || {}).length;
-  const tend = s.id === "actions_etf" && !s.tendance ? ["◎", "", nbSb ? `Surveille ${nbSb} marchés, un petit bot par marché` : "Prépare ses petits bots"] : s.tendance === "BUY" ? ["▲", "pos", "Tendance haussière : elle veut acheter"] : s.tendance === "SELL" ? ["▼", "neg", "Tendance baissière : elle veut vendre"] : ["•", "", "Pas de tendance claire"];
+  const tend = s.tendance === "BUY" ? ["▲", "pos", "Tendance haussière : elle veut acheter"] : s.tendance === "SELL" ? ["▼", "neg", "Tendance baissière : elle veut vendre"] : ["•", "", "Pas de tendance claire"];
   const unite = (UNITES[s.unite] || [s.unite || "—"])[0];
   return `<div class="carte strat" style="--c:${s.couleur}">
     <div class="strat-tete">
@@ -803,7 +690,7 @@ function carteStrat(s) {
       <div><span>Réussite</span><b>${isNaN(s.reussite) ? "—" : fmt(s.reussite, 0) + " %"}</b></div>
       <div><span>En cours</span><b>${s.ouverts.length}</b></div>
     </div>
-    ${s.id === "cassure_4h" ? listeCassure(D?.cassure) : ""}
+    ${indicateurs(s)}
     ${sparkline(s.courbe, s.couleur)}
     <div class="actions">
       <button class="bouton primaire" data-cmd="lancer" data-strat="${esc(s.id)}">▶ Lancer maintenant</button>
@@ -856,70 +743,6 @@ function dessinerGraphiques() {
       c.addAreaSeries({ lineColor: s.couleur, topColor: s.couleur + "33", bottomColor: s.couleur + "00", lineWidth: 2.5, priceLineVisible: false, crosshairMarkerRadius: 4, lineType: 1 }).setData(data);
     }
     c.timeScale().fitContent();
-  }
-  if (pageActive === "marche") {
-    const an = Object.entries(d.analyses || {})[0];
-    if (!an) return graphVide("g-marche", "Pas encore d'analyse.");
-    const c = graphique("g-marche"); if (!c) return;
-    const g = an[1].graphique || {};
-    const t = (g.dates || []).map(x => tLoc(iso(x)));
-    const pr = c.addAreaSeries({ lineColor: COUL.texte, topColor: "rgba(232,237,247,.14)", bottomColor: "rgba(232,237,247,0)", lineWidth: 2, priceLineColor: "rgba(255,255,255,.3)" });
-    pr.setData(serieUnique(t.map((x, i) => ({ time: x, value: g.clotures?.[i] }))));
-    c.addLineSeries({ color: COUL.cyan, lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false })
-      .setData(serieUnique(t.map((x, i) => ({ time: x, value: g.ema_rapide?.[i] }))));
-    c.addLineSeries({ color: COUL.orange, lineWidth: 2, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false })
-      .setData(serieUnique(t.map((x, i) => ({ time: x, value: g.ema_lente?.[i] }))));
-    if (t.length) {  // ordres du bot, collés à la bougie la plus proche
-      const marques = [];
-      for (const o of d.ordres || []) {
-        if (!o.ouvert_le) continue;
-        const to = tLoc(iso(o.ouvert_le)); if (to < t[0]) continue;
-        const proche = t.reduce((a, b) => Math.abs(b - to) < Math.abs(a - to) ? b : a);
-        const achat = o.sens === "BUY";
-        marques.push({ time: proche, position: achat ? "belowBar" : "aboveBar", color: achat ? COUL.vert : COUL.rouge, shape: achat ? "arrowUp" : "arrowDown",
-          text: stratDe(o) === "rapide" ? "⚡" : "" });
-      }
-      pr.setMarkers(marques.sort((a, b) => a.time - b.time));
-    }
-    c.timeScale().fitContent();
-  }
-  if (pageActive === "stats") {
-    const fermes = (d.ordres || []).filter(o => o.statut === "ferme" && o.resultat != null).sort((a, b) => iso(a.ferme_le) - iso(b.ferme_le));
-    if (!fermes.length) graphVide("g-trades", "Aucun ordre fermé pour l'instant.");
-    else {
-      const c1 = graphique("g-trades", { timeScale: { visible: false }, localization: { locale: "fr-FR", priceFormatter: p => fmt(p, 2), timeFormatter: t => "Ordre n° " + t } });
-      if (c1) {
-        c1.addHistogramSeries({ priceLineVisible: false, lastValueVisible: false })
-          .setData(fermes.map((o, i) => ({ time: i + 1, value: o.resultat, color: o.resultat >= 0 ? COUL.vert : COUL.rouge })));
-        c1.timeScale().fitContent();
-      }
-    }
-    const pts = serieValeur(d);
-    const parMois = {};
-    for (const p of pts) { const k = p.t.toISOString().slice(0, 7); (parMois[k] ||= []).push(p.v); }
-    let prec = null;
-    const mois = Object.keys(parMois).sort().map(k => { const fin = parMois[k].at(-1), deb = prec ?? parMois[k][0]; prec = fin; return { k, v: fin - deb }; });
-    if (!mois.length) graphVide("g-mois", "Pas encore de données.");
-    else {
-      const c2 = graphique("g-mois", { timeScale: { timeVisible: false, fixLeftEdge: true, fixRightEdge: true, tickMarkFormatter: t => new Date(t * 1000).toLocaleDateString("fr-FR", { month: "short", timeZone: "UTC" }) },
-        localization: { locale: "fr-FR", priceFormatter: p => fmt(p, 2), timeFormatter: t => new Date(t * 1000).toLocaleDateString("fr-FR", { month: "long", year: "numeric", timeZone: "UTC" }) } });
-      if (c2) {
-        c2.addHistogramSeries({ priceLineVisible: false }).setData(mois.map(m => ({ time: Date.UTC(+m.k.slice(0, 4), +m.k.slice(5) - 1, 1) / 1000, value: m.v, color: m.v >= 0 ? COUL.vert : COUL.rouge })));
-        c2.timeScale().fitContent();
-      }
-    }
-    let pic = -Infinity;
-    const baisse = serieUnique(pts.map(p => { pic = Math.max(pic, p.v); return { time: tLoc(p.t), value: (p.v - pic) / pic * 100 }; }));
-    if (baisse.length < 2) graphVide("g-baisse", "Pas encore de données.");
-    else {
-      const c3 = graphique("g-baisse", { localization: { locale: "fr-FR", priceFormatter: p => fmt(p, 2) + " %",
-        timeFormatter: t => new Date(t * 1000).toLocaleString("fr-FR", { timeZone: "UTC", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) } });
-      if (c3) {
-        c3.addBaselineSeries({ baseValue: { type: "price", price: 0 }, bottomLineColor: COUL.rouge, bottomFillColor1: COUL.rouge + "10", bottomFillColor2: COUL.rouge + "55",
-          topLineColor: COUL.vert, topFillColor1: COUL.vert + "33", topFillColor2: COUL.vert + "00", lineWidth: 2, priceLineVisible: false }).setData(baisse);
-        c3.timeScale().fitContent();
-      }
-    }
   }
 }
 
@@ -1038,55 +861,6 @@ $("cle-ok").onclick = async () => {
 };
 $("cle-suppr").onclick = () => { memo.set("cleGithub", ""); majCle(); };
 majCle();
-
-// =====================================================================
-// Prix en direct (flux public Binance, sans clé)
-// =====================================================================
-const PRIX_DIRECT = {};
-const FLUX = { BTCUSD: "btcusdt", ETHUSD: "ethusdt" };
-let dernierRendu = 0;
-function fluxDirect(epic = "BTCUSD") {
-  const sym = FLUX[epic]; if (!sym) return;
-  let ws;
-  try { ws = new WebSocket(`wss://data-stream.binance.vision/ws/${sym}@miniTicker`); } catch { return; }
-  ws.onmessage = ev => {
-    const p = +JSON.parse(ev.data).c, avant = PRIX_DIRECT[epic];
-    PRIX_DIRECT[epic] = p;
-    $("prix-direct").hidden = false;
-    const txt = $("prix-direct-txt"); txt.textContent = `BTC ${fmt(p, 0)} $`;
-    if (avant && avant !== p) { txt.classList.remove("flash-h", "flash-b"); void txt.offsetWidth; txt.classList.add(p > avant ? "flash-h" : "flash-b"); }
-    if (D && Date.now() - dernierRendu > 2000) { dernierRendu = Date.now(); majDirect(); }
-  };
-  ws.onclose = () => setTimeout(() => fluxDirect(epic), 5000);
-}
-function majDirect() {
-  for (const o of (D.ordres || []).filter(o => o.statut === "ouvert")) {
-    const live = PRIX_DIRECT[o.marche]; if (!live) continue;
-    const v = (live - o.prix_entree) * o.taille * (o.sens === "BUY" ? 1 : -1);
-    const els = document.querySelectorAll(`[data-live="${CSS.escape(o.id)}"]`);
-    if (!els.length) { afficher(); return; }
-    els.forEach(e => { e.textContent = `≈ ${fmtS(v)} $ direct`; e.className = signe(v); });
-  }
-}
-fluxDirect("BTCUSD");
-
-// =====================================================================
-// Graphique TradingView intégré (onglet Marché)
-// =====================================================================
-let tvCharge = false;
-function chargerTV() {
-  if (tvCharge) return; tvCharge = true;
-  const lancer = () => new TradingView.widget({
-    container_id: "tv", autosize: true, symbol: "CAPITALCOM:BTCUSD", interval: (UNITES[D?.reglages?.unite] || ["", "240"])[1], timezone: "Europe/Paris",
-    theme: "dark", style: "1", locale: "fr", toolbar_bg: "#121927", hide_side_toolbar: false, allow_symbol_change: true, withdateranges: true,
-    studies: emas(D?.reglages).map(n => ({ id: "MAExp@tv-basicstudies", inputs: { length: n } })),
-  });
-  const sc = document.createElement("script");
-  sc.src = "https://s3.tradingview.com/tv.js";
-  sc.onload = () => D ? lancer() : setTimeout(lancer, 1500);
-  sc.onerror = () => { $("tv").innerHTML = '<div class="vide">Impossible de charger TradingView (connexion ?).</div>'; tvCharge = false; };
-  document.head.appendChild(sc);
-}
 
 // =====================================================================
 // Installation de l'application
