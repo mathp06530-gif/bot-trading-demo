@@ -415,3 +415,32 @@ def test_cassure_achete_or_avec_stop_garanti(tmp_path, monkeypatch):
     # tour suivant, même signal : pas de deuxième ordre
     main.un_tour(d, faux)
     assert len(faux.ouvertes) == 1
+
+
+def test_petit_compte_taille_sur_capital_virtuel(tmp_path, monkeypatch):
+    """Le petit compte risque 5 % de 100 € virtuels, et la cassure normale garde ses propres positions."""
+    from bot import cassure
+    from bot.cassure import signaux_cassure
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
+    monkeypatch.setattr(main, "SOUS_BOTS", [])
+    monkeypatch.setattr(main, "MARCHES_CASSURE", ["GOLD"])
+    monkeypatch.setattr(cassure, "PETIT_RISQUE_PCT", 5.0)
+    prix = [2000 + 25 * ((i % 8) - 4) for i in range(250)] + [2000 + 45 * i for i in range(40)]
+    for n in range(240, 290):
+        c = signaux_cassure(bougies_vers_df([bougie(i, p) for i, p in enumerate(prix[:n])])).cible.values
+        if c[-1] == 1 and c[-2] == 0:
+            break
+    faux = FauxCapitalActions(prix[:n])
+    faux.marche = lambda epic: {"snapshot": {"marketStatus": "TRADEABLE"}, "instrument": {"name": epic, "marginFactor": 5},
+                                "dealingRules": {"minDealSize": {"value": 0.01}, "minSizeIncrement": {"value": 0.01},
+                                                 "minGuaranteedStopDistance": {"unit": "PERCENTAGE", "value": 0.25}}}
+    d = {"strategies": {"rapide": {"active": False}, "petit_compte": {"active": True}}}
+    main.un_tour(d, faux)
+    assert len(faux.ouvertes) == 2  # un ordre « cassure », un ordre « petit compte »
+    (d1, _, t1, s1), (d2, _, t2, s2) = faux.ouvertes
+    entree = prix[n - 1] + 1
+    assert t2 * (entree - s2) <= 100 * 0.05 * 1.02 and t2 < t1  # 5 € de risque sur 100 € virtuels
+    assert d["deals_par_strategie"] == {"cassure": [d1], "petit_compte": [d2]}
+    assert {o["id"]: o["strategie"] for o in d["ordres"]} == {d1: "cassure_4h", d2: "petit_compte"}
+    assert d["strategies"]["petit_compte"]["capital"] == 100 + 1.5  # résultat en cours du faux courtier
