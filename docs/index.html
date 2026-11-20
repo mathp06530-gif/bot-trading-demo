@@ -147,6 +147,8 @@
   .sb-nom { min-width: 0; } .sb-nom b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .sb-nom small { color: var(--doux); }
   .sb-note { position: relative; height: 6px; border-radius: 3px; background: rgba(255,255,255,.07); }
   .sb-note::after { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--doux); }
+  .sb-note.plage { background: linear-gradient(90deg, rgba(234,57,67,.35), rgba(255,255,255,.06) 30% 70%, rgba(22,199,132,.35)); }
+  .sb-note.plage::after { display: none; }
   .sb-note i { position: absolute; top: 0; bottom: 0; border-radius: 3px; }
   .sb-act { color: var(--doux); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: right; }
   .actu { display: flex; gap: 12px; padding: 8px 0; border-top: 1px solid var(--bord); font-size: 13.5px; }
@@ -561,6 +563,8 @@ const STRAT_INFO = {
     desc: "Expérimentale : trade souvent (bougies de 5 minutes) pour voir le bot travailler en direct. Risque minuscule : 0,1 % du compte par trade." },
   actions_etf: { ico: "🏦", couleur: COUL.orange, titre: "Actions et ETF",
     desc: "Une équipe de petits bots, un par action ou ETF : chacun note son marché et n'achète que les plus solides, avec des garde-fous communs." },
+  cassure_4h: { ico: "🥇", couleur: "#eab308", titre: "Cassure 4 h",
+    desc: "Surveille l'or et l'argent sur des bougies de 4 h : elle entre quand le prix casse son plus haut ou son plus bas des 20 dernières bougies, dans le sens de la tendance." },
 };
 const nomStrat = id => (STRAT_INFO[id] || {}).titre || id;
 function stratDe(o) { return o.strategie || (/^\[Rapide\]/.test(o.motif_sortie || "") ? "rapide" : "tendance_4h"); }
@@ -737,6 +741,19 @@ function listeSousBots() {
       <div class="sb-act">${esc(b.action || "—")}</div></div>`;
   }).join("")}</div>`;
 }
+function listeCassure() {
+  const m = Object.entries(D?.cassure || {});
+  if (!m.length) return `<div class="sous-bots vide">L'or et l'argent apparaîtront ici après le premier tour.</div>`;
+  return `<div class="sous-bots">${m.map(([epic, b]) => {
+    const bas = +b.plus_bas_20, haut = +b.plus_haut_20, prix = +b.prix;
+    const pos = haut > bas && prix ? Math.max(0, Math.min(100, (prix - bas) / (haut - bas) * 100)) : null;
+    const t = b.tendance === "BUY" ? "▲" : b.tendance === "SELL" ? "▼" : "•";
+    return `<div class="sb" title="${esc(b.dernier_refus || "")}">
+      <div class="sb-nom"><b>${t} ${esc(b.nom || epic)}</b><small>${b.prix != null ? fmt(prix, 2) : ""}</small></div>
+      <div class="sb-note plage" title="Position du prix entre le plus bas (${fmt(bas, 2)}) et le plus haut (${fmt(haut, 2)}) des 20 dernières bougies">${pos == null ? "" : `<i style="left:calc(${pos}% - 4px);width:8px;background:var(--texte)"></i>`}</div>
+      <div class="sb-act">${esc(b.action || "—")}</div></div>`;
+  }).join("")}</div>`;
+}
 function bandeauActus() {
   const p = D?.actualites?.pause;
   return p ? `<div class="garde alerte">📰 <b>Pause annonce :</b> ${esc(p)}</div>` : "";
@@ -775,7 +792,7 @@ function carteStrat(s) {
       <div><span>Réussite</span><b>${isNaN(s.reussite) ? "—" : fmt(s.reussite, 0) + " %"}</b></div>
       <div><span>En cours</span><b>${s.ouverts.length}</b></div>
     </div>
-    ${s.id === "actions_etf" ? listeSousBots() : ""}
+    ${s.id === "actions_etf" ? listeSousBots() : s.id === "cassure_4h" ? listeCassure() : ""}
     ${sparkline(s.courbe, s.couleur)}
     <div class="actions">
       <button class="bouton primaire" data-cmd="lancer" data-strat="${esc(s.id)}">▶ Lancer maintenant</button>
