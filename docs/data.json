@@ -136,7 +136,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T03:25:26Z",
+ "derniere_execution": "2026-11-20T03:30:26Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -597,6 +597,10 @@
   {
    "date": "2026-11-20T03:25:26Z",
    "valeur": 21018.43
+  },
+  {
+   "date": "2026-11-20T03:30:26Z",
+   "valeur": 21018.43
   }
  ],
  "compte": {
@@ -610,7 +614,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 62059.5,
+   "prix": 62088.4,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1145,70 +1149,70 @@
    "nom": "Tesla Inc",
    "note": -0.67,
    "tendance": null,
-   "prix": 369.715,
+   "prix": 369.75,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.67,
    "tendance": null,
-   "prix": 144.125,
+   "prix": 144.32999999999998,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
    "note": -0.2,
    "tendance": null,
-   "prix": 351.255,
+   "prix": 350.37,
    "action": "Aucune action"
   },
   "MSFT": {
    "nom": "Microsoft Corp",
    "note": -0.72,
    "tendance": null,
-   "prix": 495.255,
+   "prix": 495.13,
    "action": "Aucune action"
   },
   "GOOGL": {
    "nom": "Alphabet Inc - A",
    "note": -0.67,
    "tendance": null,
-   "prix": 272.61,
+   "prix": 272.75,
    "action": "Aucune action"
   },
   "SPY": {
    "nom": "SPDR S&P 500 ETF",
    "note": -0.67,
    "tendance": null,
-   "prix": 713.9300000000001,
+   "prix": 714.1700000000001,
    "action": "Aucune action"
   },
   "QQQ": {
    "nom": "Invesco QQQ Trust",
    "note": -0.67,
    "tendance": null,
-   "prix": 642.255,
+   "prix": 642.09,
    "action": "Aucune action"
   },
   "GLD": {
    "nom": "SPDR Gold Shares",
    "note": -0.72,
    "tendance": null,
-   "prix": 322.91499999999996,
+   "prix": 322.96500000000003,
    "action": "Aucune action"
   },
   "XLK": {
    "nom": "Technology Select Sector SPDR Fund",
    "note": -0.72,
    "tendance": null,
-   "prix": 159.41,
+   "prix": 159.39499999999998,
    "action": "Aucune action"
   },
   "IWM": {
    "nom": "iShares Russell 2000 ETF",
    "note": -0.72,
    "tendance": null,
-   "prix": 263.57,
+   "prix": 263.61,
    "action": "Aucune action"
   }
  }
