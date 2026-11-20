@@ -968,10 +968,30 @@
    "marche": "EURUSD",
    "texte": "[Challenge] Tendance 1 mois (VENTE) mais ordre REFUSÉ : signal déjà utilisé.",
    "strategie": "challenge"
+  },
+  {
+   "date": "2026-11-20T13:36:16Z",
+   "type": "fermeture",
+   "marche": "AUDUSD",
+   "texte": "Position fermée depuis l'application (gain/perte : -0.35). Statut : ACCEPTED",
+   "strategie": "challenge"
+  },
+  {
+   "date": "2026-11-20T13:36:16Z",
+   "type": "fermeture",
+   "marche": "GBPUSD",
+   "texte": "Position fermée depuis l'application (gain/perte : 0.53). Statut : ACCEPTED",
+   "strategie": "challenge"
+  },
+  {
+   "date": "2026-11-20T13:36:16Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Positions de la stratégie Challenge prop firm (10 000 € virtuels) fermées, stratégie désactivée."
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T13:35:33Z",
+ "derniere_execution": "2026-11-20T13:36:27Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -1948,36 +1968,21 @@
   {
    "date": "2026-11-20T13:35:33Z",
    "valeur": 99.33
+  },
+  {
+   "date": "2026-11-20T13:36:27Z",
+   "valeur": 98.21
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 98.68,
-  "depot": 98.03,
-  "resultat_latent": 0.65,
-  "disponible": -30.41
+  "solde": 98.21,
+  "depot": 98.21,
+  "resultat_latent": 0.0,
+  "disponible": 98.21
  },
- "positions": [
-  {
-   "marche": "AUDUSD",
-   "nom": "AUD/USD",
-   "sens": "SELL",
-   "taille": 3200,
-   "prix_entree": 0.66644,
-   "resultat": 0.09,
-   "ouverte_le": "2026-11-20T13:26:38.647"
-  },
-  {
-   "marche": "GBPUSD",
-   "nom": "GBP/USD",
-   "sens": "SELL",
-   "taille": 800.0,
-   "prix_entree": 1.31251,
-   "resultat": 0.61,
-   "ouverte_le": "2026-11-20T13:26:37.852"
-  }
- ],
+ "positions": [],
  "analyses": {
   "BTCUSD": {
    "prix": 61369.9,
@@ -2866,12 +2871,13 @@
    "stop": 0.67644,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T13:26:38Z",
-   "statut": "ouvert",
-   "resultat": 0.09,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "challenge"
+   "statut": "ferme",
+   "resultat": -0.35,
+   "ferme_le": "2026-11-20T13:36:16Z",
+   "prix_sortie": 0.66656,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "challenge",
+   "resultat_estime": false
   },
   {
    "id": "00000000-750a-4e41-049f-c46d0015549e",
@@ -2937,17 +2943,18 @@
    "stop": 1.33251,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T13:26:37Z",
-   "statut": "ouvert",
-   "resultat": 0.61,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "challenge"
+   "statut": "ferme",
+   "resultat": 0.53,
+   "ferme_le": "2026-11-20T13:36:16Z",
+   "prix_sortie": 1.31178,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "challenge",
+   "resultat_estime": false
   }
  ],
  "historique_jour": {
   "2026-11-19": 21069.4,
-  "2026-11-20": 99.33
+  "2026-11-20": 98.21
  },
  "valeur_depart": 21000.0,
  "entrees": {
@@ -3120,7 +3127,7 @@
    "action": "Désactivée"
   },
   "challenge": {
-   "active": true,
+   "active": false,
    "nom": "Challenge prop firm (10 000 € virtuels)",
    "unite": "HOUR_4",
    "risque_pct": 0.5,
@@ -3140,15 +3147,15 @@
     "USDJPY"
    ],
    "capital_depart": 10000.0,
-   "action": "Actif",
-   "capital": 9776.09,
+   "action": "Désactivée",
+   "capital": 9775.57,
    "suivi": {
     "tentative": 1,
     "statut": "en cours",
     "raison": null,
     "debut": "2026-11-20T13:26:32Z",
     "debut_jour": 10000.0,
-    "plus_bas": 9775.61,
+    "plus_bas": 9775.57,
     "plus_haut": 10000.0
    },
    "tentatives": [],
@@ -3181,7 +3188,7 @@
    "nom": "NVIDIA Corp",
    "note": -0.48,
    "tendance": null,
-   "prix": 140.735,
+   "prix": 140.53,
    "action": "Aucune action"
   },
   "AAPL": {
@@ -3223,7 +3230,7 @@
    "nom": "SPDR Gold Shares",
    "note": -0.37,
    "tendance": null,
-   "prix": 326.01,
+   "prix": 325.8,
    "action": "Aucune action"
   },
   "XLK": {
@@ -4083,8 +4090,8 @@
   "base_realise": 0,
   "jour": "2026-11-20",
   "debut_jour": 10000.0,
-  "valeur": 9776.09,
-  "plus_bas": 9775.61,
+  "valeur": 9775.57,
+  "plus_bas": 9775.57,
   "plus_haut": 10000.0,
   "a_fermer": false
  },
