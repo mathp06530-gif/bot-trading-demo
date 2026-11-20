@@ -568,7 +568,9 @@ const STRAT_INFO = {
   cassure_4h: { ico: "🥇", couleur: "#eab308", titre: "Cassure 4 h",
     desc: "Surveille l'or et l'argent sur des bougies de 4 h : elle entre quand le prix casse son plus haut ou son plus bas des 20 dernières bougies, dans le sens de la tendance." },
   petit_compte: { ico: "🎯", couleur: "#ec4899", titre: "Petit compte risqué",
-    desc: "Une expérience à part : un capital virtuel de 100 € joué de façon risquée sur l'or et l'argent, pour voir ce que donnerait un petit compte." },  challenge: { ico: "🏆", couleur: "#14b8a6", titre: "Challenge prop firm",
+    desc: "Une expérience à part : un capital virtuel de 100 € joué de façon risquée sur l'or et l'argent, pour voir ce que donnerait un petit compte." },  londres: { ico: "🌅", couleur: "#f97316", titre: "Cassure de Londres",
+    desc: "Note le plus haut et le plus bas de la nuit sur le dollar/yen, suit la sortie de cette zone le matin et ferme tout le soir." },
+  challenge: { ico: "🏆", couleur: "#14b8a6", titre: "Challenge prop firm",
     desc: "Un faux challenge de société de trading : 10 000 € virtuels, réussi à +10 %, raté à -5 % dans une journée ou -10 % au total." },
 };
 const nomStrat = id => (STRAT_INFO[id] || {}).titre || id;
@@ -812,7 +814,7 @@ function carteStrat(s) {
     </div>
     ${s.id === "petit_compte" || /^x5_/.test(s.id) ? capitalVirtuel(s) : ""}
     ${s.id === "challenge" ? capitalVirtuel(s) + bilanChallenge(s) : ""}
-    ${s.id === "actions_etf" ? listeSousBots() : s.id === "cassure_4h" ? listeCassure(D?.cassure) : s.id === "petit_compte" ? listeCassure(D?.petit_compte) : ""}
+    ${s.id === "actions_etf" ? listeSousBots() : s.id === "cassure_4h" ? listeCassure(D?.cassure) : s.id === "petit_compte" ? listeCassure(D?.petit_compte) : s.id === "londres" ? listeCassure(D?.londres) : ""}
     ${sparkline(s.courbe, s.couleur)}
     <div class="actions">
       <button class="bouton primaire" data-cmd="lancer" data-strat="${esc(s.id)}">▶ Lancer maintenant</button>
