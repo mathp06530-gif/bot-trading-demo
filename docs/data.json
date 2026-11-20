@@ -1021,10 +1021,17 @@
    "marche": "SILVER",
    "texte": "[Rapide] POST /positions -> 400 : {\"errorCode\":\"error.invalid.stoploss.minvalue: 41.54\"}",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-20T17:40:25Z",
+   "type": "erreur",
+   "marche": "SILVER",
+   "texte": "[Rapide] POST /positions -> 400 : {\"errorCode\":\"error.invalid.stoploss.minvalue: 41.467\"}",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T17:35:25Z",
+ "derniere_execution": "2026-11-20T17:40:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -1093,6 +1100,10 @@
   {
    "date": "2026-11-20T17:35:25Z",
    "valeur": 98.21
+  },
+  {
+   "date": "2026-11-20T17:40:26Z",
+   "valeur": 98.21
   }
  ],
  "compte": {
@@ -1106,7 +1117,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 59162.625,
+   "prix": 59034.925,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 48) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1621,7 +1632,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3532.245,
+   "prix": 3527.94,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 3998.75,
@@ -1632,7 +1643,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.1815,
+   "prix": 41.03,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.67,
@@ -1655,10 +1666,10 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 1.08,
-     "adx": 17.6
+     "bollinger": 1.11,
+     "adx": 18.4
     },
-    "prix": 3528.82,
+    "prix": 3525.23,
     "action": "En attente : tendance 5 min trop faible (ADX 18 ≤ 20)"
    },
    "SILVER": {
@@ -1667,10 +1678,10 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 1.1,
-     "adx": 22.1
+     "bollinger": 1.12,
+     "adx": 23.5
     },
-    "prix": 41.111000000000004,
+    "prix": 40.987,
     "action": "Erreur"
    }
   },
