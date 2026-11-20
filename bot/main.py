@@ -21,6 +21,9 @@ from bot import actualites
 from bot.sous_bots import LISTE as SOUS_BOTS
 from bot.sous_bots import NOM as NOM_SB
 from bot.sous_bots import RISQUE_SOUS_BOT_PCT, tour_sous_bot
+from bot.cassure import LISTE as MARCHES_CASSURE
+from bot.cassure import NOM as NOM_CASSURE
+from bot.cassure import RISQUE_CASSURE_PCT, tour_cassure
 from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
 from bot.strategie import NOM as NOM_STRATEGIE
 from bot.strategie import EMA_LENTE, EMA_RAPIDE, bougies_vers_df, decider
@@ -66,6 +69,9 @@ def milieu(prix: dict) -> float:
 
 DESCRIPTION_SB = ("Un sous-bot par action ou ETF : il n'achète que si l'analyse technique (~20 indicateurs) "
                   "donne un achat fort dans une tendance haussière, avec SL garanti et TP.")
+DESCRIPTION_CASSURE = ("Un sous-bot pour l'or et un pour l'argent : il achète quand le prix casse le plus haut "
+                       "des 20 dernières bougies de 4 h (vend sous le plus bas), dans le sens de l'EMA 200, "
+                       "avec stop garanti. Environ 4 trades par mois.")
 DESCRIPTIONS = {
     "tendance_4h": "Suit les grosses tendances du Bitcoin sur des bougies de 4 h : peu de trades, la seule gagnante en backtest.",
     "rapide": "Trade souvent sur des bougies de 5 min avec un tout petit risque, pour comparer en direct (perdante en backtest).",
@@ -84,19 +90,23 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     noter_4h = lambda t, m, x: noter(t, m, x, "tendance_4h")
     noter_rapide = lambda t, m, x: noter(t, m, x, "rapide")
 
-    strategie = strategie if strategie in ("tendance_4h", "rapide", "actions_etf") else "toutes"
-    cibles = ["tendance_4h", "rapide", "actions_etf"] if strategie == "toutes" else [strategie]
+    toutes = ["tendance_4h", "rapide", "actions_etf", "cassure_4h"]
+    strategie = strategie if strategie in toutes else "toutes"
+    cibles = toutes if strategie == "toutes" else [strategie]
     etats = donnees.setdefault("strategies", {})
     etats.setdefault("tendance_4h", {}).setdefault("active", True)
     etats.setdefault("rapide", {}).setdefault("active", RAPIDE_ACTIVE)
     etats.setdefault("actions_etf", {}).setdefault("active", True)
-    noms = {"tendance_4h": "Tendance 4 h", "rapide": "Rapide 5 min", "actions_etf": "Sous-bots actions et ETF"}
+    etats.setdefault("cassure_4h", {}).setdefault("active", True)
+    noms = {"tendance_4h": "Tendance 4 h", "rapide": "Rapide 5 min", "actions_etf": "Sous-bots actions et ETF",
+            "cassure_4h": "Cassure 4 h (or et argent)"}
     lancer = set(cibles) if action == "lancer" else set()
 
     api.connexion()
     positions = api.positions()
     ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
     strat_de = lambda p: ("actions_etf" if p["market"]["epic"] in SOUS_BOTS else
+                          "cassure_4h" if p["market"]["epic"] in MARCHES_CASSURE else
                           "rapide" if p["position"]["dealId"] in ids_rapide else "tendance_4h")
 
     # --- Commandes envoyées depuis l'application (téléphone, tablette, PC) ---
@@ -116,7 +126,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     elif action == "fermer":
         if strategie == "toutes":
             donnees["pause"] = True
-        for p in [p for p in positions if p["market"]["epic"] in MARCHES + SOUS_BOTS and strat_de(p) in cibles]:
+        for p in [p for p in positions if p["market"]["epic"] in MARCHES + SOUS_BOTS + MARCHES_CASSURE and strat_de(p) in cibles]:
             conf = api.fermer(p["position"]["dealId"])
             if conf.get("dealStatus") == "ACCEPTED":
                 noter_fermeture(donnees, p, conf, maintenant(), "Fermée depuis l'application")
@@ -323,6 +333,21 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     etats["actions_etf"].update({"nom": noms["actions_etf"], "description": DESCRIPTION_SB, "unite": "HOUR_4",
                                  "risque_pct": RISQUE_SOUS_BOT_PCT, "reglages": NOM_SB, "marches": SOUS_BOTS,
                                  "action": "Actif" if actif_sb else ("En pause" if en_pause else "Désactivée")})
+
+    # --- Cassure 4 h : un sous-bot par marché (or et argent) ---
+    actif_c = ("cassure_4h" in lancer) or (not en_pause and etats["cassure_4h"]["active"])
+    if actif_c or not en_pause:
+        noter_c = lambda t, m, x: noter(t, m, x, "cassure_4h")
+        for epic in MARCHES_CASSURE:
+            try:
+                tour_cassure(api, donnees, epic, positions, capital, disponible, eurusd, noter_c, garde,
+                             maintenant(), peut_entrer=actif_c)
+            except Exception as e:  # un marché en erreur ne bloque pas les autres
+                donnees.setdefault("cassure", {}).setdefault(epic, {})["action"] = "Erreur"
+                noter_c("erreur", epic, str(e)[:300])
+    etats["cassure_4h"].update({"nom": noms["cassure_4h"], "description": DESCRIPTION_CASSURE, "unite": "HOUR_4",
+                                "risque_pct": RISQUE_CASSURE_PCT, "reglages": NOM_CASSURE, "marches": MARCHES_CASSURE,
+                                "action": "Actif" if actif_c else ("En pause" if en_pause else "Désactivée")})
     donnees.pop("_cache_marches", None)
 
     # État final du compte, après les ordres
@@ -335,6 +360,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     for o in donnees.get("ordres", []):
         if "strategie" not in o:
             o["strategie"] = ("actions_etf" if o["marche"] in SOUS_BOTS else
+                              "cassure_4h" if o["marche"] in MARCHES_CASSURE else
                               "rapide" if o["id"] in ids_rapide else "tendance_4h")
 
     donnees["compte"] = {

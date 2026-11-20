@@ -379,3 +379,39 @@ def test_calendrier_en_panne_le_bot_continue():
     msg = actualites.mettre_a_jour(donnees, datetime(2026, 12, 9, tzinfo=timezone.utc), lire=panne)
     assert "indisponible" in msg
     assert actualites.annonce_en_cours(donnees, datetime(2026, 12, 9, tzinfo=timezone.utc)) is None
+
+
+def test_cassure_identique_au_backtest():
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "backtest"))
+    from strategies import cassure_donchian
+    from bot.cassure import signaux_cassure
+    prix = [2000 + 25 * ((i % 8) - 4) for i in range(250)] + [2000 + 45 * i for i in range(40)] + [3800 - 45 * i for i in range(60)]
+    df = bougies_vers_df([bougie(i, p) for i, p in enumerate(prix)])
+    a = signaux_cassure(df)
+    b = cassure_donchian(df, entree=20, sortie=20, stop_atr=2, filtre_ema=200)
+    assert (a.cible.values == b.cible.values).all() and (a.cible != 0).any()
+
+
+def test_cassure_achete_or_avec_stop_garanti(tmp_path, monkeypatch):
+    from bot.cassure import signaux_cassure
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
+    monkeypatch.setattr(main, "SOUS_BOTS", [])
+    monkeypatch.setattr(main, "MARCHES_CASSURE", ["GOLD"])
+    prix = [2000 + 25 * ((i % 8) - 4) for i in range(250)] + [2000 + 45 * i for i in range(40)]
+    for n in range(240, 290):
+        c = signaux_cassure(bougies_vers_df([bougie(i, p) for i, p in enumerate(prix[:n])])).cible.values
+        if c[-1] == 1 and c[-2] == 0:
+            break
+    faux = FauxCapitalActions(prix[:n])
+    d = {"strategies": {"rapide": {"active": False}}}
+    main.un_tour(d, faux)
+    assert [o[1] for o in faux.ouvertes] == ["BUY"]
+    _, _, taille, stop = faux.ouvertes[0]
+    assert stop < prix[n - 1] and taille * (prix[n - 1] + 1 - stop) <= 10000 * 0.5 / 100 * 1.02
+    assert d["ordres"][0]["strategie"] == "cassure_4h" and d["strategies"]["cassure_4h"]["action"] == "Actif"
+    # tour suivant, même signal : pas de deuxième ordre
+    main.un_tour(d, faux)
+    assert len(faux.ouvertes) == 1
