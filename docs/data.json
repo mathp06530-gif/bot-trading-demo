@@ -1072,7 +1072,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T18:32:22Z",
+ "derniere_execution": "2026-11-20T18:35:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -1193,15 +1193,19 @@
   {
    "date": "2026-11-20T18:32:22Z",
    "valeur": 98.55
+  },
+  {
+   "date": "2026-11-20T18:35:25Z",
+   "valeur": 98.43
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 98.38,
+  "solde": 98.32,
   "depot": 98.21,
-  "resultat_latent": 0.17,
-  "disponible": 93.54
+  "resultat_latent": 0.11,
+  "disponible": 93.48
  },
  "positions": [
   {
@@ -1210,7 +1214,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3523.59,
-   "resultat": 0.17,
+   "resultat": 0.11,
    "ouverte_le": "2026-11-20T17:50:24.893"
   }
  ],
@@ -1628,7 +1632,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T17:50:24Z",
    "statut": "ouvert",
-   "resultat": 0.17,
+   "resultat": 0.11,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1636,7 +1640,7 @@
   }
  ],
  "historique_jour": {
-  "2026-11-20": 98.55
+  "2026-11-20": 98.43
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -1749,7 +1753,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3513.4,
+   "prix": 3515.3,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 3998.75,
@@ -1760,7 +1764,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.022999999999996,
+   "prix": 41.064,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.67,
@@ -1786,7 +1790,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3516.34,
+    "prix": 3519.55,
     "action": "Position conservée"
    },
    "SILVER": {
@@ -1795,9 +1799,9 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 0.76
+     "bollinger": 0.75
     },
-    "prix": 41.046,
+    "prix": 41.196,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)"
    }
   },
