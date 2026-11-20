@@ -33,7 +33,8 @@ class GardeFous:
         self.valeur = float(valeur_compte or 0)
         self.positions = list(positions)
         self.eurusd = eurusd or 1.0
-        self.pause_actualite = None  # raison de la pause si une grande annonce est proche
+        self.pause_actualite = None
+        self.taux = {}  # epic -> unités de la devise du marché pour 1 € (sinon EUR/USD)  # raison de la pause si une grande annonce est proche
         jour = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         if self.etat.get("jour") != jour:
             self.etat["jour"] = jour
@@ -57,7 +58,8 @@ class GardeFous:
                 continue
             sens = -1 if pos.get("direction") == "SELL" else 1
             perte = (float(pos["level"]) - float(pos["stopLevel"])) * sens  # <= 0 si le stop protège déjà un gain
-            total += max(perte, 0.0) * float(pos["size"]) / self.eurusd
+            taux = self.taux.get(p.get("market", {}).get("epic"), self.eurusd)
+            total += max(perte, 0.0) * float(pos["size"]) / taux
         return total
 
     def autoriser(self, risque_eur: float, distance_stop: float) -> tuple[bool, str]:

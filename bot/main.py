@@ -25,6 +25,7 @@ from bot.cassure import LISTE as MARCHES_CASSURE
 from bot.cassure import NOM as NOM_CASSURE
 from bot.cassure import RISQUE_CASSURE_PCT, tour_cassure
 from bot import cassure as module_cassure
+from bot import tendance_mois as module_tm
 from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
 from bot.strategie import NOM as NOM_STRATEGIE
 from bot.strategie import EMA_LENTE, EMA_RAPIDE, bougies_vers_df, decider
@@ -91,7 +92,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     noter_4h = lambda t, m, x: noter(t, m, x, "tendance_4h")
     noter_rapide = lambda t, m, x: noter(t, m, x, "rapide")
 
-    toutes = ["tendance_4h", "rapide", "actions_etf", "cassure_4h", "petit_compte"]
+    toutes = ["tendance_4h", "rapide", "actions_etf", "cassure_4h", "petit_compte", "tendance_mois"]
     strategie = strategie if strategie in toutes else "toutes"
     cibles = toutes if strategie == "toutes" else [strategie]
     etats = donnees.setdefault("strategies", {})
@@ -100,15 +101,19 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     etats.setdefault("actions_etf", {}).setdefault("active", True)
     etats.setdefault("cassure_4h", {}).setdefault("active", True)
     etats.setdefault("petit_compte", {}).setdefault("active", module_cassure.PETIT_COMPTE)
+    etats.setdefault("tendance_mois", {}).setdefault("active", module_tm.ACTIVE_PAR_DEFAUT)
     noms = {"tendance_4h": "Tendance 4 h", "rapide": "Rapide 5 min", "actions_etf": "Sous-bots actions et ETF",
-            "cassure_4h": "Cassure 4 h (or et argent)", "petit_compte": "Petit compte risqué (100 €)"}
+            "cassure_4h": "Cassure 4 h (or et argent)", "petit_compte": "Petit compte risqué (100 €)",
+            "tendance_mois": "Tendance 1 mois (11 marchés)"}
     lancer = set(cibles) if action == "lancer" else set()
 
     api.connexion()
     positions = api.positions()
     ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
     ids_petit = set(donnees.get("deals_par_strategie", {}).get("petit_compte", []))
-    strat_de = lambda p: ("actions_etf" if p["market"]["epic"] in SOUS_BOTS else
+    ids_tm = set(donnees.get("deals_par_strategie", {}).get("tendance_mois", []))
+    strat_de = lambda p: ("tendance_mois" if p["position"]["dealId"] in ids_tm else
+                          "actions_etf" if p["market"]["epic"] in SOUS_BOTS else
                           "petit_compte" if p["position"]["dealId"] in ids_petit else
                           "cassure_4h" if p["market"]["epic"] in MARCHES_CASSURE else
                           "rapide" if p["position"]["dealId"] in ids_rapide else "tendance_4h")
@@ -130,7 +135,8 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     elif action == "fermer":
         if strategie == "toutes":
             donnees["pause"] = True
-        for p in [p for p in positions if p["market"]["epic"] in MARCHES + SOUS_BOTS + MARCHES_CASSURE and strat_de(p) in cibles]:
+        for p in [p for p in positions if p["market"]["epic"] in MARCHES + SOUS_BOTS + MARCHES_CASSURE + module_tm.LISTE
+                  and strat_de(p) in cibles]:
             conf = api.fermer(p["position"]["dealId"])
             if conf.get("dealStatus") == "ACCEPTED":
                 noter_fermeture(donnees, p, conf, maintenant(), "Fermée depuis l'application")
@@ -152,6 +158,15 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     eurusd = api.taux_eurusd()
     valeur = capital + float(compte0.get("balance", {}).get("profitLoss") or 0)
     garde = GardeFous(donnees, valeur, positions, eurusd)
+    # Devise de chaque marché ouvert hors dollar (DAX en €, USD/JPY en yens) : sinon le risque total serait faux
+    for p in positions:
+        epic = p["market"]["epic"]
+        if epic in module_tm.LISTE and epic not in garde.taux:
+            try:
+                regles = module_cassure.regles_marche(api, epic, donnees.setdefault("_cache_marches", {}))
+                garde.taux[epic] = module_cassure.taux_devise(regles, eurusd, float(p["position"]["level"]))
+            except Exception:
+                pass
     if action == "reprendre":
         garde.rearmer()
     instant = datetime.now(timezone.utc)
@@ -183,7 +198,8 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         prix_vente = bougies[-1]["closePrice"]["bid"] if bougies else None
         sig = signal["sig"]
 
-        mes_positions = [p for p in positions if p["market"]["epic"] == epic and p["position"]["dealId"] not in ids_rapide]
+        mes_positions = [p for p in positions if p["market"]["epic"] == epic and p["position"]["dealId"] not in ids_rapide
+                         and p["position"]["dealId"] not in ids_tm]
         voulu = signal["direction"]
         action = "Aucune action"
         deja_note = precedentes.get(epic, {}).get("explication") == signal["explication"]
@@ -374,6 +390,27 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         "reglages": NOM_CASSURE, "marches": MARCHES_CASSURE,
         "capital_depart": module_cassure.PETIT_CAPITAL_DEPART,
         "action": "Actif" if actif_p else ("En pause" if en_pause else "Désactivée")})
+
+    # --- Tendance 1 mois : un sous-bot par marché (12 marchés), décision sur les bougies jour ---
+    actif_tm = ("tendance_mois" in lancer) or (not en_pause and etats["tendance_mois"]["active"])
+    if (actif_tm or not en_pause) and (actif_tm or ids_tm):
+        noter_tm = lambda t, m, x: noter(t, m, f"[Tendance 1 mois] {x}", "tendance_mois")
+        for epic in module_tm.LISTE:
+            try:
+                tour_cassure(api, donnees, epic, positions, capital, disponible, eurusd, noter_tm, garde,
+                             maintenant(), peut_entrer=actif_tm, cle="tendance_mois",
+                             risque_pct=module_tm.RISQUE_TENDANCE_MOIS_PCT, signaux=module_tm.signaux_tendance,
+                             unite=module_tm.UNITE)
+            except Exception as e:
+                donnees.setdefault("tendance_mois", {}).setdefault(epic, {})["action"] = "Erreur"
+                noter_tm("erreur", epic, str(e)[:300])
+    etats["tendance_mois"].update({
+        "nom": noms["tendance_mois"], "unite": "DAY", "risque_pct": module_tm.RISQUE_TENDANCE_MOIS_PCT,
+        "description": ("Un sous-bot par marché (or, argent, ETH, Nasdaq, S&P 500, DAX, pétrole, 4 devises) : "
+                        "acheteur si le prix est plus haut qu'il y a 30 jours, vendeur sinon, stop garanti. "
+                        "Test 2 ans : +2 403 € puis +1 054 €, pire baisse -7 %, ~20 trades/mois."),
+        "reglages": module_tm.NOM, "marches": module_tm.LISTE,
+        "action": "Actif" if actif_tm else ("En pause" if en_pause else "Désactivée")})
     donnees.pop("_cache_marches", None)
 
     # État final du compte, après les ordres
@@ -385,9 +422,12 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
     etats["petit_compte"]["capital"] = module_cassure.capital_petit_compte(donnees)
     ids_petit = set(donnees.get("deals_par_strategie", {}).get("petit_compte", []))
+    ids_tm = set(donnees.get("deals_par_strategie", {}).get("tendance_mois", []))
     for o in donnees.get("ordres", []):
         if o["id"] in ids_petit:
             o["strategie"] = "petit_compte"
+        if o["id"] in ids_tm:
+            o["strategie"] = "tendance_mois"
         if "strategie" not in o:
             o["strategie"] = ("actions_etf" if o["marche"] in SOUS_BOTS else
                               "cassure_4h" if o["marche"] in MARCHES_CASSURE else
