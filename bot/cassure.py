@@ -63,6 +63,18 @@ def signaux_cassure(df: pd.DataFrame, entree=ENTREE, sortie=SORTIE, stop_atr=STO
                          "ema": t, "cloture": m.close}, index=df.index)
 
 
+def taux_devise(regles: dict, eurusd: float, prix: float) -> float:
+    """Combien d'unités de la devise du marché vaut 1 € (USD : EUR/USD ; EUR : 1 ; JPY : EUR/USD × USD/JPY)."""
+    devise = regles.get("devise", "USD")
+    if devise == "EUR":
+        return 1.0
+    if devise == "JPY":
+        return eurusd * prix if prix > 20 else eurusd * 155.0
+    if devise == "GBP":
+        return eurusd / 1.27
+    return eurusd
+
+
 def capital_petit_compte(donnees: dict) -> float:
     """Capital virtuel = départ + résultats (encaissés et en cours) de ses propres ordres."""
     ids = set(donnees.get("deals_par_strategie", {}).get("petit_compte", []))
@@ -72,8 +84,10 @@ def capital_petit_compte(donnees: dict) -> float:
 
 def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float, disponible: float, eurusd: float,
                  noter, garde, quand: str, peut_entrer: bool = True, cle: str = "cassure",
-                 risque_pct: float | None = None) -> dict:
-    """cle : « cassure » (stratégie normale) ou « petit_compte » (capital virtuel, risque élevé).
+                 risque_pct: float | None = None, signaux=None, unite: str = UNITE) -> dict:
+    """cle : « cassure » (stratégie normale), « petit_compte » (capital virtuel, risque élevé) ou
+    « tendance_mois » (signaux=bot/tendance_mois.py:signaux_tendance, unite="DAY").
+    Un signal externe fournit ses textes dans sig.attrs : « pourquoi » (ordre), « sortie » (fermeture), « nom ».
     Chaque profil ne gère QUE ses propres positions (repérées par leur numéro dealId)."""
     risque_pct = RISQUE_CASSURE_PCT if risque_pct is None else risque_pct
     tous_deals = donnees.setdefault("deals_par_strategie", {}).setdefault(cle, [])
@@ -81,11 +95,13 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
     regles = regles_marche(api, epic, donnees.setdefault("_cache_marches", {}))
     etat["nom"] = regles["nom"]
     miennes = [p for p in positions if p["market"]["epic"] == epic and p["position"]["dealId"] in tous_deals]
-    bougies = api.bougies(epic, UNITE, 1000)
-    if len(bougies) < FILTRE_EMA + 30:
+    bougies = api.bougies(epic, unite, 1000)
+    if len(bougies) < (60 if signaux is not None else FILTRE_EMA + 30):
         etat.update({"action": "Pas assez d'historique"})
         return etat
-    sig = signaux_cassure(bougies_vers_df(bougies[:-1]))
+    sig = (signaux or signaux_cassure)(bougies_vers_df(bougies[:-1]))
+    externe = signaux is not None
+    textes = sig.attrs if externe else {}
     der = sig.iloc[-1]
     c = sig.cible.values
     voulu = {1: "BUY", -1: "SELL"}.get(int(c[-1]))
@@ -94,6 +110,8 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
         j -= 1
     debut = str(sig.index[j])
     prix_achat, prix_vente = bougies[-1]["closePrice"]["ask"], bougies[-1]["closePrice"]["bid"]
+    if "momentum_pct" in textes:
+        etat["momentum_pct"] = textes["momentum_pct"]
     etat.update({"tendance": voulu, "prix": (prix_achat + prix_vente) / 2, "plus_haut_20": round(float(der.haut), 2),
                  "plus_bas_20": round(float(der.bas), 2), "ema200": round(float(der.ema), 2)})
     action = "Aucune action"
@@ -102,9 +120,9 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
     for p in [p for p in miennes if p["position"]["direction"] != voulu]:
         conf = api.fermer(p["position"]["dealId"])
         if conf.get("dealStatus") == "ACCEPTED":
-            noter_fermeture(donnees, p, conf, quand, "Fin de la cassure")
-        noter("fermeture", epic, f"Le prix est repassé de l'autre côté du canal des {SORTIE} bougies : position fermée "
-              f"(gain/perte : {p['position'].get('upl', 0):.2f}).")
+            noter_fermeture(donnees, p, conf, quand, textes.get("sortie", "Fin de la cassure"))
+        raison = textes.get("sortie") or f"Le prix est repassé de l'autre côté du canal des {SORTIE} bougies"
+        noter("fermeture", epic, f"{raison} : position fermée (gain/perte : {p['position'].get('upl', 0):.2f}).")
         action = "Position fermée"
     miennes = [p for p in miennes if p["position"]["direction"] == voulu]
     if miennes:
@@ -123,6 +141,10 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
             refus = f"cassure trop ancienne (depuis le {debut[:16]})"
         elif entrees.get(cle_signal) == debut:
             refus = "signal déjà utilisé"
+        elif any(p["market"]["epic"] == epic and p["position"]["direction"] != voulu
+                 and p["position"]["dealId"] not in tous_deals for p in positions):
+            # compte sans couverture : un ordre opposé fermerait la position d'une autre stratégie
+            refus = "une autre stratégie a une position dans l'autre sens sur ce marché"
         elif abs(prix - float(der.cloture)) > float(der.atr):
             refus = "le prix a trop bougé depuis le signal (écart > 1 ATR)"
         mini = prix * (regles["stop_min_pct"] or 0) / 100 or (regles["stop_min_points"] or 0)
@@ -130,18 +152,20 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
         if not refus and (prix_achat - prix_vente) > distance * 0.10:
             refus = "spread trop cher par rapport au stop"
         pas = regles["pas"]
-        taille = math.floor(capital * risque_pct / 100 * eurusd / distance / pas) * pas
-        taille_marge = math.floor(disponible * eurusd / (prix * regles["marge"]) * 0.5 / pas) * pas
+        taux = taux_devise(regles, eurusd, prix)  # unités de la devise du marché pour 1 €
+        garde.taux[epic] = taux
+        taille = math.floor(capital * risque_pct / 100 * taux / distance / pas) * pas
+        taille_marge = math.floor(disponible * taux / (prix * regles["marge"]) * 0.5 / pas) * pas
         taille = round(min(taille, taille_marge), 6)
         if not refus and taille < regles["taille_min"]:
             refus = f"capital trop faible pour la taille minimale ({regles['taille_min']})"
         if not refus:
-            ok, raison = garde.autoriser(taille * distance / eurusd, distance)
+            ok, raison = garde.autoriser(taille * distance / taux, distance)
             refus = None if ok else raison
         mot = "ACHAT" if voulu == "BUY" else "VENTE"
         if refus:
             if etat.get("dernier_refus") != refus:
-                noter("analyse", epic, f"Cassure ({mot}) mais ordre REFUSÉ : {refus}.")
+                noter("analyse", epic, f"{textes.get('nom', 'Cassure')} ({mot}) mais ordre REFUSÉ : {refus}.")
             etat["dernier_refus"] = refus
             action = f"Refusé : {refus}"
         else:
@@ -152,10 +176,11 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
                 if deal:
                     tous_deals.append(deal)
                 stop = prix - distance if voulu == "BUY" else prix + distance
-                garde.enregistrer({"position": {"level": prix, "stopLevel": stop, "size": taille,
+                garde.enregistrer({"market": {"epic": epic}, "position": {"level": prix, "stopLevel": stop, "size": taille,
                                                 "direction": voulu}})
                 cote = "au-dessus du plus haut" if voulu == "BUY" else "sous le plus bas"
-                noter("ordre", epic, f"Cassure : clôture {cote} des {ENTREE} dernières bougies de 4 h : {mot} de {taille} "
+                pourquoi = textes.get("pourquoi") or f"Cassure : clôture {cote} des {ENTREE} dernières bougies de 4 h"
+                noter("ordre", epic, f"{pourquoi} : {mot} de {taille} "
                       f"à {float(conf.get('level') or prix):.2f}, stop garanti à {distance:.2f}.")
                 action = f"{mot} de {taille}"
             else:

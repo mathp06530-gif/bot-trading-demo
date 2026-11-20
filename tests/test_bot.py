@@ -455,3 +455,37 @@ def test_rapide_filtre_bollinger():
     assert rapide.bollinger_relatif(calme) == pytest.approx(1.0)
     assert rapide.bollinger_relatif(agite) > 1.5
     assert rapide.bollinger_relatif(calme[:50]) is None
+
+
+def test_tendance_mois_achete_en_hausse_et_compte_la_devise(tmp_path, monkeypatch):
+    """Tendance 1 mois : prix plus haut qu'il y a 30 jours -> ACHAT avec stop garanti, risque 0,4 % converti
+    dans la devise du marché (le DAX est en euros), ordres comptés à part ; pas de 2e ordre le même jour."""
+    from bot import tendance_mois
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
+    monkeypatch.setattr(main, "SOUS_BOTS", [])
+    monkeypatch.setattr(tendance_mois, "LISTE", ["DE40"])
+    monkeypatch.setattr(tendance_mois, "RISQUE_TENDANCE_MOIS_PCT", 0.4)
+    prix = [18000 + 20 * i for i in range(120)]
+    faux = FauxCapitalActions(prix)
+    marche = faux.marche
+    faux.marche = lambda epic: {**marche(epic), "instrument": {"name": epic, "marginFactor": 5, "currency": "EUR"},
+                                "dealingRules": {"minDealSize": {"value": 0.1}, "minSizeIncrement": {"value": 0.1},
+                                                 "minGuaranteedStopDistance": {"unit": "PERCENTAGE", "value": 0.1}}}
+    d = {"strategies": {"rapide": {"active": False}, "tendance_mois": {"active": True}}}
+    main.un_tour(d, faux)
+    assert [o[1] for o in faux.ouvertes] == ["BUY"]
+    _, _, taille, stop = faux.ouvertes[0]
+    risque_eur = taille * (prix[-1] + 1 - stop)       # en euros : pas de division par EUR/USD
+    assert 10000 * 0.4 / 100 * 0.5 < risque_eur <= 10000 * 0.4 / 100 * 1.05
+    assert d["ordres"][0]["strategie"] == "tendance_mois" and d["tendance_mois"]["DE40"]["momentum_pct"] > 0
+    main.un_tour(d, faux)
+    assert len(faux.ouvertes) == 1
+
+
+def test_tendance_mois_signal_comme_le_backtest():
+    from bot.tendance_mois import signaux_tendance
+    baisse = bougies_vers_df([bougie(i, 2000 - 3 * i) for i in range(80)])
+    s = signaux_tendance(baisse)
+    assert s.cible.iloc[-1] == -1 and (s.cible.iloc[:-1] == 0).all() and s.attrs["momentum_pct"] < 0
+    assert signaux_tendance(baisse.iloc[:20]).cible.iloc[-1] == 0  # pas assez d'historique

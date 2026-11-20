@@ -45,6 +45,7 @@ def regles_marche(api, epic: str, cache: dict) -> dict:
             "stop_min_points": float(g["value"]) if g.get("value") and g.get("unit") != "PERCENTAGE" else None,
             "marge": float(m.get("instrument", {}).get("marginFactor", 20)) / 100,
             "nom": m.get("instrument", {}).get("name", epic),
+            "devise": m.get("instrument", {}).get("currency", "USD"),
         }
     return cache[epic]
 
