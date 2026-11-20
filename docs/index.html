@@ -149,6 +149,8 @@
   .sb-note::after { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--doux); }
   .sb-note i { position: absolute; top: 0; bottom: 0; border-radius: 3px; }
   .sb-act { color: var(--doux); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: right; }
+  .actu { display: flex; gap: 12px; padding: 8px 0; border-top: 1px solid var(--bord); font-size: 13.5px; }
+  .actu-date { color: var(--cyan); font-weight: 700; min-width: 150px; text-transform: capitalize; }
   .garde { margin-top: 12px; font-size: 13px; color: var(--doux); background: var(--fond); border: 1px solid var(--bord); border-radius: 12px; padding: 9px 12px; }
   .garde.alerte { color: #ffd1d4; background: rgba(234,57,67,.12); border-color: rgba(234,57,67,.5); }
   .spark { height: 54px; display: block; width: 100%; }
@@ -266,11 +268,15 @@
               </div>
               <div class="carte">
                 <div class="titre-carte"><h2>Stratégies<small>Ce que fait chacune en ce moment</small></h2><a href="#strategies">Gérer →</a></div>
-                <div id="resume-strats" class="pile" style="gap:10px"></div>
+                <div id="resume-strats" class="pile" style="gap:10px;min-width:0"></div>
               </div>
             </div>
           </div>
           <div class="kpis" id="gains"></div>
+          <div class="carte" id="carte-actus" hidden>
+            <div class="titre-carte"><h2>Grandes annonces économiques<small>Le bot ne prend pas de nouvelle position autour des annonces américaines importantes</small></h2></div>
+            <div id="actus"></div>
+          </div>
           <div class="carte">
             <div class="titre-carte"><h2>Positions ouvertes<small>Le gain bouge en direct avec le prix du Bitcoin</small></h2></div>
             <div id="positions"></div>
@@ -629,15 +635,16 @@ function afficher() {
       <div class="gros num ${g ? signe(g.diff) : ""}">${g ? fmtS(g.diff) + dev : "—"}</div>
       <div class="sous num">${g ? `<span class="chip ${signe(g.pct) || "neutre"}">${fmtS(g.pct)} %</span>${g.partiel ? " depuis le lancement" : ""}` : ""}</div></div>`;
   }).join("");
-  $("resume-strats").innerHTML = strats.map(s => `<a href="#strategies" style="color:inherit;text-decoration:none">
+  $("resume-strats").innerHTML = strats.map(s => `<a href="#strategies" style="color:inherit;text-decoration:none;display:block;min-width:0" title="${esc(s.action || "")}">
     <div class="etat-strat"><span class="strat-ico" style="width:34px;height:34px;font-size:16px">${s.ico}</span>
       <div style="flex:1;min-width:0"><b>${esc(s.titre)}</b><div class="sous" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(s.action || "En attente du prochain tour")}</div></div>
       ${etatChip(s)}</div></a>`).join("");
   $("positions").innerHTML = ouverts.length ? ouverts.map(carteOrdre).join("") : '<p class="vide">Aucune position ouverte pour le moment. Le bot attend un signal.</p>';
 
   // ---- Stratégies
+  afficherActus(d);
   $("strats").innerHTML = strats.map(carteStrat).join("");
-  $("garde").innerHTML = bandeauGardeFous();
+  $("garde").innerHTML = bandeauGardeFous() + bandeauActus();
 
   // ---- Ordres
   const fermesTous = ordres.filter(o => o.statut === "ferme" && o.resultat != null);
@@ -729,6 +736,19 @@ function listeSousBots() {
       <div class="sb-note" title="Note ${fmt(n, 2)} (de -1 à +1)"><i style="${n >= 0 ? "left:50%" : `left:${50 - pct}%`};width:${pct}%;background:${coul}"></i></div>
       <div class="sb-act">${esc(b.action || "—")}</div></div>`;
   }).join("")}</div>`;
+}
+function bandeauActus() {
+  const p = D?.actualites?.pause;
+  return p ? `<div class="garde alerte">📰 <b>Pause annonce :</b> ${esc(p)}</div>` : "";
+}
+function afficherActus(d) {
+  const a = d.actualites;
+  $("carte-actus").hidden = !a;
+  if (!a) return;
+  const heure = t => new Date(iso(t)).toLocaleString("fr-FR", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+  const liste = (a.prochaines || []).map(x => `<div class="actu"><span class="actu-date">${esc(heure(x.date))}</span><span>${esc(x.titre)}</span></div>`).join("");
+  $("actus").innerHTML = (a.pause ? `<div class="garde alerte" style="margin:0 0 10px">📰 <b>Nouvelles entrées en pause :</b> ${esc(a.pause)}</div>` : `<div class="garde" style="margin:0 0 10px">✅ Pas d'annonce importante en ce moment : le bot peut trader normalement.</div>`)
+    + (liste ? `<div class="lab" style="margin:4px 0 6px">Prochaines annonces</div>${liste}` : `<div class="sous" style="color:var(--doux);font-size:13px">Aucune autre grande annonce prévue cette semaine.</div>`);
 }
 function bandeauGardeFous() {
   const g = D?.garde_fous; if (!g) return "";
