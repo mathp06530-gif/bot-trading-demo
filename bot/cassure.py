@@ -116,6 +116,13 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
     while j > 0 and c[j - 1] == c[-1]:
         j -= 1
     debut = str(sig.index[j])
+    # Nouvelle cassure pendant une tendance déjà en cours (clôture au-delà du canal des 20 bougies) :
+    # le backtest la compte comme une entrée, le bot aussi (demande de Mathis, 20/11/2026).
+    der0 = sig.iloc[-1]
+    frais = (c[-1] == 1 and der0.cloture > der0.haut) or (c[-1] == -1 and der0.cloture < der0.bas)
+    if frais and signaux is None:
+        debut = str(sig.index[-1])
+        j = len(c) - 1
     prix_achat, prix_vente = bougies[-1]["closePrice"]["ask"], bougies[-1]["closePrice"]["bid"]
     if "momentum_pct" in textes:
         etat["momentum_pct"] = textes["momentum_pct"]
