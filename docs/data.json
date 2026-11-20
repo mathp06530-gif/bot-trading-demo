@@ -1003,1120 +1003,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T17:10:25Z",
+ "derniere_execution": "2026-11-20T17:15:25Z",
  "historique": [
-  {
-   "date": "2026-11-19T17:48:29Z",
-   "valeur": 21000.0
-  },
-  {
-   "date": "2026-11-19T17:55:57Z",
-   "valeur": 21001.6
-  },
-  {
-   "date": "2026-11-19T18:02:58Z",
-   "valeur": 21000.12
-  },
-  {
-   "date": "2026-11-19T18:26:28Z",
-   "valeur": 20995.68
-  },
-  {
-   "date": "2026-11-19T18:39:43Z",
-   "valeur": 20986.94
-  },
-  {
-   "date": "2026-11-19T18:41:08Z",
-   "valeur": 20994.46
-  },
-  {
-   "date": "2026-11-19T18:45:23Z",
-   "valeur": 20998.68
-  },
-  {
-   "date": "2026-11-19T18:49:01Z",
-   "valeur": 21006.72
-  },
-  {
-   "date": "2026-11-19T18:50:23Z",
-   "valeur": 21010.86
-  },
-  {
-   "date": "2026-11-19T18:54:38Z",
-   "valeur": 21003.32
-  },
-  {
-   "date": "2026-11-19T18:55:23Z",
-   "valeur": 21008.04
-  },
-  {
-   "date": "2026-11-19T18:58:24Z",
-   "valeur": 21011.16
-  },
-  {
-   "date": "2026-11-19T19:00:27Z",
-   "valeur": 21012.6
-  },
-  {
-   "date": "2026-11-19T19:05:26Z",
-   "valeur": 21021.46
-  },
-  {
-   "date": "2026-11-19T19:10:26Z",
-   "valeur": 21020.12
-  },
-  {
-   "date": "2026-11-19T19:15:26Z",
-   "valeur": 21023.26
-  },
-  {
-   "date": "2026-11-19T19:20:26Z",
-   "valeur": 21019.64
-  },
-  {
-   "date": "2026-11-19T19:25:26Z",
-   "valeur": 21016.62
-  },
-  {
-   "date": "2026-11-19T19:30:26Z",
-   "valeur": 21017.98
-  },
-  {
-   "date": "2026-11-19T19:35:26Z",
-   "valeur": 21031.82
-  },
-  {
-   "date": "2026-11-19T19:40:26Z",
-   "valeur": 21030.2
-  },
-  {
-   "date": "2026-11-19T19:45:26Z",
-   "valeur": 21033.26
-  },
-  {
-   "date": "2026-11-19T19:50:26Z",
-   "valeur": 21035.64
-  },
-  {
-   "date": "2026-11-19T19:55:25Z",
-   "valeur": 21043.86
-  },
-  {
-   "date": "2026-11-19T20:00:26Z",
-   "valeur": 21049.32
-  },
-  {
-   "date": "2026-11-19T20:05:25Z",
-   "valeur": 21053.54
-  },
-  {
-   "date": "2026-11-19T20:10:26Z",
-   "valeur": 21055.62
-  },
-  {
-   "date": "2026-11-19T20:15:26Z",
-   "valeur": 21052.4
-  },
-  {
-   "date": "2026-11-19T20:20:26Z",
-   "valeur": 21047.66
-  },
-  {
-   "date": "2026-11-19T20:25:26Z",
-   "valeur": 21048.04
-  },
-  {
-   "date": "2026-11-19T20:30:26Z",
-   "valeur": 21075.64
-  },
-  {
-   "date": "2026-11-19T20:35:26Z",
-   "valeur": 21074.42
-  },
-  {
-   "date": "2026-11-19T20:40:26Z",
-   "valeur": 21061.14
-  },
-  {
-   "date": "2026-11-19T20:45:25Z",
-   "valeur": 21060.58
-  },
-  {
-   "date": "2026-11-19T20:50:25Z",
-   "valeur": 21053.36
-  },
-  {
-   "date": "2026-11-19T20:55:26Z",
-   "valeur": 21055.22
-  },
-  {
-   "date": "2026-11-19T21:00:26Z",
-   "valeur": 21062.04
-  },
-  {
-   "date": "2026-11-19T21:05:26Z",
-   "valeur": 21077.08
-  },
-  {
-   "date": "2026-11-19T21:10:26Z",
-   "valeur": 21069.98
-  },
-  {
-   "date": "2026-11-19T21:15:26Z",
-   "valeur": 21071.68
-  },
-  {
-   "date": "2026-11-19T21:20:26Z",
-   "valeur": 21096.74
-  },
-  {
-   "date": "2026-11-19T21:25:27Z",
-   "valeur": 21094.66
-  },
-  {
-   "date": "2026-11-19T21:30:26Z",
-   "valeur": 21099.86
-  },
-  {
-   "date": "2026-11-19T21:35:26Z",
-   "valeur": 21101.34
-  },
-  {
-   "date": "2026-11-19T21:40:26Z",
-   "valeur": 21098.84
-  },
-  {
-   "date": "2026-11-19T21:45:26Z",
-   "valeur": 21089.56
-  },
-  {
-   "date": "2026-11-19T21:50:26Z",
-   "valeur": 21102.58
-  },
-  {
-   "date": "2026-11-19T21:55:26Z",
-   "valeur": 21100.98
-  },
-  {
-   "date": "2026-11-19T22:00:28Z",
-   "valeur": 21100.0
-  },
-  {
-   "date": "2026-11-19T22:05:26Z",
-   "valeur": 21083.18
-  },
-  {
-   "date": "2026-11-19T22:10:26Z",
-   "valeur": 21083.54
-  },
-  {
-   "date": "2026-11-19T22:15:26Z",
-   "valeur": 21080.82
-  },
-  {
-   "date": "2026-11-19T22:20:26Z",
-   "valeur": 21077.56
-  },
-  {
-   "date": "2026-11-19T22:25:26Z",
-   "valeur": 21066.74
-  },
-  {
-   "date": "2026-11-19T22:30:26Z",
-   "valeur": 21058.32
-  },
-  {
-   "date": "2026-11-19T22:35:26Z",
-   "valeur": 21055.84
-  },
-  {
-   "date": "2026-11-19T22:40:26Z",
-   "valeur": 21052.62
-  },
-  {
-   "date": "2026-11-19T22:45:26Z",
-   "valeur": 21053.44
-  },
-  {
-   "date": "2026-11-19T22:50:26Z",
-   "valeur": 21053.08
-  },
-  {
-   "date": "2026-11-19T22:55:26Z",
-   "valeur": 21057.8
-  },
-  {
-   "date": "2026-11-19T23:00:26Z",
-   "valeur": 21059.46
-  },
-  {
-   "date": "2026-11-19T23:05:26Z",
-   "valeur": 21064.0
-  },
-  {
-   "date": "2026-11-19T23:10:26Z",
-   "valeur": 21071.4
-  },
-  {
-   "date": "2026-11-19T23:15:26Z",
-   "valeur": 21066.8
-  },
-  {
-   "date": "2026-11-19T23:20:26Z",
-   "valeur": 21063.84
-  },
-  {
-   "date": "2026-11-19T23:25:26Z",
-   "valeur": 21073.52
-  },
-  {
-   "date": "2026-11-19T23:30:26Z",
-   "valeur": 21075.62
-  },
-  {
-   "date": "2026-11-19T23:35:26Z",
-   "valeur": 21077.12
-  },
-  {
-   "date": "2026-11-19T23:40:26Z",
-   "valeur": 21084.16
-  },
-  {
-   "date": "2026-11-19T23:45:26Z",
-   "valeur": 21068.76
-  },
-  {
-   "date": "2026-11-19T23:50:26Z",
-   "valeur": 21072.12
-  },
-  {
-   "date": "2026-11-19T23:55:26Z",
-   "valeur": 21069.4
-  },
-  {
-   "date": "2026-11-20T00:00:25Z",
-   "valeur": 21069.86
-  },
-  {
-   "date": "2026-11-20T00:05:26Z",
-   "valeur": 21062.36
-  },
-  {
-   "date": "2026-11-20T00:10:25Z",
-   "valeur": 21067.22
-  },
-  {
-   "date": "2026-11-20T00:15:26Z",
-   "valeur": 21064.92
-  },
-  {
-   "date": "2026-11-20T00:20:26Z",
-   "valeur": 21056.94
-  },
-  {
-   "date": "2026-11-20T00:25:26Z",
-   "valeur": 21060.56
-  },
-  {
-   "date": "2026-11-20T00:30:26Z",
-   "valeur": 21065.6
-  },
-  {
-   "date": "2026-11-20T00:35:26Z",
-   "valeur": 21064.12
-  },
-  {
-   "date": "2026-11-20T00:35:51Z",
-   "valeur": 21065.38
-  },
-  {
-   "date": "2026-11-20T00:40:26Z",
-   "valeur": 21067.5
-  },
-  {
-   "date": "2026-11-20T00:45:26Z",
-   "valeur": 21063.7
-  },
-  {
-   "date": "2026-11-20T00:50:26Z",
-   "valeur": 21069.92
-  },
-  {
-   "date": "2026-11-20T00:55:26Z",
-   "valeur": 21069.44
-  },
-  {
-   "date": "2026-11-20T01:00:26Z",
-   "valeur": 21061.18
-  },
-  {
-   "date": "2026-11-20T01:05:26Z",
-   "valeur": 21064.96
-  },
-  {
-   "date": "2026-11-20T01:10:26Z",
-   "valeur": 21022.62
-  },
-  {
-   "date": "2026-11-20T01:15:26Z",
-   "valeur": 21022.62
-  },
-  {
-   "date": "2026-11-20T01:20:26Z",
-   "valeur": 21022.62
-  },
-  {
-   "date": "2026-11-20T01:25:26Z",
-   "valeur": 21022.62
-  },
-  {
-   "date": "2026-11-20T01:30:26Z",
-   "valeur": 21022.62
-  },
-  {
-   "date": "2026-11-20T01:35:26Z",
-   "valeur": 21022.62
-  },
-  {
-   "date": "2026-11-20T01:40:25Z",
-   "valeur": 21022.62
-  },
-  {
-   "date": "2026-11-20T01:45:25Z",
-   "valeur": 21022.62
-  },
-  {
-   "date": "2026-11-20T01:50:26Z",
-   "valeur": 21020.78
-  },
-  {
-   "date": "2026-11-20T01:55:26Z",
-   "valeur": 21034.4
-  },
-  {
-   "date": "2026-11-20T02:00:26Z",
-   "valeur": 21032.12
-  },
-  {
-   "date": "2026-11-20T02:05:26Z",
-   "valeur": 21030.5
-  },
-  {
-   "date": "2026-11-20T02:10:26Z",
-   "valeur": 21037.14
-  },
-  {
-   "date": "2026-11-20T02:15:26Z",
-   "valeur": 21032.68
-  },
-  {
-   "date": "2026-11-20T02:20:26Z",
-   "valeur": 21027.16
-  },
-  {
-   "date": "2026-11-20T02:25:25Z",
-   "valeur": 21032.5
-  },
-  {
-   "date": "2026-11-20T02:30:25Z",
-   "valeur": 21037.58
-  },
-  {
-   "date": "2026-11-20T02:35:25Z",
-   "valeur": 21037.04
-  },
-  {
-   "date": "2026-11-20T02:40:26Z",
-   "valeur": 21023.42
-  },
-  {
-   "date": "2026-11-20T02:45:26Z",
-   "valeur": 21028.02
-  },
-  {
-   "date": "2026-11-20T02:50:25Z",
-   "valeur": 21027.6
-  },
-  {
-   "date": "2026-11-20T02:55:25Z",
-   "valeur": 21020.66
-  },
-  {
-   "date": "2026-11-20T03:00:25Z",
-   "valeur": 21008.9
-  },
-  {
-   "date": "2026-11-20T03:05:26Z",
-   "valeur": 21014.82
-  },
-  {
-   "date": "2026-11-20T03:10:26Z",
-   "valeur": 21020.44
-  },
-  {
-   "date": "2026-11-20T03:15:26Z",
-   "valeur": 21017.08
-  },
-  {
-   "date": "2026-11-20T03:20:26Z",
-   "valeur": 21008.58
-  },
-  {
-   "date": "2026-11-20T03:25:26Z",
-   "valeur": 21018.43
-  },
-  {
-   "date": "2026-11-20T03:30:26Z",
-   "valeur": 21018.43
-  },
-  {
-   "date": "2026-11-20T03:35:26Z",
-   "valeur": 21018.43
-  },
-  {
-   "date": "2026-11-20T03:40:26Z",
-   "valeur": 21018.43
-  },
-  {
-   "date": "2026-11-20T03:45:26Z",
-   "valeur": 21018.43
-  },
-  {
-   "date": "2026-11-20T03:50:26Z",
-   "valeur": 21018.43
-  },
-  {
-   "date": "2026-11-20T03:55:26Z",
-   "valeur": 21018.43
-  },
-  {
-   "date": "2026-11-20T04:00:26Z",
-   "valeur": 21018.43
-  },
-  {
-   "date": "2026-11-20T04:05:26Z",
-   "valeur": 21018.43
-  },
-  {
-   "date": "2026-11-20T04:10:26Z",
-   "valeur": 21018.43
-  },
-  {
-   "date": "2026-11-20T04:15:26Z",
-   "valeur": 21016.43
-  },
-  {
-   "date": "2026-11-20T04:20:25Z",
-   "valeur": 21019.93
-  },
-  {
-   "date": "2026-11-20T04:25:25Z",
-   "valeur": 21020.57
-  },
-  {
-   "date": "2026-11-20T04:30:26Z",
-   "valeur": 21024.27
-  },
-  {
-   "date": "2026-11-20T04:35:26Z",
-   "valeur": 21029.87
-  },
-  {
-   "date": "2026-11-20T04:40:26Z",
-   "valeur": 21029.57
-  },
-  {
-   "date": "2026-11-20T04:45:26Z",
-   "valeur": 21028.29
-  },
-  {
-   "date": "2026-11-20T04:50:26Z",
-   "valeur": 21029.69
-  },
-  {
-   "date": "2026-11-20T04:55:26Z",
-   "valeur": 21025.85
-  },
-  {
-   "date": "2026-11-20T05:00:26Z",
-   "valeur": 21026.07
-  },
-  {
-   "date": "2026-11-20T05:05:25Z",
-   "valeur": 21027.69
-  },
-  {
-   "date": "2026-11-20T05:10:25Z",
-   "valeur": 21029.51
-  },
-  {
-   "date": "2026-11-20T05:15:25Z",
-   "valeur": 21025.51
-  },
-  {
-   "date": "2026-11-20T05:20:26Z",
-   "valeur": 21024.97
-  },
-  {
-   "date": "2026-11-20T05:25:26Z",
-   "valeur": 21020.83
-  },
-  {
-   "date": "2026-11-20T05:30:26Z",
-   "valeur": 21024.47
-  },
-  {
-   "date": "2026-11-20T05:35:26Z",
-   "valeur": 21023.45
-  },
-  {
-   "date": "2026-11-20T05:40:26Z",
-   "valeur": 21022.47
-  },
-  {
-   "date": "2026-11-20T05:45:26Z",
-   "valeur": 21020.31
-  },
-  {
-   "date": "2026-11-20T05:50:26Z",
-   "valeur": 21012.87
-  },
-  {
-   "date": "2026-11-20T05:55:26Z",
-   "valeur": 21013.87
-  },
-  {
-   "date": "2026-11-20T06:00:26Z",
-   "valeur": 21015.11
-  },
-  {
-   "date": "2026-11-20T06:05:26Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T06:10:26Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T06:15:25Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T06:20:25Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T06:20:56Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T06:25:29Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T06:30:29Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T06:35:28Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T06:40:29Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T06:45:28Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T06:50:28Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T06:55:28Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T07:00:29Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T07:05:29Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T07:10:28Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T07:15:28Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T07:20:28Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T07:25:28Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T07:30:28Z",
-   "valeur": 21017.46
-  },
-  {
-   "date": "2026-11-20T07:35:29Z",
-   "valeur": 21015.2
-  },
-  {
-   "date": "2026-11-20T07:40:28Z",
-   "valeur": 21005.62
-  },
-  {
-   "date": "2026-11-20T07:45:28Z",
-   "valeur": 21003.12
-  },
-  {
-   "date": "2026-11-20T07:50:28Z",
-   "valeur": 20999.16
-  },
-  {
-   "date": "2026-11-20T07:55:28Z",
-   "valeur": 20999.74
-  },
-  {
-   "date": "2026-11-20T08:00:28Z",
-   "valeur": 20999.58
-  },
-  {
-   "date": "2026-11-20T08:05:28Z",
-   "valeur": 21002.56
-  },
-  {
-   "date": "2026-11-20T08:10:29Z",
-   "valeur": 21005.82
-  },
-  {
-   "date": "2026-11-20T08:15:28Z",
-   "valeur": 21005.82
-  },
-  {
-   "date": "2026-11-20T08:20:28Z",
-   "valeur": 21005.82
-  },
-  {
-   "date": "2026-11-20T08:25:29Z",
-   "valeur": 21005.82
-  },
-  {
-   "date": "2026-11-20T08:30:28Z",
-   "valeur": 21005.82
-  },
-  {
-   "date": "2026-11-20T08:35:28Z",
-   "valeur": 21005.82
-  },
-  {
-   "date": "2026-11-20T08:40:29Z",
-   "valeur": 21005.82
-  },
-  {
-   "date": "2026-11-20T08:45:28Z",
-   "valeur": 21005.82
-  },
-  {
-   "date": "2026-11-20T08:50:29Z",
-   "valeur": 21005.82
-  },
-  {
-   "date": "2026-11-20T08:55:28Z",
-   "valeur": 21005.82
-  },
-  {
-   "date": "2026-11-20T09:00:28Z",
-   "valeur": 21005.82
-  },
-  {
-   "date": "2026-11-20T09:05:28Z",
-   "valeur": 21005.82
-  },
-  {
-   "date": "2026-11-20T09:10:28Z",
-   "valeur": 21005.82
-  },
-  {
-   "date": "2026-11-20T09:15:29Z",
-   "valeur": 21003.86
-  },
-  {
-   "date": "2026-11-20T09:20:29Z",
-   "valeur": 21007.02
-  },
-  {
-   "date": "2026-11-20T09:25:28Z",
-   "valeur": 21004.34
-  },
-  {
-   "date": "2026-11-20T09:30:28Z",
-   "valeur": 21011.12
-  },
-  {
-   "date": "2026-11-20T09:35:28Z",
-   "valeur": 21009.8
-  },
-  {
-   "date": "2026-11-20T09:40:28Z",
-   "valeur": 21014.08
-  },
-  {
-   "date": "2026-11-20T09:45:28Z",
-   "valeur": 21009.5
-  },
-  {
-   "date": "2026-11-20T09:50:28Z",
-   "valeur": 21005.24
-  },
-  {
-   "date": "2026-11-20T09:55:29Z",
-   "valeur": 21007.8
-  },
-  {
-   "date": "2026-11-20T10:00:28Z",
-   "valeur": 21009.82
-  },
-  {
-   "date": "2026-11-20T10:05:28Z",
-   "valeur": 21001.94
-  },
-  {
-   "date": "2026-11-20T10:10:28Z",
-   "valeur": 21003.84
-  },
-  {
-   "date": "2026-11-20T10:15:28Z",
-   "valeur": 21003.56
-  },
-  {
-   "date": "2026-11-20T10:20:28Z",
-   "valeur": 21008.78
-  },
-  {
-   "date": "2026-11-20T10:25:29Z",
-   "valeur": 20997.96
-  },
-  {
-   "date": "2026-11-20T10:30:28Z",
-   "valeur": 21000.31
-  },
-  {
-   "date": "2026-11-20T10:35:28Z",
-   "valeur": 21000.31
-  },
-  {
-   "date": "2026-11-20T10:40:29Z",
-   "valeur": 21000.31
-  },
-  {
-   "date": "2026-11-20T10:45:28Z",
-   "valeur": 21000.31
-  },
-  {
-   "date": "2026-11-20T10:50:29Z",
-   "valeur": 21000.31
-  },
-  {
-   "date": "2026-11-20T10:55:28Z",
-   "valeur": 21000.31
-  },
-  {
-   "date": "2026-11-20T11:00:29Z",
-   "valeur": 21000.31
-  },
-  {
-   "date": "2026-11-20T11:05:30Z",
-   "valeur": 21000.31
-  },
-  {
-   "date": "2026-11-20T11:10:29Z",
-   "valeur": 21000.31
-  },
-  {
-   "date": "2026-11-20T11:15:29Z",
-   "valeur": 21000.31
-  },
-  {
-   "date": "2026-11-20T11:20:30Z",
-   "valeur": 21000.31
-  },
-  {
-   "date": "2026-11-20T11:25:30Z",
-   "valeur": 21000.31
-  },
-  {
-   "date": "2026-11-20T11:30:30Z",
-   "valeur": 21000.31
-  },
-  {
-   "date": "2026-11-20T11:35:30Z",
-   "valeur": 20998.03
-  },
-  {
-   "date": "2026-11-20T11:40:30Z",
-   "valeur": 20996.37
-  },
-  {
-   "date": "2026-11-20T11:45:29Z",
-   "valeur": 20997.31
-  },
-  {
-   "date": "2026-11-20T11:50:29Z",
-   "valeur": 20997.91
-  },
-  {
-   "date": "2026-11-20T11:55:29Z",
-   "valeur": 20996.43
-  },
-  {
-   "date": "2026-11-20T12:00:30Z",
-   "valeur": 20996.31
-  },
-  {
-   "date": "2026-11-20T12:05:29Z",
-   "valeur": 21007.95
-  },
-  {
-   "date": "2026-11-20T12:05:56Z",
-   "valeur": 21012.83
-  },
-  {
-   "date": "2026-11-20T12:10:27Z",
-   "valeur": 21017.85
-  },
-  {
-   "date": "2026-11-20T12:15:27Z",
-   "valeur": 21018.39
-  },
-  {
-   "date": "2026-11-20T12:20:28Z",
-   "valeur": 21009.13
-  },
-  {
-   "date": "2026-11-20T12:25:28Z",
-   "valeur": 21006.75
-  },
-  {
-   "date": "2026-11-20T12:30:28Z",
-   "valeur": 21008.91
-  },
-  {
-   "date": "2026-11-20T12:35:28Z",
-   "valeur": 21005.23
-  },
-  {
-   "date": "2026-11-20T12:40:36Z",
-   "valeur": 21003.93
-  },
-  {
-   "date": "2026-11-20T12:45:31Z",
-   "valeur": 20994.21
-  },
-  {
-   "date": "2026-11-20T12:50:31Z",
-   "valeur": 21005.43
-  },
-  {
-   "date": "2026-11-20T12:55:32Z",
-   "valeur": 20982.01
-  },
-  {
-   "date": "2026-11-20T13:00:54Z",
-   "valeur": 20955.15
-  },
-  {
-   "date": "2026-11-20T13:05:34Z",
-   "valeur": 20950.89
-  },
-  {
-   "date": "2026-11-20T13:06:55Z",
-   "valeur": 20972.85
-  },
-  {
-   "date": "2026-11-20T13:10:23Z",
-   "valeur": 20972.85
-  },
-  {
-   "date": "2026-11-20T13:15:23Z",
-   "valeur": 20972.85
-  },
-  {
-   "date": "2026-11-20T13:20:23Z",
-   "valeur": 20972.85
-  },
-  {
-   "date": "2026-11-20T13:22:32Z",
-   "valeur": 20972.85
-  },
-  {
-   "date": "2026-11-20T13:23:40Z",
-   "valeur": 20972.85
-  },
-  {
-   "date": "2026-11-20T13:25:22Z",
-   "valeur": 20972.85
-  },
-  {
-   "date": "2026-11-20T13:25:37Z",
-   "valeur": 20972.85
-  },
-  {
-   "date": "2026-11-20T13:26:39Z",
-   "valeur": 20970.01
-  },
-  {
-   "date": "2026-11-20T13:30:33Z",
-   "valeur": 20970.71
-  },
-  {
-   "date": "2026-11-20T13:35:33Z",
-   "valeur": 99.33
-  },
-  {
-   "date": "2026-11-20T13:36:27Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T13:40:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T13:45:30Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T13:50:30Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T13:55:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T14:00:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T14:05:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T14:10:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T14:15:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T14:20:30Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T14:25:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T14:30:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T14:35:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T14:40:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T14:44:45Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T14:45:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T14:50:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T14:55:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T15:00:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T15:05:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T15:10:30Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T15:15:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T15:20:32Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T15:25:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T15:30:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T15:35:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T15:40:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T15:45:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T15:50:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T15:55:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T16:00:32Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T16:05:31Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T16:10:30Z",
-   "valeur": 98.21
-  },
-  {
-   "date": "2026-11-20T16:15:31Z",
-   "valeur": 98.21
-  },
   {
    "date": "2026-11-20T16:20:13Z",
    "valeur": 98.21
@@ -2164,6 +1052,10 @@
   {
    "date": "2026-11-20T17:10:25Z",
    "valeur": 98.21
+  },
+  {
+   "date": "2026-11-20T17:15:25Z",
+   "valeur": 98.21
   }
  ],
  "compte": {
@@ -2177,7 +1069,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 59249.925,
+   "prix": 59373.1,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 48) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -2577,7 +1469,177 @@
    }
   }
  },
- "ordres": [
+ "ordres": [],
+ "historique_jour": {
+  "2026-11-20": 98.21
+ },
+ "entrees": {
+  "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:SILVER": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:ETHUSD": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:US100": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:US500": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:DE40": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:OIL_CRUDE": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:EURUSD": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:GBPUSD": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:AUDUSD": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:AMD": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:GLD": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:GOOGL": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:MSFT": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:NFLX": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:SLV": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:SOLUSD": "2026-11-19 00:00:00+00:00",
+  "challenge_tm:GOLD": "2026-11-19 00:00:00+00:00",
+  "challenge_tm:SILVER": "2026-11-19 00:00:00+00:00",
+  "challenge_tm:ETHUSD": "2026-11-19 00:00:00+00:00",
+  "challenge_tm:OIL_CRUDE": "2026-11-19 00:00:00+00:00",
+  "challenge_tm:EURUSD": "2026-11-19 00:00:00+00:00",
+  "challenge_tm:GBPUSD": "2026-11-19 00:00:00+00:00",
+  "challenge_tm:AUDUSD": "2026-11-19 00:00:00+00:00"
+ },
+ "strategies": {
+  "tendance_4h": {
+   "active": true,
+   "nom": "Tendance 4 h (Bitcoin)",
+   "description": "Suit les grosses tendances du Bitcoin sur des bougies de 4 h : peu de trades, la seule gagnante en backtest.",
+   "unite": "HOUR_4",
+   "risque_pct": 2.0,
+   "action": "Aucune action",
+   "tendance": "SELL",
+   "reglages": "Tendance 4 h : EMA 20/200 + ADX > 20, stop 2 ATR, suiveur 5 ATR",
+   "indicateurs": {
+    "Prix": 59399.6,
+    "EMA 20": 62920.6,
+    "EMA 200": 73193.53,
+    "ADX (force)": 48.2,
+    "ATR (agitation)": 1193.99
+   }
+  },
+  "cassure_4h": {
+   "active": true,
+   "nom": "Cassure 4 h (or et argent)",
+   "description": "Un sous-bot pour l'or et un pour l'argent : il achète quand le prix casse le plus haut des 20 dernières bougies de 4 h (vend sous le plus bas), dans le sens de l'EMA 200, avec stop garanti. Environ 4 trades par mois.",
+   "unite": "HOUR_4",
+   "risque_pct": 2.0,
+   "reglages": "Cassure 20 bougies 4 h dans le sens de l'EMA 200, stop garanti 2 ATR",
+   "marches": [
+    "GOLD",
+    "SILVER"
+   ],
+   "action": "Actif"
+  },
+  "rapide": {
+   "active": true,
+   "nom": "Rapide 5 min (or et argent)",
+   "unite": "MINUTE_5",
+   "risque_pct": 1.0,
+   "reglages": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 2 %, risque 1 % (expérimentale)",
+   "marches": [
+    "GOLD",
+    "SILVER"
+   ],
+   "description": "Trade souvent sur des bougies de 5 min, sur l'or et l'argent, seulement dans le sens des tendances 1 h et 4 h. Expérience : perdante en backtest à cause des frais.",
+   "action": "Actif"
+  }
+ },
+ "garde_fous": {
+  "debut_jour": 98.21,
+  "plus_haut": 98.21,
+  "regles": {
+   "perte_max_pct": 20.0,
+   "perte_jour_pct": 6.0,
+   "positions_max": 8,
+   "risque_total_pct": 10.0
+  },
+  "coupe_circuit": false,
+  "jour": "2026-11-20"
+ },
+ "actualites": {
+  "annonces": [
+   {
+    "date": "2026-11-16T17:00Z",
+    "titre": "Fed Chairman Warsh Speaks"
+   },
+   {
+    "date": "2026-11-17T13:30Z",
+    "titre": "Core Retail Sales m/m"
+   },
+   {
+    "date": "2026-11-17T13:30Z",
+    "titre": "Retail Sales m/m"
+   },
+   {
+    "date": "2026-11-18T19:00Z",
+    "titre": "FOMC Meeting Minutes"
+   }
+  ],
+  "lu_le": "2026-11-20T16:50:21.945186+00:00",
+  "pause": null,
+  "prochaines": []
+ },
+ "_derniere_pause_notee": null,
+ "cassure": {
+  "GOLD": {
+   "nom": "Gold",
+   "tendance": "SELL",
+   "prix": 3535.99,
+   "plus_haut_20": 3890.96,
+   "plus_bas_20": 3514.59,
+   "ema200": 3998.75,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)",
+   "atr": 44.64
+  },
+  "SILVER": {
+   "nom": "Silver",
+   "tendance": "SELL",
+   "prix": 41.283,
+   "plus_haut_20": 48.01,
+   "plus_bas_20": 41.11,
+   "ema200": 52.67,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)",
+   "atr": 0.97
+  }
+ },
+ "deals_par_strategie": {
+  "cassure": []
+ },
+ "pause": false,
+ "rapide": {
+  "deals": [],
+  "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 2 %, risque 1 % (expérimentale)",
+  "marches": {
+   "GOLD": {
+    "tendance": "SELL",
+    "filtre": {
+     "signal_5min": "SELL",
+     "tendance_1h": "SELL",
+     "tendance_4h": "SELL",
+     "bollinger": 0.99
+    },
+    "prix": 3539.29,
+    "action": "En attente : marché trop calme (bandes de Bollinger étroites)"
+   },
+   "SILVER": {
+    "tendance": "SELL",
+    "filtre": {
+     "signal_5min": "SELL",
+     "tendance_1h": "SELL",
+     "tendance_4h": "SELL",
+     "bollinger": 1.3,
+     "adx": 19.3
+    },
+    "prix": 41.326499999999996,
+    "action": "En attente : tendance 5 min trop faible (ADX 19 ≤ 20)"
+   }
+  },
+  "tendance": "SELL"
+ },
+ "debut_test": "2026-11-20T16:20:00Z",
+ "ordres_avant_test": [
   {
    "id": "00000000-74d0-147a-049f-c46d0015549e",
    "marche": "BTCUSD",
@@ -3144,174 +2206,5 @@
    "resultat_estime": false
   }
  ],
- "historique_jour": {
-  "2026-11-19": 21069.4,
-  "2026-11-20": 98.21
- },
- "valeur_depart": 21000.0,
- "entrees": {
-  "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:SILVER": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:ETHUSD": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:US100": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:US500": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:DE40": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:OIL_CRUDE": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:EURUSD": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:GBPUSD": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:AUDUSD": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:AMD": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:GLD": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:GOOGL": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:MSFT": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:NFLX": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:SLV": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:SOLUSD": "2026-11-19 00:00:00+00:00",
-  "challenge_tm:GOLD": "2026-11-19 00:00:00+00:00",
-  "challenge_tm:SILVER": "2026-11-19 00:00:00+00:00",
-  "challenge_tm:ETHUSD": "2026-11-19 00:00:00+00:00",
-  "challenge_tm:OIL_CRUDE": "2026-11-19 00:00:00+00:00",
-  "challenge_tm:EURUSD": "2026-11-19 00:00:00+00:00",
-  "challenge_tm:GBPUSD": "2026-11-19 00:00:00+00:00",
-  "challenge_tm:AUDUSD": "2026-11-19 00:00:00+00:00"
- },
- "strategies": {
-  "tendance_4h": {
-   "active": true,
-   "nom": "Tendance 4 h (Bitcoin)",
-   "description": "Suit les grosses tendances du Bitcoin sur des bougies de 4 h : peu de trades, la seule gagnante en backtest.",
-   "unite": "HOUR_4",
-   "risque_pct": 2.0,
-   "action": "Aucune action",
-   "tendance": "SELL",
-   "reglages": "Tendance 4 h : EMA 20/200 + ADX > 20, stop 2 ATR, suiveur 5 ATR",
-   "indicateurs": {
-    "Prix": 59399.6,
-    "EMA 20": 62920.6,
-    "EMA 200": 73193.53,
-    "ADX (force)": 48.2,
-    "ATR (agitation)": 1193.99
-   }
-  },
-  "cassure_4h": {
-   "active": true,
-   "nom": "Cassure 4 h (or et argent)",
-   "description": "Un sous-bot pour l'or et un pour l'argent : il achète quand le prix casse le plus haut des 20 dernières bougies de 4 h (vend sous le plus bas), dans le sens de l'EMA 200, avec stop garanti. Environ 4 trades par mois.",
-   "unite": "HOUR_4",
-   "risque_pct": 2.0,
-   "reglages": "Cassure 20 bougies 4 h dans le sens de l'EMA 200, stop garanti 2 ATR",
-   "marches": [
-    "GOLD",
-    "SILVER"
-   ],
-   "action": "Actif"
-  },
-  "rapide": {
-   "active": true,
-   "nom": "Rapide 5 min (or et argent)",
-   "unite": "MINUTE_5",
-   "risque_pct": 1.0,
-   "reglages": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 2 %, risque 1 % (expérimentale)",
-   "marches": [
-    "GOLD",
-    "SILVER"
-   ],
-   "description": "Trade souvent sur des bougies de 5 min, sur l'or et l'argent, seulement dans le sens des tendances 1 h et 4 h. Expérience : perdante en backtest à cause des frais.",
-   "action": "Actif"
-  }
- },
- "garde_fous": {
-  "jour": "2026-11-20",
-  "debut_jour": 21069.480000000003,
-  "plus_haut": 98.21,
-  "regles": {
-   "perte_max_pct": 20.0,
-   "perte_jour_pct": 6.0,
-   "positions_max": 8,
-   "risque_total_pct": 10.0
-  },
-  "coupe_circuit": false
- },
- "actualites": {
-  "annonces": [
-   {
-    "date": "2026-11-16T17:00Z",
-    "titre": "Fed Chairman Warsh Speaks"
-   },
-   {
-    "date": "2026-11-17T13:30Z",
-    "titre": "Core Retail Sales m/m"
-   },
-   {
-    "date": "2026-11-17T13:30Z",
-    "titre": "Retail Sales m/m"
-   },
-   {
-    "date": "2026-11-18T19:00Z",
-    "titre": "FOMC Meeting Minutes"
-   }
-  ],
-  "lu_le": "2026-11-20T16:50:21.945186+00:00",
-  "pause": null,
-  "prochaines": []
- },
- "_derniere_pause_notee": null,
- "cassure": {
-  "GOLD": {
-   "nom": "Gold",
-   "tendance": "SELL",
-   "prix": 3535.7650000000003,
-   "plus_haut_20": 3890.96,
-   "plus_bas_20": 3514.59,
-   "ema200": 3998.75,
-   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)",
-   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)",
-   "atr": 44.64
-  },
-  "SILVER": {
-   "nom": "Silver",
-   "tendance": "SELL",
-   "prix": 41.298500000000004,
-   "plus_haut_20": 48.01,
-   "plus_bas_20": 41.11,
-   "ema200": 52.67,
-   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)",
-   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)",
-   "atr": 0.97
-  }
- },
- "deals_par_strategie": {
-  "cassure": []
- },
- "pause": false,
- "rapide": {
-  "deals": [],
-  "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 2 %, risque 1 % (expérimentale)",
-  "marches": {
-   "GOLD": {
-    "tendance": "SELL",
-    "filtre": {
-     "signal_5min": "SELL",
-     "tendance_1h": "SELL",
-     "tendance_4h": "SELL",
-     "bollinger": 0.93
-    },
-    "prix": 3537.43,
-    "action": "En attente : marché trop calme (bandes de Bollinger étroites)"
-   },
-   "SILVER": {
-    "tendance": "SELL",
-    "filtre": {
-     "signal_5min": "SELL",
-     "tendance_1h": "SELL",
-     "tendance_4h": "SELL",
-     "bollinger": 1.28,
-     "adx": 19.2
-    },
-    "prix": 41.352000000000004,
-    "action": "En attente : tendance 5 min trop faible (ADX 19 ≤ 20)"
-   }
-  },
-  "tendance": "SELL"
- }
+ "valeur_depart": 98.21
 }
