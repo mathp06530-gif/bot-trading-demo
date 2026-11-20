@@ -594,3 +594,22 @@ def test_sous_bot_ne_touche_pas_les_positions_des_autres(tmp_path, monkeypatch):
     d = {"strategies": {"rapide": {"active": False}}, "deals_par_strategie": {"tendance_mois": ["TM1"]}}
     main.un_tour(d, faux)
     assert faux.fermees == [] and faux.stops == []
+
+
+def test_tendance_mois_gere_une_position_hors_liste(tmp_path, monkeypatch):
+    """Un marché retiré de la liste garde sa position gérée (sortie au retournement), sans nouvelle entrée."""
+    from bot import tendance_mois
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
+    monkeypatch.setattr(main, "SOUS_BOTS", [])
+    monkeypatch.setattr(tendance_mois, "LISTE", [])
+    monkeypatch.setattr(tendance_mois, "ANALYSER", False)
+    faux = FauxCapitalActions([18000 + 20 * i for i in range(120)])  # hausse : la vente doit être fermée
+    pos = {"market": {"epic": "AMD", "instrumentName": "AMD"},
+           "position": {"dealId": "TM1", "direction": "SELL", "size": 1, "level": 20000, "upl": -5,
+                        "stopLevel": 21000, "createdDateUTC": "2026-01-01T00:00:00"}}
+    faux.positions = lambda: [pos] if "TM1" not in faux.fermees else []
+    d = {"strategies": {"rapide": {"active": False}, "tendance_mois": {"active": True}},
+         "deals_par_strategie": {"tendance_mois": ["TM1"]}}
+    main.un_tour(d, faux)
+    assert faux.fermees == ["TM1"] and faux.ouvertes == []
