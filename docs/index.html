@@ -148,9 +148,11 @@
   .sb-note { position: relative; height: 6px; border-radius: 3px; background: rgba(255,255,255,.07); }
   .sb-note::after { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--doux); }
   .sb-note.plage { background: linear-gradient(90deg, rgba(234,57,67,.35), rgba(255,255,255,.06) 30% 70%, rgba(22,199,132,.35)); }
+  .capital-virtuel { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; background: linear-gradient(90deg, rgba(236,72,153,.12), transparent); border: 1px solid rgba(236,72,153,.35); border-radius: 12px; padding: 10px 12px; }
+  .capital-virtuel .num { font-size: 18px; display: flex; gap: 8px; align-items: center; }
   .sb-note.plage::after { display: none; }
   .sb-note i { position: absolute; top: 0; bottom: 0; border-radius: 3px; }
-  .sb-act { color: var(--doux); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: right; }
+  .sb-act { color: var(--doux); text-align: right; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .actu { display: flex; gap: 12px; padding: 8px 0; border-top: 1px solid var(--bord); font-size: 13.5px; }
   .actu-date { color: var(--cyan); font-weight: 700; min-width: 150px; text-transform: capitalize; }
   .garde { margin-top: 12px; font-size: 13px; color: var(--doux); background: var(--fond); border: 1px solid var(--bord); border-radius: 12px; padding: 9px 12px; }
@@ -565,6 +567,8 @@ const STRAT_INFO = {
     desc: "Une équipe de petits bots, un par action ou ETF : chacun note son marché et n'achète que les plus solides, avec des garde-fous communs." },
   cassure_4h: { ico: "🥇", couleur: "#eab308", titre: "Cassure 4 h",
     desc: "Surveille l'or et l'argent sur des bougies de 4 h : elle entre quand le prix casse son plus haut ou son plus bas des 20 dernières bougies, dans le sens de la tendance." },
+  petit_compte: { ico: "🎯", couleur: "#ec4899", titre: "Petit compte risqué",
+    desc: "Une expérience à part : un capital virtuel de 100 € joué de façon risquée sur l'or et l'argent, pour voir ce que donnerait un petit compte." },
 };
 const nomStrat = id => (STRAT_INFO[id] || {}).titre || id;
 function stratDe(o) { return o.strategie || (/^\[Rapide\]/.test(o.motif_sortie || "") ? "rapide" : "tendance_4h"); }
@@ -741,8 +745,14 @@ function listeSousBots() {
       <div class="sb-act">${esc(b.action || "—")}</div></div>`;
   }).join("")}</div>`;
 }
-function listeCassure() {
-  const m = Object.entries(D?.cassure || {});
+function capitalVirtuel(s) {
+  const dep = +(s.capital_depart ?? 100), cap = +(s.capital ?? dep), ecart = cap - dep, pct = dep ? ecart / dep * 100 : 0;
+  return `<div class="capital-virtuel"><span class="lab">Capital virtuel</span>
+    <div class="num"><span style="color:var(--doux)">${fmt(dep, 0)} €</span> → <b class="${signe(ecart)}">${fmt(cap, 2)} €</b>
+    <span class="chip ${ecart >= 0 ? "pos" : "neg"}">${fmtS(pct)} %</span></div></div>`;
+}
+function listeCassure(src) {
+  const m = Object.entries(src || {});
   if (!m.length) return `<div class="sous-bots vide">L'or et l'argent apparaîtront ici après le premier tour.</div>`;
   return `<div class="sous-bots">${m.map(([epic, b]) => {
     const bas = +b.plus_bas_20, haut = +b.plus_haut_20, prix = +b.prix;
@@ -792,7 +802,8 @@ function carteStrat(s) {
       <div><span>Réussite</span><b>${isNaN(s.reussite) ? "—" : fmt(s.reussite, 0) + " %"}</b></div>
       <div><span>En cours</span><b>${s.ouverts.length}</b></div>
     </div>
-    ${s.id === "actions_etf" ? listeSousBots() : s.id === "cassure_4h" ? listeCassure() : ""}
+    ${s.id === "petit_compte" ? capitalVirtuel(s) : ""}
+    ${s.id === "actions_etf" ? listeSousBots() : s.id === "cassure_4h" ? listeCassure(D?.cassure) : s.id === "petit_compte" ? listeCassure(D?.petit_compte) : ""}
     ${sparkline(s.courbe, s.couleur)}
     <div class="actions">
       <button class="bouton primaire" data-cmd="lancer" data-strat="${esc(s.id)}">▶ Lancer maintenant</button>
