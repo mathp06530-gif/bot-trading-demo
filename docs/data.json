@@ -175,10 +175,24 @@
    "marche": "BTCUSD",
    "texte": "[Rapide] Plus d'accord avec la tendance de fond 1 h / 4 h : position fermée (gain/perte : -5.51). Statut : ACCEPTED",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-20T11:05:29Z",
+   "type": "analyse",
+   "marche": "GOLD",
+   "texte": "Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-11 12:00).",
+   "strategie": "cassure_4h"
+  },
+  {
+   "date": "2026-11-20T11:05:29Z",
+   "type": "analyse",
+   "marche": "SILVER",
+   "texte": "Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-12 08:00).",
+   "strategie": "cassure_4h"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T11:00:29Z",
+ "derniere_execution": "2026-11-20T11:05:30Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -1007,6 +1021,10 @@
   {
    "date": "2026-11-20T11:00:29Z",
    "valeur": 21000.31
+  },
+  {
+   "date": "2026-11-20T11:05:30Z",
+   "valeur": 21000.31
   }
  ],
  "compte": {
@@ -1020,7 +1038,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 61989.3,
+   "prix": 61981.85,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1594,6 +1612,19 @@
     "IWM"
    ],
    "action": "Actif"
+  },
+  "cassure_4h": {
+   "active": true,
+   "nom": "Cassure 4 h (or et argent)",
+   "description": "Un sous-bot pour l'or et un pour l'argent : il achète quand le prix casse le plus haut des 20 dernières bougies de 4 h (vend sous le plus bas), dans le sens de l'EMA 200, avec stop garanti. Environ 4 trades par mois.",
+   "unite": "HOUR_4",
+   "risque_pct": 0.5,
+   "reglages": "Cassure 20 bougies 4 h dans le sens de l'EMA 200, stop garanti 2 ATR",
+   "marches": [
+    "GOLD",
+    "SILVER"
+   ],
+   "action": "Actif"
   }
  },
  "garde_fous": {
@@ -1612,70 +1643,70 @@
    "nom": "Tesla Inc",
    "note": -0.48,
    "tendance": null,
-   "prix": 368.935,
+   "prix": 369.02,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.48,
    "tendance": null,
-   "prix": 142.825,
+   "prix": 143.26999999999998,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
    "note": -0.31,
    "tendance": null,
-   "prix": 350.505,
+   "prix": 350.78999999999996,
    "action": "Aucune action"
   },
   "MSFT": {
    "nom": "Microsoft Corp",
    "note": -0.6,
    "tendance": null,
-   "prix": 492.36,
+   "prix": 492.155,
    "action": "Aucune action"
   },
   "GOOGL": {
    "nom": "Alphabet Inc - A",
    "note": -0.6,
    "tendance": null,
-   "prix": 274.75,
+   "prix": 274.485,
    "action": "Aucune action"
   },
   "SPY": {
    "nom": "SPDR S&P 500 ETF",
    "note": -0.48,
    "tendance": null,
-   "prix": 713.5,
+   "prix": 713.4300000000001,
    "action": "Aucune action"
   },
   "QQQ": {
    "nom": "Invesco QQQ Trust",
    "note": -0.48,
    "tendance": null,
-   "prix": 638.16,
+   "prix": 638.055,
    "action": "Aucune action"
   },
   "GLD": {
    "nom": "SPDR Gold Shares",
    "note": -0.32,
    "tendance": null,
-   "prix": 328.51,
+   "prix": 328.94000000000005,
    "action": "Aucune action"
   },
   "XLK": {
    "nom": "Technology Select Sector SPDR Fund",
    "note": -0.48,
    "tendance": null,
-   "prix": 158.02499999999998,
+   "prix": 157.91500000000002,
    "action": "Aucune action"
   },
   "IWM": {
    "nom": "iShares Russell 2000 ETF",
    "note": -0.54,
    "tendance": null,
-   "prix": 264.345,
+   "prix": 264.31,
    "action": "Aucune action"
   }
  },
@@ -1702,5 +1733,27 @@
   "pause": null,
   "prochaines": []
  },
- "_derniere_pause_notee": null
+ "_derniere_pause_notee": null,
+ "cassure": {
+  "GOLD": {
+   "nom": "Gold",
+   "tendance": "SELL",
+   "prix": 3588.84,
+   "plus_haut_20": 3890.96,
+   "plus_bas_20": 3517.42,
+   "ema200": 4007.56,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)"
+  },
+  "SILVER": {
+   "nom": "Silver",
+   "tendance": "SELL",
+   "prix": 42.694,
+   "plus_haut_20": 48.01,
+   "plus_bas_20": 41.19,
+   "ema200": 52.89,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)"
+  }
+ }
 }
