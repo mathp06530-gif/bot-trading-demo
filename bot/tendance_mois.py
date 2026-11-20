@@ -20,16 +20,24 @@ import os
 import numpy as np
 import pandas as pd
 
+from bot.analyse_marche import verdict
 from bot.strategie import atr, milieu
 
 LISTE = [m.strip() for m in os.getenv(
     "TENDANCE_MOIS_MARCHES",
     "GOLD,SILVER,ETHUSD,US100,US500,DE40,OIL_CRUDE,EURUSD,GBPUSD,AUDUSD,USDJPY").split(",") if m.strip()]
+ANALYSER = os.getenv("TENDANCE_MOIS_ANALYSE", "oui").strip().lower() in ("oui", "1", "true", "on")
 RISQUE_TENDANCE_MOIS_PCT = float(os.getenv("RISQUE_TENDANCE_MOIS_PCT", "0.4"))
 ACTIVE_PAR_DEFAUT = os.getenv("TENDANCE_MOIS", "non").strip().lower() in ("oui", "1", "true", "on")
 LOOKBACK, STOP_ATR, N_ATR = 30, 3.0, 20
 UNITE = "DAY"
 NOM = f"Tendance {LOOKBACK} jours sur {len(LISTE)} marchés, décision chaque jour, stop garanti {STOP_ATR:g} ATR"
+
+
+def analyse_tendance(df: pd.DataFrame) -> tuple[bool, str]:
+    """Rejoue la tendance 1 mois sur les 12 derniers mois de ce marché (bot/analyse_marche.py)."""
+    c = milieu(df).close
+    return verdict(df, np.sign(c / c.shift(LOOKBACK) - 1).fillna(0).values)
 
 
 def signaux_tendance(df: pd.DataFrame, lookback: int = LOOKBACK) -> pd.DataFrame:

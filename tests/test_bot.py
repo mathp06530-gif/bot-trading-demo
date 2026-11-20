@@ -20,7 +20,7 @@ def test_ema_comme_tradingview():
 
 
 def bougie(i, p, unite="HOUR_4"):
-    pas = 4 * 3600 if unite == "HOUR_4" else 300
+    pas = {"HOUR_4": 4 * 3600, "DAY": 86400}.get(unite, 300)
     t = datetime(2026, 1, 1, tzinfo=timezone.utc) + timedelta(seconds=pas * i)
     prix = lambda x: {"bid": x - 1, "ask": x + 1}
     return {"snapshotTimeUTC": t.strftime("%Y-%m-%dT%H:%M:%S"), "openPrice": prix(p), "highPrice": prix(p + 30),
@@ -466,6 +466,7 @@ def test_tendance_mois_achete_en_hausse_et_compte_la_devise(tmp_path, monkeypatc
     monkeypatch.setattr(main, "SOUS_BOTS", [])
     monkeypatch.setattr(tendance_mois, "LISTE", ["DE40"])
     monkeypatch.setattr(tendance_mois, "RISQUE_TENDANCE_MOIS_PCT", 0.4)
+    monkeypatch.setattr(tendance_mois, "ANALYSER", False)
     prix = [18000 + 20 * i for i in range(120)]
     faux = FauxCapitalActions(prix)
     marche = faux.marche
@@ -553,3 +554,43 @@ def test_objectif_x5_argent_levier_10(tmp_path, monkeypatch):
     assert entree - stop == pytest.approx(entree * 0.05, rel=0.01)
     assert faux.objectifs[0] == pytest.approx(entree * 0.40, rel=0.01)
     assert d["ordres"][0]["strategie"] == "x5_argent" and d["x5_argent"]["SILVER"]["action"].startswith("ACHAT")
+
+
+def test_analyser_d_abord_ecarte_un_marche_perdant(tmp_path, monkeypatch):
+    """Analyse du marché : en tendance régulière la stratégie aurait gagné -> on trade ; sur un marché qui fait
+    des allers-retours elle aurait perdu -> marché écarté, aucun ordre."""
+    from bot import tendance_mois
+    from bot.analyse_marche import verdict
+    hausse = bougies_vers_df([bougie(i, 1000 + 2 * i, "DAY") for i in range(400)])
+    ok, texte = tendance_mois.analyse_tendance(hausse)
+    assert ok and "gagné" in texte
+    zigzag = [1000 + 60 * ((i // 31) % 2) * (1 if (i // 62) % 2 else -1) for i in range(400)]
+    ok2, texte2 = tendance_mois.analyse_tendance(bougies_vers_df([bougie(i, p, "DAY") for i, p in enumerate(zigzag)]))
+    assert not ok2 and "écarté" in texte2
+    assert not verdict(hausse.iloc[:50], [1] * 50)[0]  # trop peu d'historique
+
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
+    monkeypatch.setattr(main, "SOUS_BOTS", [])
+    monkeypatch.setattr(tendance_mois, "LISTE", ["DE40"])
+    monkeypatch.setattr(tendance_mois, "ANALYSER", True)
+    monkeypatch.setattr(tendance_mois, "analyse_tendance", lambda df: (False, "aurait perdu : marché écarté"))
+    faux = FauxCapitalActions([18000 + 20 * i for i in range(120)])
+    d = {"strategies": {"rapide": {"active": False}, "tendance_mois": {"active": True}}}
+    main.un_tour(d, faux)
+    assert faux.ouvertes == [] and "analyse du marché" in d["tendance_mois"]["DE40"]["action"]
+
+
+def test_sous_bot_ne_touche_pas_les_positions_des_autres(tmp_path, monkeypatch):
+    """Une vente « tendance 1 mois » sur une action n'est ni fermée ni gérée par le sous-bot de cette action."""
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
+    monkeypatch.setattr(main, "SOUS_BOTS", ["TSLA"])
+    faux = FauxCapitalActions([300 - i for i in range(300)])
+    pos = {"market": {"epic": "TSLA", "instrumentName": "Tesla"},
+           "position": {"dealId": "TM1", "direction": "SELL", "size": 1, "level": 10, "upl": 0,
+                        "stopLevel": 20, "createdDateUTC": "2026-01-01T00:00:00"}}
+    faux.positions = lambda: [pos]
+    d = {"strategies": {"rapide": {"active": False}}, "deals_par_strategie": {"tendance_mois": ["TM1"]}}
+    main.un_tour(d, faux)
+    assert faux.fermees == [] and faux.stops == []

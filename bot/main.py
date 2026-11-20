@@ -92,7 +92,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     noter_4h = lambda t, m, x: noter(t, m, x, "tendance_4h")
     noter_rapide = lambda t, m, x: noter(t, m, x, "rapide")
 
-    toutes = ["tendance_4h", "rapide", "actions_etf", "cassure_4h", "petit_compte", "tendance_mois", "x5_or", "x5_argent"]
+    toutes = ["tendance_4h", "rapide", "actions_etf", "cassure_4h", "petit_compte", "tendance_mois", "x5_or", "x5_argent", "cassure_tous"]
     strategie = strategie if strategie in toutes else "toutes"
     cibles = toutes if strategie == "toutes" else [strategie]
     etats = donnees.setdefault("strategies", {})
@@ -104,10 +104,12 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     etats.setdefault("tendance_mois", {}).setdefault("active", module_tm.ACTIVE_PAR_DEFAUT)
     etats.setdefault("x5_or", {}).setdefault("active", module_cassure.X5_OR)
     etats.setdefault("x5_argent", {}).setdefault("active", module_cassure.X5_ARGENT)
+    etats.setdefault("cassure_tous", {}).setdefault("active", module_cassure.CASSURE_TOUS)
     noms = {"tendance_4h": "Tendance 4 h", "rapide": "Rapide 5 min", "actions_etf": "Sous-bots actions et ETF",
             "cassure_4h": "Cassure 4 h (or et argent)", "petit_compte": "Petit compte risqué (100 €)",
             "tendance_mois": "Tendance 1 mois (11 marchés)",
-            "x5_or": "Objectif x5 sur l'or (50 €)", "x5_argent": "Objectif x5 sur l'argent (50 €)"}
+            "x5_or": "Objectif x5 sur l'or (50 €)", "x5_argent": "Objectif x5 sur l'argent (50 €)",
+            "cassure_tous": "Cassure 4 h (tous les marchés)"}
     lancer = set(cibles) if action == "lancer" else set()
 
     api.connexion()
@@ -117,7 +119,9 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     ids_tm = set(donnees.get("deals_par_strategie", {}).get("tendance_mois", []))
     ids_x5 = set(donnees.get("deals_par_strategie", {}).get("x5_or", []))
     ids_x5a = set(donnees.get("deals_par_strategie", {}).get("x5_argent", []))
+    ids_ct = set(donnees.get("deals_par_strategie", {}).get("cassure_tous", []))
     strat_de = lambda p: ("tendance_mois" if p["position"]["dealId"] in ids_tm else
+                          "cassure_tous" if p["position"]["dealId"] in ids_ct else
                           "x5_or" if p["position"]["dealId"] in ids_x5 else
                           "x5_argent" if p["position"]["dealId"] in ids_x5a else
                           "actions_etf" if p["market"]["epic"] in SOUS_BOTS else
@@ -142,7 +146,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     elif action == "fermer":
         if strategie == "toutes":
             donnees["pause"] = True
-        for p in [p for p in positions if p["market"]["epic"] in MARCHES + SOUS_BOTS + MARCHES_CASSURE + module_tm.LISTE + ["GOLD", "SILVER"]
+        for p in [p for p in positions if p["market"]["epic"] in MARCHES + SOUS_BOTS + MARCHES_CASSURE + module_tm.LISTE + module_cassure.LISTE_TOUS + ["GOLD", "SILVER"]
                   and strat_de(p) in cibles]:
             conf = api.fermer(p["position"]["dealId"])
             if conf.get("dealStatus") == "ACCEPTED":
@@ -350,10 +354,12 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     actif_sb = ("actions_etf" in lancer) or (not en_pause and etats["actions_etf"]["active"])
     if actif_sb or not en_pause:
         noter_sb = lambda t, m, x: noter(t, m, x, "actions_etf")
+        # positions des autres stratégies (repérées par numéro) : les sous-bots ne les gèrent pas
+        ids_autres = {d for ids in donnees.get("deals_par_strategie", {}).values() for d in ids}
         for epic in SOUS_BOTS:
             try:
                 tour_sous_bot(api, donnees, epic, positions, capital, disponible, eurusd, noter_sb, garde,
-                              maintenant(), peut_entrer=actif_sb)
+                              maintenant(), peut_entrer=actif_sb, autres_ids=ids_autres)
             except Exception as e:  # un marché en erreur ne bloque pas les autres
                 donnees.setdefault("sous_bots", {}).setdefault(epic, {})["action"] = "Erreur"
                 noter_sb("erreur", epic, str(e)[:300])
@@ -375,6 +381,26 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     etats["cassure_4h"].update({"nom": noms["cassure_4h"], "description": DESCRIPTION_CASSURE, "unite": "HOUR_4",
                                 "risque_pct": RISQUE_CASSURE_PCT, "reglages": NOM_CASSURE, "marches": MARCHES_CASSURE,
                                 "action": "Actif" if actif_c else ("En pause" if en_pause else "Désactivée")})
+
+    # --- Cassure 4 h sur tous les autres marchés : petit risque, analyse du marché avant chaque entrée ---
+    actif_ct = ("cassure_tous" in lancer) or (not en_pause and etats["cassure_tous"]["active"])
+    if (actif_ct or not en_pause) and (actif_ct or ids_ct):
+        noter_ct = lambda t, m, x: noter(t, m, f"[Cassure tous marchés] {x}", "cassure_tous")
+        for epic in module_cassure.LISTE_TOUS:
+            try:
+                tour_cassure(api, donnees, epic, positions, capital, disponible, eurusd, noter_ct, garde,
+                             maintenant(), peut_entrer=actif_ct, cle="cassure_tous",
+                             risque_pct=module_cassure.RISQUE_CASSURE_TOUS_PCT, analyse=module_cassure.analyse_cassure)
+            except Exception as e:
+                donnees.setdefault("cassure_tous", {}).setdefault(epic, {})["action"] = "Erreur"
+                noter_ct("erreur", epic, str(e)[:300])
+    etats["cassure_tous"].update({
+        "nom": noms["cassure_tous"], "unite": "HOUR_4", "risque_pct": module_cassure.RISQUE_CASSURE_TOUS_PCT,
+        "description": ("La cassure 4 h sur tous les autres marchés (actions, ETF, indices, devises, crypto, pétrole). "
+                        "Avant chaque entrée, le bot rejoue la stratégie sur les 12 derniers mois de ce marché et "
+                        "ne trade que s'il y a gagné. Petit risque."),
+        "reglages": NOM_CASSURE, "marches": module_cassure.LISTE_TOUS,
+        "action": "Actif" if actif_ct else ("En pause" if en_pause else "Désactivée")})
 
     # --- Petit compte risqué : même cassure, capital virtuel de 100 €, risque élevé, suivi à part ---
     actif_p = ("petit_compte" in lancer) or (not en_pause and etats["petit_compte"]["active"])
@@ -407,7 +433,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                 tour_cassure(api, donnees, epic, positions, capital, disponible, eurusd, noter_tm, garde,
                              maintenant(), peut_entrer=actif_tm, cle="tendance_mois",
                              risque_pct=module_tm.RISQUE_TENDANCE_MOIS_PCT, signaux=module_tm.signaux_tendance,
-                             unite=module_tm.UNITE)
+                             unite=module_tm.UNITE, analyse=module_tm.analyse_tendance if module_tm.ANALYSER else None)
             except Exception as e:
                 donnees.setdefault("tendance_mois", {}).setdefault(epic, {})["action"] = "Erreur"
                 noter_tm("erreur", epic, str(e)[:300])
@@ -460,6 +486,8 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
             o["strategie"] = "petit_compte"
         if o["id"] in ids_tm:
             o["strategie"] = "tendance_mois"
+        if o["id"] in set(donnees.get("deals_par_strategie", {}).get("cassure_tous", [])):
+            o["strategie"] = "cassure_tous"
         for sid, *_ in module_cassure.X5_ESSAIS:
             if o["id"] in set(donnees.get("deals_par_strategie", {}).get(sid, [])):
                 o["strategie"] = sid

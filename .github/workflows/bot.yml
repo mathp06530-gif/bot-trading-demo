@@ -12,7 +12,7 @@ on:
         description: "Stratégie visée par la commande"
         type: choice
         default: toutes
-        options: [toutes, tendance_4h, rapide, actions_etf, cassure_4h, petit_compte, tendance_mois, x5_or, x5_argent]
+        options: [toutes, tendance_4h, rapide, actions_etf, cassure_4h, petit_compte, tendance_mois, x5_or, x5_argent, cassure_tous]
 
 permissions:
   contents: write

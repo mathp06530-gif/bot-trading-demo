@@ -95,6 +95,22 @@ def taux_devise(regles: dict, eurusd: float, prix: float) -> float:
     return eurusd
 
 
+TOUS_MARCHES = ("AAPL,AMD,AMZN,ARKK,AUDUSD,DE40,EEM,ETHUSD,EURUSD,GBPUSD,GLD,GOLD,GOOGL,IWM,JPM,META,MSFT,NFLX,"
+                "NVDA,OIL_CRUDE,QQQ,SILVER,SLV,SOLUSD,SPY,TLT,TSLA,US100,US500,USDJPY,VTI,XLE,XLF,XLK")
+# « Cassure tous marchés » : la même cassure 4 h sur les autres marchés, avec un risque plus petit et
+# l'analyse du marché avant chaque entrée (bot/analyse_marche.py). Test 35 marchés : 14 sur 35 gagnent.
+CASSURE_TOUS = os.getenv("CASSURE_TOUS", "non").strip().lower() in ("oui", "1", "true", "on")
+LISTE_TOUS = [m.strip() for m in os.getenv("CASSURE_TOUS_MARCHES", TOUS_MARCHES).split(",")
+              if m.strip() and m.strip() not in LISTE]
+RISQUE_CASSURE_TOUS_PCT = float(os.getenv("RISQUE_CASSURE_TOUS_PCT", "0.25"))
+
+
+def analyse_cassure(df: pd.DataFrame) -> tuple[bool, str]:
+    """Rejoue la cassure 4 h sur les 12 derniers mois de ce marché."""
+    from bot.analyse_marche import verdict
+    return verdict(df, signaux_cassure(df).cible.values)
+
+
 def capital_petit_compte(donnees: dict, cle: str = "petit_compte", depart: float | None = None) -> float:
     """Capital virtuel = départ + résultats (encaissés et en cours) de ses propres ordres."""
     depart = PETIT_CAPITAL_DEPART if depart is None else depart
@@ -105,7 +121,7 @@ def capital_petit_compte(donnees: dict, cle: str = "petit_compte", depart: float
 
 def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float, disponible: float, eurusd: float,
                  noter, garde, quand: str, peut_entrer: bool = True, cle: str = "cassure",
-                 risque_pct: float | None = None, signaux=None, unite: str = UNITE,
+                 risque_pct: float | None = None, signaux=None, unite: str = UNITE, analyse=None,
                  stop_pct: float | None = None, objectif_pct: float | None = None, sortie_signal: bool = True) -> dict:
     """cle : « cassure » (stratégie normale), « petit_compte » (capital virtuel, risque élevé) ou
     « tendance_mois » (signaux=bot/tendance_mois.py:signaux_tendance, unite="DAY").
@@ -163,6 +179,13 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
             refus = f"cassure trop ancienne (depuis le {debut[:16]})"
         elif entrees.get(cle_signal) == debut:
             refus = "signal déjà utilisé"
+        if not refus and analyse is not None:
+            ok_analyse, texte_analyse = analyse(bougies_vers_df(bougies[:-1]))
+            etat["analyse"] = texte_analyse
+            if not ok_analyse:
+                refus = f"analyse du marché : {texte_analyse}"
+        if refus:
+            pass
         elif any(p["market"]["epic"] == epic and p["position"]["direction"] != voulu
                  and p["position"]["dealId"] not in tous_deals for p in positions):
             # compte sans couverture : un ordre opposé fermerait la position d'une autre stratégie

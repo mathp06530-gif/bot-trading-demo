@@ -51,11 +51,15 @@ def regles_marche(api, epic: str, cache: dict) -> dict:
 
 
 def tour_sous_bot(api, donnees: dict, epic: str, positions: list, capital: float, disponible: float, eurusd: float,
-                  noter, garde, quand: str, peut_entrer: bool = True) -> dict:
+                  noter, garde, quand: str, peut_entrer: bool = True, autres_ids: set | None = None) -> dict:
+    """autres_ids : numéros des positions des autres stratégies, que ce sous-bot ne touche jamais."""
+    autres_ids = autres_ids or set()
     etat = donnees.setdefault("sous_bots", {}).setdefault(epic, {})
     regles = regles_marche(api, epic, donnees.setdefault("_cache_marches", {}))
     etat["nom"] = regles["nom"]
-    miennes = [p for p in positions if p["market"]["epic"] == epic]
+    miennes = [p for p in positions if p["market"]["epic"] == epic and p["position"]["dealId"] not in autres_ids]
+    vente_autre = any(p["market"]["epic"] == epic and p["position"]["dealId"] in autres_ids
+                      and p["position"]["direction"] == "SELL" for p in positions)
 
     bougies = api.bougies(epic, UNITE, 1000)
     if len(bougies) < 230:
@@ -108,6 +112,8 @@ def tour_sous_bot(api, donnees: dict, epic: str, positions: list, capital: float
             refus = f"signal trop ancien (depuis le {debut[:16]})"
         elif entrees.get(epic) == debut:
             refus = "signal déjà utilisé"
+        elif vente_autre:  # compte sans couverture : un achat fermerait la vente d'une autre stratégie
+            refus = "une autre stratégie a une position dans l'autre sens sur ce marché"
         elif abs(prix_achat - float(der.cloture)) > float(der.atr):
             refus = "le prix a trop bougé depuis le signal (écart > 1 ATR)"
         distance = float(der.stop)
