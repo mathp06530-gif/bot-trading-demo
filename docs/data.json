@@ -823,10 +823,16 @@
    "type": "commande",
    "marche": "",
    "texte": "Stratégie Objectif x5 sur l'or (50 €) activée depuis l'application."
+  },
+  {
+   "date": "2026-11-20T13:25:36Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Stratégie Objectif x5 sur l'argent (50 €) activée depuis l'application."
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T13:25:22Z",
+ "derniere_execution": "2026-11-20T13:25:37Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -1786,6 +1792,10 @@
   },
   {
    "date": "2026-11-20T13:25:22Z",
+   "valeur": 20972.85
+  },
+  {
+   "date": "2026-11-20T13:25:37Z",
    "valeur": 20972.85
   }
  ],
@@ -2785,7 +2795,7 @@
    "capital": 50.0
   },
   "x5_argent": {
-   "active": false,
+   "active": true,
    "nom": "Objectif x5 sur l'argent (50 €)",
    "unite": "HOUR_4",
    "risque_pct": 50.0,
