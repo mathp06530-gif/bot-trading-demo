@@ -1083,10 +1083,24 @@
    "marche": "GOLD",
    "texte": "[Rapide] Plus d'accord avec la tendance de fond 1 h / 4 h : position fermée (gain/perte : -0.30). Statut : ACCEPTED",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-20T22:00:24Z",
+   "type": "analyse",
+   "marche": "GOLD",
+   "texte": "Cassure (VENTE) mais ordre REFUSÉ : marché fermé.",
+   "strategie": "cassure_4h"
+  },
+  {
+   "date": "2026-11-20T22:00:25Z",
+   "type": "analyse",
+   "marche": "SILVER",
+   "texte": "Cassure (VENTE) mais ordre REFUSÉ : marché fermé.",
+   "strategie": "cassure_4h"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T21:55:24Z",
+ "derniere_execution": "2026-11-20T22:00:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -1371,6 +1385,10 @@
   {
    "date": "2026-11-20T21:55:24Z",
    "valeur": 97.91
+  },
+  {
+   "date": "2026-11-20T22:00:26Z",
+   "valeur": 97.91
   }
  ],
  "compte": {
@@ -1384,7 +1402,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 58918.5,
+   "prix": 58944.25,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 50) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1908,7 +1926,7 @@
     "titre": "FOMC Meeting Minutes"
    }
   ],
-  "lu_le": "2026-11-20T20:55:22.235394+00:00",
+  "lu_le": "2026-11-20T22:00:22.659374+00:00",
   "pause": null,
   "prochaines": []
  },
@@ -1917,23 +1935,23 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3534.81,
+   "prix": 3542.83,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 3994.03,
-   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)",
-   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)",
+   "dernier_refus": "marché fermé",
+   "action": "Refusé : marché fermé",
    "atr": 45.39
   },
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.22,
+   "prix": 41.2505,
    "plus_haut_20": 47.99,
    "plus_bas_20": 41.11,
    "ema200": 52.56,
-   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)",
-   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)",
+   "dernier_refus": "marché fermé",
+   "action": "Refusé : marché fermé",
    "atr": 0.98
   }
  },
@@ -1952,7 +1970,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3536.7,
+    "prix": 3536.95,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 37.53 de plus dans le bon sens"
    },
