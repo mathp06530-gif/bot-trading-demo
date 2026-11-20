@@ -1007,10 +1007,17 @@
    "marche": "SILVER",
    "texte": "[Rapide] POST /positions -> 400 : {\"errorCode\":\"error.invalid.stoploss.minvalue: 41.66\"}",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-20T17:30:25Z",
+   "type": "erreur",
+   "marche": "SILVER",
+   "texte": "[Rapide] POST /positions -> 400 : {\"errorCode\":\"error.invalid.stoploss.minvalue: 41.581\"}",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T17:25:25Z",
+ "derniere_execution": "2026-11-20T17:30:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -1071,6 +1078,10 @@
   {
    "date": "2026-11-20T17:25:25Z",
    "valeur": 98.21
+  },
+  {
+   "date": "2026-11-20T17:30:26Z",
+   "valeur": 98.21
   }
  ],
  "compte": {
@@ -1084,7 +1095,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 59366.075,
+   "prix": 59338.1,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 48) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1599,7 +1610,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3524.465,
+   "prix": 3530.08,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 3998.75,
@@ -1610,7 +1621,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.162,
+   "prix": 41.242000000000004,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.67,
@@ -1634,10 +1645,10 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
      "bollinger": 1.06,
-     "adx": 15.8
+     "adx": 17.0
     },
-    "prix": 3530.085,
-    "action": "En attente : tendance 5 min trop faible (ADX 16 ≤ 20)"
+    "prix": 3528.6800000000003,
+    "action": "En attente : tendance 5 min trop faible (ADX 17 ≤ 20)"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -1645,10 +1656,10 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 1.17,
-     "adx": 20.4
+     "bollinger": 1.11,
+     "adx": 21.2
     },
-    "prix": 41.212,
+    "prix": 41.1595,
     "action": "Erreur"
    }
   },
