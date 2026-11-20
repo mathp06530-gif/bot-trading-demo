@@ -301,10 +301,388 @@
    "marche": "SILVER",
    "texte": "[Objectif x5] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-12 08:00).",
    "strategie": "x5_argent"
+  },
+  {
+   "date": "2026-11-20T13:00:29Z",
+   "type": "analyse",
+   "marche": "AMD",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : analyse du marché : pas assez d'historique pour analyser (178 jours).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:29Z",
+   "type": "analyse",
+   "marche": "AMZN",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : analyse du marché : pas assez d'historique pour analyser (178 jours).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:30Z",
+   "type": "analyse",
+   "marche": "ARKK",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : marché fermé.",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:30Z",
+   "type": "analyse",
+   "marche": "AUDUSD",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-02 08:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:30Z",
+   "type": "analyse",
+   "marche": "DE40",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-18 12:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:31Z",
+   "type": "analyse",
+   "marche": "EEM",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : marché fermé.",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:31Z",
+   "type": "analyse",
+   "marche": "ETHUSD",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-08 20:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:32Z",
+   "type": "analyse",
+   "marche": "EURUSD",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-06 12:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:32Z",
+   "type": "analyse",
+   "marche": "GBPUSD",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-06 12:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:32Z",
+   "type": "analyse",
+   "marche": "GLD",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-11 12:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:32Z",
+   "type": "analyse",
+   "marche": "GOOGL",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-16 12:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:32Z",
+   "type": "analyse",
+   "marche": "IWM",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-05 12:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:33Z",
+   "type": "analyse",
+   "marche": "JPM",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-06 04:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:33Z",
+   "type": "analyse",
+   "marche": "META",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-19 16:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:33Z",
+   "type": "analyse",
+   "marche": "MSFT",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-17 12:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:34Z",
+   "type": "analyse",
+   "marche": "NFLX",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-10 12:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:34Z",
+   "type": "analyse",
+   "marche": "NVDA",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-10-29 20:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:34Z",
+   "type": "analyse",
+   "marche": "OIL_CRUDE",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-02 16:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:34Z",
+   "type": "analyse",
+   "marche": "QQQ",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-16 12:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:36Z",
+   "type": "analyse",
+   "marche": "SLV",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-12 08:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:36Z",
+   "type": "analyse",
+   "marche": "SOLUSD",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-08 20:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:37Z",
+   "type": "analyse",
+   "marche": "SPY",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-16 12:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:38Z",
+   "type": "analyse",
+   "marche": "TLT",
+   "texte": "[Cassure tous marchés] Cassure (ACHAT) mais ordre REFUSÉ : analyse du marché : pas assez d'historique pour analyser (178 jours).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:38Z",
+   "type": "analyse",
+   "marche": "TSLA",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : analyse du marché : pas assez d'historique pour analyser (178 jours).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:38Z",
+   "type": "analyse",
+   "marche": "US100",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-16 12:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:38Z",
+   "type": "analyse",
+   "marche": "US500",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-16 12:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:39Z",
+   "type": "analyse",
+   "marche": "VTI",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : marché fermé.",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:40Z",
+   "type": "analyse",
+   "marche": "XLE",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-18 08:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:40Z",
+   "type": "analyse",
+   "marche": "XLF",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-18 12:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:40Z",
+   "type": "analyse",
+   "marche": "XLK",
+   "texte": "[Cassure tous marchés] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-17 12:00).",
+   "strategie": "cassure_tous"
+  },
+  {
+   "date": "2026-11-20T13:00:41Z",
+   "type": "analyse",
+   "marche": "AAPL",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (ACHAT) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-44.6 % du prix) : marché écarté.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:41Z",
+   "type": "ordre",
+   "marche": "AMD",
+   "texte": "[Tendance 1 mois] Tendance 1 mois : le prix est plus bas qu'il y a 30 jours (-23.2 %) : VENTE de 0.52 à 456.93, stop garanti à 131.64.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:42Z",
+   "type": "analyse",
+   "marche": "AMZN",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (ACHAT) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-56.0 % du prix) : marché écarté.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:42Z",
+   "type": "analyse",
+   "marche": "ARKK",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (VENTE) mais ordre REFUSÉ : marché fermé.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:43Z",
+   "type": "analyse",
+   "marche": "EEM",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (VENTE) mais ordre REFUSÉ : marché fermé.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:45Z",
+   "type": "ordre",
+   "marche": "GLD",
+   "texte": "[Tendance 1 mois] Tendance 1 mois : le prix est plus bas qu'il y a 30 jours (-13.0 %) : VENTE de 2.61 à 327.42, stop garanti à 26.49.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:46Z",
+   "type": "ordre",
+   "marche": "GOOGL",
+   "texte": "[Tendance 1 mois] Tendance 1 mois : le prix est plus bas qu'il y a 30 jours (-21.4 %) : VENTE de 1.9 à 270.60, stop garanti à 34.74.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:46Z",
+   "type": "analyse",
+   "marche": "IWM",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (VENTE) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-8.4 % du prix) : marché écarté.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:46Z",
+   "type": "analyse",
+   "marche": "JPM",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (VENTE) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-25.7 % du prix) : marché écarté.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:46Z",
+   "type": "analyse",
+   "marche": "META",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (VENTE) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-84.8 % du prix) : marché écarté.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:47Z",
+   "type": "ordre",
+   "marche": "MSFT",
+   "texte": "[Tendance 1 mois] Tendance 1 mois : le prix est plus bas qu'il y a 30 jours (-4.8 %) : VENTE de 1.24 à 487.35, stop garanti à 55.57.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:48Z",
+   "type": "ordre",
+   "marche": "NFLX",
+   "texte": "[Tendance 1 mois] Tendance 1 mois : le prix est plus bas qu'il y a 30 jours (-18.5 %) : VENTE de 10.77 à 58.45, stop garanti à 6.42.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:48Z",
+   "type": "analyse",
+   "marche": "NVDA",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (VENTE) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-42.6 % du prix) : marché écarté.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:48Z",
+   "type": "analyse",
+   "marche": "QQQ",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (VENTE) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-2.9 % du prix) : marché écarté.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:49Z",
+   "type": "ordre",
+   "marche": "SLV",
+   "texte": "[Tendance 1 mois] Tendance 1 mois : le prix est plus bas qu'il y a 30 jours (-28.5 %) : VENTE de 11.0 à 38.13, stop garanti à 5.77.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:50Z",
+   "type": "ordre",
+   "marche": "SOLUSD",
+   "texte": "[Tendance 1 mois] Tendance 1 mois : le prix est plus bas qu'il y a 30 jours (-31.3 %) : VENTE de 5.0 à 70.83, stop garanti à 13.73.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:50Z",
+   "type": "analyse",
+   "marche": "SPY",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (VENTE) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-13.1 % du prix) : marché écarté.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:51Z",
+   "type": "analyse",
+   "marche": "TLT",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (ACHAT) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-12.2 % du prix) : marché écarté.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:51Z",
+   "type": "analyse",
+   "marche": "TSLA",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (VENTE) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-59.8 % du prix) : marché écarté.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:51Z",
+   "type": "analyse",
+   "marche": "USDJPY",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (ACHAT) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-3.2 % du prix) : marché écarté.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:52Z",
+   "type": "analyse",
+   "marche": "VTI",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (VENTE) mais ordre REFUSÉ : marché fermé.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:52Z",
+   "type": "analyse",
+   "marche": "XLE",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (VENTE) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-18.5 % du prix) : marché écarté.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:53Z",
+   "type": "analyse",
+   "marche": "XLF",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (ACHAT) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-3.3 % du prix) : marché écarté.",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:00:53Z",
+   "type": "analyse",
+   "marche": "XLK",
+   "texte": "[Tendance 1 mois] Tendance 1 mois (VENTE) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-20.8 % du prix) : marché écarté.",
+   "strategie": "tendance_mois"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T12:55:32Z",
+ "derniere_execution": "2026-11-20T13:00:54Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -1229,15 +1607,19 @@
   {
    "date": "2026-11-20T12:55:32Z",
    "valeur": 20982.01
+  },
+  {
+   "date": "2026-11-20T13:00:54Z",
+   "valeur": 20955.15
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 20991.16,
+  "solde": 20977.73,
   "depot": 21000.31,
-  "resultat_latent": -9.15,
-  "disponible": 18902.99
+  "resultat_latent": -22.58,
+  "disponible": 18092.03
  },
  "positions": [
   {
@@ -1246,8 +1628,71 @@
    "sens": "SELL",
    "taille": 0.0268,
    "prix_entree": 61704.25,
-   "resultat": 2.22,
+   "resultat": 4.48,
    "ouverte_le": "2026-11-20T11:35:24.292"
+  },
+  {
+   "marche": "AMD",
+   "nom": "Advanced Micro Devices Inc",
+   "sens": "SELL",
+   "taille": 0.52,
+   "prix_entree": 456.93,
+   "resultat": -0.5,
+   "ouverte_le": "2026-11-20T13:00:41.752"
+  },
+  {
+   "marche": "GLD",
+   "nom": "SPDR Gold Shares",
+   "sens": "SELL",
+   "taille": 2.61,
+   "prix_entree": 327.42,
+   "resultat": -1,
+   "ouverte_le": "2026-11-20T13:00:45.095"
+  },
+  {
+   "marche": "GOOGL",
+   "nom": "Alphabet Inc - A",
+   "sens": "SELL",
+   "taille": 1.9,
+   "prix_entree": 270.6,
+   "resultat": -0.9,
+   "ouverte_le": "2026-11-20T13:00:45.962"
+  },
+  {
+   "marche": "MSFT",
+   "nom": "Microsoft Corp",
+   "sens": "SELL",
+   "taille": 1.24,
+   "prix_entree": 487.35,
+   "resultat": -0.86,
+   "ouverte_le": "2026-11-20T13:00:47.242"
+  },
+  {
+   "marche": "NFLX",
+   "nom": "Netflix Inc",
+   "sens": "SELL",
+   "taille": 10.77,
+   "prix_entree": 58.45,
+   "resultat": -2.65,
+   "ouverte_le": "2026-11-20T13:00:47.933"
+  },
+  {
+   "marche": "SLV",
+   "nom": "iShares Silver Trust",
+   "sens": "SELL",
+   "taille": 11,
+   "prix_entree": 38.13,
+   "resultat": -1.4,
+   "ouverte_le": "2026-11-20T13:00:49.786"
+  },
+  {
+   "marche": "SOLUSD",
+   "nom": "Solana/USD",
+   "sens": "SELL",
+   "taille": 5.0,
+   "prix_entree": 70.83,
+   "resultat": -1.67,
+   "ouverte_le": "2026-11-20T13:00:50.464"
   },
   {
    "marche": "GOLD",
@@ -1255,7 +1700,7 @@
    "sens": "SELL",
    "taille": 0.37,
    "prix_entree": 3569.33,
-   "resultat": -1.52,
+   "resultat": -2.45,
    "ouverte_le": "2026-11-20T12:40:28.784"
   },
   {
@@ -1264,7 +1709,7 @@
    "sens": "SELL",
    "taille": 15.5,
    "prix_entree": 42.225,
-   "resultat": -1.47,
+   "resultat": -2.1,
    "ouverte_le": "2026-11-20T12:40:29.483"
   },
   {
@@ -1273,7 +1718,7 @@
    "sens": "SELL",
    "taille": 0.308,
    "prix_entree": 1736.49,
-   "resultat": -1.29,
+   "resultat": -0.59,
    "ouverte_le": "2026-11-20T12:40:30.293"
   },
   {
@@ -1282,7 +1727,7 @@
    "sens": "SELL",
    "taille": 0.042,
    "prix_entree": 26027.7,
-   "resultat": -1.94,
+   "resultat": -0.77,
    "ouverte_le": "2026-11-20T12:40:31.092"
   },
   {
@@ -1291,7 +1736,7 @@
    "sens": "SELL",
    "taille": 0.25,
    "prix_entree": 7110.7,
-   "resultat": -1.96,
+   "resultat": -0.91,
    "ouverte_le": "2026-11-20T12:40:31.921"
   },
   {
@@ -1300,7 +1745,7 @@
    "sens": "SELL",
    "taille": 0.072,
    "prix_entree": 24904.8,
-   "resultat": -2.2248,
+   "resultat": -0.108,
    "ouverte_le": "2026-11-20T12:40:32.730"
   },
   {
@@ -1309,7 +1754,7 @@
    "sens": "SELL",
    "taille": 8.7,
    "prix_entree": 82.093,
-   "resultat": -2.3,
+   "resultat": -0.4,
    "ouverte_le": "2026-11-20T12:40:33.547"
   },
   {
@@ -1318,7 +1763,7 @@
    "sens": "SELL",
    "taille": 5500,
    "prix_entree": 1.09793,
-   "resultat": 0.8,
+   "resultat": -3.2,
    "ouverte_le": "2026-11-20T12:40:34.376"
   },
   {
@@ -1327,7 +1772,7 @@
    "sens": "SELL",
    "taille": 4800,
    "prix_entree": 1.31025,
-   "resultat": -0.13,
+   "resultat": -5.68,
    "ouverte_le": "2026-11-20T12:40:35.210"
   },
   {
@@ -1336,13 +1781,13 @@
    "sens": "SELL",
    "taille": 6800,
    "prix_entree": 0.66641,
-   "resultat": 0.62,
+   "resultat": -1.3,
    "ouverte_le": "2026-11-20T12:40:36.023"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 61607.95,
+   "prix": 61561.6,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1868,12 +2313,12 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T11:35:24Z",
    "statut": "ouvert",
-   "resultat": 2.22,
+   "resultat": 4.48,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
    "strategie": "rapide",
-   "dernier_prix": 61607.95
+   "dernier_prix": 61561.6
   },
   {
    "id": "00000000-7509-b978-049f-c46d0015549e",
@@ -1886,7 +2331,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:28Z",
    "statut": "ouvert",
-   "resultat": -1.52,
+   "resultat": -2.45,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1903,7 +2348,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:29Z",
    "statut": "ouvert",
-   "resultat": -1.47,
+   "resultat": -2.1,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1920,7 +2365,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:30Z",
    "statut": "ouvert",
-   "resultat": -1.29,
+   "resultat": -0.59,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1937,7 +2382,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:31Z",
    "statut": "ouvert",
-   "resultat": -1.94,
+   "resultat": -0.77,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1954,7 +2399,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:31Z",
    "statut": "ouvert",
-   "resultat": -1.96,
+   "resultat": -0.91,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1971,7 +2416,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:32Z",
    "statut": "ouvert",
-   "resultat": -2.2248,
+   "resultat": -0.108,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1988,7 +2433,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:33Z",
    "statut": "ouvert",
-   "resultat": -2.3,
+   "resultat": -0.4,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -2005,7 +2450,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:34Z",
    "statut": "ouvert",
-   "resultat": 0.8,
+   "resultat": -3.2,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -2022,7 +2467,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:35Z",
    "statut": "ouvert",
-   "resultat": -0.13,
+   "resultat": -5.68,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -2039,7 +2484,126 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:36Z",
    "statut": "ouvert",
-   "resultat": 0.62,
+   "resultat": -1.3,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "tendance_mois"
+  },
+  {
+   "id": "00000000-7509-e9f8-049f-c46d0015549e",
+   "marche": "AMD",
+   "nom": "Advanced Micro Devices Inc",
+   "sens": "SELL",
+   "taille": 0.52,
+   "prix_entree": 456.93,
+   "stop": 588.57,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T13:00:41Z",
+   "statut": "ouvert",
+   "resultat": -0.5,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "tendance_mois"
+  },
+  {
+   "id": "00000000-7509-ea45-049f-c46d0015549e",
+   "marche": "GLD",
+   "nom": "SPDR Gold Shares",
+   "sens": "SELL",
+   "taille": 2.61,
+   "prix_entree": 327.42,
+   "stop": 354.4,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T13:00:45Z",
+   "statut": "ouvert",
+   "resultat": -1,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "tendance_mois"
+  },
+  {
+   "id": "00000000-7509-ea50-049f-c46d0015549e",
+   "marche": "GOOGL",
+   "nom": "Alphabet Inc - A",
+   "sens": "SELL",
+   "taille": 1.9,
+   "prix_entree": 270.6,
+   "stop": 305.34,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T13:00:45Z",
+   "statut": "ouvert",
+   "resultat": -0.9,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "tendance_mois"
+  },
+  {
+   "id": "00000000-7509-ea7d-049f-c46d0015549e",
+   "marche": "MSFT",
+   "nom": "Microsoft Corp",
+   "sens": "SELL",
+   "taille": 1.24,
+   "prix_entree": 487.35,
+   "stop": 542.92,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T13:00:47Z",
+   "statut": "ouvert",
+   "resultat": -0.86,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "tendance_mois"
+  },
+  {
+   "id": "00000000-7509-ea88-049f-c46d0015549e",
+   "marche": "NFLX",
+   "nom": "Netflix Inc",
+   "sens": "SELL",
+   "taille": 10.77,
+   "prix_entree": 58.45,
+   "stop": 64.87,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T13:00:47Z",
+   "statut": "ouvert",
+   "resultat": -2.65,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "tendance_mois"
+  },
+  {
+   "id": "00000000-7509-eaa3-049f-c46d0015549e",
+   "marche": "SLV",
+   "nom": "iShares Silver Trust",
+   "sens": "SELL",
+   "taille": 11,
+   "prix_entree": 38.13,
+   "stop": 43.9,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T13:00:49Z",
+   "statut": "ouvert",
+   "resultat": -1.4,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "tendance_mois"
+  },
+  {
+   "id": "00000000-7509-eaaf-049f-c46d0015549e",
+   "marche": "SOLUSD",
+   "nom": "Solana/USD",
+   "sens": "SELL",
+   "taille": 5.0,
+   "prix_entree": 70.83,
+   "stop": 84.56,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T13:00:50Z",
+   "statut": "ouvert",
+   "resultat": -1.67,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -2048,7 +2612,7 @@
  ],
  "historique_jour": {
   "2026-11-19": 21069.4,
-  "2026-11-20": 20982.01
+  "2026-11-20": 20955.15
  },
  "valeur_depart": 21000.0,
  "entrees": {
@@ -2061,7 +2625,14 @@
   "tendance_mois:OIL_CRUDE": "2026-11-19 00:00:00+00:00",
   "tendance_mois:EURUSD": "2026-11-19 00:00:00+00:00",
   "tendance_mois:GBPUSD": "2026-11-19 00:00:00+00:00",
-  "tendance_mois:AUDUSD": "2026-11-19 00:00:00+00:00"
+  "tendance_mois:AUDUSD": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:AMD": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:GLD": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:GOOGL": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:MSFT": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:NFLX": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:SLV": "2026-11-19 00:00:00+00:00",
+  "tendance_mois:SOLUSD": "2026-11-19 00:00:00+00:00"
  },
  "rapide": {
   "deals": [
@@ -2150,21 +2721,44 @@
    "active": true,
    "nom": "Tendance 1 mois (11 marchés)",
    "unite": "DAY",
-   "risque_pct": 0.4,
+   "risque_pct": 0.3,
    "description": "Un sous-bot par marché (or, argent, ETH, Nasdaq, S&P 500, DAX, pétrole, 4 devises) : acheteur si le prix est plus haut qu'il y a 30 jours, vendeur sinon, stop garanti. Test 2 ans : +2 403 € puis +1 054 €, pire baisse -7 %, ~20 trades/mois.",
-   "reglages": "Tendance 30 jours sur 11 marchés, décision chaque jour, stop garanti 3 ATR",
+   "reglages": "Tendance 30 jours sur 34 marchés, décision chaque jour, stop garanti 3 ATR",
    "marches": [
-    "GOLD",
-    "SILVER",
-    "ETHUSD",
-    "US100",
-    "US500",
+    "AAPL",
+    "AMD",
+    "AMZN",
+    "ARKK",
+    "AUDUSD",
     "DE40",
-    "OIL_CRUDE",
+    "EEM",
+    "ETHUSD",
     "EURUSD",
     "GBPUSD",
-    "AUDUSD",
-    "USDJPY"
+    "GLD",
+    "GOLD",
+    "GOOGL",
+    "IWM",
+    "JPM",
+    "META",
+    "MSFT",
+    "NFLX",
+    "NVDA",
+    "OIL_CRUDE",
+    "QQQ",
+    "SILVER",
+    "SLV",
+    "SOLUSD",
+    "SPY",
+    "TLT",
+    "TSLA",
+    "US100",
+    "US500",
+    "USDJPY",
+    "VTI",
+    "XLE",
+    "XLF",
+    "XLK"
    ],
    "action": "Actif"
   },
@@ -2195,6 +2789,49 @@
    "capital_depart": 50.0,
    "action": "Actif",
    "capital": 50.0
+  },
+  "cassure_tous": {
+   "active": true,
+   "nom": "Cassure 4 h (tous les marchés)",
+   "unite": "HOUR_4",
+   "risque_pct": 0.25,
+   "description": "La cassure 4 h sur tous les autres marchés (actions, ETF, indices, devises, crypto, pétrole). Avant chaque entrée, le bot rejoue la stratégie sur les 12 derniers mois de ce marché et ne trade que s'il y a gagné. Petit risque.",
+   "reglages": "Cassure 20 bougies 4 h dans le sens de l'EMA 200, stop garanti 2 ATR",
+   "marches": [
+    "AAPL",
+    "AMD",
+    "AMZN",
+    "ARKK",
+    "AUDUSD",
+    "DE40",
+    "EEM",
+    "ETHUSD",
+    "EURUSD",
+    "GBPUSD",
+    "GLD",
+    "GOOGL",
+    "IWM",
+    "JPM",
+    "META",
+    "MSFT",
+    "NFLX",
+    "NVDA",
+    "OIL_CRUDE",
+    "QQQ",
+    "SLV",
+    "SOLUSD",
+    "SPY",
+    "TLT",
+    "TSLA",
+    "US100",
+    "US500",
+    "USDJPY",
+    "VTI",
+    "XLE",
+    "XLF",
+    "XLK"
+   ],
+   "action": "Actif"
   }
  },
  "garde_fous": {
@@ -2204,8 +2841,8 @@
   "regles": {
    "perte_max_pct": 10.0,
    "perte_jour_pct": 3.0,
-   "positions_max": 25,
-   "risque_total_pct": 10.0
+   "positions_max": 40,
+   "risque_total_pct": 12.0
   }
  },
  "sous_bots": {
@@ -2213,70 +2850,70 @@
    "nom": "Tesla Inc",
    "note": -0.6,
    "tendance": null,
-   "prix": 366.945,
+   "prix": 366.63,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.48,
    "tendance": null,
-   "prix": 141.695,
+   "prix": 141.76,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
    "note": -0.14,
    "tendance": null,
-   "prix": 349.85,
+   "prix": 349.95500000000004,
    "action": "Aucune action"
   },
   "MSFT": {
    "nom": "Microsoft Corp",
    "note": -0.54,
    "tendance": null,
-   "prix": 488.12,
+   "prix": 487.65,
    "action": "Aucune action"
   },
   "GOOGL": {
    "nom": "Alphabet Inc - A",
    "note": -0.48,
    "tendance": null,
-   "prix": 270.855,
+   "prix": 271.315,
    "action": "Aucune action"
   },
   "SPY": {
    "nom": "SPDR S&P 500 ETF",
    "note": -0.54,
    "tendance": null,
-   "prix": 710.065,
+   "prix": 709.735,
    "action": "Aucune action"
   },
   "QQQ": {
    "nom": "Invesco QQQ Trust",
    "note": -0.6,
    "tendance": null,
-   "prix": 633.595,
+   "prix": 634.76,
    "action": "Aucune action"
   },
   "GLD": {
    "nom": "SPDR Gold Shares",
    "note": -0.37,
    "tendance": null,
-   "prix": 327.26,
+   "prix": 327.25,
    "action": "Aucune action"
   },
   "XLK": {
    "nom": "Technology Select Sector SPDR Fund",
    "note": -0.6,
    "tendance": null,
-   "prix": 156.875,
+   "prix": 156.825,
    "action": "Aucune action"
   },
   "IWM": {
    "nom": "iShares Russell 2000 ETF",
    "note": -0.54,
    "tendance": null,
-   "prix": 263.615,
+   "prix": 263.48,
    "action": "Aucune action"
   }
  },
@@ -2308,7 +2945,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3568.75,
+   "prix": 3571.415,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 4003.25,
@@ -2318,7 +2955,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 42.219,
+   "prix": 42.319,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.78,
@@ -2339,16 +2976,24 @@
    "00000000-7509-b9de-049f-c46d0015549e",
    "00000000-7509-b9f5-049f-c46d0015549e",
    "00000000-7509-ba0b-049f-c46d0015549e",
-   "00000000-7509-ba1d-049f-c46d0015549e"
+   "00000000-7509-ba1d-049f-c46d0015549e",
+   "00000000-7509-e9f8-049f-c46d0015549e",
+   "00000000-7509-ea45-049f-c46d0015549e",
+   "00000000-7509-ea50-049f-c46d0015549e",
+   "00000000-7509-ea7d-049f-c46d0015549e",
+   "00000000-7509-ea88-049f-c46d0015549e",
+   "00000000-7509-eaa3-049f-c46d0015549e",
+   "00000000-7509-eaaf-049f-c46d0015549e"
   ],
   "x5_or": [],
-  "x5_argent": []
+  "x5_argent": [],
+  "cassure_tous": []
  },
  "petit_compte": {
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3568.75,
+   "prix": 3571.415,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 4003.25,
@@ -2358,7 +3003,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 42.219,
+   "prix": 42.319,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.78,
@@ -2371,7 +3016,7 @@
    "nom": "Gold",
    "momentum_pct": -13.2,
    "tendance": "SELL",
-   "prix": 3568.78,
+   "prix": 3570.935,
    "plus_haut_20": 4148.59,
    "plus_bas_20": 3719.87,
    "ema200": 3989.7,
@@ -2381,7 +3026,7 @@
    "nom": "Silver",
    "momentum_pct": -25.46,
    "tendance": "SELL",
-   "prix": 42.2205,
+   "prix": 42.333,
    "plus_haut_20": 54.63,
    "plus_bas_20": 44.76,
    "ema200": 51.9,
@@ -2391,7 +3036,7 @@
    "nom": "Ethereum/USD",
    "momentum_pct": -28.25,
    "tendance": "SELL",
-   "prix": 1741.255,
+   "prix": 1739.965,
    "plus_haut_20": 2447.34,
    "plus_bas_20": 1710.64,
    "ema200": 2156.51,
@@ -2401,7 +3046,7 @@
    "nom": "US Tech 100",
    "momentum_pct": -11.19,
    "tendance": "SELL",
-   "prix": 26069.800000000003,
+   "prix": 26082.800000000003,
    "plus_haut_20": 30016.7,
    "plus_bas_20": 26256.1,
    "ema200": 28357.2,
@@ -2411,7 +3056,7 @@
    "nom": "US 500",
    "momentum_pct": -7.23,
    "tendance": "SELL",
-   "prix": 7114.6,
+   "prix": 7115.4,
    "plus_haut_20": 7784.5,
    "plus_bas_20": 7285.5,
    "ema200": 7570.57,
@@ -2421,7 +3066,7 @@
    "nom": "Germany 40",
    "momentum_pct": -0.73,
    "tendance": "SELL",
-   "prix": 24907.300000000003,
+   "prix": 24941.300000000003,
    "plus_haut_20": 27003.1,
    "plus_bas_20": 25317.7,
    "ema200": 25904.41,
@@ -2431,7 +3076,7 @@
    "nom": "Crude Oil Spot",
    "momentum_pct": -14.02,
    "tendance": "SELL",
-   "prix": 82.358,
+   "prix": 82.30799999999999,
    "plus_haut_20": 104.2,
    "plus_bas_20": 81.16,
    "ema200": 93.36,
@@ -2441,7 +3086,7 @@
    "nom": "EUR/USD",
    "momentum_pct": -2.18,
    "tendance": "SELL",
-   "prix": 1.097655,
+   "prix": 1.097875,
    "plus_haut_20": 1.13,
    "plus_bas_20": 1.1,
    "ema200": 1.11,
@@ -2451,7 +3096,7 @@
    "nom": "GBP/USD",
    "momentum_pct": -1.39,
    "tendance": "SELL",
-   "prix": 1.3103150000000001,
+   "prix": 1.31048,
    "plus_haut_20": 1.35,
    "plus_bas_20": 1.31,
    "ema200": 1.33,
@@ -2461,7 +3106,7 @@
    "nom": "AUD/USD",
    "momentum_pct": -3.79,
    "tendance": "SELL",
-   "prix": 0.66621,
+   "prix": 0.666525,
    "plus_haut_20": 0.71,
    "plus_bas_20": 0.67,
    "ema200": 0.69,
@@ -2471,19 +3116,286 @@
    "nom": "USD/JPY",
    "momentum_pct": 1.0,
    "tendance": "BUY",
-   "prix": 158.784,
+   "prix": 158.795,
    "plus_haut_20": 160.19,
    "plus_bas_20": 156.97,
    "ema200": 158.35,
-   "dernier_refus": "le prix a trop bougé depuis le signal (écart > 1 ATR)",
-   "action": "Refusé : le prix a trop bougé depuis le signal (écart > 1 ATR)"
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-3.2 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-3.2 % du prix) : marché écarté",
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-3.2 % du prix) : marché écarté"
+  },
+  "AAPL": {
+   "nom": "Apple Inc",
+   "momentum_pct": 3.16,
+   "tendance": "BUY",
+   "prix": 349.73,
+   "plus_haut_20": 360.84,
+   "plus_bas_20": 321.0,
+   "ema200": 345.74,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-44.6 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-44.6 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-44.6 % du prix) : marché écarté"
+  },
+  "AMD": {
+   "nom": "Advanced Micro Devices Inc",
+   "momentum_pct": -23.2,
+   "tendance": "SELL",
+   "prix": 458.755,
+   "plus_haut_20": 593.96,
+   "plus_bas_20": 400.0,
+   "ema200": 529.26,
+   "analyse": "sur 365 jours, la stratégie aurait gagné +36.0 % du prix (21 changements)",
+   "action": "VENTE de 0.52"
+  },
+  "AMZN": {
+   "nom": "Amazon.com Inc",
+   "momentum_pct": 0.92,
+   "tendance": "BUY",
+   "prix": 251.885,
+   "plus_haut_20": 275.26,
+   "plus_bas_20": 214.26,
+   "ema200": 256.91,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-56.0 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-56.0 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-56.0 % du prix) : marché écarté"
+  },
+  "ARKK": {
+   "nom": "ARK Innovation ETF",
+   "momentum_pct": -19.58,
+   "tendance": "SELL",
+   "prix": 68.97999999999999,
+   "plus_haut_20": 86.69,
+   "plus_bas_20": 69.52,
+   "ema200": 80.88,
+   "dernier_refus": "marché fermé",
+   "action": "Refusé : marché fermé"
+  },
+  "EEM": {
+   "nom": "iShares MSCI Emerging Markets ETF",
+   "momentum_pct": -14.04,
+   "tendance": "SELL",
+   "prix": 56.760000000000005,
+   "plus_haut_20": 63.81,
+   "plus_bas_20": 57.56,
+   "ema200": 62.12,
+   "dernier_refus": "marché fermé",
+   "action": "Refusé : marché fermé"
+  },
+  "GLD": {
+   "nom": "SPDR Gold Shares",
+   "momentum_pct": -13.0,
+   "tendance": "SELL",
+   "prix": 327.265,
+   "plus_haut_20": 380.16,
+   "plus_bas_20": 340.76,
+   "ema200": 367.86,
+   "analyse": "sur 365 jours, la stratégie aurait gagné +53.8 % du prix (13 changements)",
+   "action": "VENTE de 2.61"
+  },
+  "GOOGL": {
+   "nom": "Alphabet Inc - A",
+   "momentum_pct": -21.41,
+   "tendance": "SELL",
+   "prix": 271.065,
+   "plus_haut_20": 333.92,
+   "plus_bas_20": 272.81,
+   "ema200": 308.74,
+   "analyse": "sur 365 jours, la stratégie aurait gagné +8.7 % du prix (19 changements)",
+   "action": "VENTE de 1.9"
+  },
+  "IWM": {
+   "nom": "iShares Russell 2000 ETF",
+   "momentum_pct": -5.07,
+   "tendance": "SELL",
+   "prix": 263.6,
+   "plus_haut_20": 286.47,
+   "plus_bas_20": 267.25,
+   "ema200": 276.45,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-8.4 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-8.4 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-8.4 % du prix) : marché écarté"
+  },
+  "JPM": {
+   "nom": "JPMorgan Chase & Co",
+   "momentum_pct": -3.55,
+   "tendance": "SELL",
+   "prix": 319.685,
+   "plus_haut_20": 359.83,
+   "plus_bas_20": 321.83,
+   "ema200": 337.07,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-25.7 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-25.7 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-25.7 % du prix) : marché écarté"
+  },
+  "META": {
+   "nom": "Meta Platforms Inc",
+   "momentum_pct": -17.81,
+   "tendance": "SELL",
+   "prix": 577.68,
+   "plus_haut_20": 715.8,
+   "plus_bas_20": 583.91,
+   "ema200": 653.52,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-84.8 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-84.8 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-84.8 % du prix) : marché écarté"
+  },
+  "MSFT": {
+   "nom": "Microsoft Corp",
+   "momentum_pct": -4.83,
+   "tendance": "SELL",
+   "prix": 487.505,
+   "plus_haut_20": 567.93,
+   "plus_bas_20": 496.53,
+   "ema200": 527.98,
+   "analyse": "sur 365 jours, la stratégie aurait gagné +51.2 % du prix (10 changements)",
+   "action": "VENTE de 1.24"
+  },
+  "NFLX": {
+   "nom": "Netflix Inc",
+   "momentum_pct": -18.52,
+   "tendance": "SELL",
+   "prix": 58.58,
+   "plus_haut_20": 67.83,
+   "plus_bas_20": 59.41,
+   "ema200": 64.86,
+   "analyse": "sur 365 jours, la stratégie aurait gagné +59.0 % du prix (6 changements)",
+   "action": "VENTE de 10.77"
+  },
+  "NVDA": {
+   "nom": "NVIDIA Corp",
+   "momentum_pct": -36.79,
+   "tendance": "SELL",
+   "prix": 141.18,
+   "plus_haut_20": 220.5,
+   "plus_bas_20": 148.81,
+   "ema200": 197.13,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-42.6 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-42.6 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-42.6 % du prix) : marché écarté"
+  },
+  "QQQ": {
+   "nom": "Invesco QQQ Trust",
+   "momentum_pct": -13.94,
+   "tendance": "SELL",
+   "prix": 633.79,
+   "plus_haut_20": 730.13,
+   "plus_bas_20": 638.95,
+   "ema200": 697.47,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-2.9 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-2.9 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-2.9 % du prix) : marché écarté"
+  },
+  "SLV": {
+   "nom": "iShares Silver Trust",
+   "momentum_pct": -28.47,
+   "tendance": "SELL",
+   "prix": 38.17,
+   "plus_haut_20": 50.67,
+   "plus_bas_20": 40.39,
+   "ema200": 47.77,
+   "analyse": "sur 365 jours, la stratégie aurait gagné +44.9 % du prix (25 changements)",
+   "action": "VENTE de 11.0"
+  },
+  "SOLUSD": {
+   "nom": "Solana/USD",
+   "momentum_pct": -31.34,
+   "tendance": "SELL",
+   "prix": 71.17984999999999,
+   "plus_haut_20": 98.42,
+   "plus_bas_20": 67.38,
+   "ema200": 89.55,
+   "analyse": "sur 365 jours, la stratégie aurait gagné +11.0 % du prix (30 changements)",
+   "action": "VENTE de 5.0"
+  },
+  "SPY": {
+   "nom": "SPDR S&P 500 ETF",
+   "momentum_pct": -7.62,
+   "tendance": "SELL",
+   "prix": 710.425,
+   "plus_haut_20": 776.88,
+   "plus_bas_20": 726.79,
+   "ema200": 757.81,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-13.1 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-13.1 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-13.1 % du prix) : marché écarté"
+  },
+  "TLT": {
+   "nom": "iShares 20+ Year Treasury Bond ETF",
+   "momentum_pct": 3.39,
+   "tendance": "BUY",
+   "prix": 81.025,
+   "plus_haut_20": 82.58,
+   "plus_bas_20": 79.12,
+   "ema200": 80.5,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-12.2 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-12.2 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-12.2 % du prix) : marché écarté"
+  },
+  "TSLA": {
+   "nom": "Tesla Inc",
+   "momentum_pct": -0.63,
+   "tendance": "SELL",
+   "prix": 366.29499999999996,
+   "plus_haut_20": 414.22,
+   "plus_bas_20": 335.16,
+   "ema200": 380.55,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-59.8 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-59.8 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-59.8 % du prix) : marché écarté"
+  },
+  "VTI": {
+   "nom": "Vanguard Morningstar Total Stock Market ETF",
+   "momentum_pct": -5.65,
+   "tendance": "SELL",
+   "prix": 352.505,
+   "plus_haut_20": 379.91,
+   "plus_bas_20": 357.68,
+   "ema200": 373.28,
+   "dernier_refus": "marché fermé",
+   "action": "Refusé : marché fermé"
+  },
+  "XLE": {
+   "nom": "Energy Select Sector SPDR Fund",
+   "momentum_pct": -6.7,
+   "tendance": "SELL",
+   "prix": 60.615,
+   "plus_haut_20": 70.15,
+   "plus_bas_20": 60.44,
+   "ema200": 65.88,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-18.5 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-18.5 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-18.5 % du prix) : marché écarté"
+  },
+  "XLF": {
+   "nom": "Financial Select Sector SPDR Fund",
+   "momentum_pct": 2.32,
+   "tendance": "BUY",
+   "prix": 55.65,
+   "plus_haut_20": 60.47,
+   "plus_bas_20": 55.27,
+   "ema200": 56.61,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-3.3 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-3.3 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-3.3 % du prix) : marché écarté"
+  },
+  "XLK": {
+   "nom": "Technology Select Sector SPDR Fund",
+   "momentum_pct": -19.11,
+   "tendance": "SELL",
+   "prix": 156.805,
+   "plus_haut_20": 193.08,
+   "plus_bas_20": 159.63,
+   "ema200": 179.16,
+   "analyse": "sur 365 jours, la stratégie aurait perdu (-20.8 % du prix) : marché écarté",
+   "dernier_refus": "analyse du marché : sur 365 jours, la stratégie aurait perdu (-20.8 % du prix) : marché écarté",
+   "action": "Refusé : analyse du marché : sur 365 jours, la stratégie aurait perdu (-20.8 % du prix) : marché écarté"
   }
  },
  "x5_or": {
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3568.75,
+   "prix": 3571.415,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 4003.25,
@@ -2495,12 +3407,336 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 42.219,
+   "prix": 42.319,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.78,
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)",
    "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)"
+  }
+ },
+ "cassure_tous": {
+  "AAPL": {
+   "nom": "Apple Inc",
+   "tendance": null,
+   "prix": 349.95500000000004,
+   "plus_haut_20": 356.4,
+   "plus_bas_20": 346.46,
+   "ema200": 344.69,
+   "action": "Aucune action"
+  },
+  "AMD": {
+   "nom": "Advanced Micro Devices Inc",
+   "tendance": "SELL",
+   "prix": 457.625,
+   "plus_haut_20": 554.99,
+   "plus_bas_20": 467.19,
+   "ema200": 528.75,
+   "analyse": "pas assez d'historique pour analyser (178 jours)",
+   "dernier_refus": "analyse du marché : pas assez d'historique pour analyser (178 jours)",
+   "action": "Refusé : analyse du marché : pas assez d'historique pour analyser (178 jours)"
+  },
+  "AMZN": {
+   "nom": "Amazon.com Inc",
+   "tendance": "SELL",
+   "prix": 251.91500000000002,
+   "plus_haut_20": 274.69,
+   "plus_bas_20": 254.05,
+   "ema200": 258.34,
+   "analyse": "pas assez d'historique pour analyser (178 jours)",
+   "dernier_refus": "analyse du marché : pas assez d'historique pour analyser (178 jours)",
+   "action": "Refusé : analyse du marché : pas assez d'historique pour analyser (178 jours)"
+  },
+  "ARKK": {
+   "nom": "ARK Innovation ETF",
+   "tendance": "SELL",
+   "prix": 68.97999999999999,
+   "plus_haut_20": 79.81,
+   "plus_bas_20": 69.52,
+   "ema200": 80.54,
+   "dernier_refus": "marché fermé",
+   "action": "Refusé : marché fermé"
+  },
+  "AUDUSD": {
+   "nom": "AUD/USD",
+   "tendance": "SELL",
+   "prix": 0.666455,
+   "plus_haut_20": 0.67,
+   "plus_bas_20": 0.66,
+   "ema200": 0.69,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-02 08:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-02 08:00)"
+  },
+  "DE40": {
+   "nom": "Germany 40",
+   "tendance": "SELL",
+   "prix": 24940.300000000003,
+   "plus_haut_20": 26533.2,
+   "plus_bas_20": 25078.3,
+   "ema200": 25909.36,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-18 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-18 12:00)"
+  },
+  "EEM": {
+   "nom": "iShares MSCI Emerging Markets ETF",
+   "tendance": "SELL",
+   "prix": 56.760000000000005,
+   "plus_haut_20": 62.42,
+   "plus_bas_20": 57.19,
+   "ema200": 63.97,
+   "dernier_refus": "marché fermé",
+   "action": "Refusé : marché fermé"
+  },
+  "ETHUSD": {
+   "nom": "Ethereum/USD",
+   "tendance": "SELL",
+   "prix": 1740.355,
+   "plus_haut_20": 1841.6,
+   "plus_bas_20": 1716.1,
+   "ema200": 2127.12,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-08 20:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-08 20:00)"
+  },
+  "EURUSD": {
+   "nom": "EUR/USD",
+   "tendance": "SELL",
+   "prix": 1.097875,
+   "plus_haut_20": 1.1,
+   "plus_bas_20": 1.1,
+   "ema200": 1.12,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-06 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-06 12:00)"
+  },
+  "GBPUSD": {
+   "nom": "GBP/USD",
+   "tendance": "SELL",
+   "prix": 1.310715,
+   "plus_haut_20": 1.32,
+   "plus_bas_20": 1.31,
+   "ema200": 1.33,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-06 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-06 12:00)"
+  },
+  "GLD": {
+   "nom": "SPDR Gold Shares",
+   "tendance": "SELL",
+   "prix": 327.25,
+   "plus_haut_20": 357.37,
+   "plus_bas_20": 322.05,
+   "ema200": 369.08,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)"
+  },
+  "GOOGL": {
+   "nom": "Alphabet Inc - A",
+   "tendance": "SELL",
+   "prix": 271.315,
+   "plus_haut_20": 295.43,
+   "plus_bas_20": 270.5,
+   "ema200": 306.48,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-16 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-16 12:00)"
+  },
+  "IWM": {
+   "nom": "iShares Russell 2000 ETF",
+   "tendance": "SELL",
+   "prix": 263.48,
+   "plus_haut_20": 273.68,
+   "plus_bas_20": 262.69,
+   "ema200": 278.92,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-05 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-05 12:00)"
+  },
+  "JPM": {
+   "nom": "JPMorgan Chase & Co",
+   "tendance": "SELL",
+   "prix": 319.315,
+   "plus_haut_20": 338.99,
+   "plus_bas_20": 317.44,
+   "ema200": 337.87,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-06 04:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-06 04:00)"
+  },
+  "META": {
+   "nom": "Meta Platforms Inc",
+   "tendance": "SELL",
+   "prix": 575.6400000000001,
+   "plus_haut_20": 630.07,
+   "plus_bas_20": 583.38,
+   "ema200": 644.43,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-19 16:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-19 16:00)"
+  },
+  "MSFT": {
+   "nom": "Microsoft Corp",
+   "tendance": "SELL",
+   "prix": 487.65,
+   "plus_haut_20": 526.44,
+   "plus_bas_20": 490.75,
+   "ema200": 520.32,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-17 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-17 12:00)"
+  },
+  "NFLX": {
+   "nom": "Netflix Inc",
+   "tendance": "SELL",
+   "prix": 58.58,
+   "plus_haut_20": 61.01,
+   "plus_bas_20": 58.19,
+   "ema200": 65.07,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-10 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-10 12:00)"
+  },
+  "NVDA": {
+   "nom": "NVIDIA Corp",
+   "tendance": "SELL",
+   "prix": 141.76,
+   "plus_haut_20": 163.86,
+   "plus_bas_20": 142.83,
+   "ema200": 191.29,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-10-29 20:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-10-29 20:00)"
+  },
+  "OIL_CRUDE": {
+   "nom": "Crude Oil Spot",
+   "tendance": "SELL",
+   "prix": 82.3455,
+   "plus_haut_20": 85.97,
+   "plus_bas_20": 81.16,
+   "ema200": 90.4,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-02 16:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-02 16:00)"
+  },
+  "QQQ": {
+   "nom": "Invesco QQQ Trust",
+   "tendance": "SELL",
+   "prix": 634.76,
+   "plus_haut_20": 675.3,
+   "plus_bas_20": 636.63,
+   "ema200": 695.19,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-16 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-16 12:00)"
+  },
+  "SLV": {
+   "nom": "iShares Silver Trust",
+   "tendance": "SELL",
+   "prix": 38.245000000000005,
+   "plus_haut_20": 43.31,
+   "plus_bas_20": 37.11,
+   "ema200": 48.58,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)"
+  },
+  "SOLUSD": {
+   "nom": "Solana/USD",
+   "tendance": "SELL",
+   "prix": 71.07740000000001,
+   "plus_haut_20": 75.69,
+   "plus_bas_20": 71.0,
+   "ema200": 88.25,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-08 20:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-08 20:00)"
+  },
+  "SPY": {
+   "nom": "SPDR S&P 500 ETF",
+   "tendance": "SELL",
+   "prix": 709.735,
+   "plus_haut_20": 741.82,
+   "plus_bas_20": 711.16,
+   "ema200": 754.58,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-16 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-16 12:00)"
+  },
+  "TLT": {
+   "nom": "iShares 20+ Year Treasury Bond ETF",
+   "tendance": "BUY",
+   "prix": 81.025,
+   "plus_haut_20": 80.69,
+   "plus_bas_20": 79.23,
+   "ema200": 80.62,
+   "analyse": "pas assez d'historique pour analyser (178 jours)",
+   "dernier_refus": "analyse du marché : pas assez d'historique pour analyser (178 jours)",
+   "action": "Refusé : analyse du marché : pas assez d'historique pour analyser (178 jours)"
+  },
+  "TSLA": {
+   "nom": "Tesla Inc",
+   "tendance": "SELL",
+   "prix": 366.63,
+   "plus_haut_20": 393.53,
+   "plus_bas_20": 367.3,
+   "ema200": 379.54,
+   "analyse": "pas assez d'historique pour analyser (178 jours)",
+   "dernier_refus": "analyse du marché : pas assez d'historique pour analyser (178 jours)",
+   "action": "Refusé : analyse du marché : pas assez d'historique pour analyser (178 jours)"
+  },
+  "US100": {
+   "nom": "US Tech 100",
+   "tendance": "SELL",
+   "prix": 26065.050000000003,
+   "plus_haut_20": 27751.3,
+   "plus_bas_20": 26157.9,
+   "ema200": 28480.19,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-16 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-16 12:00)"
+  },
+  "US500": {
+   "nom": "US 500",
+   "tendance": "SELL",
+   "prix": 7115.0,
+   "plus_haut_20": 7436.3,
+   "plus_bas_20": 7128.0,
+   "ema200": 7564.94,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-16 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-16 12:00)"
+  },
+  "USDJPY": {
+   "nom": "USD/JPY",
+   "tendance": null,
+   "prix": 158.778,
+   "plus_haut_20": 159.97,
+   "plus_bas_20": 158.87,
+   "ema200": 158.49,
+   "action": "Aucune action"
+  },
+  "VTI": {
+   "nom": "Vanguard Morningstar Total Stock Market ETF",
+   "tendance": "SELL",
+   "prix": 352.505,
+   "plus_haut_20": 375.73,
+   "plus_bas_20": 357.09,
+   "ema200": 372.54,
+   "dernier_refus": "marché fermé",
+   "action": "Refusé : marché fermé"
+  },
+  "XLE": {
+   "nom": "Energy Select Sector SPDR Fund",
+   "tendance": "SELL",
+   "prix": 60.629999999999995,
+   "plus_haut_20": 65.41,
+   "plus_bas_20": 60.64,
+   "ema200": 63.37,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-18 08:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-18 08:00)"
+  },
+  "XLF": {
+   "nom": "Financial Select Sector SPDR Fund",
+   "tendance": "SELL",
+   "prix": 55.68,
+   "plus_haut_20": 59.03,
+   "plus_bas_20": 55.3,
+   "ema200": 56.55,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-18 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-18 12:00)"
+  },
+  "XLK": {
+   "nom": "Technology Select Sector SPDR Fund",
+   "tendance": "SELL",
+   "prix": 156.825,
+   "plus_haut_20": 169.32,
+   "plus_bas_20": 158.19,
+   "ema200": 177.9,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-17 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-17 12:00)"
   }
  }
 }
