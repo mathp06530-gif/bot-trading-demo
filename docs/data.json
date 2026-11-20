@@ -294,10 +294,17 @@
    "marche": "GOLD",
    "texte": "[Objectif x5] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-11 12:00).",
    "strategie": "x5_or"
+  },
+  {
+   "date": "2026-11-20T12:55:32Z",
+   "type": "analyse",
+   "marche": "SILVER",
+   "texte": "[Objectif x5] Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-12 08:00).",
+   "strategie": "x5_argent"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T12:50:31Z",
+ "derniere_execution": "2026-11-20T12:55:32Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -1218,15 +1225,19 @@
   {
    "date": "2026-11-20T12:50:31Z",
    "valeur": 21005.43
+  },
+  {
+   "date": "2026-11-20T12:55:32Z",
+   "valeur": 20982.01
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 21002.87,
+  "solde": 20991.16,
   "depot": 21000.31,
-  "resultat_latent": 2.56,
-  "disponible": 18916.56
+  "resultat_latent": -9.15,
+  "disponible": 18902.99
  },
  "positions": [
   {
@@ -1235,7 +1246,7 @@
    "sens": "SELL",
    "taille": 0.0268,
    "prix_entree": 61704.25,
-   "resultat": 4.07,
+   "resultat": 2.22,
    "ouverte_le": "2026-11-20T11:35:24.292"
   },
   {
@@ -1244,7 +1255,7 @@
    "sens": "SELL",
    "taille": 0.37,
    "prix_entree": 3569.33,
-   "resultat": 0.9,
+   "resultat": -1.52,
    "ouverte_le": "2026-11-20T12:40:28.784"
   },
   {
@@ -1253,7 +1264,7 @@
    "sens": "SELL",
    "taille": 15.5,
    "prix_entree": 42.225,
-   "resultat": -0.52,
+   "resultat": -1.47,
    "ouverte_le": "2026-11-20T12:40:29.483"
   },
   {
@@ -1262,7 +1273,7 @@
    "sens": "SELL",
    "taille": 0.308,
    "prix_entree": 1736.49,
-   "resultat": -0.47,
+   "resultat": -1.29,
    "ouverte_le": "2026-11-20T12:40:30.293"
   },
   {
@@ -1271,7 +1282,7 @@
    "sens": "SELL",
    "taille": 0.042,
    "prix_entree": 26027.7,
-   "resultat": -0.33,
+   "resultat": -1.94,
    "ouverte_le": "2026-11-20T12:40:31.092"
   },
   {
@@ -1280,7 +1291,7 @@
    "sens": "SELL",
    "taille": 0.25,
    "prix_entree": 7110.7,
-   "resultat": -0.05,
+   "resultat": -1.96,
    "ouverte_le": "2026-11-20T12:40:31.921"
   },
   {
@@ -1289,7 +1300,7 @@
    "sens": "SELL",
    "taille": 0.072,
    "prix_entree": 24904.8,
-   "resultat": 0.3672,
+   "resultat": -2.2248,
    "ouverte_le": "2026-11-20T12:40:32.730"
   },
   {
@@ -1298,7 +1309,7 @@
    "sens": "SELL",
    "taille": 8.7,
    "prix_entree": 82.093,
-   "resultat": -3.01,
+   "resultat": -2.3,
    "ouverte_le": "2026-11-20T12:40:33.547"
   },
   {
@@ -1307,7 +1318,7 @@
    "sens": "SELL",
    "taille": 5500,
    "prix_entree": 1.09793,
-   "resultat": 0.25,
+   "resultat": 0.8,
    "ouverte_le": "2026-11-20T12:40:34.376"
   },
   {
@@ -1316,7 +1327,7 @@
    "sens": "SELL",
    "taille": 4800,
    "prix_entree": 1.31025,
-   "resultat": -0.57,
+   "resultat": -0.13,
    "ouverte_le": "2026-11-20T12:40:35.210"
   },
   {
@@ -1325,13 +1336,13 @@
    "sens": "SELL",
    "taille": 6800,
    "prix_entree": 0.66641,
-   "resultat": 1.92,
+   "resultat": 0.62,
    "ouverte_le": "2026-11-20T12:40:36.023"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 61504.875,
+   "prix": 61607.95,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1857,12 +1868,12 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T11:35:24Z",
    "statut": "ouvert",
-   "resultat": 4.07,
+   "resultat": 2.22,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
    "strategie": "rapide",
-   "dernier_prix": 61504.875
+   "dernier_prix": 61607.95
   },
   {
    "id": "00000000-7509-b978-049f-c46d0015549e",
@@ -1875,7 +1886,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:28Z",
    "statut": "ouvert",
-   "resultat": 0.9,
+   "resultat": -1.52,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1892,7 +1903,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:29Z",
    "statut": "ouvert",
-   "resultat": -0.52,
+   "resultat": -1.47,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1909,7 +1920,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:30Z",
    "statut": "ouvert",
-   "resultat": -0.47,
+   "resultat": -1.29,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1926,7 +1937,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:31Z",
    "statut": "ouvert",
-   "resultat": -0.33,
+   "resultat": -1.94,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1943,7 +1954,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:31Z",
    "statut": "ouvert",
-   "resultat": -0.05,
+   "resultat": -1.96,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1960,7 +1971,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:32Z",
    "statut": "ouvert",
-   "resultat": 0.3672,
+   "resultat": -2.2248,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1977,7 +1988,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:33Z",
    "statut": "ouvert",
-   "resultat": -3.01,
+   "resultat": -2.3,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1994,7 +2005,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:34Z",
    "statut": "ouvert",
-   "resultat": 0.25,
+   "resultat": 0.8,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -2011,7 +2022,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:35Z",
    "statut": "ouvert",
-   "resultat": -0.57,
+   "resultat": -0.13,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -2028,7 +2039,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:36Z",
    "statut": "ouvert",
-   "resultat": 1.92,
+   "resultat": 0.62,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -2037,7 +2048,7 @@
  ],
  "historique_jour": {
   "2026-11-19": 21069.4,
-  "2026-11-20": 21005.43
+  "2026-11-20": 20982.01
  },
  "valeur_depart": 21000.0,
  "entrees": {
@@ -2162,10 +2173,24 @@
    "nom": "Objectif x5 sur l'or (50 €)",
    "unite": "HOUR_4",
    "risque_pct": 50.0,
-   "description": "Loterie en démo : capital VIRTUEL de 50 €, levier 1:20 sur l'or, entrée sur une cassure 4 h. Objectif +20 % du prix (x5), stop garanti -2.5 % (moitié du capital). Test 2 ans : x5 ~28 % des fois, coupé ~63 %.",
+   "description": "Loterie en démo : capital VIRTUEL de 50 €, levier 1:20, entrée sur une cassure 4 h. Objectif +20 % du prix (x5), stop garanti -2.5 % (moitié du capital). Test 2 ans : x5 40 % puis 19 % des fois, ~3 mois.",
    "reglages": "Cassure 20 bougies 4 h dans le sens de l'EMA 200, stop garanti 2 ATR",
    "marches": [
     "GOLD"
+   ],
+   "capital_depart": 50.0,
+   "action": "Actif",
+   "capital": 50.0
+  },
+  "x5_argent": {
+   "active": true,
+   "nom": "Objectif x5 sur l'argent (50 €)",
+   "unite": "HOUR_4",
+   "risque_pct": 50.0,
+   "description": "Loterie en démo : capital VIRTUEL de 50 €, levier 1:10, entrée sur une cassure 4 h. Objectif +40 % du prix (x5), stop garanti -5 % (moitié du capital). Test 2 ans : x5 46 % puis 15 % des fois, ~4 mois.",
+   "reglages": "Cassure 20 bougies 4 h dans le sens de l'EMA 200, stop garanti 2 ATR",
+   "marches": [
+    "SILVER"
    ],
    "capital_depart": 50.0,
    "action": "Actif",
@@ -2188,70 +2213,70 @@
    "nom": "Tesla Inc",
    "note": -0.6,
    "tendance": null,
-   "prix": 366.355,
+   "prix": 366.945,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.48,
    "tendance": null,
-   "prix": 141.645,
+   "prix": 141.695,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
    "note": -0.14,
    "tendance": null,
-   "prix": 349.68,
+   "prix": 349.85,
    "action": "Aucune action"
   },
   "MSFT": {
    "nom": "Microsoft Corp",
    "note": -0.54,
    "tendance": null,
-   "prix": 487.835,
+   "prix": 488.12,
    "action": "Aucune action"
   },
   "GOOGL": {
    "nom": "Alphabet Inc - A",
    "note": -0.48,
    "tendance": null,
-   "prix": 270.76,
+   "prix": 270.855,
    "action": "Aucune action"
   },
   "SPY": {
    "nom": "SPDR S&P 500 ETF",
    "note": -0.54,
    "tendance": null,
-   "prix": 709.35,
+   "prix": 710.065,
    "action": "Aucune action"
   },
   "QQQ": {
    "nom": "Invesco QQQ Trust",
    "note": -0.6,
    "tendance": null,
-   "prix": 633.225,
+   "prix": 633.595,
    "action": "Aucune action"
   },
   "GLD": {
    "nom": "SPDR Gold Shares",
    "note": -0.37,
    "tendance": null,
-   "prix": 326.98,
+   "prix": 327.26,
    "action": "Aucune action"
   },
   "XLK": {
    "nom": "Technology Select Sector SPDR Fund",
    "note": -0.6,
    "tendance": null,
-   "prix": 156.695,
+   "prix": 156.875,
    "action": "Aucune action"
   },
   "IWM": {
    "nom": "iShares Russell 2000 ETF",
    "note": -0.54,
    "tendance": null,
-   "prix": 263.52,
+   "prix": 263.615,
    "action": "Aucune action"
   }
  },
@@ -2283,7 +2308,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3568.295,
+   "prix": 3568.75,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 4003.25,
@@ -2293,7 +2318,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 42.292,
+   "prix": 42.219,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.78,
@@ -2316,13 +2341,14 @@
    "00000000-7509-ba0b-049f-c46d0015549e",
    "00000000-7509-ba1d-049f-c46d0015549e"
   ],
-  "x5_or": []
+  "x5_or": [],
+  "x5_argent": []
  },
  "petit_compte": {
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3568.295,
+   "prix": 3568.75,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 4003.25,
@@ -2332,7 +2358,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 42.292,
+   "prix": 42.219,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.78,
@@ -2345,7 +2371,7 @@
    "nom": "Gold",
    "momentum_pct": -13.2,
    "tendance": "SELL",
-   "prix": 3567.21,
+   "prix": 3568.78,
    "plus_haut_20": 4148.59,
    "plus_bas_20": 3719.87,
    "ema200": 3989.7,
@@ -2355,7 +2381,7 @@
    "nom": "Silver",
    "momentum_pct": -25.46,
    "tendance": "SELL",
-   "prix": 42.275,
+   "prix": 42.2205,
    "plus_haut_20": 54.63,
    "plus_bas_20": 44.76,
    "ema200": 51.9,
@@ -2365,7 +2391,7 @@
    "nom": "Ethereum/USD",
    "momentum_pct": -28.25,
    "tendance": "SELL",
-   "prix": 1739.0,
+   "prix": 1741.255,
    "plus_haut_20": 2447.34,
    "plus_bas_20": 1710.64,
    "ema200": 2156.51,
@@ -2375,7 +2401,7 @@
    "nom": "US Tech 100",
    "momentum_pct": -11.19,
    "tendance": "SELL",
-   "prix": 26025.3,
+   "prix": 26069.800000000003,
    "plus_haut_20": 30016.7,
    "plus_bas_20": 26256.1,
    "ema200": 28357.2,
@@ -2385,7 +2411,7 @@
    "nom": "US 500",
    "momentum_pct": -7.23,
    "tendance": "SELL",
-   "prix": 7108.5,
+   "prix": 7114.6,
    "plus_haut_20": 7784.5,
    "plus_bas_20": 7285.5,
    "ema200": 7570.57,
@@ -2395,7 +2421,7 @@
    "nom": "Germany 40",
    "momentum_pct": -0.73,
    "tendance": "SELL",
-   "prix": 24889.699999999997,
+   "prix": 24907.300000000003,
    "plus_haut_20": 27003.1,
    "plus_bas_20": 25317.7,
    "ema200": 25904.41,
@@ -2405,7 +2431,7 @@
    "nom": "Crude Oil Spot",
    "momentum_pct": -14.02,
    "tendance": "SELL",
-   "prix": 82.3805,
+   "prix": 82.358,
    "plus_haut_20": 104.2,
    "plus_bas_20": 81.16,
    "ema200": 93.36,
@@ -2415,7 +2441,7 @@
    "nom": "EUR/USD",
    "momentum_pct": -2.18,
    "tendance": "SELL",
-   "prix": 1.098045,
+   "prix": 1.097655,
    "plus_haut_20": 1.13,
    "plus_bas_20": 1.1,
    "ema200": 1.11,
@@ -2425,7 +2451,7 @@
    "nom": "GBP/USD",
    "momentum_pct": -1.39,
    "tendance": "SELL",
-   "prix": 1.3104149999999999,
+   "prix": 1.3103150000000001,
    "plus_haut_20": 1.35,
    "plus_bas_20": 1.31,
    "ema200": 1.33,
@@ -2435,7 +2461,7 @@
    "nom": "AUD/USD",
    "momentum_pct": -3.79,
    "tendance": "SELL",
-   "prix": 0.6662950000000001,
+   "prix": 0.66621,
    "plus_haut_20": 0.71,
    "plus_bas_20": 0.67,
    "ema200": 0.69,
@@ -2445,7 +2471,7 @@
    "nom": "USD/JPY",
    "momentum_pct": 1.0,
    "tendance": "BUY",
-   "prix": 158.709,
+   "prix": 158.784,
    "plus_haut_20": 160.19,
    "plus_bas_20": 156.97,
    "ema200": 158.35,
@@ -2457,12 +2483,24 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3568.295,
+   "prix": 3568.75,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 4003.25,
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)",
    "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)"
+  }
+ },
+ "x5_argent": {
+  "SILVER": {
+   "nom": "Silver",
+   "tendance": "SELL",
+   "prix": 42.219,
+   "plus_haut_20": 48.01,
+   "plus_bas_20": 41.11,
+   "ema200": 52.78,
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)"
   }
  }
 }
