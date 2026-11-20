@@ -1003,7 +1003,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T16:45:24Z",
+ "derniere_execution": "2026-11-20T16:50:25Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -2144,6 +2144,10 @@
   {
    "date": "2026-11-20T16:45:24Z",
    "valeur": 98.21
+  },
+  {
+   "date": "2026-11-20T16:50:25Z",
+   "valeur": 98.21
   }
  ],
  "compte": {
@@ -2157,7 +2161,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 59432.05,
+   "prix": 59399.524999999994,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 48) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -3231,7 +3235,7 @@
     "titre": "FOMC Meeting Minutes"
    }
   ],
-  "lu_le": "2026-11-20T15:50:21.923891+00:00",
+  "lu_le": "2026-11-20T16:50:21.945186+00:00",
   "pause": null,
   "prochaines": []
  },
@@ -3240,7 +3244,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3545.295,
+   "prix": 3543.4049999999997,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 3998.75,
@@ -3251,7 +3255,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.381,
+   "prix": 41.278999999999996,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.67,
@@ -3274,11 +3278,10 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 1.13,
-     "adx": 15.0
+     "bollinger": 0.98
     },
-    "prix": 3543.54,
-    "action": "En attente : tendance 5 min trop faible (ADX 15 ≤ 20)"
+    "prix": 3540.34,
+    "action": "En attente : marché trop calme (bandes de Bollinger étroites)"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -3286,10 +3289,10 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 1.27,
-     "adx": 17.7
+     "bollinger": 1.14,
+     "adx": 18.3
     },
-    "prix": 41.285,
+    "prix": 41.31,
     "action": "En attente : tendance 5 min trop faible (ADX 18 ≤ 20)"
    }
   },
