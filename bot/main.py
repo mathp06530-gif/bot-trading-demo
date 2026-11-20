@@ -27,6 +27,7 @@ from bot.cassure import RISQUE_CASSURE_PCT, tour_cassure
 from bot import cassure as module_cassure
 from bot import tendance_mois as module_tm
 from bot import challenge as module_ch
+from bot import londres as module_lo
 from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
 from bot.strategie import NOM as NOM_STRATEGIE
 from bot.strategie import EMA_LENTE, EMA_RAPIDE, bougies_vers_df, decider
@@ -93,7 +94,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     noter_4h = lambda t, m, x: noter(t, m, x, "tendance_4h")
     noter_rapide = lambda t, m, x: noter(t, m, x, "rapide")
 
-    toutes = ["tendance_4h", "rapide", "actions_etf", "cassure_4h", "petit_compte", "tendance_mois", "x5_or", "x5_argent", "cassure_tous", "challenge"]
+    toutes = ["tendance_4h", "rapide", "actions_etf", "cassure_4h", "petit_compte", "tendance_mois", "x5_or", "x5_argent", "cassure_tous", "challenge", "londres"]
     strategie = strategie if strategie in toutes else "toutes"
     cibles = toutes if strategie == "toutes" else [strategie]
     etats = donnees.setdefault("strategies", {})
@@ -107,12 +108,14 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     etats.setdefault("x5_argent", {}).setdefault("active", module_cassure.X5_ARGENT)
     etats.setdefault("cassure_tous", {}).setdefault("active", module_cassure.CASSURE_TOUS)
     etats.setdefault("challenge", {}).setdefault("active", module_ch.ACTIVE_PAR_DEFAUT)
+    etats.setdefault("londres", {}).setdefault("active", module_lo.ACTIVE_PAR_DEFAUT)
     noms = {"tendance_4h": "Tendance 4 h", "rapide": "Rapide 5 min", "actions_etf": "Sous-bots actions et ETF",
             "cassure_4h": "Cassure 4 h (or et argent)", "petit_compte": "Petit compte risqué (100 €)",
             "tendance_mois": "Tendance 1 mois (11 marchés)",
             "x5_or": "Objectif x5 sur l'or (50 €)", "x5_argent": "Objectif x5 sur l'argent (50 €)",
             "cassure_tous": "Cassure 4 h (tous les marchés)",
-            "challenge": "Challenge prop firm (10 000 € virtuels)"}
+            "challenge": "Challenge prop firm (10 000 € virtuels)",
+            "londres": "Cassure de Londres (USD/JPY)"}
     lancer = set(cibles) if action == "lancer" else set()
 
     api.connexion()
@@ -124,7 +127,9 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     ids_x5a = set(donnees.get("deals_par_strategie", {}).get("x5_argent", []))
     ids_ct = set(donnees.get("deals_par_strategie", {}).get("cassure_tous", []))
     ids_ch = module_ch.ids_challenge(donnees)
-    strat_de = lambda p: ("challenge" if p["position"]["dealId"] in ids_ch else
+    ids_lo = set(donnees.get("deals_par_strategie", {}).get("londres", []))
+    strat_de = lambda p: ("londres" if p["position"]["dealId"] in ids_lo else
+                          "challenge" if p["position"]["dealId"] in ids_ch else
                           "tendance_mois" if p["position"]["dealId"] in ids_tm else
                           "cassure_tous" if p["position"]["dealId"] in ids_ct else
                           "x5_or" if p["position"]["dealId"] in ids_x5 else
@@ -524,6 +529,25 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         "reglages": NOM_CASSURE, "marches": sorted(set(MARCHES_CASSURE) | set(module_tm.LISTE)),
         "capital_depart": module_ch.CAPITAL,
         "action": "Actif" if actif_ch else ("En pause" if en_pause else "Désactivée")})
+    # --- Cassure de Londres (USD/JPY) : zone de la nuit 0-7 h UTC, entrée 7-11 h, sortie 20 h ---
+    ids_lo = set(donnees.get("deals_par_strategie", {}).get("londres", []))
+    actif_lo = ("londres" in lancer) or (not en_pause and etats["londres"]["active"])
+    if (actif_lo or not en_pause) and (actif_lo or any(p["position"]["dealId"] in ids_lo for p in positions)):
+        noter_lo = lambda t, m, x: noter(t, m, f"[Londres] {x}", "londres")
+        for epic in module_lo.LISTE:
+            try:
+                module_lo.tour_londres(api, donnees, epic, positions, capital, disponible, eurusd, noter_lo, garde,
+                                       maintenant(), peut_entrer=actif_lo)
+            except Exception as e:
+                donnees.setdefault("londres", {}).setdefault(epic, {})["action"] = "Erreur"
+                noter_lo("erreur", epic, str(e)[:300])
+    etats["londres"].update({
+        "nom": noms["londres"], "unite": "HOUR", "risque_pct": module_lo.RISQUE_LONDRES_PCT,
+        "description": ("Note le plus haut et le plus bas de la nuit (1 h-8 h à Paris). Si le prix en sort entre 8 h et "
+                        "12 h, elle suit le mouvement, stop garanti à la largeur de la zone, et ferme tout à 21 h. "
+                        "Test 2 ans sur 100 € à 5 % : +42 € puis +71 €, pire baisse -29 %, ~12 trades/mois."),
+        "reglages": module_lo.NOM, "marches": module_lo.LISTE,
+        "action": "Actif" if actif_lo else ("En pause" if en_pause else "Désactivée")})
     donnees.pop("_cache_marches", None)
 
     # État final du compte, après les ordres
@@ -545,9 +569,12 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     etats["challenge"].update({"capital": suivi_ch.get("valeur", module_ch.CAPITAL), "suivi": {
         k: suivi_ch.get(k) for k in ("tentative", "statut", "raison", "debut", "debut_jour", "plus_bas", "plus_haut")},
         "tentatives": suivi_ch.get("tentatives", [])[-20:], **module_ch.bilan(suivi_ch)})
+    ids_lo = set(donnees.get("deals_par_strategie", {}).get("londres", []))
     for o in donnees.get("ordres", []):
         if o["id"] in ids_ch:
             o["strategie"] = "challenge"
+        if o["id"] in ids_lo:
+            o["strategie"] = "londres"
         if o["id"] in ids_petit:
             o["strategie"] = "petit_compte"
         if o["id"] in ids_tm:
