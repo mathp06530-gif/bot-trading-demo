@@ -1,0 +1,101 @@
+{
+ "instrument": {
+  "epic": "BTCUSD",
+  "symbol": "BTC/USD",
+  "expiry": "-",
+  "name": "Bitcoin/USD",
+  "lotSize": 1,
+  "type": "CRYPTOCURRENCIES",
+  "guaranteedStopAllowed": true,
+  "streamingPricesAvailable": true,
+  "currency": "USD",
+  "marginFactor": 50,
+  "marginFactorUnit": "PERCENTAGE",
+  "openingHours": {
+   "mon": [
+    "00:00 - 22:00",
+    "22:05 - 00:00"
+   ],
+   "tue": [
+    "00:00 - 22:00",
+    "22:05 - 00:00"
+   ],
+   "wed": [
+    "00:00 - 22:00",
+    "22:05 - 00:00"
+   ],
+   "thu": [
+    "00:00 - 22:00",
+    "22:05 - 00:00"
+   ],
+   "fri": [
+    "00:00 - 22:00",
+    "22:05 - 00:00"
+   ],
+   "sat": [
+    "00:00 - 06:00",
+    "08:00 - 22:00",
+    "22:05 - 00:00"
+   ],
+   "sun": [
+    "00:00 - 22:00",
+    "22:05 - 00:00"
+   ],
+   "zone": "UTC"
+  },
+  "overnightFee": {
+   "longRate": -0.0616438,
+   "shortRate": 0.0136986,
+   "swapChargeTimestamp": 1795212000000,
+   "swapChargeInterval": 1440
+  }
+ },
+ "dealingRules": {
+  "minStepDistance": {
+   "unit": "POINTS",
+   "value": 0.05
+  },
+  "minDealSize": {
+   "unit": "POINTS",
+   "value": 0.0001
+  },
+  "maxDealSize": {
+   "unit": "POINTS",
+   "value": 50
+  },
+  "minSizeIncrement": {
+   "unit": "POINTS",
+   "value": 0.0001
+  },
+  "minGuaranteedStopDistance": {
+   "unit": "PERCENTAGE",
+   "value": 0.5
+  },
+  "minStopOrProfitDistance": {
+   "unit": "PERCENTAGE",
+   "value": 0.01
+  },
+  "maxStopOrProfitDistance": {
+   "unit": "PERCENTAGE",
+   "value": 100
+  },
+  "marketOrderPreference": "AVAILABLE_DEFAULT_ON",
+  "trailingStopsPreference": "NOT_AVAILABLE"
+ },
+ "snapshot": {
+  "marketStatus": "TRADEABLE",
+  "netChange": -555.9,
+  "percentageChange": 0.46,
+  "updateTime": "2026-11-20T12:30:48.612",
+  "delayTime": 0,
+  "bid": 61738.75,
+  "offer": 61788.75,
+  "high": 62534.35,
+  "low": 61195.1,
+  "decimalPlacesFactor": 2,
+  "scalingFactor": 1,
+  "marketModes": [
+   "REGULAR"
+  ]
+ }
+}
