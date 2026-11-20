@@ -15,6 +15,7 @@ réduire le risque, jamais l'augmenter au-delà des limites.
   5. UN PAR MARCHÉ   : une stratégie n'a jamais deux trades ouverts sur le même marché
                        (vérifié dans chaque stratégie).
   6. STOP OBLIGATOIRE: aucun ordre sans stop garanti (vérifié ici : distance > 0).
+  8. ACTUALITÉ      : pas de nouvelle position autour d'une grande annonce américaine (bot/actualites.py).
   7. MARCHÉ OUVERT, SPREAD, ÂGE DU SIGNAL, ÉCART DE PRIX : vérifiés dans chaque sous-bot.
 """
 import os
@@ -32,6 +33,7 @@ class GardeFous:
         self.valeur = float(valeur_compte or 0)
         self.positions = list(positions)
         self.eurusd = eurusd or 1.0
+        self.pause_actualite = None  # raison de la pause si une grande annonce est proche
         jour = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         if self.etat.get("jour") != jour:
             self.etat["jour"] = jour
@@ -62,6 +64,8 @@ class GardeFous:
         """Renvoie (True, "") si l'ordre respecte TOUTES les règles, sinon (False, raison)."""
         if not distance_stop or distance_stop <= 0:
             return False, "ordre refusé : pas de stop"
+        if self.pause_actualite:
+            return False, self.pause_actualite
         if self.etat.get("coupe_circuit"):
             return False, (f"COUPE-CIRCUIT : le compte a perdu plus de {PERTE_MAX_PCT:g} % depuis son plus haut. "
                            "Aucune nouvelle position tant que tu n'as pas appuyé sur « Reprendre ».")

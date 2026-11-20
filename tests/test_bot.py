@@ -352,3 +352,30 @@ def test_rapide_stop_suiveur_garde_le_gain():
     # le prix remonte : le stop ne recule pas
     r = rapide.suivre_stop(api, api.positions(), {"bid": 97990.0, "ask": 98010.0}, "BTCUSD", noter)
     assert r == "Position conservée" and len(api.stops) == 1
+
+
+def test_pause_autour_des_grandes_annonces():
+    from datetime import datetime, timezone
+    from bot import actualites
+    from bot.garde_fous import GardeFous
+    donnees = {}
+    t = datetime(2026, 12, 9, 18, 45, tzinfo=timezone.utc)
+    assert actualites.mettre_a_jour(donnees, t, lire=lambda: [{"date": "2026-12-09T19:00Z", "titre": "FOMC Statement"}]) is None
+    raison = actualites.annonce_en_cours(donnees, t)
+    assert raison and "FOMC Statement" in raison and "20 h 00" in raison
+    assert actualites.annonce_en_cours(donnees, datetime(2026, 12, 9, 20, 30, tzinfo=timezone.utc)) is None
+    garde = GardeFous({}, 21000, [], 1.0)
+    garde.pause_actualite = raison
+    ok, pourquoi = garde.autoriser(10, 600)
+    assert not ok and "pause actualité" in pourquoi
+
+
+def test_calendrier_en_panne_le_bot_continue():
+    from datetime import datetime, timezone
+    from bot import actualites
+    def panne():
+        raise OSError("hors ligne")
+    donnees = {}
+    msg = actualites.mettre_a_jour(donnees, datetime(2026, 12, 9, tzinfo=timezone.utc), lire=panne)
+    assert "indisponible" in msg
+    assert actualites.annonce_en_cours(donnees, datetime(2026, 12, 9, tzinfo=timezone.utc)) is None
