@@ -25,7 +25,6 @@ from bot.cassure import LISTE as MARCHES_CASSURE
 from bot.cassure import NOM as NOM_CASSURE
 from bot.cassure import RISQUE_CASSURE_PCT, tour_cassure
 from bot import cassure as module_cassure
-from bot import ia as module_ia
 from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
 from bot.strategie import NOM as NOM_STRATEGIE
 from bot.strategie import EMA_LENTE, EMA_RAPIDE, bougies_vers_df, decider
@@ -92,7 +91,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     noter_4h = lambda t, m, x: noter(t, m, x, "tendance_4h")
     noter_rapide = lambda t, m, x: noter(t, m, x, "rapide")
 
-    toutes = ["tendance_4h", "rapide", "actions_etf", "cassure_4h", "petit_compte", "ia_4h"]
+    toutes = ["tendance_4h", "rapide", "actions_etf", "cassure_4h", "petit_compte"]
     strategie = strategie if strategie in toutes else "toutes"
     cibles = toutes if strategie == "toutes" else [strategie]
     etats = donnees.setdefault("strategies", {})
@@ -101,20 +100,16 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     etats.setdefault("actions_etf", {}).setdefault("active", True)
     etats.setdefault("cassure_4h", {}).setdefault("active", True)
     etats.setdefault("petit_compte", {}).setdefault("active", module_cassure.PETIT_COMPTE)
-    etats.setdefault("ia_4h", {}).setdefault("active", module_ia.ACTIVE_PAR_DEFAUT)
     noms = {"tendance_4h": "Tendance 4 h", "rapide": "Rapide 5 min", "actions_etf": "Sous-bots actions et ETF",
-            "cassure_4h": "Cassure 4 h (or et argent)", "petit_compte": "Petit compte risqué (100 €)",
-            "ia_4h": "IA 4 h (or et argent)"}
+            "cassure_4h": "Cassure 4 h (or et argent)", "petit_compte": "Petit compte risqué (100 €)"}
     lancer = set(cibles) if action == "lancer" else set()
 
     api.connexion()
     positions = api.positions()
     ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
     ids_petit = set(donnees.get("deals_par_strategie", {}).get("petit_compte", []))
-    ids_ia = set(donnees.get("deals_par_strategie", {}).get("ia", []))
     strat_de = lambda p: ("actions_etf" if p["market"]["epic"] in SOUS_BOTS else
                           "petit_compte" if p["position"]["dealId"] in ids_petit else
-                          "ia_4h" if p["position"]["dealId"] in ids_ia else
                           "cassure_4h" if p["market"]["epic"] in MARCHES_CASSURE else
                           "rapide" if p["position"]["dealId"] in ids_rapide else "tendance_4h")
 
@@ -135,8 +130,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     elif action == "fermer":
         if strategie == "toutes":
             donnees["pause"] = True
-        for p in [p for p in positions if p["market"]["epic"] in MARCHES + SOUS_BOTS + MARCHES_CASSURE + module_ia.LISTE
-                  and strat_de(p) in cibles]:
+        for p in [p for p in positions if p["market"]["epic"] in MARCHES + SOUS_BOTS + MARCHES_CASSURE and strat_de(p) in cibles]:
             conf = api.fermer(p["position"]["dealId"])
             if conf.get("dealStatus") == "ACCEPTED":
                 noter_fermeture(donnees, p, conf, maintenant(), "Fermée depuis l'application")
@@ -380,26 +374,6 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         "reglages": NOM_CASSURE, "marches": MARCHES_CASSURE,
         "capital_depart": module_cassure.PETIT_CAPITAL_DEPART,
         "action": "Actif" if actif_p else ("En pause" if en_pause else "Désactivée")})
-
-    # --- IA 4 h (expérience) : un modèle réentraîné à chaque tour prédit la bougie suivante ---
-    actif_ia = ("ia_4h" in lancer) or (not en_pause and etats["ia_4h"]["active"])
-    if (actif_ia or not en_pause) and (actif_ia or ids_ia):
-        noter_ia = lambda t, m, x: noter(t, m, f"[IA] {x}", "ia_4h")
-        for epic in module_ia.LISTE:
-            try:
-                tour_cassure(api, donnees, epic, positions, capital, disponible, eurusd, noter_ia, garde,
-                             maintenant(), peut_entrer=actif_ia, cle="ia", risque_pct=module_ia.RISQUE_IA_PCT,
-                             signaux=module_ia.signaux_ia)
-            except Exception as e:
-                donnees.setdefault("ia", {}).setdefault(epic, {})["action"] = "Erreur"
-                noter_ia("erreur", epic, str(e)[:300])
-    etats["ia_4h"].update({
-        "nom": noms["ia_4h"], "unite": "HOUR_4", "risque_pct": module_ia.RISQUE_IA_PCT,
-        "description": ("Expérience : un modèle d'apprentissage automatique, réentraîné à chaque tour sur les "
-                        "~800 dernières bougies de 4 h, prédit si la suivante monte ou descend. Test sur 2 ans : "
-                        "51 à 52 % de bonnes prédictions, perdant sur les 16 derniers mois. Petit risque."),
-        "reglages": module_ia.NOM, "marches": module_ia.LISTE,
-        "action": "Actif" if actif_ia else ("En pause" if en_pause else "Désactivée")})
     donnees.pop("_cache_marches", None)
 
     # État final du compte, après les ordres
@@ -411,12 +385,9 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
     etats["petit_compte"]["capital"] = module_cassure.capital_petit_compte(donnees)
     ids_petit = set(donnees.get("deals_par_strategie", {}).get("petit_compte", []))
-    ids_ia = set(donnees.get("deals_par_strategie", {}).get("ia", []))
     for o in donnees.get("ordres", []):
         if o["id"] in ids_petit:
             o["strategie"] = "petit_compte"
-        if o["id"] in ids_ia:
-            o["strategie"] = "ia_4h"
         if "strategie" not in o:
             o["strategie"] = ("actions_etf" if o["marche"] in SOUS_BOTS else
                               "cassure_4h" if o["marche"] in MARCHES_CASSURE else
