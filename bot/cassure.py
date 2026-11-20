@@ -42,6 +42,17 @@ X5_CAPITAL_DEPART = float(os.getenv("X5_CAPITAL_DEPART", "50"))
 X5_LEVIER = float(os.getenv("X5_LEVIER", "20"))
 X5_OBJECTIF_PCT = float(os.getenv("X5_OBJECTIF_PCT", "20"))
 X5_STOP_PCT = float(os.getenv("X5_STOP_PCT", "2.5"))
+# Même essai sur l'argent (levier max 1:10) : objectif +40 %, stop -5 %. Test 35 marchés : seuls l'or et
+# l'argent gagnent les deux années (argent : x5 46 % puis 15 % des fois, ~4 mois).
+X5_ARGENT = os.getenv("X5_ARGENT", "non").strip().lower() in ("oui", "1", "true", "on")
+X5_ARGENT_LEVIER = float(os.getenv("X5_ARGENT_LEVIER", "10"))
+X5_ARGENT_OBJECTIF_PCT = float(os.getenv("X5_ARGENT_OBJECTIF_PCT", "40"))
+X5_ARGENT_STOP_PCT = float(os.getenv("X5_ARGENT_STOP_PCT", "5"))
+X5_ESSAIS = [  # (stratégie, marché, levier, objectif %, stop %, résultat du test)
+    ("x5_or", "GOLD", X5_LEVIER, X5_OBJECTIF_PCT, X5_STOP_PCT, "Test 2 ans : x5 40 % puis 19 % des fois, ~3 mois."),
+    ("x5_argent", "SILVER", X5_ARGENT_LEVIER, X5_ARGENT_OBJECTIF_PCT, X5_ARGENT_STOP_PCT,
+     "Test 2 ans : x5 46 % puis 15 % des fois, ~4 mois."),
+]
 ENTREE, SORTIE, STOP_ATR, FILTRE_EMA = 20, 20, 2.0, 200
 UNITE = "HOUR_4"
 NOM = f"Cassure {ENTREE} bougies 4 h dans le sens de l'EMA {FILTRE_EMA}, stop garanti {STOP_ATR:g} ATR"
