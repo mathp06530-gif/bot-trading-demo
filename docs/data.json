@@ -1066,7 +1066,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T18:15:25Z",
+ "derniere_execution": "2026-11-20T18:20:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -1171,15 +1171,19 @@
   {
    "date": "2026-11-20T18:15:25Z",
    "valeur": 98.27
+  },
+  {
+   "date": "2026-11-20T18:20:25Z",
+   "valeur": 97.99
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 98.24,
+  "solde": 98.1,
   "depot": 98.21,
-  "resultat_latent": 0.03,
-  "disponible": 93.39
+  "resultat_latent": -0.11,
+  "disponible": 93.25
  },
  "positions": [
   {
@@ -1188,13 +1192,13 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3523.59,
-   "resultat": 0.04,
+   "resultat": -0.1,
    "ouverte_le": "2026-11-20T17:50:24.893"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 58797.35,
+   "prix": 58897.5,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 48) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1606,7 +1610,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T17:50:24Z",
    "statut": "ouvert",
-   "resultat": 0.04,
+   "resultat": -0.1,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1614,7 +1618,7 @@
   }
  ],
  "historique_jour": {
-  "2026-11-20": 98.27
+  "2026-11-20": 97.99
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -1727,7 +1731,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3521.71,
+   "prix": 3522.505,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 3998.75,
@@ -1738,7 +1742,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 40.975,
+   "prix": 41.19,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.67,
@@ -1764,7 +1768,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3522.82,
+    "prix": 3527.25,
     "action": "Position conservée"
    },
    "SILVER": {
@@ -1773,9 +1777,9 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 0.88
+     "bollinger": 0.8
     },
-    "prix": 41.069,
+    "prix": 41.189,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)"
    }
   },
