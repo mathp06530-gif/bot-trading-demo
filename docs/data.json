@@ -150,7 +150,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T06:55:28Z",
+ "derniere_execution": "2026-11-20T07:00:29Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -783,6 +783,10 @@
   {
    "date": "2026-11-20T06:55:28Z",
    "valeur": 21017.46
+  },
+  {
+   "date": "2026-11-20T07:00:29Z",
+   "valeur": 21017.46
   }
  ],
  "compte": {
@@ -796,7 +800,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 61885.6,
+   "prix": 61950.325,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1350,56 +1354,56 @@
    "nom": "Tesla Inc",
    "note": -0.6,
    "tendance": null,
-   "prix": 368.33500000000004,
+   "prix": 368.79999999999995,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.67,
    "tendance": null,
-   "prix": 143.44,
+   "prix": 143.76999999999998,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
    "note": -0.31,
    "tendance": null,
-   "prix": 349.875,
+   "prix": 350.36,
    "action": "Aucune action"
   },
   "MSFT": {
    "nom": "Microsoft Corp",
    "note": -0.67,
    "tendance": null,
-   "prix": 492.225,
+   "prix": 492.27,
    "action": "Aucune action"
   },
   "GOOGL": {
    "nom": "Alphabet Inc - A",
    "note": -0.61,
    "tendance": null,
-   "prix": 271.145,
+   "prix": 271.235,
    "action": "Aucune action"
   },
   "SPY": {
    "nom": "SPDR S&P 500 ETF",
    "note": -0.48,
    "tendance": null,
-   "prix": 712.35,
+   "prix": 712.4749999999999,
    "action": "Aucune action"
   },
   "QQQ": {
    "nom": "Invesco QQQ Trust",
    "note": -0.43,
    "tendance": null,
-   "prix": 638.5699999999999,
+   "prix": 638.855,
    "action": "Aucune action"
   },
   "GLD": {
    "nom": "SPDR Gold Shares",
    "note": -0.72,
    "tendance": null,
-   "prix": 326.08,
+   "prix": 326.295,
    "action": "Aucune action"
   },
   "XLK": {
@@ -1413,7 +1417,7 @@
    "nom": "iShares Russell 2000 ETF",
    "note": -0.37,
    "tendance": null,
-   "prix": 263.30999999999995,
+   "prix": 263.395,
    "action": "Aucune action"
   }
  }
