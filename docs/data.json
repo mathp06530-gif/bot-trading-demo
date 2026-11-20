@@ -178,7 +178,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T10:40:29Z",
+ "derniere_execution": "2026-11-20T10:45:28Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -991,6 +991,10 @@
   {
    "date": "2026-11-20T10:40:29Z",
    "valeur": 21000.31
+  },
+  {
+   "date": "2026-11-20T10:45:28Z",
+   "valeur": 21000.31
   }
  ],
  "compte": {
@@ -1004,7 +1008,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 62206.05,
+   "prix": 62165.4,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1596,21 +1600,21 @@
    "nom": "Tesla Inc",
    "note": -0.48,
    "tendance": null,
-   "prix": 369.65,
+   "prix": 369.735,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.48,
    "tendance": null,
-   "prix": 143.14,
+   "prix": 143.39499999999998,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
    "note": -0.31,
    "tendance": null,
-   "prix": 350.175,
+   "prix": 350.22,
    "action": "Aucune action"
   },
   "MSFT": {
@@ -1624,28 +1628,28 @@
    "nom": "Alphabet Inc - A",
    "note": -0.6,
    "tendance": null,
-   "prix": 275.525,
+   "prix": 275.58,
    "action": "Aucune action"
   },
   "SPY": {
    "nom": "SPDR S&P 500 ETF",
    "note": -0.48,
    "tendance": null,
-   "prix": 714.655,
+   "prix": 714.645,
    "action": "Aucune action"
   },
   "QQQ": {
    "nom": "Invesco QQQ Trust",
    "note": -0.48,
    "tendance": null,
-   "prix": 639.65,
+   "prix": 639.875,
    "action": "Aucune action"
   },
   "GLD": {
    "nom": "SPDR Gold Shares",
    "note": -0.32,
    "tendance": null,
-   "prix": 329.045,
+   "prix": 329.245,
    "action": "Aucune action"
   },
   "XLK": {
@@ -1659,7 +1663,7 @@
    "nom": "iShares Russell 2000 ETF",
    "note": -0.54,
    "tendance": null,
-   "prix": 264.705,
+   "prix": 264.77,
    "action": "Aucune action"
   }
  },
