@@ -11,7 +11,7 @@ on:
         default: "BTCUSD"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   historique:
@@ -23,7 +23,14 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
+      - name: Actualités (indice peur et avidité crypto, calendrier économique de la semaine)
+        if: github.ref != 'refs/heads/main'
+        run: |
+          mkdir -p backtest/donnees
+          curl -sSf -m 30 "https://api.alternative.me/fng/?limit=0&format=json" -o backtest/donnees/peur_avidite.json || true
+          curl -sSf -m 30 "https://nfs.faireconomy.media/ff_calendar_thisweek.json" -o backtest/donnees/calendrier_semaine.json || true
       - name: Télécharger l'historique Capital.com (démo)
+        if: inputs.unites != 'aucune'
         env:
           CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
           CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
@@ -31,6 +38,12 @@ jobs:
           UNITES: ${{ inputs.unites }}
           EPICS: ${{ inputs.marches }}
         run: python backtest/telecharger.py
+      - name: Enregistrer les fichiers d'actualités sur la branche (jamais sur main)
+        if: github.ref != 'refs/heads/main'
+        run: |
+          git config user.name "bot-trading-demo"; git config user.email "bot-trading-demo@users.noreply.github.com"
+          git add -f backtest/donnees/peur_avidite.json backtest/donnees/calendrier_semaine.json || true
+          git diff --cached --quiet || (git commit -qm "Données d'actualités pour le backtest" && git push -q origin HEAD)
       - name: Garder les données téléchargées (onglet « Artifacts » du run, 30 jours)
         uses: actions/upload-artifact@v4
         with:
