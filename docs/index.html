@@ -568,7 +568,8 @@ const STRAT_INFO = {
   cassure_4h: { ico: "🥇", couleur: "#eab308", titre: "Cassure 4 h",
     desc: "Surveille l'or et l'argent sur des bougies de 4 h : elle entre quand le prix casse son plus haut ou son plus bas des 20 dernières bougies, dans le sens de la tendance." },
   petit_compte: { ico: "🎯", couleur: "#ec4899", titre: "Petit compte risqué",
-    desc: "Une expérience à part : un capital virtuel de 100 € joué de façon risquée sur l'or et l'argent, pour voir ce que donnerait un petit compte." },
+    desc: "Une expérience à part : un capital virtuel de 100 € joué de façon risquée sur l'or et l'argent, pour voir ce que donnerait un petit compte." },  challenge: { ico: "🏆", couleur: "#14b8a6", titre: "Challenge prop firm",
+    desc: "Un faux challenge de société de trading : 10 000 € virtuels, réussi à +10 %, raté à -5 % dans une journée ou -10 % au total." },
 };
 const nomStrat = id => (STRAT_INFO[id] || {}).titre || id;
 function stratDe(o) { return o.strategie || (/^\[Rapide\]/.test(o.motif_sortie || "") ? "rapide" : "tendance_4h"); }
@@ -751,6 +752,13 @@ function capitalVirtuel(s) {
     <div class="num"><span style="color:var(--doux)">${fmt(dep, 0)} €</span> → <b class="${signe(ecart)}">${fmt(cap, 2)} €</b>
     <span class="chip ${ecart >= 0 ? "pos" : "neg"}">${fmtS(pct)} %</span></div></div>`;
 }
+function bilanChallenge(s) {
+  const v = s.suivi || {}, statut = v.statut === "en cours" ? `Tentative n° ${v.tentative} en cours` : v.statut ? `Tentative n° ${v.tentative} ${v.statut} (${v.raison || ""})` : "Démarre au prochain tour";
+  const lignes = (s.tentatives || []).slice().reverse().map(t => `<div class="sb"><div class="sb-nom"><b>N° ${t.n} : ${esc(t.statut)}</b><small>${esc(t.raison || "")}</small></div><div class="sb-act">${fmtS(t.resultat)} € en ${fmt(t.jours, 1)} j</div></div>`).join("");
+  return `<div class="capital-virtuel"><span class="lab">${esc(statut)}</span>
+    <div class="num">Réussies : <b class="pos">${s.reussies || 0}</b> · Ratées : <b class="neg">${s.ratees || 0}</b></div></div>
+    ${lignes ? `<div class="sous-bots">${lignes}</div>` : ""}`;
+}
 function listeCassure(src) {
   const m = Object.entries(src || {});
   if (!m.length) return `<div class="sous-bots vide">L'or et l'argent apparaîtront ici après le premier tour.</div>`;
@@ -802,7 +810,8 @@ function carteStrat(s) {
       <div><span>Réussite</span><b>${isNaN(s.reussite) ? "—" : fmt(s.reussite, 0) + " %"}</b></div>
       <div><span>En cours</span><b>${s.ouverts.length}</b></div>
     </div>
-    ${s.id === "petit_compte" ? capitalVirtuel(s) : ""}
+    ${s.id === "petit_compte" || /^x5_/.test(s.id) ? capitalVirtuel(s) : ""}
+    ${s.id === "challenge" ? capitalVirtuel(s) + bilanChallenge(s) : ""}
     ${s.id === "actions_etf" ? listeSousBots() : s.id === "cassure_4h" ? listeCassure(D?.cassure) : s.id === "petit_compte" ? listeCassure(D?.petit_compte) : ""}
     ${sparkline(s.courbe, s.couleur)}
     <div class="actions">
