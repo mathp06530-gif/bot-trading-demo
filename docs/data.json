@@ -679,10 +679,142 @@
    "marche": "XLK",
    "texte": "[Tendance 1 mois] Tendance 1 mois (VENTE) mais ordre REFUSÉ : analyse du marché : sur 365 jours, la stratégie aurait perdu (-20.8 % du prix) : marché écarté.",
    "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:46Z",
+   "type": "fermeture",
+   "marche": "BTCUSD",
+   "texte": "Position fermée depuis l'application (gain/perte : 2.97). Statut : ACCEPTED",
+   "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-20T13:06:47Z",
+   "type": "fermeture",
+   "marche": "AMD",
+   "texte": "Position fermée depuis l'application (gain/perte : -0.06). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:47Z",
+   "type": "fermeture",
+   "marche": "GLD",
+   "texte": "Position fermée depuis l'application (gain/perte : -1.71). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:47Z",
+   "type": "fermeture",
+   "marche": "GOOGL",
+   "texte": "Position fermée depuis l'application (gain/perte : -1.38). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:48Z",
+   "type": "fermeture",
+   "marche": "MSFT",
+   "texte": "Position fermée depuis l'application (gain/perte : -0.68). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:48Z",
+   "type": "fermeture",
+   "marche": "NFLX",
+   "texte": "Position fermée depuis l'application (gain/perte : -3.04). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:49Z",
+   "type": "fermeture",
+   "marche": "SLV",
+   "texte": "Position fermée depuis l'application (gain/perte : -0.70). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:49Z",
+   "type": "fermeture",
+   "marche": "SOLUSD",
+   "texte": "Position fermée depuis l'application (gain/perte : -1.57). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:49Z",
+   "type": "fermeture",
+   "marche": "GOLD",
+   "texte": "Position fermée depuis l'application (gain/perte : -3.56). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:50Z",
+   "type": "fermeture",
+   "marche": "SILVER",
+   "texte": "Position fermée depuis l'application (gain/perte : -0.86). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:50Z",
+   "type": "fermeture",
+   "marche": "ETHUSD",
+   "texte": "Position fermée depuis l'application (gain/perte : -0.65). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:50Z",
+   "type": "fermeture",
+   "marche": "US100",
+   "texte": "Position fermée depuis l'application (gain/perte : -0.66). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:51Z",
+   "type": "fermeture",
+   "marche": "US500",
+   "texte": "Position fermée depuis l'application (gain/perte : -0.27). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:51Z",
+   "type": "fermeture",
+   "marche": "DE40",
+   "texte": "Position fermée depuis l'application (gain/perte : 0.65). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:52Z",
+   "type": "fermeture",
+   "marche": "OIL_CRUDE",
+   "texte": "Position fermée depuis l'application (gain/perte : 2.26). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:52Z",
+   "type": "fermeture",
+   "marche": "EURUSD",
+   "texte": "Position fermée depuis l'application (gain/perte : -5.71). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:53Z",
+   "type": "fermeture",
+   "marche": "GBPUSD",
+   "texte": "Position fermée depuis l'application (gain/perte : -9.48). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:53Z",
+   "type": "fermeture",
+   "marche": "AUDUSD",
+   "texte": "Position fermée depuis l'application (gain/perte : -1.42). Statut : ACCEPTED",
+   "strategie": "tendance_mois"
+  },
+  {
+   "date": "2026-11-20T13:06:53Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Positions fermées et bot mis en pause. Appuie sur « Reprendre » pour le relancer."
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T13:05:34Z",
+ "derniere_execution": "2026-11-20T13:06:55Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -1615,186 +1747,27 @@
   {
    "date": "2026-11-20T13:05:34Z",
    "valeur": 20950.89
+  },
+  {
+   "date": "2026-11-20T13:06:55Z",
+   "valeur": 20972.85
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 20975.6,
-  "depot": 21000.31,
-  "resultat_latent": -24.71,
-  "disponible": 18091.14
+  "solde": 20972.85,
+  "depot": 20972.85,
+  "resultat_latent": 0.0,
+  "disponible": 20972.85
  },
- "positions": [
-  {
-   "marche": "BTCUSD",
-   "nom": "Bitcoin/USD",
-   "sens": "SELL",
-   "taille": 0.0268,
-   "prix_entree": 61704.25,
-   "resultat": 3.52,
-   "ouverte_le": "2026-11-20T11:35:24.292"
-  },
-  {
-   "marche": "AMD",
-   "nom": "Advanced Micro Devices Inc",
-   "sens": "SELL",
-   "taille": 0.52,
-   "prix_entree": 456.93,
-   "resultat": 0.03,
-   "ouverte_le": "2026-11-20T13:00:41.752"
-  },
-  {
-   "marche": "GLD",
-   "nom": "SPDR Gold Shares",
-   "sens": "SELL",
-   "taille": 2.61,
-   "prix_entree": 327.42,
-   "resultat": -1.54,
-   "ouverte_le": "2026-11-20T13:00:45.095"
-  },
-  {
-   "marche": "GOOGL",
-   "nom": "Alphabet Inc - A",
-   "sens": "SELL",
-   "taille": 1.9,
-   "prix_entree": 270.6,
-   "resultat": -0.69,
-   "ouverte_le": "2026-11-20T13:00:45.962"
-  },
-  {
-   "marche": "MSFT",
-   "nom": "Microsoft Corp",
-   "sens": "SELL",
-   "taille": 1.24,
-   "prix_entree": 487.35,
-   "resultat": -0.64,
-   "ouverte_le": "2026-11-20T13:00:47.242"
-  },
-  {
-   "marche": "NFLX",
-   "nom": "Netflix Inc",
-   "sens": "SELL",
-   "taille": 10.77,
-   "prix_entree": 58.45,
-   "resultat": -2.74,
-   "ouverte_le": "2026-11-20T13:00:47.933"
-  },
-  {
-   "marche": "SLV",
-   "nom": "iShares Silver Trust",
-   "sens": "SELL",
-   "taille": 11,
-   "prix_entree": 38.13,
-   "resultat": -0.6,
-   "ouverte_le": "2026-11-20T13:00:49.786"
-  },
-  {
-   "marche": "SOLUSD",
-   "nom": "Solana/USD",
-   "sens": "SELL",
-   "taille": 5.0,
-   "prix_entree": 70.83,
-   "resultat": -1.3,
-   "ouverte_le": "2026-11-20T13:00:50.464"
-  },
-  {
-   "marche": "GOLD",
-   "nom": "Gold",
-   "sens": "SELL",
-   "taille": 0.37,
-   "prix_entree": 3569.33,
-   "resultat": -3.34,
-   "ouverte_le": "2026-11-20T12:40:28.784"
-  },
-  {
-   "marche": "SILVER",
-   "nom": "Silver",
-   "sens": "SELL",
-   "taille": 15.5,
-   "prix_entree": 42.225,
-   "resultat": -0.8,
-   "ouverte_le": "2026-11-20T12:40:29.483"
-  },
-  {
-   "marche": "ETHUSD",
-   "nom": "Ethereum/USD",
-   "sens": "SELL",
-   "taille": 0.308,
-   "prix_entree": 1736.49,
-   "resultat": -0.16,
-   "ouverte_le": "2026-11-20T12:40:30.293"
-  },
-  {
-   "marche": "US100",
-   "nom": "US Tech 100",
-   "sens": "SELL",
-   "taille": 0.042,
-   "prix_entree": 26027.7,
-   "resultat": -0.39,
-   "ouverte_le": "2026-11-20T12:40:31.092"
-  },
-  {
-   "marche": "US500",
-   "nom": "US 500",
-   "sens": "SELL",
-   "taille": 0.25,
-   "prix_entree": 7110.7,
-   "resultat": -0.14,
-   "ouverte_le": "2026-11-20T12:40:31.921"
-  },
-  {
-   "marche": "DE40",
-   "nom": "Germany 40",
-   "sens": "SELL",
-   "taille": 0.072,
-   "prix_entree": 24904.8,
-   "resultat": 0.936,
-   "ouverte_le": "2026-11-20T12:40:32.730"
-  },
-  {
-   "marche": "OIL_CRUDE",
-   "nom": "Crude Oil Spot",
-   "sens": "SELL",
-   "taille": 8.7,
-   "prix_entree": 82.093,
-   "resultat": 1.62,
-   "ouverte_le": "2026-11-20T12:40:33.547"
-  },
-  {
-   "marche": "EURUSD",
-   "nom": "EUR/USD",
-   "sens": "SELL",
-   "taille": 5500,
-   "prix_entree": 1.09793,
-   "resultat": -6.16,
-   "ouverte_le": "2026-11-20T12:40:34.376"
-  },
-  {
-   "marche": "GBPUSD",
-   "nom": "GBP/USD",
-   "sens": "SELL",
-   "taille": 4800,
-   "prix_entree": 1.31025,
-   "resultat": -10.35,
-   "ouverte_le": "2026-11-20T12:40:35.210"
-  },
-  {
-   "marche": "AUDUSD",
-   "nom": "AUD/USD",
-   "sens": "SELL",
-   "taille": 6800,
-   "prix_entree": 0.66641,
-   "resultat": -2.35,
-   "ouverte_le": "2026-11-20T12:40:36.023"
-  }
- ],
+ "positions": [],
  "analyses": {
   "BTCUSD": {
    "prix": 61574.225,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
-   "action": "Aucune action",
+   "action": "En pause (aucun ordre)",
    "graphique": {
     "dates": [
      "2026-11-04T12:00:00",
@@ -2316,13 +2289,14 @@
    "stop": 62321.2,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T11:35:24Z",
-   "statut": "ouvert",
-   "resultat": 3.52,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
+   "statut": "ferme",
+   "resultat": 2.97,
+   "ferme_le": "2026-11-20T13:06:46Z",
+   "prix_sortie": 61586.3,
+   "motif_sortie": "Fermée depuis l'application",
    "strategie": "rapide",
-   "dernier_prix": 61574.225
+   "dernier_prix": 61574.225,
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-b978-049f-c46d0015549e",
@@ -2334,12 +2308,13 @@
    "stop": 3813.76,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:28Z",
-   "statut": "ouvert",
-   "resultat": -3.34,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": -3.56,
+   "ferme_le": "2026-11-20T13:06:49Z",
+   "prix_sortie": 3579.81,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-b98b-049f-c46d0015549e",
@@ -2351,12 +2326,13 @@
    "stop": 48.155,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:29Z",
-   "statut": "ouvert",
-   "resultat": -0.8,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": -0.86,
+   "ferme_le": "2026-11-20T13:06:50Z",
+   "prix_sortie": 42.292,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-b99e-049f-c46d0015549e",
@@ -2368,12 +2344,13 @@
    "stop": 2035.59,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:30Z",
-   "statut": "ouvert",
-   "resultat": -0.16,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": -0.65,
+   "ferme_le": "2026-11-20T13:06:50Z",
+   "prix_sortie": 1739.44,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-b9ae-049f-c46d0015549e",
@@ -2385,12 +2362,13 @@
    "stop": 28183.44,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:31Z",
-   "statut": "ouvert",
-   "resultat": -0.39,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": -0.66,
+   "ferme_le": "2026-11-20T13:06:50Z",
+   "prix_sortie": 26047.7,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-b9c0-049f-c46d0015549e",
@@ -2402,12 +2380,13 @@
    "stop": 7466.21,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:31Z",
-   "statut": "ouvert",
-   "resultat": -0.14,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": -0.27,
+   "ferme_le": "2026-11-20T13:06:51Z",
+   "prix_sortie": 7112.0,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-b9cc-049f-c46d0015549e",
@@ -2419,12 +2398,13 @@
    "stop": 26063.13,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:32Z",
-   "statut": "ouvert",
-   "resultat": 0.936,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": 0.648,
+   "ferme_le": "2026-11-20T13:06:51Z",
+   "prix_sortie": 24895.3,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-b9de-049f-c46d0015549e",
@@ -2436,12 +2416,13 @@
    "stop": 92.633,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:33Z",
-   "statut": "ouvert",
-   "resultat": 1.62,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": 2.26,
+   "ferme_le": "2026-11-20T13:06:52Z",
+   "prix_sortie": 81.843,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-b9f5-049f-c46d0015549e",
@@ -2453,12 +2434,13 @@
    "stop": 1.11793,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:34Z",
-   "statut": "ouvert",
-   "resultat": -6.16,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": -5.71,
+   "ferme_le": "2026-11-20T13:06:52Z",
+   "prix_sortie": 1.09908,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-ba0b-049f-c46d0015549e",
@@ -2470,12 +2452,13 @@
    "stop": 1.33025,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:35Z",
-   "statut": "ouvert",
-   "resultat": -10.35,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": -9.48,
+   "ferme_le": "2026-11-20T13:06:53Z",
+   "prix_sortie": 1.31246,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-ba1d-049f-c46d0015549e",
@@ -2487,12 +2470,13 @@
    "stop": 0.67641,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T12:40:36Z",
-   "statut": "ouvert",
-   "resultat": -2.35,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": -1.42,
+   "ferme_le": "2026-11-20T13:06:53Z",
+   "prix_sortie": 0.66669,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-e9f8-049f-c46d0015549e",
@@ -2504,12 +2488,13 @@
    "stop": 588.57,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T13:00:41Z",
-   "statut": "ouvert",
-   "resultat": 0.03,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": -0.06,
+   "ferme_le": "2026-11-20T13:06:47Z",
+   "prix_sortie": 457.14,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-ea45-049f-c46d0015549e",
@@ -2521,12 +2506,13 @@
    "stop": 354.4,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T13:00:45Z",
-   "statut": "ouvert",
-   "resultat": -1.54,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": -1.71,
+   "ferme_le": "2026-11-20T13:06:47Z",
+   "prix_sortie": 328.16,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-ea50-049f-c46d0015549e",
@@ -2538,12 +2524,13 @@
    "stop": 305.34,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T13:00:45Z",
-   "statut": "ouvert",
-   "resultat": -0.69,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": -1.38,
+   "ferme_le": "2026-11-20T13:06:47Z",
+   "prix_sortie": 271.52,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-ea7d-049f-c46d0015549e",
@@ -2555,12 +2542,13 @@
    "stop": 542.92,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T13:00:47Z",
-   "statut": "ouvert",
-   "resultat": -0.64,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": -0.68,
+   "ferme_le": "2026-11-20T13:06:48Z",
+   "prix_sortie": 487.95,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-ea88-049f-c46d0015549e",
@@ -2572,12 +2560,13 @@
    "stop": 64.87,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T13:00:47Z",
-   "statut": "ouvert",
-   "resultat": -2.74,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": -3.04,
+   "ferme_le": "2026-11-20T13:06:48Z",
+   "prix_sortie": 58.76,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-eaa3-049f-c46d0015549e",
@@ -2589,12 +2578,13 @@
    "stop": 43.9,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T13:00:49Z",
-   "statut": "ouvert",
-   "resultat": -0.6,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": -0.7,
+   "ferme_le": "2026-11-20T13:06:49Z",
+   "prix_sortie": 38.2,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   },
   {
    "id": "00000000-7509-eaaf-049f-c46d0015549e",
@@ -2606,17 +2596,18 @@
    "stop": 84.56,
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T13:00:50Z",
-   "statut": "ouvert",
-   "resultat": -1.3,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
-   "strategie": "tendance_mois"
+   "statut": "ferme",
+   "resultat": -1.57,
+   "ferme_le": "2026-11-20T13:06:49Z",
+   "prix_sortie": 71.19,
+   "motif_sortie": "Fermée depuis l'application",
+   "strategie": "tendance_mois",
+   "resultat_estime": false
   }
  ],
  "historique_jour": {
   "2026-11-19": 21069.4,
-  "2026-11-20": 20950.89
+  "2026-11-20": 20972.85
  },
  "valeur_depart": 21000.0,
  "entrees": {
@@ -2644,7 +2635,7 @@
   ],
   "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, , Bollinger qui s'élargissent, stop 1 %, suiveur 2 %, risque 0.072 % (expérimentale)",
   "tendance": "SELL",
-  "action": "Position conservée",
+  "action": "En pause (aucun ordre)",
   "filtre": {
    "signal_5min": "SELL",
    "tendance_1h": "SELL",
@@ -2658,7 +2649,7 @@
    "description": "Suit les grosses tendances du Bitcoin sur des bougies de 4 h : peu de trades, la seule gagnante en backtest.",
    "unite": "HOUR_4",
    "risque_pct": 1.0,
-   "action": "Aucune action",
+   "action": "En pause (aucun ordre)",
    "tendance": "SELL",
    "reglages": "Tendance 4 h : EMA 20/200 + ADX > 20, stop 2 ATR, suiveur 5 ATR"
   },
@@ -2668,7 +2659,7 @@
    "description": "Trade souvent sur des bougies de 5 min avec un tout petit risque, pour comparer en direct (perdante en backtest).",
    "unite": "MINUTE_5",
    "risque_pct": 0.072,
-   "action": "Position conservée",
+   "action": "En pause (aucun ordre)",
    "tendance": "SELL",
    "reglages": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, , Bollinger qui s'élargissent, stop 1 %, suiveur 2 %, risque 0.072 % (expérimentale)"
   },
@@ -2691,7 +2682,7 @@
     "XLK",
     "IWM"
    ],
-   "action": "Actif"
+   "action": "En pause"
   },
   "cassure_4h": {
    "active": true,
@@ -2704,7 +2695,7 @@
     "GOLD",
     "SILVER"
    ],
-   "action": "Actif"
+   "action": "En pause"
   },
   "petit_compte": {
    "active": true,
@@ -2718,7 +2709,7 @@
     "SILVER"
    ],
    "capital_depart": 100.0,
-   "action": "Actif",
+   "action": "En pause",
    "capital": 100.0
   },
   "tendance_mois": {
@@ -2741,7 +2732,7 @@
     "AUDUSD",
     "USDJPY"
    ],
-   "action": "Actif"
+   "action": "En pause"
   },
   "x5_or": {
    "active": true,
@@ -2754,7 +2745,7 @@
     "GOLD"
    ],
    "capital_depart": 50.0,
-   "action": "Actif",
+   "action": "En pause",
    "capital": 50.0
   },
   "x5_argent": {
@@ -2768,7 +2759,7 @@
     "SILVER"
    ],
    "capital_depart": 50.0,
-   "action": "Actif",
+   "action": "En pause",
    "capital": 50.0
   },
   "cassure_tous": {
@@ -2779,7 +2770,7 @@
    "description": "La cassure 4 h sur tous les autres marchés (actions, ETF, indices, devises, crypto, pétrole). Avant chaque entrée, le bot rejoue la stratégie sur les 12 derniers mois de ce marché et ne trade que s'il y a gagné. Petit risque.",
    "reglages": "Cassure 20 bougies 4 h dans le sens de l'EMA 200, stop garanti 2 ATR",
    "marches": [],
-   "action": "Actif"
+   "action": "En pause"
   }
  },
  "garde_fous": {
@@ -3686,5 +3677,6 @@
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-17 12:00)",
    "action": "Refusé : cassure trop ancienne (depuis le 2026-11-17 12:00)"
   }
- }
+ },
+ "pause": true
 }
