@@ -26,6 +26,7 @@ from bot.cassure import NOM as NOM_CASSURE
 from bot.cassure import RISQUE_CASSURE_PCT, tour_cassure
 from bot import cassure as module_cassure
 from bot import tendance_mois as module_tm
+from bot import challenge as module_ch
 from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
 from bot.strategie import NOM as NOM_STRATEGIE
 from bot.strategie import EMA_LENTE, EMA_RAPIDE, bougies_vers_df, decider
@@ -92,7 +93,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     noter_4h = lambda t, m, x: noter(t, m, x, "tendance_4h")
     noter_rapide = lambda t, m, x: noter(t, m, x, "rapide")
 
-    toutes = ["tendance_4h", "rapide", "actions_etf", "cassure_4h", "petit_compte", "tendance_mois", "x5_or", "x5_argent", "cassure_tous"]
+    toutes = ["tendance_4h", "rapide", "actions_etf", "cassure_4h", "petit_compte", "tendance_mois", "x5_or", "x5_argent", "cassure_tous", "challenge"]
     strategie = strategie if strategie in toutes else "toutes"
     cibles = toutes if strategie == "toutes" else [strategie]
     etats = donnees.setdefault("strategies", {})
@@ -105,11 +106,13 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     etats.setdefault("x5_or", {}).setdefault("active", module_cassure.X5_OR)
     etats.setdefault("x5_argent", {}).setdefault("active", module_cassure.X5_ARGENT)
     etats.setdefault("cassure_tous", {}).setdefault("active", module_cassure.CASSURE_TOUS)
+    etats.setdefault("challenge", {}).setdefault("active", module_ch.ACTIVE_PAR_DEFAUT)
     noms = {"tendance_4h": "Tendance 4 h", "rapide": "Rapide 5 min", "actions_etf": "Sous-bots actions et ETF",
             "cassure_4h": "Cassure 4 h (or et argent)", "petit_compte": "Petit compte risqué (100 €)",
             "tendance_mois": "Tendance 1 mois (11 marchés)",
             "x5_or": "Objectif x5 sur l'or (50 €)", "x5_argent": "Objectif x5 sur l'argent (50 €)",
-            "cassure_tous": "Cassure 4 h (tous les marchés)"}
+            "cassure_tous": "Cassure 4 h (tous les marchés)",
+            "challenge": "Challenge prop firm (10 000 € virtuels)"}
     lancer = set(cibles) if action == "lancer" else set()
 
     api.connexion()
@@ -120,7 +123,9 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     ids_x5 = set(donnees.get("deals_par_strategie", {}).get("x5_or", []))
     ids_x5a = set(donnees.get("deals_par_strategie", {}).get("x5_argent", []))
     ids_ct = set(donnees.get("deals_par_strategie", {}).get("cassure_tous", []))
-    strat_de = lambda p: ("tendance_mois" if p["position"]["dealId"] in ids_tm else
+    ids_ch = module_ch.ids_challenge(donnees)
+    strat_de = lambda p: ("challenge" if p["position"]["dealId"] in ids_ch else
+                          "tendance_mois" if p["position"]["dealId"] in ids_tm else
                           "cassure_tous" if p["position"]["dealId"] in ids_ct else
                           "x5_or" if p["position"]["dealId"] in ids_x5 else
                           "x5_argent" if p["position"]["dealId"] in ids_x5a else
@@ -471,6 +476,54 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                             f"-{stop:g} % (moitié du capital). {test}"),
             "reglages": NOM_CASSURE, "marches": [epic], "capital_depart": module_cassure.X5_CAPITAL_DEPART,
             "action": "Actif" if actif_x5 else ("En pause" if en_pause else "Désactivée")})
+    # --- Challenge prop firm : capital virtuel de 10 000 €, +10 % pour réussir, -5 %/jour ou -10 % = raté ---
+    ids_ch = module_ch.ids_challenge(donnees)
+    actif_ch = ("challenge" in lancer) or (not en_pause and etats["challenge"]["active"])
+    ouverts_ch = [p for p in positions if p["position"]["dealId"] in ids_ch]
+    suivi_ch = donnees.get("challenge_suivi", {})
+    if (actif_ch or not en_pause) and (actif_ch or ouverts_ch):
+        noter_ch = lambda t, m, x: noter(t, m, f"[Challenge] {x}", "challenge")
+        try:
+            synchroniser(donnees, positions, maintenant())  # compter tout de suite les positions fermées par un stop
+            debut_avant = suivi_ch.get("debut")
+            suivi_ch = module_ch.suivre(donnees, positions, maintenant(), actif_ch)
+            if suivi_ch.get("statut") == "en cours" and suivi_ch.get("debut") != debut_avant:
+                noter_ch("commande", "", f"Tentative n° {suivi_ch['tentative']} lancée : {module_ch.CAPITAL:g} € "
+                         f"virtuels, objectif +{module_ch.OBJECTIF_PCT:g} %, perte max {module_ch.PERTE_JOUR_PCT:g} % "
+                         f"par jour et {module_ch.PERTE_MAX_PCT:g} % au total.")
+            if suivi_ch.get("a_fermer"):
+                for p in ouverts_ch:
+                    conf = api.fermer(p["position"]["dealId"])
+                    if conf.get("dealStatus") == "ACCEPTED":
+                        noter_fermeture(donnees, p, conf, maintenant(), f"Fin du challenge ({suivi_ch['raison']})")
+                b = module_ch.bilan(suivi_ch)
+                noter_ch("commande", "", f"Tentative n° {suivi_ch['tentative']} {suivi_ch['statut'].upper()} : "
+                         f"{suivi_ch['raison']} (valeur {suivi_ch['valeur']:.2f} €). Bilan : {b['reussies']} réussie(s), "
+                         f"{b['ratees']} ratée(s). Nouvelle tentative demain.")
+                suivi_ch["a_fermer"] = False
+                positions = api.positions()
+            en_cours = suivi_ch.get("statut") == "en cours"
+            capital_ch = float(suivi_ch.get("valeur") or module_ch.CAPITAL)
+            for epic in MARCHES_CASSURE:
+                tour_cassure(api, donnees, epic, positions, capital_ch, disponible, eurusd, noter_ch, garde,
+                             maintenant(), peut_entrer=actif_ch and en_cours, cle="challenge",
+                             risque_pct=module_ch.RISQUE_CASSURE_PCT)
+            for epic in module_tm.LISTE:
+                tour_cassure(api, donnees, epic, positions, capital_ch, disponible, eurusd, noter_ch, garde,
+                             maintenant(), peut_entrer=actif_ch and en_cours, cle="challenge_tm",
+                             risque_pct=module_ch.RISQUE_TENDANCE_PCT, signaux=module_tm.signaux_tendance,
+                             unite=module_tm.UNITE, analyse=module_tm.analyse_tendance if module_tm.ANALYSER else None)
+        except Exception as e:
+            noter_ch("erreur", "", str(e)[:300])
+    etats["challenge"].update({
+        "nom": noms["challenge"], "unite": "HOUR_4", "risque_pct": module_ch.RISQUE_CASSURE_PCT,
+        "description": (f"Faux challenge de prop firm en direct sur le compte démo : {module_ch.CAPITAL:g} € virtuels, "
+                        f"réussi à +{module_ch.OBJECTIF_PCT:g} %, raté à -{module_ch.PERTE_JOUR_PCT:g} % dans une journée "
+                        f"ou -{module_ch.PERTE_MAX_PCT:g} % au total. Joue la cassure 4 h (or, argent) et la tendance "
+                        "1 mois (11 marchés). Une nouvelle tentative démarre le lendemain de chaque fin."),
+        "reglages": NOM_CASSURE, "marches": sorted(set(MARCHES_CASSURE) | set(module_tm.LISTE)),
+        "capital_depart": module_ch.CAPITAL,
+        "action": "Actif" if actif_ch else ("En pause" if en_pause else "Désactivée")})
     donnees.pop("_cache_marches", None)
 
     # État final du compte, après les ordres
@@ -485,7 +538,16 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         etats[sid]["capital"] = module_cassure.capital_petit_compte(donnees, sid, module_cassure.X5_CAPITAL_DEPART)
     ids_petit = set(donnees.get("deals_par_strategie", {}).get("petit_compte", []))
     ids_tm = set(donnees.get("deals_par_strategie", {}).get("tendance_mois", []))
+    ids_ch = module_ch.ids_challenge(donnees)
+    suivi_ch = donnees.get("challenge_suivi", {})
+    if suivi_ch.get("statut") == "en cours":
+        module_ch.suivre(donnees, positions, maintenant(), True)  # valeur à jour après les ordres de ce tour
+    etats["challenge"].update({"capital": suivi_ch.get("valeur", module_ch.CAPITAL), "suivi": {
+        k: suivi_ch.get(k) for k in ("tentative", "statut", "raison", "debut", "debut_jour", "plus_bas", "plus_haut")},
+        "tentatives": suivi_ch.get("tentatives", [])[-20:], **module_ch.bilan(suivi_ch)})
     for o in donnees.get("ordres", []):
+        if o["id"] in ids_ch:
+            o["strategie"] = "challenge"
         if o["id"] in ids_petit:
             o["strategie"] = "petit_compte"
         if o["id"] in ids_tm:
