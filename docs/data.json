@@ -1028,10 +1028,17 @@
    "marche": "SILVER",
    "texte": "[Rapide] POST /positions -> 400 : {\"errorCode\":\"error.invalid.stoploss.minvalue: 41.467\"}",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-20T17:45:25Z",
+   "type": "erreur",
+   "marche": "SILVER",
+   "texte": "[Rapide] POST /positions -> 400 : {\"errorCode\":\"error.invalid.stoploss.minvalue: 41.52\"}",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T17:40:26Z",
+ "derniere_execution": "2026-11-20T17:45:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -1104,6 +1111,10 @@
   {
    "date": "2026-11-20T17:40:26Z",
    "valeur": 98.21
+  },
+  {
+   "date": "2026-11-20T17:45:25Z",
+   "valeur": 98.21
   }
  ],
  "compte": {
@@ -1117,7 +1128,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 59034.925,
+   "prix": 59009.8,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 48) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1632,7 +1643,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3527.94,
+   "prix": 3528.8,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 3998.75,
@@ -1643,7 +1654,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.03,
+   "prix": 41.002,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.67,
@@ -1666,11 +1677,11 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 1.11,
-     "adx": 18.4
+     "bollinger": 1.18,
+     "adx": 19.4
     },
-    "prix": 3525.23,
-    "action": "En attente : tendance 5 min trop faible (ADX 18 ≤ 20)"
+    "prix": 3526.5699999999997,
+    "action": "En attente : tendance 5 min trop faible (ADX 19 ≤ 20)"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -1678,10 +1689,10 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 1.12,
-     "adx": 23.5
+     "bollinger": 1.17,
+     "adx": 24.9
     },
-    "prix": 40.987,
+    "prix": 41.046,
     "action": "Erreur"
    }
   },
