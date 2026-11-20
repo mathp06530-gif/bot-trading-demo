@@ -136,7 +136,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T04:05:26Z",
+ "derniere_execution": "2026-11-20T04:10:26Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -629,6 +629,10 @@
   {
    "date": "2026-11-20T04:05:26Z",
    "valeur": 21018.43
+  },
+  {
+   "date": "2026-11-20T04:10:26Z",
+   "valeur": 21018.43
   }
  ],
  "compte": {
@@ -642,7 +646,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 61906.25,
+   "prix": 61767.399999999994,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1177,56 +1181,56 @@
    "nom": "Tesla Inc",
    "note": -0.6,
    "tendance": null,
-   "prix": 371.65,
+   "prix": 371.8,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.67,
    "tendance": null,
-   "prix": 144.385,
+   "prix": 144.38,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
    "note": -0.31,
    "tendance": null,
-   "prix": 350.70000000000005,
+   "prix": 350.475,
    "action": "Aucune action"
   },
   "MSFT": {
    "nom": "Microsoft Corp",
    "note": -0.67,
    "tendance": null,
-   "prix": 495.29499999999996,
+   "prix": 494.6,
    "action": "Aucune action"
   },
   "GOOGL": {
    "nom": "Alphabet Inc - A",
    "note": -0.61,
    "tendance": null,
-   "prix": 273.40999999999997,
+   "prix": 273.16499999999996,
    "action": "Aucune action"
   },
   "SPY": {
    "nom": "SPDR S&P 500 ETF",
    "note": -0.48,
    "tendance": null,
-   "prix": 714.9300000000001,
+   "prix": 714.42,
    "action": "Aucune action"
   },
   "QQQ": {
    "nom": "Invesco QQQ Trust",
    "note": -0.43,
    "tendance": null,
-   "prix": 642.45,
+   "prix": 641.545,
    "action": "Aucune action"
   },
   "GLD": {
    "nom": "SPDR Gold Shares",
    "note": -0.72,
    "tendance": null,
-   "prix": 324.84000000000003,
+   "prix": 324.685,
    "action": "Aucune action"
   },
   "XLK": {
@@ -1240,7 +1244,7 @@
    "nom": "iShares Russell 2000 ETF",
    "note": -0.37,
    "tendance": null,
-   "prix": 263.94,
+   "prix": 263.77,
    "action": "Aucune action"
   }
  }
