@@ -72,8 +72,9 @@ def capital_petit_compte(donnees: dict) -> float:
 
 def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float, disponible: float, eurusd: float,
                  noter, garde, quand: str, peut_entrer: bool = True, cle: str = "cassure",
-                 risque_pct: float | None = None) -> dict:
-    """cle : « cassure » (stratégie normale) ou « petit_compte » (capital virtuel, risque élevé).
+                 risque_pct: float | None = None, signaux=None) -> dict:
+    """cle : « cassure » (stratégie normale), « petit_compte » (capital virtuel, risque élevé) ou « ia »
+    (signaux=bot/ia.py:signaux_ia au lieu de la cassure).
     Chaque profil ne gère QUE ses propres positions (repérées par leur numéro dealId)."""
     risque_pct = RISQUE_CASSURE_PCT if risque_pct is None else risque_pct
     tous_deals = donnees.setdefault("deals_par_strategie", {}).setdefault(cle, [])
@@ -85,7 +86,8 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
     if len(bougies) < FILTRE_EMA + 30:
         etat.update({"action": "Pas assez d'historique"})
         return etat
-    sig = signaux_cassure(bougies_vers_df(bougies[:-1]))
+    sig = (signaux or signaux_cassure)(bougies_vers_df(bougies[:-1]))
+    ia = signaux is not None
     der = sig.iloc[-1]
     c = sig.cible.values
     voulu = {1: "BUY", -1: "SELL"}.get(int(c[-1]))
@@ -94,6 +96,8 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
         j -= 1
     debut = str(sig.index[j])
     prix_achat, prix_vente = bougies[-1]["closePrice"]["ask"], bougies[-1]["closePrice"]["bid"]
+    if ia and sig.attrs.get("proba") is not None:
+        etat["proba_hausse"] = round(sig.attrs["proba"] * 100, 1)
     etat.update({"tendance": voulu, "prix": (prix_achat + prix_vente) / 2, "plus_haut_20": round(float(der.haut), 2),
                  "plus_bas_20": round(float(der.bas), 2), "ema200": round(float(der.ema), 2)})
     action = "Aucune action"
@@ -102,9 +106,10 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
     for p in [p for p in miennes if p["position"]["direction"] != voulu]:
         conf = api.fermer(p["position"]["dealId"])
         if conf.get("dealStatus") == "ACCEPTED":
-            noter_fermeture(donnees, p, conf, quand, "Fin de la cassure")
-        noter("fermeture", epic, f"Le prix est repassé de l'autre côté du canal des {SORTIE} bougies : position fermée "
-              f"(gain/perte : {p['position'].get('upl', 0):.2f}).")
+            noter_fermeture(donnees, p, conf, quand, "Changement de prévision" if ia else "Fin de la cassure")
+        raison = ("Le modèle a changé de prévision" if ia else
+                  f"Le prix est repassé de l'autre côté du canal des {SORTIE} bougies")
+        noter("fermeture", epic, f"{raison} : position fermée (gain/perte : {p['position'].get('upl', 0):.2f}).")
         action = "Position fermée"
     miennes = [p for p in miennes if p["position"]["direction"] == voulu]
     if miennes:
@@ -123,6 +128,10 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
             refus = f"cassure trop ancienne (depuis le {debut[:16]})"
         elif entrees.get(cle_signal) == debut:
             refus = "signal déjà utilisé"
+        elif any(p["market"]["epic"] == epic and p["position"]["direction"] != voulu
+                 and p["position"]["dealId"] not in tous_deals for p in positions):
+            # compte sans couverture : un ordre opposé fermerait la position d'une autre stratégie
+            refus = "une autre stratégie a une position dans l'autre sens sur ce marché"
         elif abs(prix - float(der.cloture)) > float(der.atr):
             refus = "le prix a trop bougé depuis le signal (écart > 1 ATR)"
         mini = prix * (regles["stop_min_pct"] or 0) / 100 or (regles["stop_min_points"] or 0)
@@ -141,7 +150,7 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
         mot = "ACHAT" if voulu == "BUY" else "VENTE"
         if refus:
             if etat.get("dernier_refus") != refus:
-                noter("analyse", epic, f"Cassure ({mot}) mais ordre REFUSÉ : {refus}.")
+                noter("analyse", epic, f"{'Prévision IA' if ia else 'Cassure'} ({mot}) mais ordre REFUSÉ : {refus}.")
             etat["dernier_refus"] = refus
             action = f"Refusé : {refus}"
         else:
@@ -155,7 +164,9 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
                 garde.enregistrer({"position": {"level": prix, "stopLevel": stop, "size": taille,
                                                 "direction": voulu}})
                 cote = "au-dessus du plus haut" if voulu == "BUY" else "sous le plus bas"
-                noter("ordre", epic, f"Cassure : clôture {cote} des {ENTREE} dernières bougies de 4 h : {mot} de {taille} "
+                pourquoi = (f"IA : le modèle donne {sig.attrs.get('proba', 0.5) * 100:.1f} % de chances de hausse"
+                            if ia else f"Cassure : clôture {cote} des {ENTREE} dernières bougies de 4 h")
+                noter("ordre", epic, f"{pourquoi} : {mot} de {taille} "
                       f"à {float(conf.get('level') or prix):.2f}, stop garanti à {distance:.2f}.")
                 action = f"{mot} de {taille}"
             else:

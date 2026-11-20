@@ -4,6 +4,7 @@ import math
 import os
 
 from datetime import datetime, timedelta, timezone
+import numpy as np
 
 import bot.main as main
 import bot.rapide as rapide
@@ -444,3 +445,47 @@ def test_petit_compte_taille_sur_capital_virtuel(tmp_path, monkeypatch):
     assert d["deals_par_strategie"] == {"cassure": [d1], "petit_compte": [d2]}
     assert {o["id"]: o["strategie"] for o in d["ordres"]} == {d1: "cassure_4h", d2: "petit_compte"}
     assert d["strategies"]["petit_compte"]["capital"] == 100 + 1.5  # résultat en cours du faux courtier
+
+
+def test_ia_4h_ouvre_avec_stop_garanti_et_suivi_a_part(tmp_path, monkeypatch):
+    """L'IA (expérience) prédit la bougie suivante, ouvre avec stop garanti et petit risque, ordres comptés à part."""
+    from bot import ia
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
+    monkeypatch.setattr(main, "SOUS_BOTS", [])
+    monkeypatch.setattr(ia, "LISTE", ["GOLD"])
+    monkeypatch.setattr(ia, "RISQUE_IA_PCT", 0.25)
+    rng = np.random.default_rng(3)
+    prix = list(2000 + np.cumsum(rng.normal(0, 8, 900)))
+    p = ia.probabilite_hausse(bougies_vers_df([bougie(i, x) for i, x in enumerate(prix)]))
+    assert p is not None and 0 < p < 1
+    faux = FauxCapitalActions(prix)
+    d = {"strategies": {"rapide": {"active": False}, "ia_4h": {"active": True}}}
+    main.un_tour(d, faux)
+    assert [o[1] for o in faux.ouvertes] == ["BUY" if p > 0.5 else "SELL"]
+    _, _, taille, stop = faux.ouvertes[0]
+    assert taille * abs(prix[-1] - stop) <= 10000 * 0.25 / 100 * 1.05
+    assert d["ordres"][0]["strategie"] == "ia_4h" and d["ia"]["GOLD"]["proba_hausse"] == round(p * 100, 1)
+    main.un_tour(d, faux)  # même bougie : pas de deuxième ordre
+    assert len(faux.ouvertes) == 1
+
+
+def test_pas_d_ordre_oppose_a_une_autre_strategie(tmp_path, monkeypatch):
+    """Compte sans couverture : un ordre dans l'autre sens fermerait la position d'une autre stratégie."""
+    from bot import ia
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
+    monkeypatch.setattr(main, "SOUS_BOTS", [])
+    monkeypatch.setattr(ia, "LISTE", ["GOLD"])
+    rng = np.random.default_rng(3)
+    prix = list(2000 + np.cumsum(rng.normal(0, 8, 900)))
+    p = ia.probabilite_hausse(bougies_vers_df([bougie(i, x) for i, x in enumerate(prix)]))
+    faux = FauxCapitalActions(prix)
+    autre = "SELL" if p > 0.5 else "BUY"
+    pos = {"market": {"epic": "GOLD", "instrumentName": "Or"},
+           "position": {"dealId": "AUTRE", "direction": autre, "size": 1, "level": prix[-1], "upl": 0,
+                        "stopLevel": prix[-1] * (1.05 if autre == "SELL" else 0.95), "createdDateUTC": "2026-01-01T00:00:00"}}
+    faux.positions = lambda: [pos]
+    d = {"strategies": {"rapide": {"active": False}, "ia_4h": {"active": True}}}
+    main.un_tour(d, faux)
+    assert faux.ouvertes == [] and "autre sens" in d["ia"]["GOLD"]["action"]
