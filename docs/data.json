@@ -991,7 +991,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T14:10:31Z",
+ "derniere_execution": "2026-11-20T14:15:31Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -2000,6 +2000,10 @@
   {
    "date": "2026-11-20T14:10:31Z",
    "valeur": 98.21
+  },
+  {
+   "date": "2026-11-20T14:15:31Z",
+   "valeur": 98.21
   }
  ],
  "compte": {
@@ -2013,7 +2017,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 61824.65,
+   "prix": 61822.675,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Désactivée (positions gardées, stop suiveur actif)",
@@ -3209,70 +3213,70 @@
    "nom": "Tesla Inc",
    "note": -0.6,
    "tendance": null,
-   "prix": 366.01,
+   "prix": 366.78999999999996,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.48,
    "tendance": null,
-   "prix": 142.78,
+   "prix": 143.26,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
    "note": -0.14,
    "tendance": null,
-   "prix": 349.28,
+   "prix": 349.605,
    "action": "Aucune action"
   },
   "MSFT": {
    "nom": "Microsoft Corp",
    "note": -0.54,
    "tendance": null,
-   "prix": 488.4,
+   "prix": 488.90999999999997,
    "action": "Aucune action"
   },
   "GOOGL": {
    "nom": "Alphabet Inc - A",
    "note": -0.48,
    "tendance": null,
-   "prix": 271.56,
+   "prix": 272.045,
    "action": "Aucune action"
   },
   "SPY": {
    "nom": "SPDR S&P 500 ETF",
    "note": -0.54,
    "tendance": null,
-   "prix": 711.955,
+   "prix": 711.995,
    "action": "Aucune action"
   },
   "QQQ": {
    "nom": "Invesco QQQ Trust",
    "note": -0.6,
    "tendance": null,
-   "prix": 637.29,
+   "prix": 636.87,
    "action": "Aucune action"
   },
   "GLD": {
    "nom": "SPDR Gold Shares",
    "note": -0.37,
    "tendance": null,
-   "prix": 326.78499999999997,
+   "prix": 327.74,
    "action": "Aucune action"
   },
   "XLK": {
    "nom": "Technology Select Sector SPDR Fund",
    "note": -0.6,
    "tendance": null,
-   "prix": 157.995,
+   "prix": 157.885,
    "action": "Aucune action"
   },
   "IWM": {
    "nom": "iShares Russell 2000 ETF",
    "note": -0.54,
    "tendance": null,
-   "prix": 263.55,
+   "prix": 263.765,
    "action": "Aucune action"
   }
  },
@@ -3304,7 +3308,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3566.715,
+   "prix": 3578.6949999999997,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 4003.25,
@@ -3314,7 +3318,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.933,
+   "prix": 42.138999999999996,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.78,
@@ -3385,7 +3389,7 @@
    "nom": "Gold",
    "momentum_pct": -13.2,
    "tendance": "SELL",
-   "prix": 3568.98,
+   "prix": 3578.1099999999997,
    "plus_haut_20": 4148.59,
    "plus_bas_20": 3719.87,
    "ema200": 3989.7,
@@ -3395,7 +3399,7 @@
    "nom": "Silver",
    "momentum_pct": -25.46,
    "tendance": "SELL",
-   "prix": 41.954,
+   "prix": 42.174,
    "plus_haut_20": 54.63,
    "plus_bas_20": 44.76,
    "ema200": 51.9,
@@ -3405,7 +3409,7 @@
    "nom": "Ethereum/USD",
    "momentum_pct": -28.25,
    "tendance": "SELL",
-   "prix": 1751.425,
+   "prix": 1749.665,
    "plus_haut_20": 2447.34,
    "plus_bas_20": 1710.64,
    "ema200": 2156.51,
@@ -3415,7 +3419,7 @@
    "nom": "US Tech 100",
    "momentum_pct": -11.19,
    "tendance": "SELL",
-   "prix": 26172.9,
+   "prix": 26207.0,
    "plus_haut_20": 30016.7,
    "plus_bas_20": 26256.1,
    "ema200": 28357.2,
@@ -3425,7 +3429,7 @@
    "nom": "US 500",
    "momentum_pct": -7.23,
    "tendance": "SELL",
-   "prix": 7131.6,
+   "prix": 7136.0,
    "plus_haut_20": 7784.5,
    "plus_bas_20": 7285.5,
    "ema200": 7570.57,
@@ -3435,7 +3439,7 @@
    "nom": "Germany 40",
    "momentum_pct": -0.73,
    "tendance": "SELL",
-   "prix": 24931.4,
+   "prix": 24942.5,
    "plus_haut_20": 27003.1,
    "plus_bas_20": 25317.7,
    "ema200": 25904.41,
@@ -3445,7 +3449,7 @@
    "nom": "Crude Oil Spot",
    "momentum_pct": -14.02,
    "tendance": "SELL",
-   "prix": 82.193,
+   "prix": 82.2205,
    "plus_haut_20": 104.2,
    "plus_bas_20": 81.16,
    "ema200": 93.36,
@@ -3455,7 +3459,7 @@
    "nom": "EUR/USD",
    "momentum_pct": -2.18,
    "tendance": "SELL",
-   "prix": 1.0987,
+   "prix": 1.09883,
    "plus_haut_20": 1.13,
    "plus_bas_20": 1.1,
    "ema200": 1.11,
@@ -3465,7 +3469,7 @@
    "nom": "GBP/USD",
    "momentum_pct": -1.39,
    "tendance": "SELL",
-   "prix": 1.310755,
+   "prix": 1.311065,
    "plus_haut_20": 1.35,
    "plus_bas_20": 1.31,
    "ema200": 1.33,
@@ -3475,7 +3479,7 @@
    "nom": "AUD/USD",
    "momentum_pct": -3.79,
    "tendance": "SELL",
-   "prix": 0.666895,
+   "prix": 0.666775,
    "plus_haut_20": 0.71,
    "plus_bas_20": 0.67,
    "ema200": 0.69,
@@ -3485,7 +3489,7 @@
    "nom": "USD/JPY",
    "momentum_pct": 1.0,
    "tendance": "BUY",
-   "prix": 158.788,
+   "prix": 158.775,
    "plus_haut_20": 160.19,
    "plus_bas_20": 156.97,
    "ema200": 158.35,
@@ -3764,7 +3768,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3566.715,
+   "prix": 3578.6949999999997,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 4003.25,
@@ -3776,7 +3780,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.933,
+   "prix": 42.138999999999996,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.78,
