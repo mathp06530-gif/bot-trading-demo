@@ -1072,7 +1072,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T18:45:24Z",
+ "derniere_execution": "2026-11-20T18:50:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -1205,15 +1205,19 @@
   {
    "date": "2026-11-20T18:45:24Z",
    "valeur": 99.19
+  },
+  {
+   "date": "2026-11-20T18:50:25Z",
+   "valeur": 99.09
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 98.7,
+  "solde": 98.65,
   "depot": 98.21,
-  "resultat_latent": 0.49,
-  "disponible": 93.88
+  "resultat_latent": 0.44,
+  "disponible": 93.82
  },
  "positions": [
   {
@@ -1222,13 +1226,13 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3523.59,
-   "resultat": 0.5,
+   "resultat": 0.44,
    "ouverte_le": "2026-11-20T17:50:24.893"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 58762.95,
+   "prix": 58610.85,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 48) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1640,7 +1644,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T17:50:24Z",
    "statut": "ouvert",
-   "resultat": 0.5,
+   "resultat": 0.44,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1648,7 +1652,7 @@
   }
  ],
  "historique_jour": {
-  "2026-11-20": 99.19
+  "2026-11-20": 99.09
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -1751,7 +1755,7 @@
     "titre": "FOMC Meeting Minutes"
    }
   ],
-  "lu_le": "2026-11-20T17:50:22.391922+00:00",
+  "lu_le": "2026-11-20T18:50:22.410801+00:00",
   "pause": null,
   "prochaines": []
  },
@@ -1760,7 +1764,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3509.71,
+   "prix": 3504.455,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 3998.75,
@@ -1771,7 +1775,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 40.955,
+   "prix": 40.917500000000004,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.67,
@@ -1797,9 +1801,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3505.39,
+    "prix": 3507.1099999999997,
     "action": "Position conservée",
-    "empilement": "position 2/3 possible quand le prix aura avancé de 16.60 de plus dans le bon sens"
+    "empilement": "position 2/3 possible quand le prix aura avancé de 18.37 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
