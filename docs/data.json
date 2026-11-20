@@ -1049,10 +1049,17 @@
    "marche": "SILVER",
    "texte": "[Rapide] POST /positions -> 400 : {\"errorCode\":\"error.invalid.stoploss.minvalue: 41.381\"}",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-20T17:50:50Z",
+   "type": "erreur",
+   "marche": "SILVER",
+   "texte": "[Rapide] POST /positions -> 400 : {\"errorCode\":\"error.invalid.stoploss.minvalue: 41.403\"}",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T17:50:26Z",
+ "derniere_execution": "2026-11-20T17:50:51Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -1133,15 +1140,19 @@
   {
    "date": "2026-11-20T17:50:26Z",
    "valeur": 98.21
+  },
+  {
+   "date": "2026-11-20T17:50:51Z",
+   "valeur": 98.15
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 98.21,
+  "solde": 98.18,
   "depot": 98.21,
-  "resultat_latent": 0.0,
-  "disponible": 93.36
+  "resultat_latent": -0.03,
+  "disponible": 93.33
  },
  "positions": [
   {
@@ -1150,7 +1161,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3523.59,
-   "resultat": 0,
+   "resultat": -0.03,
    "ouverte_le": "2026-11-20T17:50:24.893"
   }
  ],
@@ -1568,7 +1579,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T17:50:24Z",
    "statut": "ouvert",
-   "resultat": 0,
+   "resultat": -0.03,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1576,7 +1587,7 @@
   }
  ],
  "historique_jour": {
-  "2026-11-20": 98.21
+  "2026-11-20": 98.15
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -1724,12 +1735,10 @@
     "filtre": {
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
-     "tendance_4h": "SELL",
-     "bollinger": 1.22,
-     "adx": 20.6
+     "tendance_4h": "SELL"
     },
-    "prix": 3523.69,
-    "action": "VENTE de 0.03"
+    "prix": 3524.33,
+    "action": "Position conservée"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -1740,7 +1749,7 @@
      "bollinger": 1.17,
      "adx": 26.5
     },
-    "prix": 40.948499999999996,
+    "prix": 40.953,
     "action": "Erreur"
    }
   },
