@@ -359,3 +359,58 @@ def test_repartir_du_test_ne_compte_pas_le_retrait():
     assert d["garde_fous"]["plus_haut"] == 0 and not d["garde_fous"]["coupe_circuit"] and "jour" not in d["garde_fous"]
     main.repartir_du_test(d)  # une seule fois
     assert len(d["ordres_avant_test"]) == 1
+
+
+def test_empilement_seulement_si_le_prix_a_avance_d_un_r():
+    from bot.empilement import peut_empiler
+    pos = lambda lvl: {"position": {"level": lvl}}
+    assert peut_empiler([], "BUY", 100, 10, 3)[0]
+    assert not peut_empiler([pos(100)], "BUY", 105, 10, 3)[0]          # pas encore +1 R
+    assert peut_empiler([pos(100)], "BUY", 110, 10, 3)[0]              # +1 R : 2e position
+    assert not peut_empiler([pos(100), pos(100.5)], "BUY", 108, 10, 3)[0]  # 2 moitiés = 1 entrée
+    assert peut_empiler([pos(100), pos(100.5)], "BUY", 111, 10, 3)[0]
+    assert not peut_empiler([pos(100), pos(110), pos(120)], "BUY", 140, 10, 3)[0]  # maximum atteint
+    assert peut_empiler([pos(100)], "SELL", 90, 10, 3)[0]
+    assert not peut_empiler([pos(100)], "BUY", 200, 10, 1)[0]          # 1 = pas d'empilement
+
+
+def test_tendance_empile_une_position_quand_le_prix_avance(tmp_path, monkeypatch):
+    import bot.empilement as emp
+    monkeypatch.setattr(emp, "EMPILER_MAX", 3)
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    debut, suite = serie_achat()
+    faux = FauxCapital(debut)
+    d = {}
+    main.un_tour(d, faux)
+    assert len(faux.ouvertes) == 2
+    main.un_tour(d, faux)  # le prix n'a pas bougé : rien de plus
+    assert len(faux.ouvertes) == 2
+    faux.prix = debut + suite[:30]  # le prix monte nettement : une 2e entrée (2 moitiés)
+    main.un_tour(d, faux)
+    assert len(faux.ouvertes) == 4 and all(o[1] == "BUY" for o in faux.ouvertes)
+    assert any("Empilement" in l["texte"] for l in d["journal"] if l["type"] == "ordre")
+
+
+def test_cassure_empile_quand_le_prix_avance(tmp_path, monkeypatch):
+    import bot.empilement as emp
+    from bot.cassure import signaux_cassure
+    monkeypatch.setattr(emp, "EMPILER_MAX", 3)
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "MARCHES_CASSURE", ["GOLD"])
+    prix = [2000 + 25 * ((i % 8) - 4) for i in range(250)] + [2000 + 45 * i for i in range(80)]
+    for n in range(240, 290):
+        c = signaux_cassure(bougies_vers_df([bougie(i, p) for i, p in enumerate(prix[:n])])).cible.values
+        if c[-1] == 1 and c[-2] == 0:
+            break
+    faux = FauxCapitalActions(prix[:n])
+    d = {}
+    main.un_tour(d, faux)
+    main.un_tour(d, faux)
+    assert len(faux.ouvertes) == 1
+    vus = []
+    for k in range(1, 40):  # le prix monte bougie après bougie
+        faux.prix_action = prix[:n + k]
+        main.un_tour(d, faux)
+        vus.append(len(faux.ouvertes))
+    assert 2 in vus and all(o[1] == "BUY" for o in faux.ouvertes)
+    assert len(faux.ouvertes) == 3  # jamais plus de 3

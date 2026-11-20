@@ -15,6 +15,7 @@ from bot.capital import CapitalDemo, ErreurCapital
 from bot.garde_fous import GardeFous
 from bot import rapide as module_rapide
 from bot import actualites
+from bot.empilement import EMPILER_MAX, peut_empiler
 from bot.cassure import LISTE as MARCHES_CASSURE
 from bot.cassure import NOM as NOM_CASSURE
 from bot.cassure import RISQUE_CASSURE_PCT, tour_cassure
@@ -246,17 +247,25 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                     action = "Position conservée"
 
             # 3) Entrée : seulement sur un signal NOUVEAU, jamais deux fois le même
+            empile = ""
+            if voulu and gardees and complet_4h:
+                ok_e, empile = peut_empiler(gardees, voulu, prix_achat if voulu == "BUY" else prix_vente,
+                                            float(derniere.stop))
+                donnees.setdefault("empilement", {})[epic] = empile
+                empile = empile if ok_e else ""
             if not complet_4h:
                 pass
-            elif voulu and not gardees:
-                if not signal["nouveau"]:
+            elif voulu and (not gardees or empile):
+                if empile:
+                    pass
+                elif not signal["nouveau"]:
                     if not deja_note:
                         noter_4h("analyse", epic, f"{signal['explication']} Mais le signal n'est pas récent (il date du "
                               f"{signal['debut_etat'][:16]}) : on attend le prochain pour ne pas entrer en retard.")
                 elif entrees.get(epic) == signal["debut_etat"]:
                     if not deja_note:
                         noter_4h("analyse", epic, "Ce signal a déjà été utilisé (position fermée par le stop) : on attend un nouveau signal.")
-                else:
+                if empile or (signal["nouveau"] and entrees.get(epic) != signal["debut_etat"]):
                     mot = "ACHAT" if voulu == "BUY" else "VENTE"
                     prix_entree = prix_achat if voulu == "BUY" else prix_vente
                     distance = max(float(derniere.stop), prix_entree * STOP_GARANTI_MIN_PCT / 100)
@@ -285,7 +294,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                                 entrees[epic] = signal["debut_etat"]
                                 action = f"{mot} de {taille} {epic}"
                                 texte_tp = f", TP à +{obj:.0f} $" if obj else ", sans TP (stop suiveur)"
-                                noter_4h("ordre", epic, f"{signal['explication']} Ordre {mot} de {t} passé à "
+                                noter_4h("ordre", epic, f"{'Empilement : ' + empile + '.' if empile else signal['explication']} Ordre {mot} de {t} passé à "
                                       f"{float(conf.get('level') or prix_entree):.2f}, stop garanti à {distance:.0f} $"
                                       f"{texte_tp} (risque max ≈ {t * distance / eurusd:.2f} €).")
                             else:
