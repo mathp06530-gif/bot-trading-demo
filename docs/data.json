@@ -115,7 +115,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T00:35:26Z",
+ "derniere_execution": "2026-11-20T00:35:51Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -436,15 +436,19 @@
   {
    "date": "2026-11-20T00:35:26Z",
    "valeur": 21064.12
+  },
+  {
+   "date": "2026-11-20T00:35:51Z",
+   "valeur": 21065.38
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 21031.72,
+  "solde": 21032.35,
   "depot": 20999.32,
-  "resultat_latent": 32.4,
-  "disponible": 19994.41
+  "resultat_latent": 33.03,
+  "disponible": 19995.39
  },
  "positions": [
   {
@@ -453,7 +457,7 @@
    "sens": "SELL",
    "taille": 0.0365,
    "prix_entree": 63020.05,
-   "resultat": 32.59,
+   "resultat": 33.04,
    "ouverte_le": "2026-11-19T18:26:28.191"
   }
  ],
@@ -890,7 +894,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-19T18:26:28Z",
    "statut": "ouvert",
-   "resultat": 32.59,
+   "resultat": 33.04,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -900,7 +904,7 @@
  ],
  "historique_jour": {
   "2026-11-19": 21069.4,
-  "2026-11-20": 21064.12
+  "2026-11-20": 21065.38
  },
  "valeur_depart": 21000.0,
  "entrees": {},
@@ -1018,7 +1022,7 @@
    "nom": "Invesco QQQ Trust",
    "note": -0.67,
    "tendance": null,
-   "prix": 642.905,
+   "prix": 642.7,
    "action": "Aucune action"
   },
   "GLD": {
@@ -1032,14 +1036,14 @@
    "nom": "Technology Select Sector SPDR Fund",
    "note": -0.72,
    "tendance": null,
-   "prix": 159.84,
+   "prix": 159.945,
    "action": "Aucune action"
   },
   "IWM": {
    "nom": "iShares Russell 2000 ETF",
    "note": -0.72,
    "tendance": null,
-   "prix": 263.96500000000003,
+   "prix": 263.91499999999996,
    "action": "Aucune action"
   }
  }
