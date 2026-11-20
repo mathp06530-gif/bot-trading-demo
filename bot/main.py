@@ -69,6 +69,30 @@ DESCRIPTIONS = {
 }
 
 
+DEBUT_TEST = "2026-11-20T16:20:00Z"  # début du test de 2 semaines (17 h 20 à Paris), compte démo ramené à ~98 €
+
+
+def repartir_du_test(donnees: dict):
+    """Une seule fois : Mathis a baissé lui-même le solde démo (21 000 € -> ~98 €). Ce n'est pas une perte :
+    les statistiques repartent du début du test, les anciens ordres sont mis de côté."""
+    if donnees.get("debut_test") == DEBUT_TEST:
+        return
+    donnees["debut_test"] = DEBUT_TEST
+    ordres = donnees.get("ordres", [])
+    avant = [o for o in ordres if o.get("statut") == "ferme" and (o.get("ouvert_le") or "") < DEBUT_TEST]
+    donnees.setdefault("ordres_avant_test", []).extend(avant)
+    donnees["ordres"] = [o for o in ordres if o not in avant]
+    donnees["historique"] = [h for h in donnees.get("historique", []) if h["date"] >= DEBUT_TEST]
+    donnees["historique_jour"] = {}
+    donnees.pop("valeur_depart", None)
+    if donnees["historique"]:
+        donnees["valeur_depart"] = donnees["historique"][0]["valeur"]
+    g = donnees.get("garde_fous", {})
+    g.pop("jour", None)
+    g["plus_haut"] = 0
+    g["coupe_circuit"] = False
+
+
 def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = "toutes"):
     journal = donnees.setdefault("journal", [])
 
@@ -385,6 +409,7 @@ def principal() -> int:
     code = 0
 
     cle, ident, mdp = (os.getenv(n, "").strip() for n in ("CAPITAL_API_KEY", "CAPITAL_IDENTIFIER", "CAPITAL_PASSWORD"))
+    repartir_du_test(donnees)
     if not (cle and ident and mdp):
         msg = "Les secrets CAPITAL_API_KEY, CAPITAL_IDENTIFIER et CAPITAL_PASSWORD ne sont pas encore configurés sur GitHub."
         donnees["journal"].append({"date": maintenant(), "type": "erreur", "marche": "", "texte": msg})
