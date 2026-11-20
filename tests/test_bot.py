@@ -336,3 +336,19 @@ def test_sous_bot_refuse_si_marche_ferme(tmp_path, monkeypatch):
     d = {"strategies": {"rapide": {"active": False}}}
     main.un_tour(d, faux)
     assert not faux.ouvertes and "marché fermé" in d["sous_bots"]["NVDA"]["action"]
+
+
+def test_rapide_stop_suiveur_garde_le_gain():
+    """Une vente rapide qui gagne beaucoup : le stop suit le prix à 2 % et ne recule jamais."""
+    from bot import rapide
+    api = FauxCapital([20000] * 10)
+    api.ouvertes = [("r1", "SELL", 0.01, 101000.0)]  # vente à 100 000, stop à +1 %
+    pos = api.positions()
+    notes = []
+    noter = lambda *a: notes.append(a)
+    r = rapide.suivre_stop(api, pos, {"bid": 94990.0, "ask": 95010.0}, "BTCUSD", noter)
+    assert r == "Stop suiveur déplacé"
+    assert api.stops == [("r1", 95000.0 * 1.02)]  # 96 900 : le gain est en partie verrouillé
+    # le prix remonte : le stop ne recule pas
+    r = rapide.suivre_stop(api, api.positions(), {"bid": 97990.0, "ask": 98010.0}, "BTCUSD", noter)
+    assert r == "Position conservée" and len(api.stops) == 1
