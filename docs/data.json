@@ -997,7 +997,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T14:44:45Z",
+ "derniere_execution": "2026-11-20T14:45:31Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -2033,6 +2033,10 @@
   },
   {
    "date": "2026-11-20T14:44:45Z",
+   "valeur": 98.21
+  },
+  {
+   "date": "2026-11-20T14:45:31Z",
    "valeur": 98.21
   }
  ],
@@ -3283,7 +3287,7 @@
    "nom": "Alphabet Inc - A",
    "note": -0.48,
    "tendance": null,
-   "prix": 278.01,
+   "prix": 278.52,
    "action": "Aucune action"
   },
   "SPY": {
@@ -3492,7 +3496,7 @@
    "nom": "Crude Oil Spot",
    "momentum_pct": -14.02,
    "tendance": "SELL",
-   "prix": 81.643,
+   "prix": 81.4805,
    "plus_haut_20": 104.2,
    "plus_bas_20": 81.16,
    "ema200": 93.36,
