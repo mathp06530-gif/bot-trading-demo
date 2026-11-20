@@ -143,7 +143,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T04:35:26Z",
+ "derniere_execution": "2026-11-20T04:40:26Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -660,15 +660,19 @@
   {
    "date": "2026-11-20T04:35:26Z",
    "valeur": 21029.87
+  },
+  {
+   "date": "2026-11-20T04:40:26Z",
+   "valeur": 21029.57
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 21024.15,
+  "solde": 21024.0,
   "depot": 21018.43,
-  "resultat_latent": 5.72,
-  "disponible": 20501.31
+  "resultat_latent": 5.57,
+  "disponible": 20501.08
  },
  "positions": [
   {
@@ -677,13 +681,13 @@
    "sens": "SELL",
    "taille": 0.0186,
    "prix_entree": 61749.25,
-   "resultat": 5.46,
+   "resultat": 5.58,
    "ouverte_le": "2026-11-20T04:15:23.444"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 61478.425,
+   "prix": 61376.65,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1152,17 +1156,17 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T04:15:23Z",
    "statut": "ouvert",
-   "resultat": 5.46,
+   "resultat": 5.58,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
    "strategie": "rapide",
-   "dernier_prix": 61478.425
+   "dernier_prix": 61376.65
   }
  ],
  "historique_jour": {
   "2026-11-19": 21069.4,
-  "2026-11-20": 21029.87
+  "2026-11-20": 21029.57
  },
  "valeur_depart": 21000.0,
  "entrees": {},
@@ -1238,21 +1242,21 @@
    "nom": "Tesla Inc",
    "note": -0.6,
    "tendance": null,
-   "prix": 371.915,
+   "prix": 371.875,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.67,
    "tendance": null,
-   "prix": 143.625,
+   "prix": 143.52499999999998,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
    "note": -0.31,
    "tendance": null,
-   "prix": 349.955,
+   "prix": 349.895,
    "action": "Aucune action"
   },
   "MSFT": {
@@ -1266,42 +1270,42 @@
    "nom": "Alphabet Inc - A",
    "note": -0.61,
    "tendance": null,
-   "prix": 272.28,
+   "prix": 272.15999999999997,
    "action": "Aucune action"
   },
   "SPY": {
    "nom": "SPDR S&P 500 ETF",
    "note": -0.48,
    "tendance": null,
-   "prix": 713.475,
+   "prix": 713.225,
    "action": "Aucune action"
   },
   "QQQ": {
    "nom": "Invesco QQQ Trust",
    "note": -0.43,
    "tendance": null,
-   "prix": 640.59,
+   "prix": 640.225,
    "action": "Aucune action"
   },
   "GLD": {
    "nom": "SPDR Gold Shares",
    "note": -0.72,
    "tendance": null,
-   "prix": 322.95500000000004,
+   "prix": 322.735,
    "action": "Aucune action"
   },
   "XLK": {
    "nom": "Technology Select Sector SPDR Fund",
    "note": -0.43,
    "tendance": null,
-   "prix": 159.235,
+   "prix": 159.36,
    "action": "Aucune action"
   },
   "IWM": {
    "nom": "iShares Russell 2000 ETF",
    "note": -0.37,
    "tendance": null,
-   "prix": 263.58500000000004,
+   "prix": 263.485,
    "action": "Aucune action"
   }
  }
