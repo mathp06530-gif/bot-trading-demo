@@ -386,10 +386,12 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     actif_ct = ("cassure_tous" in lancer) or (not en_pause and etats["cassure_tous"]["active"])
     if (actif_ct or not en_pause) and (actif_ct or ids_ct):
         noter_ct = lambda t, m, x: noter(t, m, f"[Cassure tous marchés] {x}", "cassure_tous")
-        for epic in module_cassure.LISTE_TOUS:
+        hors_liste_ct = sorted({p["market"]["epic"] for p in positions if p["position"]["dealId"] in ids_ct}
+                               - set(module_cassure.LISTE_TOUS))
+        for epic in module_cassure.LISTE_TOUS + hors_liste_ct:
             try:
                 tour_cassure(api, donnees, epic, positions, capital, disponible, eurusd, noter_ct, garde,
-                             maintenant(), peut_entrer=actif_ct, cle="cassure_tous",
+                             maintenant(), peut_entrer=actif_ct and epic in module_cassure.LISTE_TOUS, cle="cassure_tous",
                              risque_pct=module_cassure.RISQUE_CASSURE_TOUS_PCT, analyse=module_cassure.analyse_cassure)
             except Exception as e:
                 donnees.setdefault("cassure_tous", {}).setdefault(epic, {})["action"] = "Erreur"
@@ -428,10 +430,12 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     actif_tm = ("tendance_mois" in lancer) or (not en_pause and etats["tendance_mois"]["active"])
     if (actif_tm or not en_pause) and (actif_tm or ids_tm):
         noter_tm = lambda t, m, x: noter(t, m, f"[Tendance 1 mois] {x}", "tendance_mois")
-        for epic in module_tm.LISTE:
+        # marchés de la liste + ceux où elle a encore une position (retirés de la liste : gérés jusqu'à la sortie)
+        hors_liste = sorted({p["market"]["epic"] for p in positions if p["position"]["dealId"] in ids_tm} - set(module_tm.LISTE))
+        for epic in module_tm.LISTE + hors_liste:
             try:
                 tour_cassure(api, donnees, epic, positions, capital, disponible, eurusd, noter_tm, garde,
-                             maintenant(), peut_entrer=actif_tm, cle="tendance_mois",
+                             maintenant(), peut_entrer=actif_tm and epic in module_tm.LISTE, cle="tendance_mois",
                              risque_pct=module_tm.RISQUE_TENDANCE_MOIS_PCT, signaux=module_tm.signaux_tendance,
                              unite=module_tm.UNITE, analyse=module_tm.analyse_tendance if module_tm.ANALYSER else None)
             except Exception as e:
