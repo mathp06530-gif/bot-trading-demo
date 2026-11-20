@@ -1003,7 +1003,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T16:25:23Z",
+ "derniere_execution": "2026-11-20T16:30:25Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -2128,6 +2128,10 @@
   {
    "date": "2026-11-20T16:25:23Z",
    "valeur": 98.21
+  },
+  {
+   "date": "2026-11-20T16:30:25Z",
+   "valeur": 98.21
   }
  ],
  "compte": {
@@ -2141,7 +2145,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 59294.425,
+   "prix": 59121.725,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 48) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -2576,7 +2580,7 @@
    "ferme_le": "2026-11-20T01:10:22Z",
    "prix_sortie": 62319.55,
    "motif_sortie": "[Rapide] Croisement inverse",
-   "strategie": "rapide",
+   "strategie": "rapide_btc",
    "dernier_prix": 62070.325,
    "resultat_estime": false
   },
@@ -2595,7 +2599,7 @@
    "ferme_le": "2026-11-20T03:25:22Z",
    "prix_sortie": 62041.55,
    "motif_sortie": "[Rapide] Croisement inverse",
-   "strategie": "rapide",
+   "strategie": "rapide_btc",
    "dernier_prix": 61965.85,
    "resultat_estime": false
   },
@@ -2614,7 +2618,7 @@
    "ferme_le": "2026-11-20T06:05:22Z",
    "prix_sortie": 61806.35,
    "motif_sortie": "[Rapide] Croisement inverse",
-   "strategie": "rapide",
+   "strategie": "rapide_btc",
    "dernier_prix": 61869.75,
    "resultat_estime": false
   },
@@ -2633,7 +2637,7 @@
    "ferme_le": "2026-11-20T08:10:23Z",
    "prix_sortie": 61922.5,
    "motif_sortie": "[Rapide] Croisement inverse",
-   "strategie": "rapide",
+   "strategie": "rapide_btc",
    "dernier_prix": 61761.9,
    "resultat_estime": false
   },
@@ -2652,7 +2656,7 @@
    "ferme_le": "2026-11-20T10:30:23Z",
    "prix_sortie": 61917.2,
    "motif_sortie": "[Rapide] Croisement inverse",
-   "strategie": "rapide",
+   "strategie": "rapide_btc",
    "dernier_prix": 61637.75,
    "resultat_estime": false
   },
@@ -2671,7 +2675,7 @@
    "ferme_le": "2026-11-20T13:06:46Z",
    "prix_sortie": 61586.3,
    "motif_sortie": "Fermée depuis l'application",
-   "strategie": "rapide",
+   "strategie": "rapide_btc",
    "dernier_prix": 61574.225,
    "resultat_estime": false
   },
@@ -3148,7 +3152,14 @@
    "risque_pct": 2.0,
    "action": "Aucune action",
    "tendance": "SELL",
-   "reglages": "Tendance 4 h : EMA 20/200 + ADX > 20, stop 2 ATR, suiveur 5 ATR"
+   "reglages": "Tendance 4 h : EMA 20/200 + ADX > 20, stop 2 ATR, suiveur 5 ATR",
+   "indicateurs": {
+    "Prix": 59399.6,
+    "EMA 20": 62920.6,
+    "EMA 200": 73193.53,
+    "ADX (force)": 48.2,
+    "ATR (agitation)": 1193.99
+   }
   },
   "cassure_4h": {
    "active": true,
@@ -3162,6 +3173,19 @@
     "SILVER"
    ],
    "action": "Actif"
+  },
+  "rapide": {
+   "active": true,
+   "nom": "Rapide 5 min (or et argent)",
+   "unite": "MINUTE_5",
+   "risque_pct": 1.0,
+   "reglages": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 2 %, risque 1 % (expérimentale)",
+   "marches": [
+    "GOLD",
+    "SILVER"
+   ],
+   "description": "Trade souvent sur des bougies de 5 min, sur l'or et l'argent, seulement dans le sens des tendances 1 h et 4 h. Expérience : perdante en backtest à cause des frais.",
+   "action": "Actif"
   }
  },
  "garde_fous": {
@@ -3171,7 +3195,7 @@
   "regles": {
    "perte_max_pct": 20.0,
    "perte_jour_pct": 6.0,
-   "positions_max": 6,
+   "positions_max": 8,
    "risque_total_pct": 10.0
   },
   "coupe_circuit": false
@@ -3204,26 +3228,59 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3545.755,
+   "prix": 3540.96,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 3998.75,
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)",
-   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)"
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)",
+   "atr": 44.64
   },
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.594,
+   "prix": 41.422,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.67,
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)",
-   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)"
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)",
+   "atr": 0.97
   }
  },
  "deals_par_strategie": {
   "cassure": []
  },
- "pause": false
+ "pause": false,
+ "rapide": {
+  "deals": [],
+  "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 2 %, risque 1 % (expérimentale)",
+  "marches": {
+   "GOLD": {
+    "tendance": "SELL",
+    "filtre": {
+     "signal_5min": "SELL",
+     "tendance_1h": "SELL",
+     "tendance_4h": "SELL",
+     "bollinger": 1.7,
+     "adx": 16.0
+    },
+    "prix": 3542.75,
+    "action": "En attente : tendance 5 min trop faible (ADX 16 ≤ 20)"
+   },
+   "SILVER": {
+    "tendance": "SELL",
+    "filtre": {
+     "signal_5min": "SELL",
+     "tendance_1h": "SELL",
+     "tendance_4h": "SELL",
+     "bollinger": 1.73,
+     "adx": 16.4
+    },
+    "prix": 41.438,
+    "action": "En attente : tendance 5 min trop faible (ADX 16 ≤ 20)"
+   }
+  },
+  "tendance": "SELL"
+ }
 }
