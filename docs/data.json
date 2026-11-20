@@ -112,10 +112,45 @@
    "marche": "AAPL",
    "texte": "'ask'",
    "strategie": "actions_etf"
+  },
+  {
+   "date": "2026-11-20T01:10:23Z",
+   "type": "fermeture",
+   "marche": "BTCUSD",
+   "texte": "[Rapide] Plus d'accord avec la tendance de fond 1 h / 4 h : position fermée (gain/perte : 23.30). Statut : ACCEPTED",
+   "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-20T01:50:22Z",
+   "type": "ordre",
+   "marche": "BTCUSD",
+   "texte": "[Rapide] VENTE de 0.0186 à 61794.55, stop garanti à 618 $.",
+   "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-20T03:25:23Z",
+   "type": "fermeture",
+   "marche": "BTCUSD",
+   "texte": "[Rapide] Plus d'accord avec la tendance de fond 1 h / 4 h : position fermée (gain/perte : -4.31). Statut : ACCEPTED",
+   "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-20T04:15:23Z",
+   "type": "ordre",
+   "marche": "BTCUSD",
+   "texte": "[Rapide] VENTE de 0.0186 à 61749.25, stop garanti à 617 $.",
+   "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-20T06:05:22Z",
+   "type": "fermeture",
+   "marche": "BTCUSD",
+   "texte": "[Rapide] Plus d'accord avec la tendance de fond 1 h / 4 h : position fermée (gain/perte : -1.01). Statut : ACCEPTED",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-19T20:25:26Z",
+ "derniere_execution": "2026-11-20T06:25:29Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -236,37 +271,513 @@
   {
    "date": "2026-11-19T20:25:26Z",
    "valeur": 21048.04
+  },
+  {
+   "date": "2026-11-19T20:30:26Z",
+   "valeur": 21075.64
+  },
+  {
+   "date": "2026-11-19T20:35:26Z",
+   "valeur": 21074.42
+  },
+  {
+   "date": "2026-11-19T20:40:26Z",
+   "valeur": 21061.14
+  },
+  {
+   "date": "2026-11-19T20:45:25Z",
+   "valeur": 21060.58
+  },
+  {
+   "date": "2026-11-19T20:50:25Z",
+   "valeur": 21053.36
+  },
+  {
+   "date": "2026-11-19T20:55:26Z",
+   "valeur": 21055.22
+  },
+  {
+   "date": "2026-11-19T21:00:26Z",
+   "valeur": 21062.04
+  },
+  {
+   "date": "2026-11-19T21:05:26Z",
+   "valeur": 21077.08
+  },
+  {
+   "date": "2026-11-19T21:10:26Z",
+   "valeur": 21069.98
+  },
+  {
+   "date": "2026-11-19T21:15:26Z",
+   "valeur": 21071.68
+  },
+  {
+   "date": "2026-11-19T21:20:26Z",
+   "valeur": 21096.74
+  },
+  {
+   "date": "2026-11-19T21:25:27Z",
+   "valeur": 21094.66
+  },
+  {
+   "date": "2026-11-19T21:30:26Z",
+   "valeur": 21099.86
+  },
+  {
+   "date": "2026-11-19T21:35:26Z",
+   "valeur": 21101.34
+  },
+  {
+   "date": "2026-11-19T21:40:26Z",
+   "valeur": 21098.84
+  },
+  {
+   "date": "2026-11-19T21:45:26Z",
+   "valeur": 21089.56
+  },
+  {
+   "date": "2026-11-19T21:50:26Z",
+   "valeur": 21102.58
+  },
+  {
+   "date": "2026-11-19T21:55:26Z",
+   "valeur": 21100.98
+  },
+  {
+   "date": "2026-11-19T22:00:28Z",
+   "valeur": 21100.0
+  },
+  {
+   "date": "2026-11-19T22:05:26Z",
+   "valeur": 21083.18
+  },
+  {
+   "date": "2026-11-19T22:10:26Z",
+   "valeur": 21083.54
+  },
+  {
+   "date": "2026-11-19T22:15:26Z",
+   "valeur": 21080.82
+  },
+  {
+   "date": "2026-11-19T22:20:26Z",
+   "valeur": 21077.56
+  },
+  {
+   "date": "2026-11-19T22:25:26Z",
+   "valeur": 21066.74
+  },
+  {
+   "date": "2026-11-19T22:30:26Z",
+   "valeur": 21058.32
+  },
+  {
+   "date": "2026-11-19T22:35:26Z",
+   "valeur": 21055.84
+  },
+  {
+   "date": "2026-11-19T22:40:26Z",
+   "valeur": 21052.62
+  },
+  {
+   "date": "2026-11-19T22:45:26Z",
+   "valeur": 21053.44
+  },
+  {
+   "date": "2026-11-19T22:50:26Z",
+   "valeur": 21053.08
+  },
+  {
+   "date": "2026-11-19T22:55:26Z",
+   "valeur": 21057.8
+  },
+  {
+   "date": "2026-11-19T23:00:26Z",
+   "valeur": 21059.46
+  },
+  {
+   "date": "2026-11-19T23:05:26Z",
+   "valeur": 21064.0
+  },
+  {
+   "date": "2026-11-19T23:10:26Z",
+   "valeur": 21071.4
+  },
+  {
+   "date": "2026-11-19T23:15:26Z",
+   "valeur": 21066.8
+  },
+  {
+   "date": "2026-11-19T23:20:26Z",
+   "valeur": 21063.84
+  },
+  {
+   "date": "2026-11-19T23:25:26Z",
+   "valeur": 21073.52
+  },
+  {
+   "date": "2026-11-19T23:30:26Z",
+   "valeur": 21075.62
+  },
+  {
+   "date": "2026-11-19T23:35:26Z",
+   "valeur": 21077.12
+  },
+  {
+   "date": "2026-11-19T23:40:26Z",
+   "valeur": 21084.16
+  },
+  {
+   "date": "2026-11-19T23:45:26Z",
+   "valeur": 21068.76
+  },
+  {
+   "date": "2026-11-19T23:50:26Z",
+   "valeur": 21072.12
+  },
+  {
+   "date": "2026-11-19T23:55:26Z",
+   "valeur": 21069.4
+  },
+  {
+   "date": "2026-11-20T00:00:25Z",
+   "valeur": 21069.86
+  },
+  {
+   "date": "2026-11-20T00:05:26Z",
+   "valeur": 21062.36
+  },
+  {
+   "date": "2026-11-20T00:10:25Z",
+   "valeur": 21067.22
+  },
+  {
+   "date": "2026-11-20T00:15:26Z",
+   "valeur": 21064.92
+  },
+  {
+   "date": "2026-11-20T00:20:26Z",
+   "valeur": 21056.94
+  },
+  {
+   "date": "2026-11-20T00:25:26Z",
+   "valeur": 21060.56
+  },
+  {
+   "date": "2026-11-20T00:30:26Z",
+   "valeur": 21065.6
+  },
+  {
+   "date": "2026-11-20T00:35:26Z",
+   "valeur": 21064.12
+  },
+  {
+   "date": "2026-11-20T00:35:51Z",
+   "valeur": 21065.38
+  },
+  {
+   "date": "2026-11-20T00:40:26Z",
+   "valeur": 21067.5
+  },
+  {
+   "date": "2026-11-20T00:45:26Z",
+   "valeur": 21063.7
+  },
+  {
+   "date": "2026-11-20T00:50:26Z",
+   "valeur": 21069.92
+  },
+  {
+   "date": "2026-11-20T00:55:26Z",
+   "valeur": 21069.44
+  },
+  {
+   "date": "2026-11-20T01:00:26Z",
+   "valeur": 21061.18
+  },
+  {
+   "date": "2026-11-20T01:05:26Z",
+   "valeur": 21064.96
+  },
+  {
+   "date": "2026-11-20T01:10:26Z",
+   "valeur": 21022.62
+  },
+  {
+   "date": "2026-11-20T01:15:26Z",
+   "valeur": 21022.62
+  },
+  {
+   "date": "2026-11-20T01:20:26Z",
+   "valeur": 21022.62
+  },
+  {
+   "date": "2026-11-20T01:25:26Z",
+   "valeur": 21022.62
+  },
+  {
+   "date": "2026-11-20T01:30:26Z",
+   "valeur": 21022.62
+  },
+  {
+   "date": "2026-11-20T01:35:26Z",
+   "valeur": 21022.62
+  },
+  {
+   "date": "2026-11-20T01:40:25Z",
+   "valeur": 21022.62
+  },
+  {
+   "date": "2026-11-20T01:45:25Z",
+   "valeur": 21022.62
+  },
+  {
+   "date": "2026-11-20T01:50:26Z",
+   "valeur": 21020.78
+  },
+  {
+   "date": "2026-11-20T01:55:26Z",
+   "valeur": 21034.4
+  },
+  {
+   "date": "2026-11-20T02:00:26Z",
+   "valeur": 21032.12
+  },
+  {
+   "date": "2026-11-20T02:05:26Z",
+   "valeur": 21030.5
+  },
+  {
+   "date": "2026-11-20T02:10:26Z",
+   "valeur": 21037.14
+  },
+  {
+   "date": "2026-11-20T02:15:26Z",
+   "valeur": 21032.68
+  },
+  {
+   "date": "2026-11-20T02:20:26Z",
+   "valeur": 21027.16
+  },
+  {
+   "date": "2026-11-20T02:25:25Z",
+   "valeur": 21032.5
+  },
+  {
+   "date": "2026-11-20T02:30:25Z",
+   "valeur": 21037.58
+  },
+  {
+   "date": "2026-11-20T02:35:25Z",
+   "valeur": 21037.04
+  },
+  {
+   "date": "2026-11-20T02:40:26Z",
+   "valeur": 21023.42
+  },
+  {
+   "date": "2026-11-20T02:45:26Z",
+   "valeur": 21028.02
+  },
+  {
+   "date": "2026-11-20T02:50:25Z",
+   "valeur": 21027.6
+  },
+  {
+   "date": "2026-11-20T02:55:25Z",
+   "valeur": 21020.66
+  },
+  {
+   "date": "2026-11-20T03:00:25Z",
+   "valeur": 21008.9
+  },
+  {
+   "date": "2026-11-20T03:05:26Z",
+   "valeur": 21014.82
+  },
+  {
+   "date": "2026-11-20T03:10:26Z",
+   "valeur": 21020.44
+  },
+  {
+   "date": "2026-11-20T03:15:26Z",
+   "valeur": 21017.08
+  },
+  {
+   "date": "2026-11-20T03:20:26Z",
+   "valeur": 21008.58
+  },
+  {
+   "date": "2026-11-20T03:25:26Z",
+   "valeur": 21018.43
+  },
+  {
+   "date": "2026-11-20T03:30:26Z",
+   "valeur": 21018.43
+  },
+  {
+   "date": "2026-11-20T03:35:26Z",
+   "valeur": 21018.43
+  },
+  {
+   "date": "2026-11-20T03:40:26Z",
+   "valeur": 21018.43
+  },
+  {
+   "date": "2026-11-20T03:45:26Z",
+   "valeur": 21018.43
+  },
+  {
+   "date": "2026-11-20T03:50:26Z",
+   "valeur": 21018.43
+  },
+  {
+   "date": "2026-11-20T03:55:26Z",
+   "valeur": 21018.43
+  },
+  {
+   "date": "2026-11-20T04:00:26Z",
+   "valeur": 21018.43
+  },
+  {
+   "date": "2026-11-20T04:05:26Z",
+   "valeur": 21018.43
+  },
+  {
+   "date": "2026-11-20T04:10:26Z",
+   "valeur": 21018.43
+  },
+  {
+   "date": "2026-11-20T04:15:26Z",
+   "valeur": 21016.43
+  },
+  {
+   "date": "2026-11-20T04:20:25Z",
+   "valeur": 21019.93
+  },
+  {
+   "date": "2026-11-20T04:25:25Z",
+   "valeur": 21020.57
+  },
+  {
+   "date": "2026-11-20T04:30:26Z",
+   "valeur": 21024.27
+  },
+  {
+   "date": "2026-11-20T04:35:26Z",
+   "valeur": 21029.87
+  },
+  {
+   "date": "2026-11-20T04:40:26Z",
+   "valeur": 21029.57
+  },
+  {
+   "date": "2026-11-20T04:45:26Z",
+   "valeur": 21028.29
+  },
+  {
+   "date": "2026-11-20T04:50:26Z",
+   "valeur": 21029.69
+  },
+  {
+   "date": "2026-11-20T04:55:26Z",
+   "valeur": 21025.85
+  },
+  {
+   "date": "2026-11-20T05:00:26Z",
+   "valeur": 21026.07
+  },
+  {
+   "date": "2026-11-20T05:05:25Z",
+   "valeur": 21027.69
+  },
+  {
+   "date": "2026-11-20T05:10:25Z",
+   "valeur": 21029.51
+  },
+  {
+   "date": "2026-11-20T05:15:25Z",
+   "valeur": 21025.51
+  },
+  {
+   "date": "2026-11-20T05:20:26Z",
+   "valeur": 21024.97
+  },
+  {
+   "date": "2026-11-20T05:25:26Z",
+   "valeur": 21020.83
+  },
+  {
+   "date": "2026-11-20T05:30:26Z",
+   "valeur": 21024.47
+  },
+  {
+   "date": "2026-11-20T05:35:26Z",
+   "valeur": 21023.45
+  },
+  {
+   "date": "2026-11-20T05:40:26Z",
+   "valeur": 21022.47
+  },
+  {
+   "date": "2026-11-20T05:45:26Z",
+   "valeur": 21020.31
+  },
+  {
+   "date": "2026-11-20T05:50:26Z",
+   "valeur": 21012.87
+  },
+  {
+   "date": "2026-11-20T05:55:26Z",
+   "valeur": 21013.87
+  },
+  {
+   "date": "2026-11-20T06:00:26Z",
+   "valeur": 21015.11
+  },
+  {
+   "date": "2026-11-20T06:05:26Z",
+   "valeur": 21017.46
+  },
+  {
+   "date": "2026-11-20T06:10:26Z",
+   "valeur": 21017.46
+  },
+  {
+   "date": "2026-11-20T06:15:25Z",
+   "valeur": 21017.46
+  },
+  {
+   "date": "2026-11-20T06:20:25Z",
+   "valeur": 21017.46
+  },
+  {
+   "date": "2026-11-20T06:20:56Z",
+   "valeur": 21017.46
+  },
+  {
+   "date": "2026-11-20T06:25:29Z",
+   "valeur": 21017.46
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 21023.54,
-  "depot": 20999.04,
-  "resultat_latent": 24.5,
-  "disponible": 19982.61
+  "solde": 21017.46,
+  "depot": 21017.46,
+  "resultat_latent": 0.0,
+  "disponible": 21017.46
  },
- "positions": [
-  {
-   "marche": "BTCUSD",
-   "nom": "Bitcoin/USD",
-   "sens": "SELL",
-   "taille": 0.0365,
-   "prix_entree": 63020.05,
-   "resultat": 24.49,
-   "ouverte_le": "2026-11-19T18:26:28.191"
-  }
- ],
+ "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 62218.5,
+   "prix": 61809.5,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
    "graphique": {
     "dates": [
-     "2026-11-03T20:00:00",
-     "2026-11-04T00:00:00",
      "2026-11-04T04:00:00",
      "2026-11-04T08:00:00",
      "2026-11-04T12:00:00",
@@ -360,11 +871,11 @@
      "2026-11-19T04:00:00",
      "2026-11-19T08:00:00",
      "2026-11-19T12:00:00",
-     "2026-11-19T16:00:00"
+     "2026-11-19T16:00:00",
+     "2026-11-19T20:00:00",
+     "2026-11-20T00:00:00"
     ],
     "clotures": [
-     77339.5,
-     76372.25,
      78018.55,
      78376.15,
      80215.85,
@@ -458,11 +969,11 @@
      63669.4,
      63879.0,
      63030.8,
-     62294.2
+     62294.2,
+     61914.65,
+     62083.75
     ],
     "ema_rapide": [
-     77526.32,
-     77416.41,
      77473.76,
      77559.7,
      77812.67,
@@ -556,41 +1067,41 @@
      64330.79,
      64287.76,
      64168.05,
-     63989.59
+     63989.59,
+     63791.97,
+     63629.29
     ],
     "ema_lente": [
-     80458.17,
-     80417.51,
      80393.64,
-     80373.57,
-     80372.0,
+     80373.56,
+     80371.99,
      80367.43,
-     80368.11,
+     80368.1,
      80369.02,
-     80368.33,
+     80368.32,
      80367.7,
      80323.48,
-     80282.79,
-     80239.9,
-     80195.66,
-     80148.84,
-     80107.87,
-     80064.56,
-     80021.91,
+     80282.78,
+     80239.89,
+     80195.65,
+     80148.83,
+     80107.86,
+     80064.55,
+     80021.9,
      79979.31,
-     79937.72,
+     79937.71,
      79897.88,
-     79857.98,
-     79816.24,
+     79857.97,
+     79816.23,
      79775.19,
-     79735.2,
-     79696.1,
+     79735.19,
+     79696.09,
      79657.91,
      79620.22,
-     79583.91,
-     79546.56,
-     79498.89,
-     79451.77,
+     79583.9,
+     79546.55,
+     79498.88,
+     79451.76,
      79395.28,
      79344.3,
      79305.41,
@@ -600,43 +1111,43 @@
      79129.14,
      79081.34,
      79022.15,
-     78966.09,
+     78966.08,
      78913.64,
      78861.49,
      78813.01,
-     78764.31,
-     78716.03,
+     78764.3,
+     78716.02,
      78672.43,
      78625.2,
      78576.28,
      78526.37,
      78469.97,
      78401.84,
-     78334.17,
-     78264.87,
-     78171.49,
+     78334.16,
+     78264.86,
+     78171.48,
      78075.45,
-     77987.66,
-     77896.52,
-     77807.92,
+     77987.65,
+     77896.51,
+     77807.91,
      77712.68,
-     77602.96,
-     77499.16,
-     77396.8,
+     77602.95,
+     77499.15,
+     77396.79,
      77280.3,
-     77164.84,
+     77164.83,
      77035.04,
-     76913.09,
-     76784.36,
+     76913.08,
+     76784.35,
      76670.24,
-     76551.2,
-     76435.36,
+     76551.19,
+     76435.35,
      76324.7,
-     76212.56,
+     76212.55,
      76100.17,
      75983.53,
-     75868.29,
-     75760.15,
+     75868.28,
+     75760.14,
      75651.27,
      75545.24,
      75437.08,
@@ -648,13 +1159,15 @@
      74797.48,
      74691.59,
      74575.73,
-     74457.23,
+     74457.22,
      74343.08,
      74231.56,
      74126.46,
      74024.5,
      73915.11,
-     73799.48
+     73799.48,
+     73681.22,
+     73565.82
     ]
    }
   }
@@ -689,29 +1202,67 @@
    "stop": 63650.04,
    "stop_garanti": true,
    "ouvert_le": "2026-11-19T18:26:28Z",
-   "statut": "ouvert",
-   "resultat": 24.49,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
+   "statut": "ferme",
+   "resultat": 23.3,
+   "ferme_le": "2026-11-20T01:10:22Z",
+   "prix_sortie": 62319.55,
+   "motif_sortie": "[Rapide] Croisement inverse",
    "strategie": "rapide",
-   "dernier_prix": 62218.5
+   "dernier_prix": 62070.325,
+   "resultat_estime": false
+  },
+  {
+   "id": "00000000-7503-3a21-049f-c46d0015549e",
+   "marche": "BTCUSD",
+   "nom": "Bitcoin/USD",
+   "sens": "SELL",
+   "taille": 0.0186,
+   "prix_entree": 61794.55,
+   "stop": 62412.66,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T01:50:22Z",
+   "statut": "ferme",
+   "resultat": -4.31,
+   "ferme_le": "2026-11-20T03:25:22Z",
+   "prix_sortie": 62041.55,
+   "motif_sortie": "[Rapide] Croisement inverse",
+   "strategie": "rapide",
+   "dernier_prix": 61965.85,
+   "resultat_estime": false
+  },
+  {
+   "id": "00000000-7504-9e6f-049f-c46d0015549e",
+   "marche": "BTCUSD",
+   "nom": "Bitcoin/USD",
+   "sens": "SELL",
+   "taille": 0.0186,
+   "prix_entree": 61749.25,
+   "stop": 62366.64,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T04:15:23Z",
+   "statut": "ferme",
+   "resultat": -1.01,
+   "ferme_le": "2026-11-20T06:05:22Z",
+   "prix_sortie": 61806.35,
+   "motif_sortie": "[Rapide] Croisement inverse",
+   "strategie": "rapide",
+   "dernier_prix": 61869.75,
+   "resultat_estime": false
   }
  ],
  "historique_jour": {
-  "2026-11-19": 21048.04
+  "2026-11-19": 21069.4,
+  "2026-11-20": 21017.46
  },
  "valeur_depart": 21000.0,
  "entrees": {},
  "rapide": {
-  "deals": [
-   "00000000-74d0-7cfb-049f-c46d0015549e"
-  ],
+  "deals": [],
   "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, stop 1 %, risque 0.05 % (expérimentale)",
-  "tendance": "SELL",
-  "action": "Position conservée",
+  "tendance": "BUY",
+  "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
   "filtre": {
-   "signal_5min": "SELL",
+   "signal_5min": "BUY",
    "tendance_1h": "SELL",
    "tendance_4h": "SELL"
   }
@@ -733,8 +1284,8 @@
    "description": "Trade souvent sur des bougies de 5 min avec un tout petit risque, pour comparer en direct (perdante en backtest).",
    "unite": "MINUTE_5",
    "risque_pct": 0.05,
-   "action": "Position conservée",
-   "tendance": "SELL",
+   "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
+   "tendance": "BUY",
    "reglages": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, stop 1 %, risque 0.05 % (expérimentale)"
   },
   "actions_etf": {
@@ -760,9 +1311,9 @@
   }
  },
  "garde_fous": {
-  "jour": "2026-11-19",
-  "debut_jour": 21011.66,
-  "plus_haut": 21055.52,
+  "jour": "2026-11-20",
+  "debut_jour": 21069.480000000003,
+  "plus_haut": 21102.3,
   "regles": {
    "perte_max_pct": 10.0,
    "perte_jour_pct": 3.0,
@@ -773,72 +1324,72 @@
  "sous_bots": {
   "TSLA": {
    "nom": "Tesla Inc",
-   "note": -0.67,
+   "note": -0.6,
    "tendance": null,
-   "prix": 375.28,
+   "prix": 369.46000000000004,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.67,
    "tendance": null,
-   "prix": 147.39999999999998,
+   "prix": 143.37,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
-   "note": -0.27,
+   "note": -0.31,
    "tendance": null,
-   "prix": 349.26,
+   "prix": 349.66999999999996,
    "action": "Aucune action"
   },
   "MSFT": {
    "nom": "Microsoft Corp",
-   "note": -0.56,
+   "note": -0.67,
    "tendance": null,
-   "prix": 500.74,
+   "prix": 492.33,
    "action": "Aucune action"
   },
   "GOOGL": {
    "nom": "Alphabet Inc - A",
-   "note": -0.56,
+   "note": -0.61,
    "tendance": null,
-   "prix": 274.2,
+   "prix": 271.255,
    "action": "Aucune action"
   },
   "SPY": {
    "nom": "SPDR S&P 500 ETF",
-   "note": -0.72,
+   "note": -0.48,
    "tendance": null,
-   "prix": 717.325,
+   "prix": 712.885,
    "action": "Aucune action"
   },
   "QQQ": {
    "nom": "Invesco QQQ Trust",
-   "note": -0.61,
+   "note": -0.43,
    "tendance": null,
-   "prix": 646.3599999999999,
+   "prix": 638.95,
    "action": "Aucune action"
   },
   "GLD": {
    "nom": "SPDR Gold Shares",
-   "note": -0.56,
+   "note": -0.72,
    "tendance": null,
-   "prix": 336.115,
+   "prix": 326.02,
    "action": "Aucune action"
   },
   "XLK": {
    "nom": "Technology Select Sector SPDR Fund",
-   "note": -0.56,
+   "note": -0.43,
    "tendance": null,
-   "prix": 160.98,
+   "prix": 158.76,
    "action": "Aucune action"
   },
   "IWM": {
    "nom": "iShares Russell 2000 ETF",
-   "note": -0.72,
+   "note": -0.37,
    "tendance": null,
-   "prix": 265.28499999999997,
+   "prix": 263.55,
    "action": "Aucune action"
   }
  }
