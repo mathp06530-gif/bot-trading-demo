@@ -817,10 +817,16 @@
    "type": "commande",
    "marche": "",
    "texte": "Stratégie Tendance 4 h et Rapide 5 min et Sous-bots actions et ETF et Cassure 4 h (or et argent) et Petit compte risqué (100 €) et Tendance 1 mois (11 marchés) et Objectif x5 sur l'or (50 €) et Objectif x5 sur l'argent (50 €) et Cassure 4 h (tous les marchés) désactivée (elle garde ses positions, le stop suiveur continue) depuis l'application."
+  },
+  {
+   "date": "2026-11-20T13:23:38Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Stratégie Objectif x5 sur l'or (50 €) activée depuis l'application."
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T13:22:32Z",
+ "derniere_execution": "2026-11-20T13:23:40Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -1773,6 +1779,10 @@
   {
    "date": "2026-11-20T13:22:32Z",
    "valeur": 20972.85
+  },
+  {
+   "date": "2026-11-20T13:23:40Z",
+   "valeur": 20972.85
   }
  ],
  "compte": {
@@ -1786,7 +1796,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 61543.3,
+   "prix": 61416.4,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "En pause (aucun ordre)",
@@ -2757,7 +2767,7 @@
    "action": "En pause"
   },
   "x5_or": {
-   "active": false,
+   "active": true,
    "nom": "Objectif x5 sur l'or (50 €)",
    "unite": "HOUR_4",
    "risque_pct": 50.0,
