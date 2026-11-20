@@ -1000,10 +1000,17 @@
    "type": "commande",
    "marche": "",
    "texte": "Stratégie Tendance 4 h (Bitcoin) et Cassure 4 h (or et argent) activée depuis l'application."
+  },
+  {
+   "date": "2026-11-20T17:25:25Z",
+   "type": "erreur",
+   "marche": "SILVER",
+   "texte": "[Rapide] POST /positions -> 400 : {\"errorCode\":\"error.invalid.stoploss.minvalue: 41.66\"}",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T17:20:25Z",
+ "derniere_execution": "2026-11-20T17:25:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -1060,6 +1067,10 @@
   {
    "date": "2026-11-20T17:20:25Z",
    "valeur": 98.21
+  },
+  {
+   "date": "2026-11-20T17:25:25Z",
+   "valeur": 98.21
   }
  ],
  "compte": {
@@ -1073,7 +1084,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 59243.725,
+   "prix": 59366.075,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 48) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1588,7 +1599,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3532.44,
+   "prix": 3524.465,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 3998.75,
@@ -1599,7 +1610,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.251999999999995,
+   "prix": 41.162,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.67,
@@ -1622,10 +1633,11 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 0.98
+     "bollinger": 1.06,
+     "adx": 15.8
     },
-    "prix": 3531.26,
-    "action": "En attente : marché trop calme (bandes de Bollinger étroites)"
+    "prix": 3530.085,
+    "action": "En attente : tendance 5 min trop faible (ADX 16 ≤ 20)"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -1633,11 +1645,11 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 1.18,
-     "adx": 19.5
+     "bollinger": 1.17,
+     "adx": 20.4
     },
-    "prix": 41.235,
-    "action": "En attente : tendance 5 min trop faible (ADX 19 ≤ 20)"
+    "prix": 41.212,
+    "action": "Erreur"
    }
   },
   "tendance": "SELL"
