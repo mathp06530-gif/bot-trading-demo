@@ -489,3 +489,38 @@ def test_tendance_mois_signal_comme_le_backtest():
     s = signaux_tendance(baisse)
     assert s.cible.iloc[-1] == -1 and (s.cible.iloc[:-1] == 0).all() and s.attrs["momentum_pct"] < 0
     assert signaux_tendance(baisse.iloc[:20]).cible.iloc[-1] == 0  # pas assez d'historique
+
+
+def test_objectif_x5_or_levier_max_sur_50_euros(tmp_path, monkeypatch):
+    """Objectif x5 : 50 € virtuels × levier 20 sur l'or, TP +20 % et stop garanti -2,5 % du prix,
+    suivi à part ; la fin de la cassure ne ferme PAS la position (seuls le TP ou le stop la ferment)."""
+    from bot import cassure
+    from bot.cassure import signaux_cassure
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
+    monkeypatch.setattr(main, "SOUS_BOTS", [])
+    prix = [2000 + 25 * ((i % 8) - 4) for i in range(250)] + [2000 + 45 * i for i in range(40)]
+    for n in range(240, 290):
+        c = signaux_cassure(bougies_vers_df([bougie(i, p) for i, p in enumerate(prix[:n])])).cible.values
+        if c[-1] == 1 and c[-2] == 0:
+            break
+    faux = FauxCapitalActions(prix[:n])
+    marche = faux.marche
+    faux.marche = lambda epic: {**marche(epic), "dealingRules": {
+        "minDealSize": {"value": 0.01}, "minSizeIncrement": {"value": 0.01},
+        "minGuaranteedStopDistance": {"unit": "PERCENTAGE", "value": 0.25}}}
+    d = {"strategies": {"rapide": {"active": False}, "x5_or": {"active": True}}}
+    main.un_tour(d, faux)
+    assert [o[1] for o in faux.ouvertes] == ["BUY"]
+    _, _, taille, stop = faux.ouvertes[0]
+    entree = prix[n - 1] + 1
+    assert taille == pytest.approx(50 * 20 / entree, abs=0.01)            # 1 000 € exposés avec 50 €
+    assert entree - stop == pytest.approx(entree * 0.025, rel=0.01)       # stop garanti -2,5 %
+    assert faux.objectifs[0] == pytest.approx(entree * 0.20, rel=0.01)    # objectif +20 % (x5)
+    assert d["ordres"][0]["strategie"] == "x5_or"
+    assert d["strategies"]["x5_or"]["capital"] == 50 + 1.5
+    # La cassure se termine (le prix s'effondre) : la position reste ouverte, seuls TP / stop décident
+    faux.prix_action = prix[:n] + [prix[n - 1] - 60 * k for k in range(1, 25)]
+    main.un_tour(d, faux)
+    assert faux.fermees == []
+    assert d["x5_or"]["GOLD"]["action"] == "Position conservée"
