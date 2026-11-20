@@ -150,7 +150,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T06:20:25Z",
+ "derniere_execution": "2026-11-20T06:20:56Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -751,6 +751,10 @@
   {
    "date": "2026-11-20T06:20:25Z",
    "valeur": 21017.46
+  },
+  {
+   "date": "2026-11-20T06:20:56Z",
+   "valeur": 21017.46
   }
  ],
  "compte": {
@@ -1339,7 +1343,7 @@
    "nom": "Microsoft Corp",
    "note": -0.67,
    "tendance": null,
-   "prix": 492.905,
+   "prix": 492.33,
    "action": "Aucune action"
   },
   "GOOGL": {
