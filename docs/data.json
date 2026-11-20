@@ -122,7 +122,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T01:25:26Z",
+ "derniere_execution": "2026-11-20T01:30:26Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -487,6 +487,10 @@
   {
    "date": "2026-11-20T01:25:26Z",
    "valeur": 21022.62
+  },
+  {
+   "date": "2026-11-20T01:30:26Z",
+   "valeur": 21022.62
   }
  ],
  "compte": {
@@ -500,7 +504,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 62332.9,
+   "prix": 62247.725,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1016,21 +1020,21 @@
    "nom": "Tesla Inc",
    "note": -0.67,
    "tendance": null,
-   "prix": 370.61,
+   "prix": 371.07000000000005,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.67,
    "tendance": null,
-   "prix": 144.89499999999998,
+   "prix": 144.945,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
    "note": -0.2,
    "tendance": null,
-   "prix": 351.125,
+   "prix": 351.25,
    "action": "Aucune action"
   },
   "MSFT": {
@@ -1044,7 +1048,7 @@
    "nom": "Alphabet Inc - A",
    "note": -0.67,
    "tendance": null,
-   "prix": 273.545,
+   "prix": 273.565,
    "action": "Aucune action"
   },
   "SPY": {
