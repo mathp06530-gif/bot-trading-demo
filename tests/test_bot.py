@@ -524,3 +524,32 @@ def test_objectif_x5_or_levier_max_sur_50_euros(tmp_path, monkeypatch):
     main.un_tour(d, faux)
     assert faux.fermees == []
     assert d["x5_or"]["GOLD"]["action"] == "Position conservée"
+
+
+def test_objectif_x5_argent_levier_10(tmp_path, monkeypatch):
+    """Même essai sur l'argent : levier 10, objectif +40 %, stop garanti -5 %, 50 € virtuels à part."""
+
+    from bot import cassure
+    from bot.cassure import signaux_cassure
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "RAPIDE_ACTIVE", False)
+    monkeypatch.setattr(main, "SOUS_BOTS", [])
+    prix = [2000 + 25 * ((i % 8) - 4) for i in range(250)] + [2000 + 45 * i for i in range(40)]
+    for n in range(240, 290):
+        c = signaux_cassure(bougies_vers_df([bougie(i, p) for i, p in enumerate(prix[:n])])).cible.values
+        if c[-1] == 1 and c[-2] == 0:
+            break
+    faux = FauxCapitalActions(prix[:n])
+    marche = faux.marche
+    faux.marche = lambda epic: {**marche(epic), "dealingRules": {
+        "minDealSize": {"value": 0.01}, "minSizeIncrement": {"value": 0.01},
+        "minGuaranteedStopDistance": {"unit": "PERCENTAGE", "value": 0.25}}}
+    d = {"strategies": {"rapide": {"active": False}, "x5_argent": {"active": True}}}
+    main.un_tour(d, faux)
+    assert [o[1] for o in faux.ouvertes] == ["BUY"]
+    _, _, taille, stop = faux.ouvertes[0]
+    entree = prix[n - 1] + 1
+    assert taille == pytest.approx(50 * 10 / entree, abs=0.01)
+    assert entree - stop == pytest.approx(entree * 0.05, rel=0.01)
+    assert faux.objectifs[0] == pytest.approx(entree * 0.40, rel=0.01)
+    assert d["ordres"][0]["strategie"] == "x5_argent" and d["x5_argent"]["SILVER"]["action"].startswith("ACHAT")
