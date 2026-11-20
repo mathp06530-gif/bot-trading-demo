@@ -213,7 +213,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T12:05:29Z",
+ "derniere_execution": "2026-11-20T12:05:56Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -1094,15 +1094,19 @@
   {
    "date": "2026-11-20T12:05:29Z",
    "valeur": 21007.95
+  },
+  {
+   "date": "2026-11-20T12:05:56Z",
+   "valeur": 21012.83
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 21004.13,
+  "solde": 21006.57,
   "depot": 21000.31,
-  "resultat_latent": 3.82,
-  "disponible": 20247.88
+  "resultat_latent": 6.26,
+  "disponible": 20251.61
  },
  "positions": [
   {
@@ -1111,7 +1115,7 @@
    "sens": "SELL",
    "taille": 0.0268,
    "prix_entree": 61704.25,
-   "resultat": 4.05,
+   "resultat": 6.17,
    "ouverte_le": "2026-11-20T11:35:24.292"
   }
  ],
@@ -1643,7 +1647,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T11:35:24Z",
    "statut": "ouvert",
-   "resultat": 4.05,
+   "resultat": 6.17,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -1653,7 +1657,7 @@
  ],
  "historique_jour": {
   "2026-11-19": 21069.4,
-  "2026-11-20": 21007.95
+  "2026-11-20": 21012.83
  },
  "valeur_depart": 21000.0,
  "entrees": {},
