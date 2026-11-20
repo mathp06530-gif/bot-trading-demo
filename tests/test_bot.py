@@ -438,3 +438,22 @@ def test_rapide_empile_quand_le_prix_avance(tmp_path, monkeypatch):
         faux.prix_rapide = faux.prix_rapide + [faux.prix_rapide[-1] + 5]
         main.un_tour(d, faux)
     assert len(faux.ouvertes) == 3
+
+
+def test_cassure_entre_sur_un_nouveau_plus_haut_pendant_une_tendance_en_cours(tmp_path, monkeypatch):
+    from bot.cassure import signaux_cassure
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "MARCHES_CASSURE", ["GOLD"])
+    prix = [2000 + 25 * ((i % 8) - 4) for i in range(250)] + [2000 + 45 * i for i in range(40)]
+    for n in range(240, 290):
+        c = signaux_cassure(bougies_vers_df([bougie(i, p) for i, p in enumerate(prix[:n])])).cible.values
+        if c[-1] == 1 and c[-2] == 0:
+            break
+    faux = FauxCapitalActions(prix[:n + 10])  # la cassure date de 10 bougies, mais chaque bougie fait un nouveau plus haut
+    d = {}
+    main.un_tour(d, faux)
+    assert [o[1] for o in faux.ouvertes] == ["BUY"]
+    faux2 = FauxCapitalActions(prix[:n + 10] + [prix[n + 9] - 30])  # dernière bougie sans nouveau plus haut : rien
+    d2 = {}
+    main.un_tour(d2, faux2)
+    assert not faux2.ouvertes
