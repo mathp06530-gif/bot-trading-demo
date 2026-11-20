@@ -192,7 +192,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T11:05:30Z",
+ "derniere_execution": "2026-11-20T11:10:29Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -1025,6 +1025,10 @@
   {
    "date": "2026-11-20T11:05:30Z",
    "valeur": 21000.31
+  },
+  {
+   "date": "2026-11-20T11:10:29Z",
+   "valeur": 21000.31
   }
  ],
  "compte": {
@@ -1038,7 +1042,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 61981.85,
+   "prix": 61830.975,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1643,56 +1647,56 @@
    "nom": "Tesla Inc",
    "note": -0.48,
    "tendance": null,
-   "prix": 369.02,
+   "prix": 368.945,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.48,
    "tendance": null,
-   "prix": 143.26999999999998,
+   "prix": 142.89499999999998,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
    "note": -0.31,
    "tendance": null,
-   "prix": 350.78999999999996,
+   "prix": 350.635,
    "action": "Aucune action"
   },
   "MSFT": {
    "nom": "Microsoft Corp",
    "note": -0.6,
    "tendance": null,
-   "prix": 492.155,
+   "prix": 491.845,
    "action": "Aucune action"
   },
   "GOOGL": {
    "nom": "Alphabet Inc - A",
    "note": -0.6,
    "tendance": null,
-   "prix": 274.485,
+   "prix": 274.23,
    "action": "Aucune action"
   },
   "SPY": {
    "nom": "SPDR S&P 500 ETF",
    "note": -0.48,
    "tendance": null,
-   "prix": 713.4300000000001,
+   "prix": 713.29,
    "action": "Aucune action"
   },
   "QQQ": {
    "nom": "Invesco QQQ Trust",
    "note": -0.48,
    "tendance": null,
-   "prix": 638.055,
+   "prix": 637.705,
    "action": "Aucune action"
   },
   "GLD": {
    "nom": "SPDR Gold Shares",
    "note": -0.32,
    "tendance": null,
-   "prix": 328.94000000000005,
+   "prix": 328.745,
    "action": "Aucune action"
   },
   "XLK": {
@@ -1706,7 +1710,7 @@
    "nom": "iShares Russell 2000 ETF",
    "note": -0.54,
    "tendance": null,
-   "prix": 264.31,
+   "prix": 264.26,
    "action": "Aucune action"
   }
  },
@@ -1738,7 +1742,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3588.84,
+   "prix": 3590.01,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3517.42,
    "ema200": 4007.56,
@@ -1748,7 +1752,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 42.694,
+   "prix": 42.637,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.19,
    "ema200": 52.89,
