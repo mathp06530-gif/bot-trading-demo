@@ -1035,10 +1035,24 @@
    "marche": "SILVER",
    "texte": "[Rapide] POST /positions -> 400 : {\"errorCode\":\"error.invalid.stoploss.minvalue: 41.52\"}",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-20T17:50:25Z",
+   "type": "ordre",
+   "marche": "GOLD",
+   "texte": "[Rapide] VENTE de 0.03 à 3523.59, stop garanti à 35.23 $.",
+   "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-20T17:50:26Z",
+   "type": "erreur",
+   "marche": "SILVER",
+   "texte": "[Rapide] POST /positions -> 400 : {\"errorCode\":\"error.invalid.stoploss.minvalue: 41.381\"}",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T17:45:25Z",
+ "derniere_execution": "2026-11-20T17:50:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -1115,6 +1129,10 @@
   {
    "date": "2026-11-20T17:45:25Z",
    "valeur": 98.21
+  },
+  {
+   "date": "2026-11-20T17:50:26Z",
+   "valeur": 98.21
   }
  ],
  "compte": {
@@ -1123,12 +1141,22 @@
   "solde": 98.21,
   "depot": 98.21,
   "resultat_latent": 0.0,
-  "disponible": 98.21
+  "disponible": 93.36
  },
- "positions": [],
+ "positions": [
+  {
+   "marche": "GOLD",
+   "nom": "Gold",
+   "sens": "SELL",
+   "taille": 0.03,
+   "prix_entree": 3523.59,
+   "resultat": 0,
+   "ouverte_le": "2026-11-20T17:50:24.893"
+  }
+ ],
  "analyses": {
   "BTCUSD": {
-   "prix": 59009.8,
+   "prix": 58909.850000000006,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 48) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1528,7 +1556,25 @@
    }
   }
  },
- "ordres": [],
+ "ordres": [
+  {
+   "id": "00000000-750e-5d28-049f-c46d0015549e",
+   "marche": "GOLD",
+   "nom": "Gold",
+   "sens": "SELL",
+   "taille": 0.03,
+   "prix_entree": 3523.59,
+   "stop": 3558.82,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-20T17:50:24Z",
+   "statut": "ouvert",
+   "resultat": 0,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "rapide"
+  }
+ ],
  "historique_jour": {
   "2026-11-20": 98.21
  },
@@ -1634,7 +1680,7 @@
     "titre": "FOMC Meeting Minutes"
    }
   ],
-  "lu_le": "2026-11-20T16:50:21.945186+00:00",
+  "lu_le": "2026-11-20T17:50:22.391922+00:00",
   "pause": null,
   "prochaines": []
  },
@@ -1643,7 +1689,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3528.8,
+   "prix": 3522.8199999999997,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 3998.75,
@@ -1654,7 +1700,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.002,
+   "prix": 40.94,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.11,
    "ema200": 52.67,
@@ -1668,7 +1714,9 @@
  },
  "pause": false,
  "rapide": {
-  "deals": [],
+  "deals": [
+   "00000000-750e-5d28-049f-c46d0015549e"
+  ],
   "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 2 %, risque 1 % (expérimentale)",
   "marches": {
    "GOLD": {
@@ -1677,11 +1725,11 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 1.18,
-     "adx": 19.4
+     "bollinger": 1.22,
+     "adx": 20.6
     },
-    "prix": 3526.5699999999997,
-    "action": "En attente : tendance 5 min trop faible (ADX 19 ≤ 20)"
+    "prix": 3523.69,
+    "action": "VENTE de 0.03"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -1690,9 +1738,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
      "bollinger": 1.17,
-     "adx": 24.9
+     "adx": 26.5
     },
-    "prix": 41.046,
+    "prix": 40.948499999999996,
     "action": "Erreur"
    }
   },
