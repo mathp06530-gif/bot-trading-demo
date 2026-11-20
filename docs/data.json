@@ -213,7 +213,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T11:40:30Z",
+ "derniere_execution": "2026-11-20T11:45:29Z",
  "historique": [
   {
    "date": "2026-11-19T17:48:29Z",
@@ -1074,15 +1074,19 @@
   {
    "date": "2026-11-20T11:40:30Z",
    "valeur": 20996.37
+  },
+  {
+   "date": "2026-11-20T11:45:29Z",
+   "valeur": 20997.31
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 20998.34,
+  "solde": 20998.81,
   "depot": 21000.31,
-  "resultat_latent": -1.97,
-  "disponible": 20239.47
+  "resultat_latent": -1.5,
+  "disponible": 20239.98
  },
  "positions": [
   {
@@ -1091,13 +1095,13 @@
    "sens": "SELL",
    "taille": 0.0268,
    "prix_entree": 61704.25,
-   "resultat": -2.02,
+   "resultat": -1.52,
    "ouverte_le": "2026-11-20T11:35:24.292"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 61745.850000000006,
+   "prix": 61723.45,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 47) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1623,17 +1627,17 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-20T11:35:24Z",
    "statut": "ouvert",
-   "resultat": -2.02,
+   "resultat": -1.52,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
    "strategie": "rapide",
-   "dernier_prix": 61745.850000000006
+   "dernier_prix": 61723.45
   }
  ],
  "historique_jour": {
   "2026-11-19": 21069.4,
-  "2026-11-20": 20996.37
+  "2026-11-20": 20997.31
  },
  "valeur_depart": 21000.0,
  "entrees": {},
@@ -1737,70 +1741,70 @@
    "nom": "Tesla Inc",
    "note": -0.48,
    "tendance": null,
-   "prix": 367.17499999999995,
+   "prix": 367.115,
    "action": "Aucune action"
   },
   "NVDA": {
    "nom": "NVIDIA Corp",
    "note": -0.48,
    "tendance": null,
-   "prix": 142.45,
+   "prix": 142.57,
    "action": "Aucune action"
   },
   "AAPL": {
    "nom": "Apple Inc",
    "note": -0.31,
    "tendance": null,
-   "prix": 350.06,
+   "prix": 350.23,
    "action": "Aucune action"
   },
   "MSFT": {
    "nom": "Microsoft Corp",
    "note": -0.6,
    "tendance": null,
-   "prix": 490.225,
+   "prix": 489.8,
    "action": "Aucune action"
   },
   "GOOGL": {
    "nom": "Alphabet Inc - A",
    "note": -0.6,
    "tendance": null,
-   "prix": 272.975,
+   "prix": 272.855,
    "action": "Aucune action"
   },
   "SPY": {
    "nom": "SPDR S&P 500 ETF",
    "note": -0.48,
    "tendance": null,
-   "prix": 711.505,
+   "prix": 711.52,
    "action": "Aucune action"
   },
   "QQQ": {
    "nom": "Invesco QQQ Trust",
    "note": -0.48,
    "tendance": null,
-   "prix": 635.72,
+   "prix": 635.66,
    "action": "Aucune action"
   },
   "GLD": {
    "nom": "SPDR Gold Shares",
    "note": -0.32,
    "tendance": null,
-   "prix": 328.43,
+   "prix": 328.415,
    "action": "Aucune action"
   },
   "XLK": {
    "nom": "Technology Select Sector SPDR Fund",
    "note": -0.48,
    "tendance": null,
-   "prix": 157.37,
+   "prix": 157.345,
    "action": "Aucune action"
   },
   "IWM": {
    "nom": "iShares Russell 2000 ETF",
    "note": -0.54,
    "tendance": null,
-   "prix": 263.875,
+   "prix": 263.84000000000003,
    "action": "Aucune action"
   }
  },
@@ -1823,7 +1827,7 @@
     "titre": "FOMC Meeting Minutes"
    }
   ],
-  "lu_le": "2026-11-20T10:40:22.746433+00:00",
+  "lu_le": "2026-11-20T11:45:21.923204+00:00",
   "pause": null,
   "prochaines": []
  },
@@ -1832,7 +1836,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3584.9049999999997,
+   "prix": 3584.495,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3517.42,
    "ema200": 4007.56,
@@ -1842,7 +1846,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 42.5275,
+   "prix": 42.555,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.19,
    "ema200": 52.89,
@@ -1858,7 +1862,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3584.9049999999997,
+   "prix": 3584.495,
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3517.42,
    "ema200": 4007.56,
@@ -1868,7 +1872,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 42.5275,
+   "prix": 42.555,
    "plus_haut_20": 48.01,
    "plus_bas_20": 41.19,
    "ema200": 52.89,
