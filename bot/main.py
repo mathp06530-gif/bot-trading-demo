@@ -24,6 +24,7 @@ from bot.sous_bots import RISQUE_SOUS_BOT_PCT, tour_sous_bot
 from bot.cassure import LISTE as MARCHES_CASSURE
 from bot.cassure import NOM as NOM_CASSURE
 from bot.cassure import RISQUE_CASSURE_PCT, tour_cassure
+from bot import cassure as module_cassure
 from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
 from bot.strategie import NOM as NOM_STRATEGIE
 from bot.strategie import EMA_LENTE, EMA_RAPIDE, bougies_vers_df, decider
@@ -90,7 +91,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     noter_4h = lambda t, m, x: noter(t, m, x, "tendance_4h")
     noter_rapide = lambda t, m, x: noter(t, m, x, "rapide")
 
-    toutes = ["tendance_4h", "rapide", "actions_etf", "cassure_4h"]
+    toutes = ["tendance_4h", "rapide", "actions_etf", "cassure_4h", "petit_compte"]
     strategie = strategie if strategie in toutes else "toutes"
     cibles = toutes if strategie == "toutes" else [strategie]
     etats = donnees.setdefault("strategies", {})
@@ -98,14 +99,17 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     etats.setdefault("rapide", {}).setdefault("active", RAPIDE_ACTIVE)
     etats.setdefault("actions_etf", {}).setdefault("active", True)
     etats.setdefault("cassure_4h", {}).setdefault("active", True)
+    etats.setdefault("petit_compte", {}).setdefault("active", module_cassure.PETIT_COMPTE)
     noms = {"tendance_4h": "Tendance 4 h", "rapide": "Rapide 5 min", "actions_etf": "Sous-bots actions et ETF",
-            "cassure_4h": "Cassure 4 h (or et argent)"}
+            "cassure_4h": "Cassure 4 h (or et argent)", "petit_compte": "Petit compte risqué (100 €)"}
     lancer = set(cibles) if action == "lancer" else set()
 
     api.connexion()
     positions = api.positions()
     ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
+    ids_petit = set(donnees.get("deals_par_strategie", {}).get("petit_compte", []))
     strat_de = lambda p: ("actions_etf" if p["market"]["epic"] in SOUS_BOTS else
+                          "petit_compte" if p["position"]["dealId"] in ids_petit else
                           "cassure_4h" if p["market"]["epic"] in MARCHES_CASSURE else
                           "rapide" if p["position"]["dealId"] in ids_rapide else "tendance_4h")
 
@@ -348,6 +352,28 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     etats["cassure_4h"].update({"nom": noms["cassure_4h"], "description": DESCRIPTION_CASSURE, "unite": "HOUR_4",
                                 "risque_pct": RISQUE_CASSURE_PCT, "reglages": NOM_CASSURE, "marches": MARCHES_CASSURE,
                                 "action": "Actif" if actif_c else ("En pause" if en_pause else "Désactivée")})
+
+    # --- Petit compte risqué : même cassure, capital virtuel de 100 €, risque élevé, suivi à part ---
+    actif_p = ("petit_compte" in lancer) or (not en_pause and etats["petit_compte"]["active"])
+    capital_p = module_cassure.capital_petit_compte(donnees)
+    if (actif_p or not en_pause) and (actif_p or ids_petit):
+        noter_p = lambda t, m, x: noter(t, m, f"[Petit compte] {x}", "petit_compte")
+        for epic in MARCHES_CASSURE:
+            try:
+                tour_cassure(api, donnees, epic, positions, capital_p, disponible, eurusd, noter_p, garde,
+                             maintenant(), peut_entrer=actif_p and capital_p > 0, cle="petit_compte",
+                             risque_pct=module_cassure.PETIT_RISQUE_PCT)
+            except Exception as e:
+                donnees.setdefault("petit_compte", {}).setdefault(epic, {})["action"] = "Erreur"
+                noter_p("erreur", epic, str(e)[:300])
+    etats["petit_compte"].update({
+        "nom": noms["petit_compte"], "unite": "HOUR_4", "risque_pct": module_cassure.PETIT_RISQUE_PCT,
+        "description": (f"Expérience : la cassure or + argent sur un capital VIRTUEL de "
+                        f"{module_cassure.PETIT_CAPITAL_DEPART:g} € avec {module_cassure.PETIT_RISQUE_PCT:g} % de "
+                        "risque par trade. Ordres réels sur le compte démo, résultats comptés à part."),
+        "reglages": NOM_CASSURE, "marches": MARCHES_CASSURE,
+        "capital_depart": module_cassure.PETIT_CAPITAL_DEPART,
+        "action": "Actif" if actif_p else ("En pause" if en_pause else "Désactivée")})
     donnees.pop("_cache_marches", None)
 
     # État final du compte, après les ordres
@@ -357,7 +383,11 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     api.deconnexion()
     synchroniser(donnees, positions, maintenant())
     ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
+    etats["petit_compte"]["capital"] = module_cassure.capital_petit_compte(donnees)
+    ids_petit = set(donnees.get("deals_par_strategie", {}).get("petit_compte", []))
     for o in donnees.get("ordres", []):
+        if o["id"] in ids_petit:
+            o["strategie"] = "petit_compte"
         if "strategie" not in o:
             o["strategie"] = ("actions_etf" if o["marche"] in SOUS_BOTS else
                               "cassure_4h" if o["marche"] in MARCHES_CASSURE else
