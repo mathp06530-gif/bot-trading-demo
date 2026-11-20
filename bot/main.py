@@ -17,6 +17,7 @@ from bot.rapide import NOM as NOM_RAPIDE
 from bot.rapide import RISQUE_RAPIDE_PCT, UNITE_RAPIDE
 from bot.rapide import tour_rapide
 from bot.garde_fous import GardeFous
+from bot import actualites
 from bot.sous_bots import LISTE as SOUS_BOTS
 from bot.sous_bots import NOM as NOM_SB
 from bot.sous_bots import RISQUE_SOUS_BOT_PCT, tour_sous_bot
@@ -139,6 +140,17 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     garde = GardeFous(donnees, valeur, positions, eurusd)
     if action == "reprendre":
         garde.rearmer()
+    instant = datetime.now(timezone.utc)
+    souci = actualites.mettre_a_jour(donnees, instant)
+    if souci:
+        noter("erreur", "", souci)
+    garde.pause_actualite = actualites.annonce_en_cours(donnees, instant)
+    donnees["actualites"]["pause"] = garde.pause_actualite
+    donnees["actualites"]["prochaines"] = actualites.prochaines(donnees, instant)
+    if garde.pause_actualite and donnees.get("_derniere_pause_notee") != garde.pause_actualite:
+        noter("analyse", "", f"Pause : {garde.pause_actualite}. Aucune nouvelle position de "
+              f"{actualites.PAUSE_AVANT_MIN} min avant à {actualites.PAUSE_APRES_MIN} min après.")
+    donnees["_derniere_pause_notee"] = garde.pause_actualite
     # Qui a le droit de trader à ce tour ? (la pause globale passe avant tout, sauf « lancer »)
     complet_4h = ("tendance_4h" in lancer) or (not en_pause and etats["tendance_4h"]["active"])
     suivi_4h = complet_4h or not en_pause  # désactivée : plus d'entrées ni de sorties, mais le stop suiveur continue
