@@ -12,22 +12,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from bot.capital import CapitalDemo, ErreurCapital
-from bot.rapide import ACTIVE as RAPIDE_ACTIVE
-from bot.rapide import NOM as NOM_RAPIDE
-from bot.rapide import RISQUE_RAPIDE_PCT, UNITE_RAPIDE
-from bot.rapide import tour_rapide
 from bot.garde_fous import GardeFous
 from bot import actualites
-from bot.sous_bots import LISTE as SOUS_BOTS
-from bot.sous_bots import NOM as NOM_SB
-from bot.sous_bots import RISQUE_SOUS_BOT_PCT, tour_sous_bot
 from bot.cassure import LISTE as MARCHES_CASSURE
 from bot.cassure import NOM as NOM_CASSURE
 from bot.cassure import RISQUE_CASSURE_PCT, tour_cassure
-from bot import cassure as module_cassure
-from bot import tendance_mois as module_tm
-from bot import challenge as module_ch
-from bot import londres as module_lo
 from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
 from bot.strategie import NOM as NOM_STRATEGIE
 from bot.strategie import EMA_LENTE, EMA_RAPIDE, bougies_vers_df, decider
@@ -71,14 +60,11 @@ def milieu(prix: dict) -> float:
     return (prix["bid"] + prix["ask"]) / 2
 
 
-DESCRIPTION_SB = ("Un sous-bot par action ou ETF : il n'achète que si l'analyse technique (~20 indicateurs) "
-                  "donne un achat fort dans une tendance haussière, avec SL garanti et TP.")
 DESCRIPTION_CASSURE = ("Un sous-bot pour l'or et un pour l'argent : il achète quand le prix casse le plus haut "
                        "des 20 dernières bougies de 4 h (vend sous le plus bas), dans le sens de l'EMA 200, "
                        "avec stop garanti. Environ 4 trades par mois.")
 DESCRIPTIONS = {
     "tendance_4h": "Suit les grosses tendances du Bitcoin sur des bougies de 4 h : peu de trades, la seule gagnante en backtest.",
-    "rapide": "Trade souvent sur des bougies de 5 min avec un tout petit risque, pour comparer en direct (perdante en backtest).",
 }
 
 
@@ -92,52 +78,27 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         journal.append(ligne)
 
     noter_4h = lambda t, m, x: noter(t, m, x, "tendance_4h")
-    noter_rapide = lambda t, m, x: noter(t, m, x, "rapide")
 
-    toutes = ["tendance_4h", "rapide", "actions_etf", "cassure_4h", "petit_compte", "tendance_mois", "x5_or", "x5_argent", "cassure_tous", "challenge", "londres"]
+    toutes = ["tendance_4h", "cassure_4h"]  # 20/11/2026 : Mathis ne garde que ces deux stratégies
     strategie = strategie if strategie in toutes else "toutes"
     cibles = toutes if strategie == "toutes" else [strategie]
     etats = donnees.setdefault("strategies", {})
+    for k in [k for k in etats if k not in toutes]:
+        del etats[k]  # stratégies supprimées : plus affichées dans l'appli
+    for k in ("rapide", "sous_bots", "petit_compte", "tendance_mois", "x5_or", "x5_argent", "cassure_tous",
+              "challenge", "challenge_tm", "challenge_suivi", "londres"):
+        donnees.pop(k, None)
+    dps = donnees.get("deals_par_strategie", {})
+    for k in [k for k in dps if k != "cassure"]:
+        del dps[k]
     etats.setdefault("tendance_4h", {}).setdefault("active", True)
-    etats.setdefault("rapide", {}).setdefault("active", RAPIDE_ACTIVE)
-    etats.setdefault("actions_etf", {}).setdefault("active", True)
     etats.setdefault("cassure_4h", {}).setdefault("active", True)
-    etats.setdefault("petit_compte", {}).setdefault("active", module_cassure.PETIT_COMPTE)
-    etats.setdefault("tendance_mois", {}).setdefault("active", module_tm.ACTIVE_PAR_DEFAUT)
-    etats.setdefault("x5_or", {}).setdefault("active", module_cassure.X5_OR)
-    etats.setdefault("x5_argent", {}).setdefault("active", module_cassure.X5_ARGENT)
-    etats.setdefault("cassure_tous", {}).setdefault("active", module_cassure.CASSURE_TOUS)
-    etats.setdefault("challenge", {}).setdefault("active", module_ch.ACTIVE_PAR_DEFAUT)
-    etats.setdefault("londres", {}).setdefault("active", module_lo.ACTIVE_PAR_DEFAUT)
-    noms = {"tendance_4h": "Tendance 4 h", "rapide": "Rapide 5 min", "actions_etf": "Sous-bots actions et ETF",
-            "cassure_4h": "Cassure 4 h (or et argent)", "petit_compte": "Petit compte risqué (100 €)",
-            "tendance_mois": "Tendance 1 mois (11 marchés)",
-            "x5_or": "Objectif x5 sur l'or (50 €)", "x5_argent": "Objectif x5 sur l'argent (50 €)",
-            "cassure_tous": "Cassure 4 h (tous les marchés)",
-            "challenge": "Challenge prop firm (10 000 € virtuels)",
-            "londres": "Cassure de Londres (USD/JPY)"}
+    noms = {"tendance_4h": "Tendance 4 h (Bitcoin)", "cassure_4h": "Cassure 4 h (or et argent)"}
     lancer = set(cibles) if action == "lancer" else set()
 
     api.connexion()
     positions = api.positions()
-    ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
-    ids_petit = set(donnees.get("deals_par_strategie", {}).get("petit_compte", []))
-    ids_tm = set(donnees.get("deals_par_strategie", {}).get("tendance_mois", []))
-    ids_x5 = set(donnees.get("deals_par_strategie", {}).get("x5_or", []))
-    ids_x5a = set(donnees.get("deals_par_strategie", {}).get("x5_argent", []))
-    ids_ct = set(donnees.get("deals_par_strategie", {}).get("cassure_tous", []))
-    ids_ch = module_ch.ids_challenge(donnees)
-    ids_lo = set(donnees.get("deals_par_strategie", {}).get("londres", []))
-    strat_de = lambda p: ("londres" if p["position"]["dealId"] in ids_lo else
-                          "challenge" if p["position"]["dealId"] in ids_ch else
-                          "tendance_mois" if p["position"]["dealId"] in ids_tm else
-                          "cassure_tous" if p["position"]["dealId"] in ids_ct else
-                          "x5_or" if p["position"]["dealId"] in ids_x5 else
-                          "x5_argent" if p["position"]["dealId"] in ids_x5a else
-                          "actions_etf" if p["market"]["epic"] in SOUS_BOTS else
-                          "petit_compte" if p["position"]["dealId"] in ids_petit else
-                          "cassure_4h" if p["market"]["epic"] in MARCHES_CASSURE else
-                          "rapide" if p["position"]["dealId"] in ids_rapide else "tendance_4h")
+    strat_de = lambda p: "cassure_4h" if p["market"]["epic"] in MARCHES_CASSURE else "tendance_4h"
 
     # --- Commandes envoyées depuis l'application (téléphone, tablette, PC) ---
     if action == "pause":
@@ -179,15 +140,6 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     eurusd = api.taux_eurusd()
     valeur = capital + float(compte0.get("balance", {}).get("profitLoss") or 0)
     garde = GardeFous(donnees, valeur, positions, eurusd)
-    # Devise de chaque marché ouvert hors dollar (DAX en €, USD/JPY en yens) : sinon le risque total serait faux
-    for p in positions:
-        epic = p["market"]["epic"]
-        if epic in module_tm.LISTE and epic not in garde.taux:
-            try:
-                regles = module_cassure.regles_marche(api, epic, donnees.setdefault("_cache_marches", {}))
-                garde.taux[epic] = module_cassure.taux_devise(regles, eurusd, float(p["position"]["level"]))
-            except Exception:
-                pass
     if action == "reprendre":
         garde.rearmer()
     instant = datetime.now(timezone.utc)
@@ -204,7 +156,6 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     # Qui a le droit de trader à ce tour ? (la pause globale passe avant tout, sauf « lancer »)
     complet_4h = ("tendance_4h" in lancer) or (not en_pause and etats["tendance_4h"]["active"])
     suivi_4h = complet_4h or not en_pause  # désactivée : plus d'entrées ni de sorties, mais le stop suiveur continue
-    tourne_rapide = ("rapide" in lancer) or (not en_pause and etats["rapide"]["active"])
     api.sans_couverture()  # le stop garanti est interdit en mode couverture (hedging)
     entrees = donnees.setdefault("entrees", {})  # bougie du dernier signal utilisé, par marché
     precedentes = donnees.get("analyses", {})
@@ -219,8 +170,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         prix_vente = bougies[-1]["closePrice"]["bid"] if bougies else None
         sig = signal["sig"]
 
-        mes_positions = [p for p in positions if p["market"]["epic"] == epic and p["position"]["dealId"] not in ids_rapide
-                         and p["position"]["dealId"] not in ids_tm]
+        mes_positions = [p for p in positions if p["market"]["epic"] == epic]
         voulu = signal["direction"]
         action = "Aucune action"
         deja_note = precedentes.get(epic, {}).get("explication") == signal["explication"]
@@ -291,15 +241,6 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                         action = "Refusé (garde-fous)"
                     else:
                         garde.enregistrer({"position": {"level": prix_entree, "stopLevel": prix_entree - distance, "size": taille}})
-                        # Sans mode couverture, un ordre inverse annulerait les positions de la rapide :
-                        # la stratégie 4 h est prioritaire, on ferme d'abord celles qui sont en sens inverse.
-                        for p in [p for p in positions if p["market"]["epic"] == epic
-                                  and p["position"]["dealId"] in ids_rapide and p["position"]["direction"] != voulu]:
-                            conf = api.fermer(p["position"]["dealId"])
-                            if conf.get("dealStatus") == "ACCEPTED":
-                                noter_fermeture(donnees, p, conf, maintenant(), "Fermée : la stratégie 4 h est prioritaire")
-                            noter("fermeture", epic, "Position de la stratégie rapide fermée : la stratégie 4 h, prioritaire, "
-                                  "ouvre dans l'autre sens.", "rapide")
                         # Deux moitiés : l'une avec un TP proche (on encaisse vite), l'autre sans TP
                         # qui suit la tendance avec le stop suiveur (on capte les gros mouvements).
                         moitie = round(math.floor(taille / 2 / PAS_TAILLE) * PAS_TAILLE, 4)
@@ -326,24 +267,9 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         clotures = list(sig.cloture) if sig is not None else [milieu(b["closePrice"]) for b in fermees]
         ema_r = [None if x != x else round(float(x), 2) for x in sig.ema_rapide] if sig is not None else []
         ema_l = [None if x != x else round(float(x), 2) for x in sig.ema_lente] if sig is not None else []
-        if tourne_rapide:
-            try:
-                positions_now = api.positions()
-                action_rapide = tour_rapide(api, donnees, epic, positions_now, capital, eurusd, noter_rapide, maintenant(), garde)
-            except Exception as e:  # une erreur de la rapide ne doit pas bloquer la stratégie 4 h
-                action_rapide = "Erreur"
-                noter_rapide("erreur", epic, f"[Rapide] {str(e)[:300]}")
-            if "rapide" in lancer:
-                noter_rapide("analyse", epic, f"Tour immédiat de la stratégie rapide. Décision : {action_rapide.lower()}.")
-        else:
-            action_rapide = "En pause (aucun ordre)" if en_pause else "Désactivée"
-        donnees.setdefault("rapide", {})["action"] = action_rapide
         etats["tendance_4h"].update({"nom": noms["tendance_4h"], "description": DESCRIPTIONS["tendance_4h"],
                                      "unite": UNITE, "risque_pct": RISQUE_PCT, "action": action, "tendance": voulu,
                                      "reglages": NOM_STRATEGIE})
-        etats["rapide"].update({"nom": noms["rapide"], "description": DESCRIPTIONS["rapide"], "unite": UNITE_RAPIDE,
-                                "risque_pct": RISQUE_RAPIDE_PCT, "action": action_rapide,
-                                "tendance": donnees.get("rapide", {}).get("tendance"), "reglages": NOM_RAPIDE})
 
         mettre_a_jour_prix(donnees, epic, prix)
         n = MAX_BOUGIES_GRAPHIQUE
@@ -360,23 +286,6 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
             },
         }
 
-    # --- Sous-bots actions et ETF : un par marché ---
-    actif_sb = ("actions_etf" in lancer) or (not en_pause and etats["actions_etf"]["active"])
-    if actif_sb or not en_pause:
-        noter_sb = lambda t, m, x: noter(t, m, x, "actions_etf")
-        # positions des autres stratégies (repérées par numéro) : les sous-bots ne les gèrent pas
-        ids_autres = {d for ids in donnees.get("deals_par_strategie", {}).values() for d in ids}
-        for epic in SOUS_BOTS:
-            try:
-                tour_sous_bot(api, donnees, epic, positions, capital, disponible, eurusd, noter_sb, garde,
-                              maintenant(), peut_entrer=actif_sb, autres_ids=ids_autres)
-            except Exception as e:  # un marché en erreur ne bloque pas les autres
-                donnees.setdefault("sous_bots", {}).setdefault(epic, {})["action"] = "Erreur"
-                noter_sb("erreur", epic, str(e)[:300])
-    etats["actions_etf"].update({"nom": noms["actions_etf"], "description": DESCRIPTION_SB, "unite": "HOUR_4",
-                                 "risque_pct": RISQUE_SOUS_BOT_PCT, "reglages": NOM_SB, "marches": SOUS_BOTS,
-                                 "action": "Actif" if actif_sb else ("En pause" if en_pause else "Désactivée")})
-
     # --- Cassure 4 h : un sous-bot par marché (or et argent) ---
     actif_c = ("cassure_4h" in lancer) or (not en_pause and etats["cassure_4h"]["active"])
     if actif_c or not en_pause:
@@ -392,162 +301,6 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                                 "risque_pct": RISQUE_CASSURE_PCT, "reglages": NOM_CASSURE, "marches": MARCHES_CASSURE,
                                 "action": "Actif" if actif_c else ("En pause" if en_pause else "Désactivée")})
 
-    # --- Cassure 4 h sur tous les autres marchés : petit risque, analyse du marché avant chaque entrée ---
-    actif_ct = ("cassure_tous" in lancer) or (not en_pause and etats["cassure_tous"]["active"])
-    if (actif_ct or not en_pause) and (actif_ct or ids_ct):
-        noter_ct = lambda t, m, x: noter(t, m, f"[Cassure tous marchés] {x}", "cassure_tous")
-        hors_liste_ct = sorted({p["market"]["epic"] for p in positions if p["position"]["dealId"] in ids_ct}
-                               - set(module_cassure.LISTE_TOUS))
-        for epic in module_cassure.LISTE_TOUS + hors_liste_ct:
-            try:
-                tour_cassure(api, donnees, epic, positions, capital, disponible, eurusd, noter_ct, garde,
-                             maintenant(), peut_entrer=actif_ct and epic in module_cassure.LISTE_TOUS, cle="cassure_tous",
-                             risque_pct=module_cassure.RISQUE_CASSURE_TOUS_PCT, analyse=module_cassure.analyse_cassure)
-            except Exception as e:
-                donnees.setdefault("cassure_tous", {}).setdefault(epic, {})["action"] = "Erreur"
-                noter_ct("erreur", epic, str(e)[:300])
-    etats["cassure_tous"].update({
-        "nom": noms["cassure_tous"], "unite": "HOUR_4", "risque_pct": module_cassure.RISQUE_CASSURE_TOUS_PCT,
-        "description": ("La cassure 4 h sur tous les autres marchés (actions, ETF, indices, devises, crypto, pétrole). "
-                        "Avant chaque entrée, le bot rejoue la stratégie sur les 12 derniers mois de ce marché et "
-                        "ne trade que s'il y a gagné. Petit risque."),
-        "reglages": NOM_CASSURE, "marches": module_cassure.LISTE_TOUS,
-        "action": "Actif" if actif_ct else ("En pause" if en_pause else "Désactivée")})
-
-    # --- Petit compte risqué : même cassure, capital virtuel de 100 €, risque élevé, suivi à part ---
-    actif_p = ("petit_compte" in lancer) or (not en_pause and etats["petit_compte"]["active"])
-    capital_p = module_cassure.capital_petit_compte(donnees)
-    if (actif_p or not en_pause) and (actif_p or ids_petit):
-        noter_p = lambda t, m, x: noter(t, m, f"[Petit compte] {x}", "petit_compte")
-        for epic in MARCHES_CASSURE:
-            try:
-                tour_cassure(api, donnees, epic, positions, capital_p, disponible, eurusd, noter_p, garde,
-                             maintenant(), peut_entrer=actif_p and capital_p > 0, cle="petit_compte",
-                             risque_pct=module_cassure.PETIT_RISQUE_PCT)
-            except Exception as e:
-                donnees.setdefault("petit_compte", {}).setdefault(epic, {})["action"] = "Erreur"
-                noter_p("erreur", epic, str(e)[:300])
-    etats["petit_compte"].update({
-        "nom": noms["petit_compte"], "unite": "HOUR_4", "risque_pct": module_cassure.PETIT_RISQUE_PCT,
-        "description": (f"Expérience : la cassure or + argent sur un capital VIRTUEL de "
-                        f"{module_cassure.PETIT_CAPITAL_DEPART:g} € avec {module_cassure.PETIT_RISQUE_PCT:g} % de "
-                        "risque par trade. Ordres réels sur le compte démo, résultats comptés à part."),
-        "reglages": NOM_CASSURE, "marches": MARCHES_CASSURE,
-        "capital_depart": module_cassure.PETIT_CAPITAL_DEPART,
-        "action": "Actif" if actif_p else ("En pause" if en_pause else "Désactivée")})
-
-    # --- Tendance 1 mois : un sous-bot par marché (12 marchés), décision sur les bougies jour ---
-    actif_tm = ("tendance_mois" in lancer) or (not en_pause and etats["tendance_mois"]["active"])
-    if (actif_tm or not en_pause) and (actif_tm or ids_tm):
-        noter_tm = lambda t, m, x: noter(t, m, f"[Tendance 1 mois] {x}", "tendance_mois")
-        # marchés de la liste + ceux où elle a encore une position (retirés de la liste : gérés jusqu'à la sortie)
-        hors_liste = sorted({p["market"]["epic"] for p in positions if p["position"]["dealId"] in ids_tm} - set(module_tm.LISTE))
-        for epic in module_tm.LISTE + hors_liste:
-            try:
-                tour_cassure(api, donnees, epic, positions, capital, disponible, eurusd, noter_tm, garde,
-                             maintenant(), peut_entrer=actif_tm and epic in module_tm.LISTE, cle="tendance_mois",
-                             risque_pct=module_tm.RISQUE_TENDANCE_MOIS_PCT, signaux=module_tm.signaux_tendance,
-                             unite=module_tm.UNITE, analyse=module_tm.analyse_tendance if module_tm.ANALYSER else None)
-            except Exception as e:
-                donnees.setdefault("tendance_mois", {}).setdefault(epic, {})["action"] = "Erreur"
-                noter_tm("erreur", epic, str(e)[:300])
-    etats["tendance_mois"].update({
-        "nom": noms["tendance_mois"], "unite": "DAY", "risque_pct": module_tm.RISQUE_TENDANCE_MOIS_PCT,
-        "description": ("Un sous-bot par marché (or, argent, ETH, Nasdaq, S&P 500, DAX, pétrole, 4 devises) : "
-                        "acheteur si le prix est plus haut qu'il y a 30 jours, vendeur sinon, stop garanti. "
-                        "Test 2 ans : +2 403 € puis +1 054 €, pire baisse -7 %, ~20 trades/mois."),
-        "reglages": module_tm.NOM, "marches": module_tm.LISTE,
-        "action": "Actif" if actif_tm else ("En pause" if en_pause else "Désactivée")})
-
-    # --- Objectif x5 (loterie) : capital virtuel de 50 € par marché, levier max, TP ≈ x5 / stop garanti ≈ -50 % ---
-    for sid, epic, lev, obj, stop, test in module_cassure.X5_ESSAIS:
-        ids_sid = set(donnees.get("deals_par_strategie", {}).get(sid, []))
-        actif_x5 = (sid in lancer) or (not en_pause and etats[sid]["active"])
-        capital_x5 = module_cassure.capital_petit_compte(donnees, sid, module_cassure.X5_CAPITAL_DEPART)
-        if (actif_x5 or not en_pause) and (actif_x5 or ids_sid):
-            noter_x5 = lambda t, m, x, sid=sid: noter(t, m, f"[Objectif x5] {x}", sid)
-            try:
-                # risque = levier × distance du stop (ex. 20 × 2,5 % = 50 % du capital virtuel si le stop est touché)
-                tour_cassure(api, donnees, epic, positions, capital_x5, disponible, eurusd, noter_x5, garde,
-                             maintenant(), peut_entrer=actif_x5 and capital_x5 > 5, cle=sid, risque_pct=lev * stop,
-                             stop_pct=stop, objectif_pct=obj, sortie_signal=False)
-            except Exception as e:
-                donnees.setdefault(sid, {}).setdefault(epic, {})["action"] = "Erreur"
-                noter_x5("erreur", epic, str(e)[:300])
-        etats[sid].update({
-            "nom": noms[sid], "unite": "HOUR_4", "risque_pct": lev * stop,
-            "description": (f"Loterie en démo : capital VIRTUEL de {module_cassure.X5_CAPITAL_DEPART:g} €, levier 1:"
-                            f"{lev:g}, entrée sur une cassure 4 h. Objectif +{obj:g} % du prix (x5), stop garanti "
-                            f"-{stop:g} % (moitié du capital). {test}"),
-            "reglages": NOM_CASSURE, "marches": [epic], "capital_depart": module_cassure.X5_CAPITAL_DEPART,
-            "action": "Actif" if actif_x5 else ("En pause" if en_pause else "Désactivée")})
-    # --- Challenge prop firm : capital virtuel de 10 000 €, +10 % pour réussir, -5 %/jour ou -10 % = raté ---
-    ids_ch = module_ch.ids_challenge(donnees)
-    actif_ch = ("challenge" in lancer) or (not en_pause and etats["challenge"]["active"])
-    ouverts_ch = [p for p in positions if p["position"]["dealId"] in ids_ch]
-    suivi_ch = donnees.get("challenge_suivi", {})
-    if (actif_ch or not en_pause) and (actif_ch or ouverts_ch):
-        noter_ch = lambda t, m, x: noter(t, m, f"[Challenge] {x}", "challenge")
-        try:
-            synchroniser(donnees, positions, maintenant())  # compter tout de suite les positions fermées par un stop
-            debut_avant = suivi_ch.get("debut")
-            suivi_ch = module_ch.suivre(donnees, positions, maintenant(), actif_ch)
-            if suivi_ch.get("statut") == "en cours" and suivi_ch.get("debut") != debut_avant:
-                noter_ch("commande", "", f"Tentative n° {suivi_ch['tentative']} lancée : {module_ch.CAPITAL:g} € "
-                         f"virtuels, objectif +{module_ch.OBJECTIF_PCT:g} %, perte max {module_ch.PERTE_JOUR_PCT:g} % "
-                         f"par jour et {module_ch.PERTE_MAX_PCT:g} % au total.")
-            if suivi_ch.get("a_fermer"):
-                for p in ouverts_ch:
-                    conf = api.fermer(p["position"]["dealId"])
-                    if conf.get("dealStatus") == "ACCEPTED":
-                        noter_fermeture(donnees, p, conf, maintenant(), f"Fin du challenge ({suivi_ch['raison']})")
-                b = module_ch.bilan(suivi_ch)
-                noter_ch("commande", "", f"Tentative n° {suivi_ch['tentative']} {suivi_ch['statut'].upper()} : "
-                         f"{suivi_ch['raison']} (valeur {suivi_ch['valeur']:.2f} €). Bilan : {b['reussies']} réussie(s), "
-                         f"{b['ratees']} ratée(s). Nouvelle tentative demain.")
-                suivi_ch["a_fermer"] = False
-                positions = api.positions()
-            en_cours = suivi_ch.get("statut") == "en cours"
-            capital_ch = float(suivi_ch.get("valeur") or module_ch.CAPITAL)
-            for epic in MARCHES_CASSURE:
-                tour_cassure(api, donnees, epic, positions, capital_ch, disponible, eurusd, noter_ch, garde,
-                             maintenant(), peut_entrer=actif_ch and en_cours, cle="challenge",
-                             risque_pct=module_ch.RISQUE_CASSURE_PCT)
-            for epic in module_tm.LISTE:
-                tour_cassure(api, donnees, epic, positions, capital_ch, disponible, eurusd, noter_ch, garde,
-                             maintenant(), peut_entrer=actif_ch and en_cours, cle="challenge_tm",
-                             risque_pct=module_ch.RISQUE_TENDANCE_PCT, signaux=module_tm.signaux_tendance,
-                             unite=module_tm.UNITE, analyse=module_tm.analyse_tendance if module_tm.ANALYSER else None)
-        except Exception as e:
-            noter_ch("erreur", "", str(e)[:300])
-    etats["challenge"].update({
-        "nom": noms["challenge"], "unite": "HOUR_4", "risque_pct": module_ch.RISQUE_CASSURE_PCT,
-        "description": (f"Faux challenge de prop firm en direct sur le compte démo : {module_ch.CAPITAL:g} € virtuels, "
-                        f"réussi à +{module_ch.OBJECTIF_PCT:g} %, raté à -{module_ch.PERTE_JOUR_PCT:g} % dans une journée "
-                        f"ou -{module_ch.PERTE_MAX_PCT:g} % au total. Joue la cassure 4 h (or, argent) et la tendance "
-                        "1 mois (11 marchés). Une nouvelle tentative démarre le lendemain de chaque fin."),
-        "reglages": NOM_CASSURE, "marches": sorted(set(MARCHES_CASSURE) | set(module_tm.LISTE)),
-        "capital_depart": module_ch.CAPITAL,
-        "action": "Actif" if actif_ch else ("En pause" if en_pause else "Désactivée")})
-    # --- Cassure de Londres (USD/JPY) : zone de la nuit 0-7 h UTC, entrée 7-11 h, sortie 20 h ---
-    ids_lo = set(donnees.get("deals_par_strategie", {}).get("londres", []))
-    actif_lo = ("londres" in lancer) or (not en_pause and etats["londres"]["active"])
-    if (actif_lo or not en_pause) and (actif_lo or any(p["position"]["dealId"] in ids_lo for p in positions)):
-        noter_lo = lambda t, m, x: noter(t, m, f"[Londres] {x}", "londres")
-        for epic in module_lo.LISTE:
-            try:
-                module_lo.tour_londres(api, donnees, epic, positions, capital, disponible, eurusd, noter_lo, garde,
-                                       maintenant(), peut_entrer=actif_lo)
-            except Exception as e:
-                donnees.setdefault("londres", {}).setdefault(epic, {})["action"] = "Erreur"
-                noter_lo("erreur", epic, str(e)[:300])
-    etats["londres"].update({
-        "nom": noms["londres"], "unite": "HOUR", "risque_pct": module_lo.RISQUE_LONDRES_PCT,
-        "description": ("Note le plus haut et le plus bas de la nuit (1 h-8 h à Paris). Si le prix en sort entre 8 h et "
-                        "12 h, elle suit le mouvement, stop garanti à la largeur de la zone, et ferme tout à 21 h. "
-                        "Test 2 ans sur 100 € à 5 % : +42 € puis +71 €, pire baisse -29 %, ~12 trades/mois."),
-        "reglages": module_lo.NOM, "marches": module_lo.LISTE,
-        "action": "Actif" if actif_lo else ("En pause" if en_pause else "Désactivée")})
     donnees.pop("_cache_marches", None)
 
     # État final du compte, après les ordres
@@ -556,38 +309,8 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     positions = api.positions()
     api.deconnexion()
     synchroniser(donnees, positions, maintenant())
-    ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
-    etats["petit_compte"]["capital"] = module_cassure.capital_petit_compte(donnees)
-    for sid, *_ in module_cassure.X5_ESSAIS:
-        etats[sid]["capital"] = module_cassure.capital_petit_compte(donnees, sid, module_cassure.X5_CAPITAL_DEPART)
-    ids_petit = set(donnees.get("deals_par_strategie", {}).get("petit_compte", []))
-    ids_tm = set(donnees.get("deals_par_strategie", {}).get("tendance_mois", []))
-    ids_ch = module_ch.ids_challenge(donnees)
-    suivi_ch = donnees.get("challenge_suivi", {})
-    if suivi_ch.get("statut") == "en cours":
-        module_ch.suivre(donnees, positions, maintenant(), True)  # valeur à jour après les ordres de ce tour
-    etats["challenge"].update({"capital": suivi_ch.get("valeur", module_ch.CAPITAL), "suivi": {
-        k: suivi_ch.get(k) for k in ("tentative", "statut", "raison", "debut", "debut_jour", "plus_bas", "plus_haut")},
-        "tentatives": suivi_ch.get("tentatives", [])[-20:], **module_ch.bilan(suivi_ch)})
-    ids_lo = set(donnees.get("deals_par_strategie", {}).get("londres", []))
     for o in donnees.get("ordres", []):
-        if o["id"] in ids_ch:
-            o["strategie"] = "challenge"
-        if o["id"] in ids_lo:
-            o["strategie"] = "londres"
-        if o["id"] in ids_petit:
-            o["strategie"] = "petit_compte"
-        if o["id"] in ids_tm:
-            o["strategie"] = "tendance_mois"
-        if o["id"] in set(donnees.get("deals_par_strategie", {}).get("cassure_tous", [])):
-            o["strategie"] = "cassure_tous"
-        for sid, *_ in module_cassure.X5_ESSAIS:
-            if o["id"] in set(donnees.get("deals_par_strategie", {}).get(sid, [])):
-                o["strategie"] = sid
-        if "strategie" not in o:
-            o["strategie"] = ("actions_etf" if o["marche"] in SOUS_BOTS else
-                              "cassure_4h" if o["marche"] in MARCHES_CASSURE else
-                              "rapide" if o["id"] in ids_rapide else "tendance_4h")
+        o.setdefault("strategie", "cassure_4h" if o["marche"] in MARCHES_CASSURE else "tendance_4h")
 
     donnees["compte"] = {
         "nom": compte.get("accountName", "Démo"),
@@ -621,7 +344,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
 def principal() -> int:
     donnees = charger()
     donnees["reglages"] = {"marches": MARCHES, "unite": UNITE, "risque_pct": RISQUE_PCT,
-                           "strategie": NOM_STRATEGIE, "ema": [EMA_RAPIDE, EMA_LENTE], "strategie_rapide": NOM_RAPIDE if RAPIDE_ACTIVE else None}
+                           "strategie": NOM_STRATEGIE, "ema": [EMA_RAPIDE, EMA_LENTE], "strategie_rapide": None}
     donnees.setdefault("journal", [])
     code = 0
 
