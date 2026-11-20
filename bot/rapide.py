@@ -19,6 +19,7 @@ import math
 import os
 import statistics
 
+from bot.empilement import peut_empiler
 from bot.registre import noter_fermeture
 from bot.strategie import adx, bougies_vers_df, ema, milieu
 from bot.cassure import regles_marche, taux_devise
@@ -28,6 +29,7 @@ UNITE_RAPIDE = "MINUTE_5"
 EMA_R, EMA_L = 9, 50
 STOP_PCT = 1.0
 SUIVI_RAPIDE_PCT = float(os.getenv("SUIVI_RAPIDE_PCT", "2"))  # "0" = pas de stop suiveur
+EMPILER_RAPIDE = int(os.getenv("EMPILER_RAPIDE", "1"))  # positions max par marché (empilement)
 RISQUE_RAPIDE_PCT = float(os.getenv("RISQUE_RAPIDE_PCT", "1"))
 LISTE = [m.strip() for m in os.getenv("RAPIDE_MARCHES", "GOLD,SILVER").split(",") if m.strip()]
 ADX_RAPIDE_MIN = float(os.getenv("ADX_RAPIDE_MIN", "20"))  # 0 = pas de filtre ADX
@@ -108,8 +110,14 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
         return (f"À l'écart : signal 5 min en {mots[signal]}, mais tendance 1 h en {mots[t1]} "
                 f"et 4 h en {mots[t4]} (pas d'accord)")
     gardees = [p for p in miennes if p["position"]["direction"] == voulu]
+    empile = ""
     if gardees:
-        return suivre_stop(api, gardees, bougies[-1]["closePrice"], epic, noter)
+        res = suivre_stop(api, gardees, bougies[-1]["closePrice"], epic, noter)
+        px = bougies[-1]["closePrice"]["ask" if voulu == "BUY" else "bid"]
+        ok_e, empile = peut_empiler(gardees, voulu, px, px * STOP_PCT / 100, EMPILER_RAPIDE)
+        marche["empilement"] = empile
+        if not ok_e:
+            return res
 
     # Sans mode couverture, un ordre inverse fermerait les positions de la stratégie 4 h : on attend.
     autres = [p for p in positions if p["market"]["epic"] == epic and p["position"]["dealId"] not in mes_ids]
@@ -153,7 +161,7 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
         deal = id_position(conf)
         if deal:
             etat["deals"].append(deal)
-        noter("ordre", epic, f"[Rapide] {mot} de {taille} à {float(conf.get('level') or prix):.2f}, "
+        noter("ordre", epic, f"[Rapide] {'Empilement (' + empile + ') : ' if empile else ''}{mot} de {taille} à {float(conf.get('level') or prix):.2f}, "
               f"stop garanti à {distance:.2f} $.")
         return f"{mot} de {taille}"
     noter("erreur", epic, f"[Rapide] Ordre {mot} refusé : {conf.get('reason', conf.get('dealStatus', '?'))}")

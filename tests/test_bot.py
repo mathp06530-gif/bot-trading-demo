@@ -414,3 +414,27 @@ def test_cassure_empile_quand_le_prix_avance(tmp_path, monkeypatch):
         vus.append(len(faux.ouvertes))
     assert 2 in vus and all(o[1] == "BUY" for o in faux.ouvertes)
     assert len(faux.ouvertes) == 3  # jamais plus de 3
+
+
+def test_rapide_empile_quand_le_prix_avance(tmp_path, monkeypatch):
+    from bot import rapide
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "MARCHES", [])
+    monkeypatch.setattr(rapide, "LISTE", ["GOLD"])
+    monkeypatch.setattr(rapide, "FILTRE_BOLLINGER", False)
+    monkeypatch.setattr(rapide, "ADX_RAPIDE_MIN", 0)
+    monkeypatch.setattr(rapide, "EMPILER_RAPIDE", 3)
+    monkeypatch.setattr(rapide, "tendances_superieures", lambda api, epic: ("BUY", "BUY"))
+    debut, _ = serie_achat()
+    faux = FauxCapital(debut, [100 + i for i in range(80)])
+    d = {"strategies": {"rapide": {"active": True}}}
+    main.un_tour(d, faux)
+    main.un_tour(d, faux)
+    assert len(faux.ouvertes) == 1  # prix inchangé : pas de 2e position
+    faux.prix_rapide = faux.prix_rapide + [180, 181, 182]  # +2 R environ
+    main.un_tour(d, faux)
+    assert len(faux.ouvertes) == 2 and any("Empilement" in l["texte"] for l in d["journal"])
+    for k in range(10):
+        faux.prix_rapide = faux.prix_rapide + [faux.prix_rapide[-1] + 5]
+        main.un_tour(d, faux)
+    assert len(faux.ouvertes) == 3
