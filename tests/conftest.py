@@ -27,3 +27,10 @@ def sans_tendance_mois_par_defaut(monkeypatch):
     """Les anciens tests ne voient pas la stratégie tendance 1 mois (testée à part)."""
     from bot import tendance_mois
     monkeypatch.setattr(tendance_mois, "LISTE", [])
+
+
+@pytest.fixture(autouse=True)
+def sans_cassure_tous_par_defaut(monkeypatch):
+    """Les anciens tests ne voient pas la cassure « tous marchés » (testée à part)."""
+    from bot import cassure
+    monkeypatch.setattr(cassure, "LISTE_TOUS", [])
