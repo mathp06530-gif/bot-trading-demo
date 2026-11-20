@@ -22,6 +22,7 @@ import os
 import numpy as np
 import pandas as pd
 
+from bot.empilement import peut_empiler
 from bot.registre import noter_fermeture
 from bot.strategie import atr, bougies_vers_df, ema, milieu
 
@@ -132,9 +133,13 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
         noter("fermeture", epic, f"{raison} : position fermée (gain/perte : {p['position'].get('upl', 0):.2f}).")
         action = "Position fermée"
     miennes = [p for p in miennes if p["position"]["direction"] == voulu or not sortie_signal]
+    empile = ""
     if miennes:
-        etat["action"] = "Position conservée"
-        return etat
+        ok_e, empile = peut_empiler(miennes, voulu, prix_achat if voulu == "BUY" else prix_vente, float(der.stop))
+        etat["empilement"] = empile
+        if not (ok_e and peut_entrer and regles["statut"] == "TRADEABLE"):
+            etat["action"] = "Position conservée"
+            return etat
 
     # 2) Entrée, avec toutes les vérifications
     entrees = donnees.setdefault("entrees", {})
@@ -144,9 +149,9 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
         refus = None
         if regles["statut"] != "TRADEABLE":
             refus = "marché fermé"
-        elif j < len(c) - 2:
+        elif not empile and j < len(c) - 2:
             refus = f"cassure trop ancienne (depuis le {debut[:16]})"
-        elif entrees.get(cle_signal) == debut:
+        elif not empile and entrees.get(cle_signal) == debut:
             refus = "signal déjà utilisé"
         if not refus and analyse is not None:
             ok_analyse, texte_analyse = analyse(bougies_vers_df(bougies[:-1]))
@@ -159,7 +164,7 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
                  and p["position"]["dealId"] not in tous_deals for p in positions):
             # compte sans couverture : un ordre opposé fermerait la position d'une autre stratégie
             refus = "une autre stratégie a une position dans l'autre sens sur ce marché"
-        elif abs(prix - float(der.cloture)) > float(der.atr):
+        elif not empile and abs(prix - float(der.cloture)) > float(der.atr):
             refus = "le prix a trop bougé depuis le signal (écart > 1 ATR)"
         mini = prix * (regles["stop_min_pct"] or 0) / 100 or (regles["stop_min_points"] or 0)
         distance = max(prix * stop_pct / 100 if stop_pct else float(der.stop), mini * 1.05)
@@ -195,6 +200,8 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
                                                 "direction": voulu}})
                 cote = "au-dessus du plus haut" if voulu == "BUY" else "sous le plus bas"
                 pourquoi = textes.get("pourquoi") or f"Cassure : clôture {cote} des {ENTREE} dernières bougies de 4 h"
+                if empile:
+                    pourquoi = f"Empilement ({empile})"
                 noter("ordre", epic, f"{pourquoi} : {mot} de {taille} "
                       f"à {float(conf.get('level') or prix):.2f}, stop garanti à {distance:.2f}.")
                 action = f"{mot} de {taille}"
