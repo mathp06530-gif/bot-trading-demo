@@ -13,6 +13,12 @@ Règles, sur des bougies de 5 minutes (prix milieu) :
   - STOP SUIVEUR à SUIVI_RAPIDE_PCT (2 %) derrière le prix : quand le trade gagne beaucoup, le stop
     le suit pour garder une partie du gain (il ne recule jamais). Backtest 90 jours : résultat
     quasi identique (+14 € au lieu de +15 € sur l'examen), mais protège les gros mouvements.
+  - FILTRE BOLLINGER (ajouté le 20/11/2026 à la demande de Mathis) : on n'OUVRE une position que si
+    les bandes de Bollinger (20 bougies, 2 écarts-types) s'élargissent, c.-à-d. largeur actuelle
+    > largeur médiane des 100 dernières bougies (le marché se met à bouger). 15 indicateurs testés
+    (RSI, MACD, ADX, stochastique, CCI, volume…) sur 90 jours : aucun n'améliore nettement l'examen ;
+    celui-ci réduit les pertes de la 1re moitié (-245 € -> -112 €) et ne change rien à l'examen
+    (+20 € -> +18 €), avec ~25 % de trades en moins.
   - Les positions de cette stratégie sont repérées par leur numéro (dealId), le bot ne les
     mélange jamais avec celles de la stratégie 4 h.
   - Le compte exige un stop GARANTI, interdit en mode couverture (hedging) : les deux stratégies
@@ -21,6 +27,7 @@ Règles, sur des bougies de 5 minutes (prix milieu) :
 """
 import math
 import os
+import statistics
 
 from bot.registre import noter_fermeture
 from bot.strategie import ema
@@ -31,7 +38,8 @@ EMA_R, EMA_L = 9, 50
 STOP_PCT = 1.0
 SUIVI_RAPIDE_PCT = float(os.getenv("SUIVI_RAPIDE_PCT", "2"))  # "0" = pas de stop suiveur
 RISQUE_RAPIDE_PCT = float(os.getenv("RISQUE_RAPIDE_PCT", "0.05"))
-NOM = f"Rapide 5 min : EMA {EMA_R}/{EMA_L} dans le sens des tendances 1 h et 4 h, stop {STOP_PCT:g} %, suiveur {SUIVI_RAPIDE_PCT:g} %, risque {RISQUE_RAPIDE_PCT:g} % (expérimentale)"
+FILTRE_BOLLINGER = os.getenv("FILTRE_BOLLINGER", "oui").strip().lower() in ("oui", "1", "true", "on")
+NOM = f"Rapide 5 min : EMA {EMA_R}/{EMA_L} dans le sens des tendances 1 h et 4 h, {", Bollinger qui s'élargissent" if FILTRE_BOLLINGER else ""}, stop {STOP_PCT:g} %, suiveur {SUIVI_RAPIDE_PCT:g} %, risque {RISQUE_RAPIDE_PCT:g} % (expérimentale)"
 
 
 def decider_rapide(clotures: list[float]) -> str | None:
@@ -39,6 +47,19 @@ def decider_rapide(clotures: list[float]) -> str | None:
     if len(clotures) < EMA_L + 2 or r[-1] is None or l[-1] is None:
         return None
     return "BUY" if r[-1] > l[-1] else "SELL"
+
+
+def bollinger_relatif(clotures: list[float], n: int = 20, fenetre: int = 100) -> float | None:
+    """Largeur des bandes de Bollinger (4 écarts-types / moyenne) divisée par sa médiane des `fenetre`
+    dernières bougies. > 1 : le marché s'agite plus que d'habitude."""
+    if len(clotures) < n + fenetre:
+        return None
+    largeurs = []
+    for fin in range(len(clotures) - fenetre + 1, len(clotures) + 1):
+        x = clotures[fin - n:fin]
+        largeurs.append(4 * statistics.stdev(x) / statistics.fmean(x))
+    mediane = statistics.median(largeurs)
+    return largeurs[-1] / mediane if mediane else None
 
 
 def sens_ema(clotures: list[float], rapide: int, lente: int) -> str | None:
@@ -98,6 +119,12 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
     autres = [p for p in positions if p["market"]["epic"] == epic and p["position"]["dealId"] not in mes_ids]
     if any(p["position"]["direction"] != voulu for p in autres):
         return "En attente : la stratégie 4 h est en position inverse"
+
+    if FILTRE_BOLLINGER:
+        bb = bollinger_relatif(clotures)
+        etat["filtre"]["bollinger"] = None if bb is None else round(bb, 2)
+        if bb is None or bb <= 1:
+            return "En attente : marché trop calme (bandes de Bollinger étroites)"
 
     prix = bougies[-1]["closePrice"]["ask" if voulu == "BUY" else "bid"]
     distance = prix * STOP_PCT / 100

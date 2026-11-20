@@ -3,6 +3,8 @@ import json
 import math
 import os
 
+import pytest
+
 from datetime import datetime, timedelta, timezone
 
 import bot.main as main
@@ -444,3 +446,12 @@ def test_petit_compte_taille_sur_capital_virtuel(tmp_path, monkeypatch):
     assert d["deals_par_strategie"] == {"cassure": [d1], "petit_compte": [d2]}
     assert {o["id"]: o["strategie"] for o in d["ordres"]} == {d1: "cassure_4h", d2: "petit_compte"}
     assert d["strategies"]["petit_compte"]["capital"] == 100 + 1.5  # résultat en cours du faux courtier
+
+
+def test_rapide_filtre_bollinger():
+    """Le filtre Bollinger calcule comme le backtest, et bloque l'entrée quand le marché est calme."""
+    calme = [100 + (i % 2) * 0.1 for i in range(200)]
+    agite = calme[:-20] + [100 + (i % 2) * 3 for i in range(20)]
+    assert rapide.bollinger_relatif(calme) == pytest.approx(1.0)
+    assert rapide.bollinger_relatif(agite) > 1.5
+    assert rapide.bollinger_relatif(calme[:50]) is None
