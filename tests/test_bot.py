@@ -346,3 +346,16 @@ def test_rapide_or_achete_dans_le_sens_des_tendances(tmp_path, monkeypatch):
     faux.prix_rapide = faux.prix_rapide + [180 - 3 * i for i in range(60)]
     main.un_tour(d, faux)
     assert "d0" in faux.fermees
+
+
+def test_repartir_du_test_ne_compte_pas_le_retrait():
+    d = {"historique": [{"date": "2026-11-19T17:48:29Z", "valeur": 21000.0}, {"date": "2026-11-20T16:20:30Z", "valeur": 98.21}],
+         "historique_jour": {"2026-11-19": 21069.4}, "valeur_depart": 21000.0,
+         "ordres": [{"id": "a", "statut": "ferme", "ouvert_le": "2026-11-19T18:00:00Z", "resultat": -5}],
+         "garde_fous": {"jour": "2026-11-20", "debut_jour": 21069, "plus_haut": 21000, "coupe_circuit": True}}
+    main.repartir_du_test(d)
+    assert d["valeur_depart"] == 98.21 and d["historique_jour"] == {} and len(d["historique"]) == 1
+    assert d["ordres"] == [] and d["ordres_avant_test"][0]["id"] == "a"
+    assert d["garde_fous"]["plus_haut"] == 0 and not d["garde_fous"]["coupe_circuit"] and "jour" not in d["garde_fous"]
+    main.repartir_du_test(d)  # une seule fois
+    assert len(d["ordres_avant_test"]) == 1
