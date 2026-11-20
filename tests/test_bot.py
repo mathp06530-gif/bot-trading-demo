@@ -317,10 +317,32 @@ def test_commandes_par_strategie(tmp_path, monkeypatch):
     monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
     debut, _ = serie_achat()
     faux = FauxCapital(debut)
-    d = {"strategies": {"rapide": {"active": True}, "londres": {"active": True}}, "londres": {}}
+    d = {"strategies": {"rapide": {"active": False}, "londres": {"active": True}}, "londres": {}}
     main.un_tour(d, faux, "desactiver", "tendance_4h")
-    assert set(d["strategies"]) == {"tendance_4h", "cassure_4h"}  # anciennes stratégies supprimées
+    assert set(d["strategies"]) == {"tendance_4h", "cassure_4h", "rapide"}  # anciennes stratégies supprimées
     assert "londres" not in d
     assert d["strategies"]["tendance_4h"]["active"] is False and not faux.ouvertes
     main.un_tour(d, faux, "activer", "tendance_4h")
     assert d["strategies"]["tendance_4h"]["active"] and len(faux.ouvertes) == 2
+
+
+def test_rapide_or_achete_dans_le_sens_des_tendances(tmp_path, monkeypatch):
+    from bot import rapide
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "MARCHES", [])
+    monkeypatch.setattr(rapide, "LISTE", ["GOLD"])
+    monkeypatch.setattr(rapide, "FILTRE_BOLLINGER", False)
+    monkeypatch.setattr(rapide, "ADX_RAPIDE_MIN", 0)
+    monkeypatch.setattr(rapide, "tendances_superieures", lambda api, epic: ("BUY", "BUY"))
+    debut, _ = serie_achat()
+    faux = FauxCapital(debut, [100 + i for i in range(80)])
+    d = {"strategies": {"rapide": {"active": True}}, "rapide": {"deals": ["vieux_btc"]}}
+    main.un_tour(d, faux)
+    assert [(o[1], faux.epics[o[0]]) for o in faux.ouvertes] == [("BUY", "GOLD")]
+    assert d["rapide"]["deals"] == ["d0"] and d["strategies"]["rapide"]["active"]
+    assert d["ordres"][0]["strategie"] == "rapide"
+    assert d["rapide"]["marches"]["GOLD"]["action"].startswith("ACHAT")
+    # le prix se retourne : la rapide ferme sa position
+    faux.prix_rapide = faux.prix_rapide + [180 - 3 * i for i in range(60)]
+    main.un_tour(d, faux)
+    assert "d0" in faux.fermees

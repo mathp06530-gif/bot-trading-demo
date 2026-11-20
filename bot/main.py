@@ -13,6 +13,7 @@ from pathlib import Path
 
 from bot.capital import CapitalDemo, ErreurCapital
 from bot.garde_fous import GardeFous
+from bot import rapide as module_rapide
 from bot import actualites
 from bot.cassure import LISTE as MARCHES_CASSURE
 from bot.cassure import NOM as NOM_CASSURE
@@ -79,13 +80,13 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
 
     noter_4h = lambda t, m, x: noter(t, m, x, "tendance_4h")
 
-    toutes = ["tendance_4h", "cassure_4h"]  # 20/11/2026 : Mathis ne garde que ces deux stratégies
+    toutes = ["tendance_4h", "cassure_4h", "rapide"]  # 20/11/2026 : test de 2 semaines de ces 3 stratégies
     strategie = strategie if strategie in toutes else "toutes"
     cibles = toutes if strategie == "toutes" else [strategie]
     etats = donnees.setdefault("strategies", {})
     for k in [k for k in etats if k not in toutes]:
         del etats[k]  # stratégies supprimées : plus affichées dans l'appli
-    for k in ("rapide", "sous_bots", "petit_compte", "tendance_mois", "x5_or", "x5_argent", "cassure_tous",
+    for k in ("sous_bots", "petit_compte", "tendance_mois", "x5_or", "x5_argent", "cassure_tous",
               "challenge", "challenge_tm", "challenge_suivi", "londres"):
         donnees.pop(k, None)
     dps = donnees.get("deals_par_strategie", {})
@@ -93,12 +94,18 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         del dps[k]
     etats.setdefault("tendance_4h", {}).setdefault("active", True)
     etats.setdefault("cassure_4h", {}).setdefault("active", True)
-    noms = {"tendance_4h": "Tendance 4 h (Bitcoin)", "cassure_4h": "Cassure 4 h (or et argent)"}
+    etats.setdefault("rapide", {}).setdefault("active", module_rapide.ACTIVE)
+    if set(donnees.get("rapide", {}).get("deals", [])) and "marches" not in donnees["rapide"]:
+        donnees["rapide"] = {"deals": []}  # ancienne rapide du Bitcoin : on repart de zéro
+    noms = {"tendance_4h": "Tendance 4 h (Bitcoin)", "cassure_4h": "Cassure 4 h (or et argent)",
+            "rapide": "Rapide 5 min (or et argent)"}
     lancer = set(cibles) if action == "lancer" else set()
 
     api.connexion()
     positions = api.positions()
-    strat_de = lambda p: "cassure_4h" if p["market"]["epic"] in MARCHES_CASSURE else "tendance_4h"
+    ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
+    strat_de = lambda p: ("rapide" if p["position"]["dealId"] in ids_rapide else
+                          "cassure_4h" if p["market"]["epic"] in MARCHES_CASSURE else "tendance_4h")
 
     # --- Commandes envoyées depuis l'application (téléphone, tablette, PC) ---
     if action == "pause":
@@ -267,6 +274,12 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         clotures = list(sig.cloture) if sig is not None else [milieu(b["closePrice"]) for b in fermees]
         ema_r = [None if x != x else round(float(x), 2) for x in sig.ema_rapide] if sig is not None else []
         ema_l = [None if x != x else round(float(x), 2) for x in sig.ema_lente] if sig is not None else []
+        if sig is not None:
+            der_sig = sig.iloc[-1]
+            etats["tendance_4h"]["indicateurs"] = {
+                "Prix": round(float(der_sig.cloture), 2), f"EMA {EMA_RAPIDE}": round(float(der_sig.ema_rapide), 2),
+                f"EMA {EMA_LENTE}": round(float(der_sig.ema_lente), 2), "ADX (force)": round(float(der_sig.adx), 1),
+                "ATR (agitation)": round(float(der_sig.atr), 2)}
         etats["tendance_4h"].update({"nom": noms["tendance_4h"], "description": DESCRIPTIONS["tendance_4h"],
                                      "unite": UNITE, "risque_pct": RISQUE_PCT, "action": action, "tendance": voulu,
                                      "reglages": NOM_STRATEGIE})
@@ -301,6 +314,24 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                                 "risque_pct": RISQUE_CASSURE_PCT, "reglages": NOM_CASSURE, "marches": MARCHES_CASSURE,
                                 "action": "Actif" if actif_c else ("En pause" if en_pause else "Désactivée")})
 
+    # --- Rapide 5 min sur l'or et l'argent : EMA 9/50 dans le sens des tendances 1 h et 4 h ---
+    actif_r = ("rapide" in lancer) or (not en_pause and etats["rapide"]["active"])
+    if actif_r:
+        noter_r = lambda t, m, x: noter(t, m, x, "rapide")
+        for epic in module_rapide.LISTE:
+            try:
+                res = module_rapide.tour_rapide(api, donnees, epic, api.positions(), capital, eurusd, noter_r,
+                                                maintenant(), garde)
+            except Exception as e:  # un marché en erreur ne bloque pas les autres
+                res = "Erreur"
+                noter_r("erreur", epic, f"[Rapide] {str(e)[:300]}")
+            donnees.setdefault("rapide", {}).setdefault("marches", {}).setdefault(epic, {})["action"] = res
+    etats["rapide"].update({"nom": noms["rapide"], "unite": module_rapide.UNITE_RAPIDE,
+                            "risque_pct": module_rapide.RISQUE_RAPIDE_PCT, "reglages": module_rapide.NOM,
+                            "marches": module_rapide.LISTE,
+                            "description": ("Trade souvent sur des bougies de 5 min, sur l'or et l'argent, seulement dans le "
+                                            "sens des tendances 1 h et 4 h. Expérience : perdante en backtest à cause des frais."),
+                            "action": "Actif" if actif_r else ("En pause" if en_pause else "Désactivée")})
     donnees.pop("_cache_marches", None)
 
     # État final du compte, après les ordres
@@ -309,7 +340,12 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     positions = api.positions()
     api.deconnexion()
     synchroniser(donnees, positions, maintenant())
+    ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
     for o in donnees.get("ordres", []):
+        if o["id"] in ids_rapide:
+            o["strategie"] = "rapide"
+        elif o.get("strategie") == "rapide" and o["marche"] not in module_rapide.LISTE:
+            o["strategie"] = "rapide_btc"  # ancienne rapide du Bitcoin (avant le 20/11/2026)
         o.setdefault("strategie", "cassure_4h" if o["marche"] in MARCHES_CASSURE else "tendance_4h")
 
     donnees["compte"] = {

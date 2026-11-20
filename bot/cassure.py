@@ -119,7 +119,8 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
     if "momentum_pct" in textes:
         etat["momentum_pct"] = textes["momentum_pct"]
     etat.update({"tendance": voulu, "prix": (prix_achat + prix_vente) / 2, "plus_haut_20": round(float(der.haut), 2),
-                 "plus_bas_20": round(float(der.bas), 2), "ema200": round(float(der.ema), 2)})
+                 "plus_bas_20": round(float(der.bas), 2), "ema200": round(float(der.ema), 2),
+                 "atr": round(float(der.atr), 2)})
     action = "Aucune action"
 
     # 1) Sortie : fin de la cassure ou cassure inverse
