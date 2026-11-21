@@ -1114,7 +1114,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-21T07:20:24Z",
+ "derniere_execution": "2026-11-21T07:25:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -1859,6 +1859,10 @@
   {
    "date": "2026-11-21T07:20:24Z",
    "valeur": 97.91
+  },
+  {
+   "date": "2026-11-21T07:25:24Z",
+   "valeur": 97.91
   }
  ],
  "compte": {
@@ -2397,7 +2401,7 @@
     "titre": "FOMC Meeting Minutes"
    }
   ],
-  "lu_le": "2026-11-21T06:25:22.200787+00:00",
+  "lu_le": "2026-11-21T07:25:22.247140+00:00",
   "pause": null,
   "prochaines": []
  },
