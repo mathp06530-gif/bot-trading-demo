@@ -1100,7 +1100,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-20T23:55:24Z",
+ "derniere_execution": "2026-11-21T00:00:23Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -1485,6 +1485,10 @@
   {
    "date": "2026-11-20T23:55:24Z",
    "valeur": 97.91
+  },
+  {
+   "date": "2026-11-21T00:00:23Z",
+   "valeur": 97.91
   }
  ],
  "compte": {
@@ -1498,7 +1502,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 58797.05,
+   "prix": 58750.25,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 50) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -1919,7 +1923,8 @@
   }
  ],
  "historique_jour": {
-  "2026-11-20": 97.91
+  "2026-11-20": 97.91,
+  "2026-11-21": 97.91
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -1992,7 +1997,7 @@
   }
  },
  "garde_fous": {
-  "debut_jour": 98.21,
+  "debut_jour": 97.91,
   "plus_haut": 99.19,
   "regles": {
    "perte_max_pct": 50.0,
@@ -2001,7 +2006,7 @@
    "risque_total_pct": 35.0
   },
   "coupe_circuit": false,
-  "jour": "2026-11-20"
+  "jour": "2026-11-21"
  },
  "actualites": {
   "annonces": [
