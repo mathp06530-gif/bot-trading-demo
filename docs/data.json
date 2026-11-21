@@ -1128,7 +1128,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-21T16:10:25Z",
+ "derniere_execution": "2026-11-21T16:15:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -2301,6 +2301,10 @@
   {
    "date": "2026-11-21T16:10:25Z",
    "valeur": 97.91
+  },
+  {
+   "date": "2026-11-21T16:15:25Z",
+   "valeur": 97.91
   }
  ],
  "compte": {
@@ -2314,7 +2318,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 59730.5,
+   "prix": 59759.7,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 51) : on veut être VENDEUR.",
    "action": "Aucune action",
