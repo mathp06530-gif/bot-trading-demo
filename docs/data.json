@@ -1121,7 +1121,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-21T12:40:25Z",
+ "derniere_execution": "2026-11-21T12:45:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -2126,6 +2126,10 @@
   {
    "date": "2026-11-21T12:40:25Z",
    "valeur": 97.91
+  },
+  {
+   "date": "2026-11-21T12:45:25Z",
+   "valeur": 97.91
   }
  ],
  "compte": {
@@ -2139,7 +2143,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 58817.725,
+   "prix": 58673.575,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 54) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -2664,7 +2668,7 @@
     "titre": "FOMC Meeting Minutes"
    }
   ],
-  "lu_le": "2026-11-21T11:40:22.840249+00:00",
+  "lu_le": "2026-11-21T12:45:22.001723+00:00",
   "pause": null,
   "prochaines": []
  },
