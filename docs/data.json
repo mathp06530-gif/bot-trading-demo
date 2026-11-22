@@ -1174,10 +1174,24 @@
    "marche": "BTCUSD",
    "texte": "Tendance baissière nette (ADX 36) : on veut être VENDEUR. Mais le signal n'est pas récent (il date du 2026-10-24 04:00) : on attend le prochain pour ne pas entrer en retard.",
    "strategie": "tendance_4h"
+  },
+  {
+   "date": "2026-11-22T23:00:23Z",
+   "type": "analyse",
+   "marche": "GOLD",
+   "texte": "Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-11 12:00).",
+   "strategie": "cassure_4h"
+  },
+  {
+   "date": "2026-11-22T23:00:24Z",
+   "type": "analyse",
+   "marche": "SILVER",
+   "texte": "Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-12 08:00).",
+   "strategie": "cassure_4h"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-22T22:55:25Z",
+ "derniere_execution": "2026-11-22T23:00:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -3850,6 +3864,10 @@
   {
    "date": "2026-11-22T22:55:25Z",
    "valeur": 97.91
+  },
+  {
+   "date": "2026-11-22T23:00:25Z",
+   "valeur": 97.91
   }
  ],
  "compte": {
@@ -3863,7 +3881,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 60902.899999999994,
+   "prix": 60907.95,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 36) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -4403,8 +4421,8 @@
    "plus_haut_20": 3890.96,
    "plus_bas_20": 3514.59,
    "ema200": 3994.01,
-   "dernier_refus": "marché fermé",
-   "action": "Refusé : marché fermé",
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)",
    "atr": 45.39
   },
   "SILVER": {
@@ -4414,8 +4432,8 @@
    "plus_haut_20": 47.99,
    "plus_bas_20": 41.11,
    "ema200": 52.56,
-   "dernier_refus": "marché fermé",
-   "action": "Refusé : marché fermé",
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)",
    "atr": 0.98
   }
  },
@@ -4434,7 +4452,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3536.95,
+    "prix": 3559.09,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 37.53 de plus dans le bon sens"
    },
