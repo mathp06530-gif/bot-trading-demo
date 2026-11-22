@@ -1149,7 +1149,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-22T07:15:24Z",
+ "derniere_execution": "2026-11-22T07:20:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -3058,6 +3058,10 @@
   {
    "date": "2026-11-22T07:15:24Z",
    "valeur": 97.91
+  },
+  {
+   "date": "2026-11-22T07:20:24Z",
+   "valeur": 97.91
   }
  ],
  "compte": {
@@ -3071,7 +3075,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 58980.15,
+   "prix": 59037.8,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 45) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -3589,7 +3593,7 @@
     "titre": "Prelim GDP q/q"
    }
   ],
-  "lu_le": "2026-11-22T06:15:22.261647+00:00",
+  "lu_le": "2026-11-22T07:20:21.924404+00:00",
   "pause": null,
   "prochaines": [
    {
