@@ -1261,7 +1261,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-23T22:30:25Z",
+ "derniere_execution": "2026-11-23T22:35:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -5082,6 +5082,10 @@
   {
    "date": "2026-11-23T22:30:25Z",
    "valeur": 97.63
+  },
+  {
+   "date": "2026-11-23T22:35:25Z",
+   "valeur": 97.63
   }
  ],
  "compte": {
@@ -5090,7 +5094,7 @@
   "solde": 97.58,
   "depot": 97.53,
   "resultat_latent": 0.05,
-  "disponible": 94.23
+  "disponible": 94.22
  },
  "positions": [
   {
@@ -5105,7 +5109,7 @@
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 61158.5,
+   "prix": 61086.925,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 28) : on veut être VENDEUR.",
    "action": "Aucune action",
