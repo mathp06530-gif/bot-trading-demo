@@ -1286,10 +1286,17 @@
    "marche": "GOLD",
    "texte": "[Rapide] Plus d'accord avec la tendance de fond 1 h / 4 h : position fermée (gain/perte : -0.28). Statut : ACCEPTED",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-24T02:50:25Z",
+   "type": "ordre",
+   "marche": "GOLD",
+   "texte": "[Rapide] VENTE de 0.02 à 3640.09, stop garanti à 36.42 $.",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-24T02:45:25Z",
+ "derniere_execution": "2026-11-24T02:50:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -5318,6 +5325,10 @@
   {
    "date": "2026-11-24T02:45:25Z",
    "valeur": 97.26
+  },
+  {
+   "date": "2026-11-24T02:50:26Z",
+   "valeur": 97.26
   }
  ],
  "compte": {
@@ -5328,10 +5339,20 @@
   "resultat_latent": 0.0,
   "disponible": 97.26
  },
- "positions": [],
+ "positions": [
+  {
+   "marche": "GOLD",
+   "nom": "Gold",
+   "sens": "SELL",
+   "taille": 0.02,
+   "prix_entree": 3640.09,
+   "resultat": -0.01,
+   "ouverte_le": "2026-11-24T02:50:25.581"
+  }
+ ],
  "analyses": {
   "BTCUSD": {
-   "prix": 60397.5,
+   "prix": 60258.0,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 27) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -5785,6 +5806,23 @@
    "motif_sortie": "[Rapide] Croisement inverse",
    "strategie": "rapide",
    "resultat_estime": false
+  },
+  {
+   "id": "00000000-7647-ef85-049f-c46d0015549e",
+   "marche": "GOLD",
+   "nom": "Gold",
+   "sens": "SELL",
+   "taille": 0.02,
+   "prix_entree": 3640.09,
+   "stop": 3676.51,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-24T02:50:25Z",
+   "statut": "ouvert",
+   "resultat": -0.01,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "rapide"
   }
  ],
  "historique_jour": {
@@ -5905,7 +5943,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3648.32,
+   "prix": 3644.77,
    "plus_haut_20": 3758.66,
    "plus_bas_20": 3502.93,
    "ema200": 3964.82,
@@ -5916,7 +5954,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 43.116,
+   "prix": 43.018,
    "plus_haut_20": 45.91,
    "plus_bas_20": 40.77,
    "ema200": 51.79,
@@ -5930,18 +5968,22 @@
  },
  "pause": false,
  "rapide": {
-  "deals": [],
+  "deals": [
+   "00000000-7647-ef85-049f-c46d0015549e"
+  ],
   "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 2 %, risque 1 % (expérimentale)",
   "marches": {
    "GOLD": {
-    "tendance": "BUY",
+    "tendance": "SELL",
     "filtre": {
-     "signal_5min": "BUY",
+     "signal_5min": "SELL",
      "tendance_1h": "SELL",
-     "tendance_4h": "SELL"
+     "tendance_4h": "SELL",
+     "bollinger": 1.72,
+     "adx": 22.1
     },
-    "prix": 3646.93,
-    "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
+    "prix": 3642.27,
+    "action": "VENTE de 0.02",
     "empilement": "position 2/3 possible quand le prix aura avancé de 41.01 de plus dans le bon sens"
    },
    "SILVER": {
@@ -5956,7 +5998,7 @@
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)"
    }
   },
-  "tendance": "BUY"
+  "tendance": "SELL"
  },
  "debut_test": "2026-11-20T16:20:00Z",
  "ordres_avant_test": [
