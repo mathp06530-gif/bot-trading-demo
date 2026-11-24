@@ -161,3 +161,20 @@ def test_mode_suggestions_ne_change_rien():
     assert texte == r
     assert "rapide" not in etat["en_observation"]
     assert any("SUGGESTION" in l["texte"] for l in donnees["journal"])
+
+
+def test_les_trades_ne_melangent_pas_avant_et_apres_un_changement():
+    env = {"ADX_RAPIDE_MIN": "25"}
+    assert am.reglages_du_moment("rapide", env) == {"ADX_RAPIDE_MIN": 25.0, "FILTRE_BOLLINGER": "oui",
+                                                     "SUIVI_RAPIDE_PCT": 2.0}
+    assert am.reglages_du_moment("rapide_btc", env) is None
+    avant = am.reglages_du_moment("rapide", {})
+    apres = am.reglages_du_moment("rapide", env)
+    ordres = [{"statut": "ferme", "ferme_le": "2026-12-01T10:00:00Z", "resultat": -1, "strategie": "rapide", "reglages": avant},
+              {"statut": "ferme", "ferme_le": "2026-12-02T10:00:00Z", "resultat": 3, "strategie": "rapide", "reglages": apres}]
+    b = am.bilan_reel(ordres, "2026-11-30", "2026-12-07")["rapide"]
+    assert b["total_eur"] == 2 and len(b["par_reglages"]) == 2
+    assert b["par_reglages"][am.signature(apres)]["total_eur"] == 3
+    _, donnees, _ = am.appliquer({"strategies": {}}, REGLAGES, {"ordres": ordres}, {},
+                                 datetime(2026, 12, 6, 18, tzinfo=timezone.utc))
+    assert "ADX_RAPIDE_MIN=25" in donnees["journal"][0]["texte"]

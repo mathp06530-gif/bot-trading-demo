@@ -278,17 +278,35 @@ def faut_il_annuler(score_nouveau: dict, score_ancien: dict) -> bool:
 
 
 # --- Vrais trades de la semaine -------------------------------------------------------------------
+def signature(reglages: dict) -> str:
+    """Texte court des réglages d'une stratégie, ex. « ADX_RAPIDE_MIN=20, FILTRE_BOLLINGER=oui »."""
+    return ", ".join(f"{k}={format_valeur(v)}" for k, v in sorted(reglages.items()))
+
+
+def reglages_du_moment(strategie: str, env=None) -> dict | None:
+    """Réglages EN COURS d'une stratégie (lus dans l'environnement, donc dans reglages.env).
+    Le bot les colle sur chaque ordre à son ouverture : chaque trade sait avec quels réglages il a été pris."""
+    if strategie not in REGLAGES:
+        return None
+    env = os.environ if env is None else env
+    return {cle: valeur(env, cle) for cle in REGLAGES[strategie]}
+
+
 def bilan_reel(ordres: list, debut: str, fin: str) -> dict:
-    """Trades RÉELS fermés entre debut et fin, par stratégie : nombre, total en €, % gagnants."""
+    """Trades RÉELS fermés entre debut et fin, par stratégie : nombre, total en €, % gagnants,
+    et le détail par jeu de réglages (pour ne jamais mélanger avant / après un changement)."""
     out = {}
     for o in ordres:
         if o.get("statut") != "ferme" or not (debut <= (o.get("ferme_le") or "") < fin):
             continue
-        s = out.setdefault(o.get("strategie", "?"), {"trades": 0, "total_eur": 0.0, "gagnants": 0})
         res = float(o.get("resultat") or 0)
-        s["trades"] += 1
-        s["total_eur"] = round(s["total_eur"] + res, 2)
-        s["gagnants"] += res > 0
+        s = out.setdefault(o.get("strategie", "?"), {"trades": 0, "total_eur": 0.0, "gagnants": 0, "par_reglages": {}})
+        cle = signature(o["reglages"]) if o.get("reglages") else "réglages d'origine"
+        v = s["par_reglages"].setdefault(cle, {"trades": 0, "total_eur": 0.0, "gagnants": 0})
+        for x in (s, v):
+            x["trades"] += 1
+            x["total_eur"] = round(x["total_eur"] + res, 2)
+            x["gagnants"] += res > 0
     return out
 
 
@@ -472,6 +490,9 @@ def appliquer(plan: dict, reglages_texte: str, donnees: dict, etat: dict, mainte
         if avant is not None:
             a = avant.get(s, {"total_eur": 0.0})
             texte += f", semaine d'avant {a['total_eur']:+.2f} €"
+        if len(r.get("par_reglages", {})) > 1:  # un changement en cours de semaine : on sépare avant / après
+            texte += " [" + " | ".join(f"{k} : {v['total_eur']:+.2f} € ({v['trades']})"
+                                     for k, v in r["par_reglages"].items()) + "]"
         morceaux.append(texte)
     if mode != "non":
         noter("Bilan de la semaine (vrais trades) : " + " ; ".join(morceaux) + ".")

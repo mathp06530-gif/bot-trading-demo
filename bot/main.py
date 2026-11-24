@@ -19,6 +19,7 @@ from bot.empilement import EMPILER_MAX, peut_empiler
 from bot.cassure import LISTE as MARCHES_CASSURE
 from bot.cassure import NOM as NOM_CASSURE
 from bot.cassure import RISQUE_CASSURE_PCT, tour_cassure
+from bot.amelioration import reglages_du_moment
 from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
 from bot.strategie import NOM as NOM_STRATEGIE
 from bot.strategie import EMA_LENTE, EMA_RAPIDE, bougies_vers_df, decider
@@ -380,6 +381,9 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         elif o.get("strategie") == "rapide" and o["marche"] not in module_rapide.LISTE:
             o["strategie"] = "rapide_btc"  # ancienne rapide du Bitcoin (avant le 20/11/2026)
         o.setdefault("strategie", "cassure_4h" if o["marche"] in MARCHES_CASSURE else "tendance_4h")
+        if o.get("statut") == "ouvert" and "reglages" not in o:
+            # réglages en vigueur à l'ouverture (auto-amélioration : on ne mélange jamais avant / après un changement)
+            o["reglages"] = reglages_du_moment(o["strategie"])
 
     donnees["compte"] = {
         "nom": compte.get("accountName", "Démo"),
