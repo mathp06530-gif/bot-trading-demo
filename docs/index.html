@@ -179,6 +179,10 @@
   .journal li i { position: absolute; left: 0; top: 4px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--fond2); background: var(--faible); }
   .journal .j-ordre i { background: var(--bleu); } .journal .j-fermeture i { background: var(--orange); } .journal .j-erreur i { background: var(--rouge); }
   .journal .j-commande i { background: var(--violet); } .journal .j-stop i { background: var(--cyan); }
+  .journal .j-amelioration i { background: var(--vert); }
+  .amelio { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; font-size: 14px; }
+  .amelio li { padding: 10px 12px; border: 1px solid var(--bord); border-radius: 12px; }
+  .amelio time { display: block; font-size: 12px; color: var(--doux); }
   .journal time { display: block; font-size: 12px; color: var(--doux); }
 
   dl.reglages { display: grid; grid-template-columns: minmax(140px, 220px) 1fr; gap: 12px 18px; margin: 0; }
@@ -299,6 +303,10 @@
             <div class="etat-cmd" data-etat=""></div>
           </div>
           <div class="strats" id="strats"></div>
+          <div class="carte">
+            <div class="titre-carte"><h2>Auto-amélioration<small>Chaque dimanche soir, le bot teste de petites variantes de ses réglages et ne garde que celles qui font mieux</small></h2></div>
+            <div id="amelio"></div>
+          </div>
           <div class="carte">
             <div class="titre-carte"><h2>Comparaison des stratégies<small>Gain réalisé cumulé de chaque stratégie, ordre après ordre</small></h2></div>
             <div class="graph" id="g-compare"></div>
@@ -599,7 +607,7 @@ function afficher() {
   // ---- Journal
   const j = d.journal || [];
   const typeJ = l => ["ordre", "fermeture"].includes(l.type) ? "ordre" : l.type;
-  segments("filtre-journal", [["tout", "Tout"], ["ordre", "Ordres"], ["commande", "Commandes"], ["erreur", "Erreurs"]], filtreJournal,
+  segments("filtre-journal", [["tout", "Tout"], ["ordre", "Ordres"], ["amelioration", "Améliorations"], ["commande", "Commandes"], ["erreur", "Erreurs"]], filtreJournal,
     v => { filtreJournal = v; memo.set("filtreJournal", v); afficher(); });
   segments("filtre-journal-strat", [["toutes", "Toutes"], ...strats.map(s => [s.id, s.titre])], filtreJStrat, v => { filtreJStrat = v; memo.set("filtreJStrat", v); afficher(); });
   $("filtre-journal-strat").hidden = strats.length < 2;
@@ -607,6 +615,18 @@ function afficher() {
   $("journal").innerHTML = jf.length ? jf.map(l => { const st = stratJournal(l); return `<li class="j-${esc(l.type)}"><i></i>
       <time>${quand(l.date)}${l.marche ? " · " + esc(l.marche) : ""} · ${esc(l.type)}${st ? ` · <span class="badge b-${esc(st)}">${esc(nomStrat(st))}</span>` : ""}</time>${esc(String(l.texte || "").replace(/^\[Rapide\]\s*/, ""))}</li>`; }).join("")
     : '<li class="vide" style="padding:14px 0">Rien à afficher.</li>';
+
+  // ---- Auto-amélioration (bot/amelioration.py, chaque dimanche)
+  const am = d.amelioration;
+  const STATUTS = { "adopté": "✅ Adopté", "confirmé": "👍 Confirmé", "annulé": "↩️ Annulé", "suggestion": "💡 Suggestion" };
+  const modeTxt = !am ? "Premier passage dimanche soir (19 h)." : am.mode === "auto" ? "Mode automatique : les changements sont appliqués, puis vérifiés la semaine suivante."
+    : am.mode === "non" ? "Arrêtée." : `Suggestions seulement${am.debut_auto ? ` jusqu'au ${esc(am.debut_auto.split("-").reverse().join("/"))}` : ""} : rien n'est changé pour ne pas fausser le test.`;
+  const obs = Object.entries(am?.en_observation || {}).map(([s, o]) => `${esc(nomStrat(s))} : ${esc(o.reglage)} ${esc(o.avant)} → ${esc(o.apres)}`);
+  const hist = (am?.historique || []).slice().reverse();
+  $("amelio").innerHTML = `<p style="margin:0 0 10px;font-size:14px">${modeTxt}${am ? ` Dernier passage : ${quand(am.dernier_passage)}.` : ""}</p>`
+    + (obs.length ? `<p style="margin:0 0 10px;font-size:14px">En test cette semaine : ${obs.join(" ; ")}</p>` : "")
+    + (hist.length ? `<ul class="amelio">${hist.map(h => `<li><time>${quand(h.date)} · ${esc(nomStrat(h.strategie))}</time>${STATUTS[h.statut] || esc(h.statut)} : ${esc(h.reglage)} ${esc(h.avant)} → ${esc(h.apres)}${h.score ? ` (${Number(h.score.R).toFixed(1)} R contre ${Number(h.score_ancien?.R ?? 0).toFixed(1)} R)` : ""}</li>`).join("")}</ul>`
+      : '<p class="vide">Aucun changement pour l\'instant. Le détail de chaque semaine est dans le Journal (filtre « Améliorations »).</p>');
 
   // ---- Réglages
   const r = d.reglages || {};
@@ -701,7 +721,7 @@ function carteStrat(s) {
 }
 function carteOrdre(o) {
   const achat = o.sens === "BUY", st = stratDe(o);
-  const live = PRIX_DIRECT[o.marche];
+  const live = (window.PRIX_DIRECT || {})[o.marche];  // prix en direct (s'il existe) ; sans lui, l'appli plantait avec une position ouverte
   const enDirect = o.statut === "ouvert" && live ? (live - o.prix_entree) * o.taille * (achat ? 1 : -1) : null;
   const sortie = o.statut === "ferme" ? ` → ${fmt(o.prix_sortie, 0)}` : "";
   const detail = o.statut === "ferme"

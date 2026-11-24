@@ -100,6 +100,15 @@ Dans `.github/workflows/bot.yml` :
 | `UNITE` | `MINUTE_15` | durée d'une bougie |
 | `STOP_PCT` | `3` | stop de sécurité en % du prix |
 
+## Auto-amélioration chaque semaine
+
+Chaque dimanche à 19 h (Paris), le workflow « Auto-amélioration (chaque semaine) » :
+1. fait le bilan des vrais trades de la semaine, stratégie par stratégie, comparé à la semaine d'avant ;
+2. vérifie le changement adopté la semaine d'avant sur les prix de la semaine écoulée, et **l'annule tout seul** s'il a fait moins bien ;
+3. teste de petites variantes des réglages (un seul réglage, d'un seul cran) sur l'historique récent (1 an en 4 h, 8 semaines en 5 min) et n'en garde **qu'une par stratégie**, seulement si elle fait mieux sur les deux moitiés de la période.
+
+Il ne touche jamais au risque par trade ni aux garde-fous. Tout est écrit dans le Journal (filtre « Améliorations ») et dans l'onglet Stratégies. Le mode se règle dans `reglages.env` (`AUTO_AMELIORATION` : `auto`, `suggestions` ou `non`). Détails : `bot/amelioration.py`.
+
 ## Si quelque chose ne va pas
 
 - **Le tableau de bord affiche « Problème »** : regarde la dernière ligne rouge du journal, elle explique l'erreur.
