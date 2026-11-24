@@ -1275,7 +1275,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-23T23:55:24Z",
+ "derniere_execution": "2026-11-24T00:00:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -5164,15 +5164,19 @@
   {
    "date": "2026-11-23T23:55:24Z",
    "valeur": 97.91
+  },
+  {
+   "date": "2026-11-24T00:00:24Z",
+   "valeur": 97.77
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 97.72,
+  "solde": 97.65,
   "depot": 97.53,
-  "resultat_latent": 0.19,
-  "disponible": 94.37
+  "resultat_latent": 0.12,
+  "disponible": 94.3
  },
  "positions": [
   {
@@ -5181,13 +5185,13 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3639.2,
-   "resultat": 0.19,
+   "resultat": 0.11,
    "ouverte_le": "2026-11-23T20:20:24.891"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 61134.149999999994,
+   "prix": 61178.975,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 28) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -5635,7 +5639,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-23T20:20:24Z",
    "statut": "ouvert",
-   "resultat": 0.19,
+   "resultat": 0.11,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -5646,7 +5650,8 @@
   "2026-11-20": 97.91,
   "2026-11-21": 97.91,
   "2026-11-22": 97.91,
-  "2026-11-23": 97.91
+  "2026-11-23": 97.91,
+  "2026-11-24": 97.77
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -5719,7 +5724,7 @@
   }
  },
  "garde_fous": {
-  "debut_jour": 97.91,
+  "debut_jour": 97.77000000000001,
   "plus_haut": 99.19,
   "regles": {
    "perte_max_pct": 50.0,
@@ -5728,7 +5733,7 @@
    "risque_total_pct": 35.0
   },
   "coupe_circuit": false,
-  "jour": "2026-11-23"
+  "jour": "2026-11-24"
  },
  "actualites": {
   "annonces": [
@@ -5759,10 +5764,10 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3624.625,
+   "prix": 3631.335,
    "plus_haut_20": 3790.6,
    "plus_bas_20": 3502.93,
-   "ema200": 3968.16,
+   "ema200": 3968.17,
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)",
    "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)",
    "atr": 46.11
@@ -5770,7 +5775,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 43.018,
+   "prix": 43.1435,
    "plus_haut_20": 45.98,
    "plus_bas_20": 40.77,
    "ema200": 51.88,
@@ -5796,9 +5801,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3628.285,
+    "prix": 3632.51,
     "action": "Position conservée",
-    "empilement": "position 2/3 possible quand le prix aura avancé de 24.99 de plus dans le bon sens"
+    "empilement": "position 2/3 possible quand le prix aura avancé de 29.36 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
