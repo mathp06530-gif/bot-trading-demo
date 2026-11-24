@@ -1331,7 +1331,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-24T13:50:25Z",
+ "derniere_execution": "2026-11-24T13:50:51Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -5896,15 +5896,19 @@
   {
    "date": "2026-11-24T13:50:25Z",
    "valeur": 97.46
+  },
+  {
+   "date": "2026-11-24T13:50:51Z",
+   "valeur": 97.48
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 97.46,
+  "solde": 97.47,
   "depot": 97.46,
-  "resultat_latent": 0.0,
-  "disponible": 97.46
+  "resultat_latent": 0.01,
+  "disponible": 94.15
  },
  "positions": [
   {
@@ -5913,7 +5917,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3620.7,
-   "resultat": -0.01,
+   "resultat": 0.01,
    "ouverte_le": "2026-11-24T13:50:24.664"
   }
  ],
@@ -6403,7 +6407,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-24T13:50:24Z",
    "statut": "ouvert",
-   "resultat": -0.01,
+   "resultat": 0.01,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -6415,7 +6419,7 @@
   "2026-11-21": 97.91,
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
-  "2026-11-24": 97.46
+  "2026-11-24": 97.48
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -6563,13 +6567,11 @@
     "filtre": {
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
-     "tendance_4h": "SELL",
-     "bollinger": 2.12,
-     "adx": 20.9
+     "tendance_4h": "SELL"
     },
-    "prix": 3620.86,
-    "action": "VENTE de 0.02",
-    "empilement": "position 2/3 possible quand le prix aura avancé de 18.93 de plus dans le bon sens"
+    "prix": 3620.81,
+    "action": "Position conservée",
+    "empilement": "position 2/3 possible quand le prix aura avancé de 36.07 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
