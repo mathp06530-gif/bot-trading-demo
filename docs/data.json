@@ -1324,7 +1324,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-24T13:40:25Z",
+ "derniere_execution": "2026-11-24T13:45:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -5881,6 +5881,10 @@
   {
    "date": "2026-11-24T13:40:25Z",
    "valeur": 97.46
+  },
+  {
+   "date": "2026-11-24T13:45:25Z",
+   "valeur": 97.46
   }
  ],
  "compte": {
@@ -5894,7 +5898,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 60092.125,
+   "prix": 60079.55,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 23) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -6486,7 +6490,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3622.335,
+   "prix": 3619.38,
    "plus_haut_20": 3744.42,
    "plus_bas_20": 3502.93,
    "ema200": 3954.9,
@@ -6497,7 +6501,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 42.159,
+   "prix": 42.135,
    "plus_haut_20": 45.64,
    "plus_bas_20": 40.77,
    "ema200": 51.52,
@@ -6520,11 +6524,11 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 1.94,
-     "adx": 18.8
+     "bollinger": 2.08,
+     "adx": 19.8
     },
-    "prix": 3623.38,
-    "action": "En attente : tendance 5 min trop faible (ADX 19 ≤ 20)",
+    "prix": 3617.01,
+    "action": "En attente : tendance 5 min trop faible (ADX 20 ≤ 20)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 18.93 de plus dans le bon sens"
    },
    "SILVER": {
