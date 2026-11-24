@@ -149,7 +149,7 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
         return f"Refusé : capital trop faible pour la taille minimale ({regles['taille_min']})"
     if garde is not None:
         garde.taux[epic] = taux
-        ok, raison = garde.autoriser(taille * distance / taux, distance)
+        ok, raison = garde.autoriser(taille * distance / taux, distance, "rapide", epic)
         if not ok:
             return f"Refusé (garde-fous) : {raison}"
         stop = prix - distance if voulu == "BUY" else prix + distance

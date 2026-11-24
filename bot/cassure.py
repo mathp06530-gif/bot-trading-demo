@@ -189,7 +189,8 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
         if not refus and taille < regles["taille_min"]:
             refus = f"capital trop faible pour la taille minimale ({regles['taille_min']})"
         if not refus:
-            ok, raison = garde.autoriser(taille * distance / taux, distance)
+            ok, raison = garde.autoriser(taille * distance / taux, distance,
+                                        "cassure_4h" if cle == "cassure" else cle, epic)
             refus = None if ok else raison
         mot = "ACHAT" if voulu == "BUY" else "VENTE"
         if refus:

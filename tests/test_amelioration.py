@@ -178,3 +178,33 @@ def test_les_trades_ne_melangent_pas_avant_et_apres_un_changement():
     _, donnees, _ = am.appliquer({"strategies": {}}, REGLAGES, {"ordres": ordres}, {},
                                  datetime(2026, 12, 6, 18, tzinfo=timezone.utc))
     assert "ADX_RAPIDE_MIN=25" in donnees["journal"][0]["texte"]
+
+
+def test_garde_fou_trois_stops_d_affilee():
+    from bot import garde_fous as gf
+    def o(h, res, motif="Stop de sécurité ou fermeture manuelle", strat="rapide", marche="GOLD"):
+        return {"statut": "ferme", "ferme_le": f"2026-11-25T{h:02d}:00:00Z", "resultat": res, "motif_sortie": motif,
+                "strategie": strat, "marche": marche}
+    d = {"ordres": [o(1, -1), o(2, -1), o(3, 2, "[Rapide] Croisement inverse"), o(4, -1), o(5, -1),
+                    o(6, -1, strat="cassure_4h"), o(7, -1, marche="SILVER")]}
+    journal = []
+    assert gf.surveiller_series_de_stops(d, "2026-11-25T08:00:00Z", lambda *a: journal.append(a)) == {}
+    d["ordres"].append(o(9, -0.5))  # 3e stop perdant d'affilée sur rapide/GOLD
+    p = gf.surveiller_series_de_stops(d, "2026-11-25T10:00:00Z", lambda *a: journal.append(a))
+    assert p == {"rapide:GOLD": {"depuis": "2026-11-25T10:00:00Z", "jusqu_a": "2026-11-26T10:00:00Z", "stops": 3}}
+    assert "reprise le 26/11 à 11h00" in journal[-1][2]
+    # les mêmes stops ne relancent pas une pause une fois la première finie
+    assert gf.surveiller_series_de_stops(d, "2026-11-27T10:00:00Z")["rapide:GOLD"]["depuis"] == "2026-11-25T10:00:00Z"
+    g = gf.GardeFous({"pauses_stops": {"rapide:GOLD": {"jusqu_a": "2999-01-01T00:00:00Z", "stops": 3}}}, 100, [], 1.08)
+    ok, raison = g.autoriser(1, 10, "rapide", "GOLD")
+    assert not ok and "3 stops" in raison
+    assert g.autoriser(1, 10, "rapide", "SILVER")[0] and g.autoriser(1, 10, "cassure_4h", "GOLD")[0]
+
+
+def test_backtest_pause_apres_stops():
+    t0 = pd.Timestamp("2026-01-01", tz="UTC")
+    h = lambda x: t0 + pd.Timedelta(hours=x)
+    trades = pd.DataFrame({"entree_le": [h(0), h(2), h(4), h(10), h(30)], "sortie_le": [h(1), h(3), h(5), h(11), h(31)],
+                           "raison": ["stop"] * 5, "pnl_eur": [-100.0] * 5})
+    gardes, n = am.avec_pause_apres_stops(trades)
+    assert n == 1 and list(gardes.entree_le) == [h(0), h(2), h(4), h(30)]

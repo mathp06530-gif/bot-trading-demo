@@ -86,7 +86,7 @@ EXPLICATIONS = {
 # Garde-fous : l'auto-amélioration refuse d'écrire ces clés, quoi qu'il arrive.
 INTOUCHABLES = {"PERTE_MAX_PCT", "PERTE_JOUR_PCT", "POSITIONS_MAX", "RISQUE_TOTAL_PCT", "RISQUE_PCT",
                 "RISQUE_CASSURE_PCT", "RISQUE_RAPIDE_PCT", "PAUSE_ANNONCES", "MARCHES", "CASSURE_MARCHES",
-                "RAPIDE_MARCHES", "EMPILER_MAX", "EMPILER_RAPIDE", "RAPIDE"}
+                "RAPIDE_MARCHES", "EMPILER_MAX", "EMPILER_RAPIDE", "RAPIDE", "STOPS_AFFILEE_MAX", "PAUSE_STOPS_H"}
 assert not INTOUCHABLES & {c for r in REGLAGES.values() for c in r}
 
 
@@ -373,18 +373,42 @@ JOURS_RAPIDE = 56   # période de test de la rapide (8 semaines de bougies 5 min
 CHAUFFE_4H = 60     # jours en plus pour que l'EMA 200 en 4 h soit fiable
 
 
-def evaluer(strategie: str, donnees_marches: dict, p: dict, conds: dict, debut, fin, milieu_) -> dict:
-    total = []
+def avec_pause_apres_stops(trades: pd.DataFrame, n: int = 3, heures: float = 24) -> tuple[pd.DataFrame, int]:
+    """Simule le garde-fou n° 9 sur des trades de backtest (un seul marché) : après n stops perdants d'affilée,
+    les trades ouverts dans les `heures` suivantes sont retirés. Renvoie (trades gardés, nombre de pauses)."""
+    if not len(trades):
+        return trades, 0
+    garder, serie, jusqu_a, pauses = [], 0, None, 0
+    for i, t in trades.sort_values("entree_le").iterrows():
+        if jusqu_a is not None and t.entree_le < jusqu_a:
+            continue
+        garder.append(i)
+        serie = serie + 1 if (t.raison == "stop" and t.pnl_eur < 0) else 0
+        if serie >= n:
+            jusqu_a, serie, pauses = t.sortie_le + pd.Timedelta(hours=heures), 0, pauses + 1
+    return trades.loc[garder], pauses
+
+
+def evaluer(strategie: str, donnees_marches: dict, p: dict, conds: dict, debut, fin, milieu_,
+            pause_stops: bool = False) -> dict:
+    total, pauses = [], 0
     for epic, d in donnees_marches.items():
         if strategie == "tendance_4h":
-            total.append(trades_tendance(d["HOUR_4"], p, conds[epic]))
+            t = trades_tendance(d["HOUR_4"], p, conds[epic])
         elif strategie == "cassure_4h":
-            total.append(trades_cassure(d["HOUR_4"], p, conds[epic]))
+            t = trades_cassure(d["HOUR_4"], p, conds[epic])
         else:
-            total.append(trades_rapide(d, p, conds[epic]))
+            t = trades_rapide(d, p, conds[epic])
+        if pause_stops and len(t):
+            t, n = avec_pause_apres_stops(t[(t.entree_le >= debut) & (t.entree_le < fin)])
+            pauses += n
+        total.append(t)
     total = [t for t in total if len(t)]
     trades = pd.concat(total, ignore_index=True) if total else pd.DataFrame(columns=["entree_le", "pnl_eur", "raison"])
-    return mesurer(trades, debut, fin, milieu_)
+    res = mesurer(trades, debut, fin, milieu_)
+    if pause_stops:
+        res["pauses"] = pauses
+    return res
 
 
 def calculer(api, reglages: dict, etat: dict, maintenant: datetime) -> dict:
@@ -436,6 +460,8 @@ def calculer(api, reglages: dict, etat: dict, maintenant: datetime) -> dict:
             res["actuels"] = actuels
             base = evaluer(strat, d, actuels, conds, debut, fin, milieu_)
             res["base"] = base
+            # Effet mesuré du garde-fou n° 9 (pause de 24 h après 3 stops d'affilée) : information seulement
+            res["serie_stops"] = evaluer(strat, d, actuels, conds, debut, fin, milieu_, pause_stops=True)
 
             # 1) Vérifier le changement de la semaine passée (sur les prix vus DEPUIS ce changement)
             obs = derniere.get(strat)
@@ -534,6 +560,10 @@ def appliquer(plan: dict, reglages_texte: str, donnees: dict, etat: dict, mainte
                                        "statut": "confirmé", "score": sn, "score_ancien": sa})
             etat["en_observation"].pop(strat, None)
 
+        ss = res.get("serie_stops")
+        if ss and base:
+            noter(f"{nom} : garde-fou « 3 stops d'affilée » sur l'historique : {ss['R']:+.1f} R avec "
+                  f"({ss.get('pauses', 0)} pause{'s' if ss.get('pauses', 0) > 1 else ''} de 24 h) contre {base['R']:+.1f} R sans.", strat)
         choix = res.get("choix")
         resume = (f"réglages actuels : {base.get('R', 0):+.1f} R sur {base.get('trades', 0)} trades en backtest "
                   f"({base.get('R_1', 0):+.1f} R puis {base.get('R_2', 0):+.1f} R)")
