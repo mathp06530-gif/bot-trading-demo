@@ -1,0 +1,402 @@
+{
+ "historique": [
+  {
+   "date": "2026-11-25T08:56:00Z",
+   "strategie": "tendance_4h",
+   "reglage": "ADX_TENDANCE_MIN",
+   "avant": 20.0,
+   "apres": 18,
+   "statut": "suggestion",
+   "score": {
+    "R": 10.56,
+    "trades": 32,
+    "R_1": 4.76,
+    "R_2": 5.8,
+    "pire_baisse_R": -3.08,
+    "reussite_pct": 59.4
+   },
+   "score_ancien": {
+    "R": 9.29,
+    "trades": 32,
+    "R_1": 4.76,
+    "R_2": 4.53,
+    "pire_baisse_R": -4.12,
+    "reussite_pct": 56.2
+   }
+  },
+  {
+   "date": "2026-11-25T08:56:00Z",
+   "strategie": "cassure_4h",
+   "reglage": "CASSURE_SORTIE",
+   "avant": 20.0,
+   "apres": 15,
+   "statut": "suggestion",
+   "score": {
+    "R": 40.48,
+    "trades": 59,
+    "R_1": 18.83,
+    "R_2": 21.65,
+    "pire_baisse_R": -8.5,
+    "reussite_pct": 42.4
+   },
+   "score_ancien": {
+    "R": 33.95,
+    "trades": 51,
+    "R_1": 16.03,
+    "R_2": 17.92,
+    "pire_baisse_R": -8.8,
+    "reussite_pct": 37.3
+   }
+  },
+  {
+   "date": "2026-11-25T08:56:00Z",
+   "strategie": "rapide",
+   "reglage": "ADX_RAPIDE_MIN",
+   "avant": 20.0,
+   "apres": 15,
+   "statut": "suggestion",
+   "score": {
+    "R": 5.61,
+    "trades": 98,
+    "R_1": -1.04,
+    "R_2": 6.65,
+    "pire_baisse_R": -3.93,
+    "reussite_pct": 27.6
+   },
+   "score_ancien": {
+    "R": 4.03,
+    "trades": 81,
+    "R_1": -1.78,
+    "R_2": 5.81,
+    "pire_baisse_R": -3.25,
+    "reussite_pct": 30.9
+   }
+  }
+ ],
+ "interdits": {},
+ "en_observation": {},
+ "semaines": [
+  {
+   "date": "2026-11-25T08:56:00Z",
+   "reel": {
+    "rapide": {
+     "trades": 8,
+     "total_eur": 0.28,
+     "gagnants": 3,
+     "par_reglages": {
+      "réglages d'origine": {
+       "trades": 8,
+       "total_eur": 0.28,
+       "gagnants": 3
+      }
+     }
+    }
+   }
+  }
+ ],
+ "dernier_passage": "2026-11-25T08:56:00Z",
+ "mode": "suggestions",
+ "plan": {
+  "date": "2026-11-25T08:55:39Z",
+  "strategies": {
+   "tendance_4h": {
+    "marches": [
+     "BTCUSD"
+    ],
+    "actuels": {
+     "ADX_TENDANCE_MIN": 20.0,
+     "SUIVI_TENDANCE_ATR": 5.0,
+     "TP_PARTIEL_ATR": 1.0
+    },
+    "base": {
+     "R": 9.29,
+     "trades": 32,
+     "R_1": 4.76,
+     "R_2": 4.53,
+     "pire_baisse_R": -4.12,
+     "reussite_pct": 56.2
+    },
+    "essais": [
+     {
+      "reglage": "ADX_TENDANCE_MIN",
+      "avant": 20.0,
+      "apres": 18,
+      "score": {
+       "R": 10.56,
+       "trades": 32,
+       "R_1": 4.76,
+       "R_2": 5.8,
+       "pire_baisse_R": -3.08,
+       "reussite_pct": 59.4
+      }
+     },
+     {
+      "reglage": "ADX_TENDANCE_MIN",
+      "avant": 20.0,
+      "apres": 22,
+      "score": {
+       "R": 8.15,
+       "trades": 28,
+       "R_1": 4.76,
+       "R_2": 3.4,
+       "pire_baisse_R": -3.1,
+       "reussite_pct": 50.0
+      }
+     },
+     {
+      "reglage": "SUIVI_TENDANCE_ATR",
+      "avant": 5.0,
+      "apres": 4.5,
+      "score": {
+       "R": 6.18,
+       "trades": 32,
+       "R_1": 1.38,
+       "R_2": 4.8,
+       "pire_baisse_R": -3.86,
+       "reussite_pct": 53.1
+      }
+     },
+     {
+      "reglage": "SUIVI_TENDANCE_ATR",
+      "avant": 5.0,
+      "apres": 5.5,
+      "score": {
+       "R": 8.37,
+       "trades": 32,
+       "R_1": 4.29,
+       "R_2": 4.07,
+       "pire_baisse_R": -4.21,
+       "reussite_pct": 53.1
+      }
+     },
+     {
+      "reglage": "TP_PARTIEL_ATR",
+      "avant": 1.0,
+      "apres": 1.5,
+      "score": {
+       "R": 8.19,
+       "trades": 32,
+       "R_1": 4.6,
+       "R_2": 3.59,
+       "pire_baisse_R": -4.52,
+       "reussite_pct": 46.9
+      }
+     }
+    ],
+    "verification": null,
+    "choix": {
+     "reglage": "ADX_TENDANCE_MIN",
+     "avant": 20.0,
+     "apres": 18,
+     "score": {
+      "R": 10.56,
+      "trades": 32,
+      "R_1": 4.76,
+      "R_2": 5.8,
+      "pire_baisse_R": -3.08,
+      "reussite_pct": 59.4
+     }
+    },
+    "serie_stops": {
+     "R": 10.03,
+     "trades": 30,
+     "R_1": 4.76,
+     "R_2": 5.27,
+     "pire_baisse_R": -3.39,
+     "reussite_pct": 60.0,
+     "pauses": 1
+    }
+   },
+   "cassure_4h": {
+    "marches": [
+     "GOLD",
+     "SILVER"
+    ],
+    "actuels": {
+     "CASSURE_ENTREE": 20.0,
+     "CASSURE_SORTIE": 20.0
+    },
+    "base": {
+     "R": 33.95,
+     "trades": 51,
+     "R_1": 16.03,
+     "R_2": 17.92,
+     "pire_baisse_R": -8.8,
+     "reussite_pct": 37.3
+    },
+    "essais": [
+     {
+      "reglage": "CASSURE_ENTREE",
+      "avant": 20.0,
+      "apres": 15,
+      "score": {
+       "R": 21.01,
+       "trades": 60,
+       "R_1": 18.48,
+       "R_2": 2.52,
+       "pire_baisse_R": -20.77,
+       "reussite_pct": 28.3
+      }
+     },
+     {
+      "reglage": "CASSURE_ENTREE",
+      "avant": 20.0,
+      "apres": 25,
+      "score": {
+       "R": 31.77,
+       "trades": 47,
+       "R_1": 14.01,
+       "R_2": 17.76,
+       "pire_baisse_R": -8.15,
+       "reussite_pct": 36.2
+      }
+     },
+     {
+      "reglage": "CASSURE_SORTIE",
+      "avant": 20.0,
+      "apres": 15,
+      "score": {
+       "R": 40.48,
+       "trades": 59,
+       "R_1": 18.83,
+       "R_2": 21.65,
+       "pire_baisse_R": -8.5,
+       "reussite_pct": 42.4
+      }
+     },
+     {
+      "reglage": "CASSURE_SORTIE",
+      "avant": 20.0,
+      "apres": 25,
+      "score": {
+       "R": 36.1,
+       "trades": 46,
+       "R_1": 20.1,
+       "R_2": 16.0,
+       "pire_baisse_R": -8.96,
+       "reussite_pct": 28.3
+      }
+     }
+    ],
+    "verification": null,
+    "choix": {
+     "reglage": "CASSURE_SORTIE",
+     "avant": 20.0,
+     "apres": 15,
+     "score": {
+      "R": 40.48,
+      "trades": 59,
+      "R_1": 18.83,
+      "R_2": 21.65,
+      "pire_baisse_R": -8.5,
+      "reussite_pct": 42.4
+     }
+    },
+    "serie_stops": {
+     "R": 31.78,
+     "trades": 50,
+     "R_1": 13.86,
+     "R_2": 17.92,
+     "pire_baisse_R": -8.8,
+     "reussite_pct": 36.0,
+     "pauses": 3
+    }
+   },
+   "rapide": {
+    "marches": [
+     "GOLD"
+    ],
+    "actuels": {
+     "ADX_RAPIDE_MIN": 20.0,
+     "FILTRE_BOLLINGER": "oui",
+     "SUIVI_RAPIDE_PCT": 2.0
+    },
+    "base": {
+     "R": 4.03,
+     "trades": 81,
+     "R_1": -1.78,
+     "R_2": 5.81,
+     "pire_baisse_R": -3.25,
+     "reussite_pct": 30.9
+    },
+    "essais": [
+     {
+      "reglage": "ADX_RAPIDE_MIN",
+      "avant": 20.0,
+      "apres": 15,
+      "score": {
+       "R": 5.61,
+       "trades": 98,
+       "R_1": -1.04,
+       "R_2": 6.65,
+       "pire_baisse_R": -3.93,
+       "reussite_pct": 27.6
+      }
+     },
+     {
+      "reglage": "ADX_RAPIDE_MIN",
+      "avant": 20.0,
+      "apres": 25,
+      "score": {
+       "R": -0.3,
+       "trades": 61,
+       "R_1": -2.53,
+       "R_2": 2.23,
+       "pire_baisse_R": -4.11,
+       "reussite_pct": 31.1
+      }
+     },
+     {
+      "reglage": "FILTRE_BOLLINGER",
+      "avant": "oui",
+      "apres": "non",
+      "score": {
+       "R": 4.66,
+       "trades": 94,
+       "R_1": -1.52,
+       "R_2": 6.18,
+       "pire_baisse_R": -2.95,
+       "reussite_pct": 29.8
+      }
+     },
+     {
+      "reglage": "SUIVI_RAPIDE_PCT",
+      "avant": 2.0,
+      "apres": 2.5,
+      "score": {
+       "R": 4.03,
+       "trades": 81,
+       "R_1": -1.78,
+       "R_2": 5.81,
+       "pire_baisse_R": -3.25,
+       "reussite_pct": 30.9
+      }
+     }
+    ],
+    "verification": null,
+    "choix": {
+     "reglage": "ADX_RAPIDE_MIN",
+     "avant": 20.0,
+     "apres": 15,
+     "score": {
+      "R": 5.61,
+      "trades": 98,
+      "R_1": -1.04,
+      "R_2": 6.65,
+      "pire_baisse_R": -3.93,
+      "reussite_pct": 27.6
+     }
+    },
+    "serie_stops": {
+     "R": 4.03,
+     "trades": 81,
+     "R_1": -1.78,
+     "R_2": 5.81,
+     "pire_baisse_R": -3.25,
+     "reussite_pct": 30.9,
+     "pauses": 0
+    }
+   }
+  }
+ }
+}

@@ -1475,6 +1475,54 @@
    "marche": "GOLD",
    "texte": "[Rapide] Plus d'accord avec la tendance de fond 1 h / 4 h : position fermée (gain/perte : -0.36). Statut : ACCEPTED",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-25T08:56:00Z",
+   "type": "amelioration",
+   "marche": "",
+   "texte": "Bilan de la semaine (vrais trades) : Tendance 4 h +0.00 € (0 trade) ; Cassure 4 h +0.00 € (0 trade) ; Rapide 5 min +0.28 € (8 trades)."
+  },
+  {
+   "date": "2026-11-25T08:56:00Z",
+   "type": "amelioration",
+   "marche": "",
+   "texte": "Tendance 4 h : garde-fou « 3 stops d'affilée » sur l'historique : +10.0 R avec (1 pause de 24 h) contre +9.3 R sans.",
+   "strategie": "tendance_4h"
+  },
+  {
+   "date": "2026-11-25T08:56:00Z",
+   "type": "amelioration",
+   "marche": "",
+   "texte": "Tendance 4 h : SUGGESTION (rien n'est changé avant le 2026-11-29), force minimale de la tendance (ADX) 20 → 18 : +10.6 R contre +9.3 R (+4.8 / +5.8 R sur les deux moitiés, 32 trades).",
+   "strategie": "tendance_4h"
+  },
+  {
+   "date": "2026-11-25T08:56:00Z",
+   "type": "amelioration",
+   "marche": "",
+   "texte": "Cassure 4 h : garde-fou « 3 stops d'affilée » sur l'historique : +31.8 R avec (3 pauses de 24 h) contre +34.0 R sans.",
+   "strategie": "cassure_4h"
+  },
+  {
+   "date": "2026-11-25T08:56:00Z",
+   "type": "amelioration",
+   "marche": "",
+   "texte": "Cassure 4 h : SUGGESTION (rien n'est changé avant le 2026-11-29), bougies du canal de sortie 20 → 15 : +40.5 R contre +34.0 R (+18.8 / +21.6 R sur les deux moitiés, 59 trades).",
+   "strategie": "cassure_4h"
+  },
+  {
+   "date": "2026-11-25T08:56:00Z",
+   "type": "amelioration",
+   "marche": "",
+   "texte": "Rapide 5 min : garde-fou « 3 stops d'affilée » sur l'historique : +4.0 R avec (0 pause de 24 h) contre +4.0 R sans.",
+   "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-25T08:56:00Z",
+   "type": "amelioration",
+   "marche": "",
+   "texte": "Rapide 5 min : SUGGESTION (rien n'est changé avant le 2026-11-29), force minimale de la tendance 5 min (ADX) 20 → 15 : +5.6 R contre +4.0 R (-1.0 / +6.7 R sur les deux moitiés, 98 trades).",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
@@ -8312,5 +8360,101 @@
   }
  ],
  "valeur_depart": 98.21,
- "pauses_stops": {}
+ "pauses_stops": {},
+ "amelioration": {
+  "dernier_passage": "2026-11-25T08:56:00Z",
+  "mode": "suggestions",
+  "debut_auto": "2026-11-29",
+  "en_observation": {},
+  "historique": [
+   {
+    "date": "2026-11-25T08:56:00Z",
+    "strategie": "tendance_4h",
+    "reglage": "ADX_TENDANCE_MIN",
+    "avant": 20.0,
+    "apres": 18,
+    "statut": "suggestion",
+    "score": {
+     "R": 10.56,
+     "trades": 32,
+     "R_1": 4.76,
+     "R_2": 5.8,
+     "pire_baisse_R": -3.08,
+     "reussite_pct": 59.4
+    },
+    "score_ancien": {
+     "R": 9.29,
+     "trades": 32,
+     "R_1": 4.76,
+     "R_2": 4.53,
+     "pire_baisse_R": -4.12,
+     "reussite_pct": 56.2
+    }
+   },
+   {
+    "date": "2026-11-25T08:56:00Z",
+    "strategie": "cassure_4h",
+    "reglage": "CASSURE_SORTIE",
+    "avant": 20.0,
+    "apres": 15,
+    "statut": "suggestion",
+    "score": {
+     "R": 40.48,
+     "trades": 59,
+     "R_1": 18.83,
+     "R_2": 21.65,
+     "pire_baisse_R": -8.5,
+     "reussite_pct": 42.4
+    },
+    "score_ancien": {
+     "R": 33.95,
+     "trades": 51,
+     "R_1": 16.03,
+     "R_2": 17.92,
+     "pire_baisse_R": -8.8,
+     "reussite_pct": 37.3
+    }
+   },
+   {
+    "date": "2026-11-25T08:56:00Z",
+    "strategie": "rapide",
+    "reglage": "ADX_RAPIDE_MIN",
+    "avant": 20.0,
+    "apres": 15,
+    "statut": "suggestion",
+    "score": {
+     "R": 5.61,
+     "trades": 98,
+     "R_1": -1.04,
+     "R_2": 6.65,
+     "pire_baisse_R": -3.93,
+     "reussite_pct": 27.6
+    },
+    "score_ancien": {
+     "R": 4.03,
+     "trades": 81,
+     "R_1": -1.78,
+     "R_2": 5.81,
+     "pire_baisse_R": -3.25,
+     "reussite_pct": 30.9
+    }
+   }
+  ],
+  "reglages": {
+   "tendance_4h": {
+    "ADX_TENDANCE_MIN": 20.0,
+    "SUIVI_TENDANCE_ATR": 5.0,
+    "TP_PARTIEL_ATR": 1.0
+   },
+   "cassure_4h": {
+    "CASSURE_ENTREE": 20.0,
+    "CASSURE_SORTIE": 20.0
+   },
+   "rapide": {
+    "ADX_RAPIDE_MIN": 20.0,
+    "FILTRE_BOLLINGER": "oui",
+    "SUIVI_RAPIDE_PCT": 2.0
+   }
+  }
+ }
 }
