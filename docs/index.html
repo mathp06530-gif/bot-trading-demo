@@ -170,7 +170,7 @@
   .ordre .dr { text-align: right; color: var(--doux); font-size: 12px; white-space: nowrap; }
   .badge { font-size: 10.5px; font-weight: 800; padding: 2px 7px; border-radius: 6px; text-transform: uppercase; letter-spacing: .04em; }
   .b-ouvert { background: rgba(79,140,255,.15); color: var(--bleu); } .b-ferme { background: var(--carte2); color: var(--doux); }
-  .b-rapide { background: rgba(139,92,246,.16); color: var(--violet); } .b-elan_4h { background: rgba(249,115,22,.15); color: #f97316; } .b-tendance_4h { background: rgba(34,211,238,.13); color: var(--cyan); }
+  .b-rapide { background: rgba(139,92,246,.16); color: var(--violet); } .b-elan_4h { background: rgba(249,115,22,.15); color: #f97316; } .b-supertrend_4h { background: rgba(236,72,153,.15); color: #ec4899; } .b-tendance_4h { background: rgba(34,211,238,.13); color: var(--cyan); }
 
   .journal { list-style: none; margin: 0; padding: 0; }
   .journal li { position: relative; padding: 0 0 18px 26px; }
@@ -505,6 +505,8 @@ const STRAT_INFO = {
     desc: "Trade souvent sur l'or et l'argent avec des bougies de 5 minutes, seulement dans le sens des tendances 1 h et 4 h." },
   elan_4h: { ico: "🐋", couleur: "#f97316", titre: "Élan des gros acteurs 4 h (expérimentale)",
     desc: "Expérience du 25/11/2026 : repère les bougies de 4 h où un gros ordre a fait sauter le prix (un « trou » entre les bougies) sur l'or et l'argent, et suit cet élan. Petit risque (1 %). Preuve faible." },
+  supertrend_4h: { ico: "📈", couleur: "#ec4899", titre: "Supertrend 4 h Ethereum (expérimentale)",
+    desc: "Expérience du 25/11/2026, trouvée sur les réseaux (indicateur Supertrend 10/3, très partagé sur YouTube et TikTok) : suit la tendance de l'Ethereum et se retourne quand la ligne Supertrend est franchie. Seule idée sur 48 qui gagne à la fois sur 2017-2025 (jamais vu) et sur les 2 dernières années. Petit risque (1 %)." },
   cassure_4h: { ico: "🥇", couleur: "#eab308", titre: "Cassure 4 h (or, argent)",
     desc: "Surveille l'or et l'argent sur des bougies de 4 h : elle entre quand le prix casse son plus haut ou son plus bas des 20 dernières bougies, dans le sens de la tendance." },
 };
@@ -668,6 +670,9 @@ function indicateurs(s) {
     html = Object.entries(D?.elan?.marches || {}).map(([e, b]) => bloc(NOMS[e] || e, [chip("Prix", fmt(b.prix, 2)), chip("EMA 200", fmt(b.ema200, 2)),
       chip("ATR", fmt(b.atr, 2)), chip("Trou achat", fmt(b.trou_achat_atr, 2) + " ATR"), chip("Trou vente", fmt(b.trou_vente_atr, 2) + " ATR"),
       chip("Seuil", "0,25 ATR")], b.action)).join("");
+  if (s.id === "supertrend_4h")
+    html = Object.entries(D?.supertrend?.marches || {}).map(([e, b]) => bloc(NOMS[e] || (e === "ETHUSD" ? "Ethereum" : e), [chip("Prix", fmt(b.prix, 2)),
+      chip("Ligne Supertrend", fmt(b.ligne, 2)), chip("Sens", b.sens > 0 ? "hausse ↑" : "baisse ↓"), chip("ATR", fmt(b.atr, 2))], b.action)).join("");
   if (s.id === "rapide")
     html = Object.entries(D?.rapide?.marches || {}).map(([e, b]) => { const f = b.filtre || {};
       return bloc(NOMS[e] || e, [chip("Prix", fmt(b.prix, 2)), chip("EMA 9/50 (5 min)", fl(f.signal_5min)), chip("Tendance 1 h", fl(f.tendance_1h)),

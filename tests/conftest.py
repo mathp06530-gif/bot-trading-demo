@@ -20,3 +20,10 @@ def sans_elan_par_defaut(monkeypatch):
     """Les anciens tests ne voient pas la stratégie expérimentale « Élan » (testée à part)."""
     from bot import elan
     monkeypatch.setattr(elan, "LISTE", [])
+
+
+@pytest.fixture(autouse=True)
+def sans_supertrend_par_defaut(monkeypatch):
+    """Les anciens tests ne voient pas la stratégie expérimentale « Supertrend » (testée à part)."""
+    from bot import supertrend
+    monkeypatch.setattr(supertrend, "LISTE", [])

@@ -15,6 +15,7 @@ from bot.capital import CapitalDemo, ErreurCapital
 from bot.garde_fous import GardeFous, surveiller_series_de_stops
 from bot import rapide as module_rapide
 from bot import elan as module_elan
+from bot import supertrend as module_supertrend
 from bot import actualites
 from bot.empilement import EMPILER_MAX, peut_empiler
 from bot.cassure import LISTE as MARCHES_CASSURE
@@ -138,7 +139,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                  "n'est ouverte que si le 2e cerveau (indicateurs + structure sommets/creux + tendance 1 h) est d'accord. "
                  "Backtest 2 ans : +16,2 R -> +17,4 R, pire baisse -3,7 R -> -2,7 R. À comparer au bilan du 4/12.")
 
-    toutes = ["tendance_4h", "cassure_4h", "rapide", "elan_4h"]  # 25/11/2026 : + « Élan » (expérimentale)
+    toutes = ["tendance_4h", "cassure_4h", "rapide", "elan_4h", "supertrend_4h"]  # 25/11/2026 : + « Élan » et « Supertrend » (expérimentales)
     strategie = strategie if strategie in toutes else "toutes"
     cibles = toutes if strategie == "toutes" else [strategie]
     etats = donnees.setdefault("strategies", {})
@@ -154,18 +155,22 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     etats.setdefault("cassure_4h", {}).setdefault("active", True)
     etats.setdefault("rapide", {}).setdefault("active", module_rapide.ACTIVE)
     etats.setdefault("elan_4h", {}).setdefault("active", module_elan.ACTIVE)
+    etats.setdefault("supertrend_4h", {}).setdefault("active", module_supertrend.ACTIVE)
     if set(donnees.get("rapide", {}).get("deals", [])) and "marches" not in donnees["rapide"]:
         donnees["rapide"] = {"deals": []}  # ancienne rapide du Bitcoin : on repart de zéro
     noms = {"tendance_4h": "Tendance 4 h (Bitcoin)", "cassure_4h": "Cassure 4 h (or et argent)",
-            "rapide": "Rapide 5 min (or et argent)", "elan_4h": "Élan des gros acteurs 4 h (expérimentale)"}
+            "rapide": "Rapide 5 min (or et argent)", "elan_4h": "Élan des gros acteurs 4 h (expérimentale)",
+            "supertrend_4h": "Supertrend 4 h Ethereum (expérimentale, trouvée sur les réseaux)"}
     lancer = set(cibles) if action == "lancer" else set()
 
     api.connexion()
     positions = api.positions()
     ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
     ids_elan = set(donnees.get("elan", {}).get("deals", {}))
+    ids_supertrend = set(donnees.get("supertrend", {}).get("deals", {}))
     strat_de = lambda p: ("rapide" if p["position"]["dealId"] in ids_rapide else
                           "elan_4h" if p["position"]["dealId"] in ids_elan else
+                          "supertrend_4h" if p["position"]["dealId"] in ids_supertrend else
                           "cassure_4h" if p["market"]["epic"] in MARCHES_CASSURE else "tendance_4h")
 
     # --- Commandes envoyées depuis l'application (téléphone, tablette, PC) ---
@@ -446,6 +451,25 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                              "reglages": module_elan.NOM, "marches": module_elan.LISTE, "description": module_elan.DESCRIPTION,
                              "debut": module_elan.DEBUT,
                              "action": "Actif" if actif_e else ("En pause" if en_pause else "Désactivée")})
+
+    # --- Supertrend 4 h Ethereum (EXPÉRIMENTALE, 25/11/2026, trouvée sur les réseaux) : marché à part (ETH) ---
+    actif_st = ("supertrend_4h" in lancer) or (not en_pause and etats["supertrend_4h"]["active"])
+    if actif_st or not en_pause:
+        noter_st = lambda t, m, x: noter(t, m, x, "supertrend_4h")
+        module_supertrend.premiere_fois(donnees, noter_st)
+        for epic in module_supertrend.LISTE:
+            try:
+                res = module_supertrend.tour_supertrend(api, donnees, epic, api.positions(), capital, disponible, eurusd,
+                                                  noter_st, garde, maintenant(), peut_entrer=actif_st)
+            except Exception as e:  # un marché en erreur ne bloque pas les autres
+                res = "Erreur"
+                noter_st("erreur", epic, f"[Supertrend] {str(e)[:300]}")
+            donnees.setdefault("supertrend", {}).setdefault("marches", {}).setdefault(epic, {})["action"] = res
+    etats["supertrend_4h"].update({"nom": noms["supertrend_4h"], "unite": module_supertrend.UNITE,
+                                "risque_pct": module_supertrend.RISQUE_SUPERTREND_PCT, "reglages": module_supertrend.NOM,
+                                "marches": module_supertrend.LISTE, "description": module_supertrend.DESCRIPTION,
+                                "debut": module_supertrend.DEBUT,
+                                "action": "Actif" if actif_st else ("En pause" if en_pause else "Désactivée")})
     donnees.pop("_cache_marches", None)
 
     # État final du compte, après les ordres
@@ -457,11 +481,14 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     synchroniser(donnees, positions, maintenant(), activites, eurusd)
     ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
     ids_elan = set(donnees.get("elan", {}).get("deals", {}))
+    ids_supertrend = set(donnees.get("supertrend", {}).get("deals", {}))
     for o in donnees.get("ordres", []):
         if o["id"] in ids_rapide:
             o["strategie"] = "rapide"
         elif o["id"] in ids_elan or (o.get("motif_sortie") or "").startswith("[Élan]"):
             o["strategie"] = "elan_4h"
+        elif o["id"] in ids_supertrend or (o.get("motif_sortie") or "").startswith("[Supertrend]"):
+            o["strategie"] = "supertrend_4h"
         elif o.get("strategie") == "rapide" and o["marche"] not in module_rapide.LISTE:
             o["strategie"] = "rapide_btc"  # ancienne rapide du Bitcoin (avant le 20/11/2026)
         o.setdefault("strategie", "cassure_4h" if o["marche"] in MARCHES_CASSURE else "tendance_4h")
