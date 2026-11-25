@@ -5,7 +5,7 @@ name: Étude « gros acteurs » (backtest ponctuel)
 on:
   push:
     branches: [claude/project-thread-bhd9gi]
-    paths: [backtest/gros_acteurs.py, .github/workflows/etude-gros-acteurs.yml]
+    paths: [backtest/gros_acteurs.py, backtest/smart_money.py, .github/workflows/etude-gros-acteurs.yml]
 
 permissions:
   contents: read
@@ -54,11 +54,13 @@ jobs:
             curl -sfL -o /tmp/f$an.zip https://www.cftc.gov/files/dea/history/fut_fin_txt_$an.zip && unzip -oq /tmp/f$an.zip -d /tmp/f$an && cp /tmp/f$an/*.txt backtest/donnees/cot/fin/f$an.txt || echo "COT BTC $an absent"
           done
           ls -la backtest/donnees/cot/*
-      - name: Backtest
+      - name: Backtest COT / volume
         run: python backtest/gros_acteurs.py
+      - name: Backtest smart money
+        run: python backtest/smart_money.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: gros-acteurs
-          path: backtest/resultats_gros_acteurs.json
+          path: backtest/resultats_*.json
           retention-days: 14
