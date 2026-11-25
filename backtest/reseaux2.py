@@ -270,6 +270,76 @@ def williams_cassure(df, k=0.5):
     return voulu, ok, dstop, None
 
 
+# --------------------------------------------------------------------------- traders gagnants vérifiés
+def tortue_55_20(df):
+    """Turtles (Richard Dennis), système 2, jour : achat sur clôture > plus haut 55 jours, sortie sous le plus bas
+    20 jours (inverse pour la vente), stop 2 N (ATR 20). Sans ajout de positions (pyramidage déjà rejeté)."""
+    j = jours(df)
+    hh, ll = j.high.rolling(55).max().shift(1), j.low.rolling(55).min().shift(1)
+    sx_l, sx_h = j.low.rolling(20).min().shift(1), j.high.rolling(20).max().shift(1)
+    etat, cible = 0, []
+    for c, a, b, x, y in zip(j.close, hh, ll, sx_l, sx_h):
+        if etat == 1 and c < x:
+            etat = 0
+        elif etat == -1 and c > y:
+            etat = 0
+        if c > a:
+            etat = 1
+        elif c < b:
+            etat = -1
+        cible.append(etat)
+    pc = j.close.shift()
+    n = pd.concat([j.high - j.low, (j.high - pc).abs(), (j.low - pc).abs()], axis=1).max(axis=1).rolling(20).mean()
+    return vers_horaire(df, pd.Series(cible, index=j.index), 2 * n)
+
+
+def kotegawa(df, k=2.5):
+    """« BNF » Takashi Kotegawa (méthode attribuée) : achat quand le prix est très sous sa moyenne 25 jours
+    (ici clôture < SMA 25 - k ATR, adapté à l'or et au BTC), sortie au retour sur la moyenne ou après 5 jours."""
+    j = jours(df)
+    sma = j.close.rolling(25).mean()
+    cible, tenu = [], 0
+    for c, m, a in zip(j.close, sma, j.atr):
+        if tenu:
+            tenu = 0 if (c >= m or tenu >= 5) else tenu + 1
+        elif c < m - k * a:
+            tenu = 1
+        cible.append(1 if tenu else 0)
+    return vers_horaire(df, pd.Series(cible, index=j.index), 1.5 * j.atr)
+
+
+def unger_compression(df):
+    """Andrea Unger (champion du monde 2008-2010, style publié) : si l'amplitude d'hier est sous la moyenne
+    20 jours (jour calme), achat si une clôture 1 h dépasse le plus haut d'hier, vente sous le plus bas ; sortie à
+    la fin du jour ; stop 1 ATR jour."""
+    m = pd.DataFrame({x: (df[f"{x}_bid"] + df[f"{x}_ask"]) / 2 for x in ("open", "high", "low", "close")})
+    j = jours(df)
+    amp = j.high - j.low
+    calme = (amp < amp.rolling(20).mean().shift(1)).shift(1)
+    jour = df.index.floor("1D")
+    hh, ll = j.high.shift(1).reindex(jour).values, j.low.shift(1).reindex(jour).values
+    ok_j = calme.reindex(jour).fillna(False).values
+    a = j.atr.shift(1).reindex(jour).values
+    c = m.close.values
+    n = len(c)
+    voulu, ok, dstop = np.zeros(n, dtype=int), np.zeros(n, dtype=bool), np.full(n, np.nan)
+    dernier = np.r_[jour[1:] != jour[:-1], True]
+    pris, sens = None, 0
+    for i in range(n):
+        if pris == jour[i]:
+            voulu[i] = 0 if dernier[i] else sens
+            continue
+        if ok_j[i] and not dernier[i] and a[i] == a[i]:
+            if c[i] > hh[i]:
+                sens = 1
+            elif c[i] < ll[i]:
+                sens = -1
+            else:
+                continue
+            voulu[i], ok[i], dstop[i], pris = sens, True, a[i], jour[i]
+    return voulu, ok, pd.Series(dstop).ffill().values, None
+
+
 # --------------------------------------------------------------------------- liste
 def idees(d):
     G, S, B = "GOLD", "SILVER", "BTCUSD"
@@ -306,6 +376,12 @@ def idees(d):
     for k in (0.3, 0.5, 0.7):
         un(f"Larry Williams cassure {k:g} × amplitude, or+argent", (G, S), lambda x: williams_cassure(x, k), h1)
         un(f"Larry Williams cassure {k:g} × amplitude, BTC", (B,), lambda x: williams_cassure(x, k), h1)
+    un("Tortues système 2 (55/20 jours) or+argent", (G, S), tortue_55_20, h1)
+    un("Tortues système 2 (55/20 jours) BTC", (B,), tortue_55_20, h1)
+    un("Kotegawa : très sous la moyenne 25 j, or+argent", (G, S), kotegawa, h1)
+    un("Kotegawa : très sous la moyenne 25 j, BTC", (B,), kotegawa, h1)
+    un("Unger : cassure après un jour calme, or+argent", (G, S), unger_compression, h1)
+    un("Unger : cassure après un jour calme, BTC", (B,), unger_compression, h1)
     return res
 
 
