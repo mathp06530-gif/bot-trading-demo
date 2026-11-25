@@ -156,6 +156,12 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
         if not ok_e:
             return res
 
+    # Le moteur passe toutes les minutes (25/11) : au plus UNE entrée par bougie 5 min terminée et par marché,
+    # comme dans le backtest (pas de nouvelle entrée sur le même signal juste après un stop, par exemple).
+    signal_de = bougies[-2]["snapshotTimeUTC"] if len(bougies) > 1 else ""
+    if signal_de and etat.setdefault("entree_bougie", {}).get(epic) == signal_de:
+        return res or "En attente de la prochaine bougie 5 min (déjà entré sur celle-ci)"
+
     # Sans mode couverture, un ordre inverse fermerait les positions de la stratégie 4 h : on attend.
     autres = [p for p in positions if p["market"]["epic"] == epic and p["position"]["dealId"] not in mes_ids]
     if any(p["position"]["direction"] != voulu for p in autres):
@@ -196,6 +202,8 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
     mot = "ACHAT" if voulu == "BUY" else "VENTE"
     if conf.get("dealStatus") == "ACCEPTED":
         deal = id_position(conf)
+        if signal_de:
+            etat.setdefault("entree_bougie", {})[epic] = signal_de
         if deal:
             etat["deals"].append(deal)
             etat["meilleur"][deal] = {"depuis": bougies[-1]["snapshotTimeUTC"], "prix": float(conf.get("level") or prix)}

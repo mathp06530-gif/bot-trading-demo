@@ -1,7 +1,8 @@
 name: Moteur du bot (en continu)
 
 # Le moteur tourne tout seul, jour et nuit, sans que personne n'ait à intervenir :
-#  - il fait un tour du bot toutes les 5 minutes, juste après la clôture de chaque bougie de 5 min ;
+#  - il fait un tour du bot toutes les minutes (depuis le 25/11/2026, test demandé par Mathis ; avant : 5 min),
+#    20 s après le début de chaque minute, donc aussi juste après la clôture de chaque bougie de 5 min ;
 #  - au bout de 5 h 45, il se relance lui-même (une tâche GitHub ne peut pas durer plus de 6 h) ;
 #  - en filet de sécurité, la planification ci-dessous le redémarre s'il s'est arrêté.
 # Pour l'arrêter complètement : onglet Actions > « Moteur du bot » > « ... » > Disable workflow.
@@ -46,9 +47,9 @@ jobs:
           fin=$(( $(date +%s) + 345 * 60 ))
           while [ "$(date +%s)" -lt "$fin" ]; do
             bash scripts/tour.sh || echo "Tour non enregistré, on réessaie au prochain."
-            # Attendre la prochaine clôture de bougie de 5 min (+20 s de marge)
+            # Attendre la minute suivante (+20 s de marge pour que la bougie qui vient de se fermer soit disponible)
             maintenant=$(date +%s)
-            attente=$(( 300 - maintenant % 300 + 20 ))
+            attente=$(( 60 - (maintenant - 20) % 60 ))
             [ $(( maintenant + attente )) -ge "$fin" ] && break
             sleep "$attente"
           done
