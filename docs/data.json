@@ -1710,10 +1710,17 @@
    "marche": "GOLD",
    "texte": "Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-11 12:00).",
    "strategie": "cassure_4h"
+  },
+  {
+   "date": "2026-11-25T21:59:22Z",
+   "type": "analyse",
+   "marche": "GOLD",
+   "texte": "Cassure (VENTE) mais ordre REFUSÉ : marché fermé.",
+   "strategie": "cassure_4h"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T21:58:24Z",
+ "derniere_execution": "2026-11-25T21:59:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -8266,6 +8273,10 @@
   {
    "date": "2026-11-25T21:58:24Z",
    "valeur": 94.04
+  },
+  {
+   "date": "2026-11-25T21:59:24Z",
+   "valeur": 94.04
   }
  ],
  "compte": {
@@ -8283,7 +8294,7 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": -2.15,
+   "resultat": -2.07,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
@@ -8845,7 +8856,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": -2.15,
+   "resultat": -2.07,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -9137,14 +9148,14 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3580.92,
+   "prix": 3588.775,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3922.16,
-   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)",
+   "action": "Refusé : marché fermé",
    "atr": 52.52,
    "empilement": "position 2/3 possible quand le prix aura avancé de 182.82 de plus dans le bon sens",
-   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)"
+   "dernier_refus": "marché fermé"
   },
   "SILVER": {
    "nom": "Silver",
@@ -9176,7 +9187,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3588.02,
+    "prix": 3588.87,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -9874,7 +9885,7 @@
   "deals": {},
   "marches": {
    "GOLD": {
-    "prix": 3580.92,
+    "prix": 3588.78,
     "ema200": 3923.45,
     "atr": 52.52,
     "trou_achat_atr": -1.83,
