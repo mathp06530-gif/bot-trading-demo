@@ -1703,10 +1703,17 @@
    "marche": "",
    "texte": "Nouveau (25/11/2026) : stratégie EXPÉRIMENTALE « Supertrend 4 h » sur l'Ethereum, risque 1 %, trouvée sur les réseaux. Seule idée sur 48 qui gagne sur des données jamais vues (2017-2025 : +138 R) et sur les 2 dernières années (+10 R). Marché à part : elle ne change rien aux autres stratégies.",
    "strategie": "supertrend_4h"
+  },
+  {
+   "date": "2026-11-25T20:29:22Z",
+   "type": "analyse",
+   "marche": "GOLD",
+   "texte": "Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-11 12:00).",
+   "strategie": "cassure_4h"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T20:28:24Z",
+ "derniere_execution": "2026-11-25T20:29:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -7899,33 +7906,28 @@
   {
    "date": "2026-11-25T20:28:24Z",
    "valeur": 94.93
+  },
+  {
+   "date": "2026-11-25T20:29:24Z",
+   "valeur": 94.52
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 94.93,
-  "depot": 98.52,
-  "resultat_latent": -3.59,
-  "disponible": 83.64
+  "solde": 94.52,
+  "depot": 96.11,
+  "resultat_latent": -1.59,
+  "disponible": 88.13
  },
  "positions": [
-  {
-   "marche": "GOLD",
-   "nom": "Gold",
-   "sens": "SELL",
-   "taille": 0.03,
-   "prix_entree": 3500.82,
-   "resultat": -2.18,
-   "ouverte_le": "2026-11-25T12:05:23.276"
-  },
   {
    "marche": "SILVER",
    "nom": "Silver",
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": -1.43,
+   "resultat": -1.56,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
@@ -8487,7 +8489,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": -1.43,
+   "resultat": -1.56,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8530,16 +8532,17 @@
    "stop": 3587.82,
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T12:05:23Z",
-   "statut": "ouvert",
-   "resultat": -2.18,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
+   "statut": "ferme",
+   "resultat": -2.38,
+   "ferme_le": "2026-11-25T20:29:24Z",
+   "prix_sortie": 3587.82,
+   "motif_sortie": "Stop touché",
    "strategie": "cassure_4h",
    "reglages": {
     "CASSURE_ENTREE": 20.0,
     "CASSURE_SORTIE": 20.0
-   }
+   },
+   "resultat_estime": false
   },
   {
    "id": "00000000-76bd-9d05-049f-c46d0015549e",
@@ -8643,7 +8646,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 94.93
+  "2026-11-25": 94.52
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -8778,13 +8781,14 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3578.85,
+   "prix": 3580.915,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3922.16,
-   "action": "Position conservée",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)",
    "atr": 52.52,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 182.82 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 182.82 de plus dans le bon sens",
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)"
   },
   "SILVER": {
    "nom": "Silver",
@@ -8816,7 +8820,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3580.0,
+    "prix": 3587.49,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -9502,11 +9506,6 @@
   }
  },
  "cassure_garde": {
-  "00000000-76bd-694a-049f-c46d0015549e": {
-   "dist": 87.0,
-   "depuis": "2026-11-25T12:05",
-   "meilleur": 3426.62
-  },
   "00000000-7684-793f-049f-c46d0015549e": {
    "dist": 1.9000000000000057,
    "depuis": "2026-11-25T08:05",
@@ -9519,7 +9518,7 @@
   "deals": {},
   "marches": {
    "GOLD": {
-    "prix": 3578.85,
+    "prix": 3580.91,
     "ema200": 3923.45,
     "atr": 52.52,
     "trou_achat_atr": -1.83,
