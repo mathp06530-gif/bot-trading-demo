@@ -629,3 +629,33 @@ def test_fermeture_par_le_stop_au_vrai_prix_capital():
     o = d["ordres"][0]
     assert o["prix_sortie"] == 3463.6 and o["resultat_estime"] is False and o["motif_sortie"] == "Stop touché"
     assert o["resultat"] == round((3518.9 - 3463.6) * 0.03 / 1.1, 2)
+
+
+def test_rapide_attend_3_bougies_avant_de_sortir_sur_croisement_inverse(tmp_path, monkeypatch):
+    from bot import rapide
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "MARCHES", [])
+    monkeypatch.setattr(rapide, "LISTE", ["GOLD"])
+    monkeypatch.setattr(rapide, "FILTRE_BOLLINGER", False)
+    monkeypatch.setattr(rapide, "ADX_RAPIDE_MIN", 0)
+    monkeypatch.setattr(rapide, "SORTIE_CONFIRMEE_RAPIDE", 3)
+    monkeypatch.setattr(rapide, "SORTIE_ENTREE_R", 0)  # on ne teste ici que le croisement inverse
+    monkeypatch.setattr(rapide, "tendances_superieures", lambda api, epic: ("BUY", "BUY"))
+    debut, _ = serie_achat()
+    faux = FauxCapital(debut, [100 + i for i in range(80)])
+    d = {"strategies": {"rapide": {"active": True}}}
+    main.un_tour(d, faux)
+    assert len(faux.ouvertes) == 1
+    serie = list(faux.prix_rapide)
+    k = 0
+    while rapide.decider_rapide(serie) != "SELL":  # chute jusqu'au premier croisement inverse
+        serie.append(serie[-1] - 8)
+        k += 1
+        assert k < 50
+    faux.prix_rapide = serie
+    main.un_tour(d, faux)
+    assert len(faux.ouvertes) == 1, [l["texte"] for l in d["journal"]][-3:]  # 1 bougie contre : on garde
+    faux.prix_rapide = serie + [serie[-1] - 8, serie[-1] - 16]
+    main.un_tour(d, faux)
+    assert not faux.ouvertes  # 3 bougies contre : fermée
+    assert any("confirmé sur 3 bougies" in l["texte"] for l in d["journal"])

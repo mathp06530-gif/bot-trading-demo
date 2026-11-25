@@ -69,7 +69,7 @@ def test_ecrire_reglage_garde_le_commentaire_et_refuse_les_garde_fous():
 def test_bornes_respectent_les_tests_rejetes():
     assert min(am.REGLAGES["tendance_4h"]["SUIVI_TENDANCE_ATR"]) >= 4      # pas de suiveur serré
     assert min(v for v in am.REGLAGES["tendance_4h"]["TP_PARTIEL_ATR"] if v) >= 1  # pas de TP serré
-    assert min(am.REGLAGES["rapide"]["SUIVI_RAPIDE_PCT"]) >= 2
+    assert min(am.REGLAGES["rapide"]["SUIVI_RAPIDE_PCT"]) >= 1  # 25/11 : 1 % (= stop de départ), testé avec la sortie confirmée
     assert not any("RSI" in c or "ATR_MIN" in c for r in am.REGLAGES.values() for c in r)
 
 
@@ -166,8 +166,9 @@ def test_mode_suggestions_ne_change_rien():
 def test_les_trades_ne_melangent_pas_avant_et_apres_un_changement():
     env = {"ADX_RAPIDE_MIN": "25"}
     assert am.reglages_du_moment("rapide", env) == {"ADX_RAPIDE_MIN": 25.0, "FILTRE_BOLLINGER": "oui",
-                                                     "SUIVI_RAPIDE_PCT": 2.0, "SORTIE_ENTREE_R": 0.5,
-                                                     "GARDE_RAPIDE_APRES_R": 1.5, "GARDE_RAPIDE_PCT": 60.0}
+                                                     "SUIVI_RAPIDE_PCT": 1.0, "SORTIE_ENTREE_R": 0.5,
+                                                     "GARDE_RAPIDE_APRES_R": 1.5, "GARDE_RAPIDE_PCT": 60.0,
+                                                     "SORTIE_CONFIRMEE_RAPIDE": 3.0, "EMPILER_RAPIDE": 2.0}
     assert am.reglages_du_moment("rapide_btc", env) is None
     avant = am.reglages_du_moment("rapide", {})
     apres = am.reglages_du_moment("rapide", env)
