@@ -206,8 +206,15 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     capital = float(compte0.get("balance", {}).get("balance") or 0)
     disponible = float(compte0.get("balance", {}).get("available") or capital)
     eurusd = api.taux_eurusd()
-    valeur = capital + float(compte0.get("balance", {}).get("profitLoss") or 0)
+    # Capital.com : « balance » contient DÉJÀ le gain/perte latent (balance = deposit + profitLoss).
+    # Avant le 25/11 le bot ajoutait profitLoss une 2e fois : les hausses et baisses étaient doublées.
+    valeur = capital
     garde = GardeFous(donnees, valeur, positions, eurusd)
+    if not donnees.get("valeur_corrigee_2511"):  # une seule fois : le plus haut était gonflé par ce double comptage
+        donnees["valeur_corrigee_2511"] = True
+        etat_g = donnees.setdefault("garde_fous", {})
+        etat_g["plus_haut"] = valeur
+        etat_g["debut_jour"] = min(float(etat_g.get("debut_jour") or valeur), valeur)
     if action == "reprendre":
         garde.rearmer()
     instant = datetime.now(timezone.utc)
@@ -482,7 +489,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     donnees["analyses"] = analyses
     historique = donnees.setdefault("historique", [])
     if solde.get("balance") is not None:
-        valeur = round(solde["balance"] + (solde.get("profitLoss") or 0), 2)
+        valeur = round(solde["balance"], 2)  # « balance » inclut déjà le latent (voir plus haut)
         historique.append({"date": maintenant(), "valeur": valeur})
         donnees.setdefault("historique_jour", {})[maintenant()[:10]] = valeur
         donnees.setdefault("valeur_depart", historique[0]["valeur"])

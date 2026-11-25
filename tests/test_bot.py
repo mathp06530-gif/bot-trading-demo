@@ -696,3 +696,16 @@ def test_elan_achete_sur_un_trou_puis_sort_apres_20_bougies(tmp_path, monkeypatc
     faux.prix_action = prix + [2760] * 20  # 20 bougies plus tard : sortie forcée
     main.un_tour(d, faux)
     assert faux.fermees == ["d0"] and d["ordres"][0]["strategie"] == "elan_4h"
+
+
+def test_valeur_du_compte_ne_compte_pas_le_latent_deux_fois(tmp_path, monkeypatch):
+    """Capital.com : balance = deposit + profitLoss. La valeur du compte est « balance », sans rien ajouter."""
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "MARCHES", [])
+    faux = FauxCapital([20000] * 300)
+    faux.comptes = lambda: [{"preferred": True, "accountName": "Démo", "currency": "EUR",
+                             "balance": {"balance": 97.40, "deposit": 98.52, "profitLoss": -1.12, "available": 86}}]
+    d = {"garde_fous": {"plus_haut": 114.86}}
+    main.un_tour(d, faux)
+    assert d["historique"][-1]["valeur"] == 97.40
+    assert d["garde_fous"]["plus_haut"] == 97.40  # plus haut gonflé corrigé une fois

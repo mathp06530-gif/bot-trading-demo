@@ -560,7 +560,7 @@ function afficher() {
   document.querySelectorAll('[data-cmd="pause"]:not([data-strat])').forEach(b => b.hidden = !!d.pause);
   document.querySelectorAll('[data-cmd="reprendre"]:not([data-strat])').forEach(b => b.hidden = !d.pause);
 
-  const actuelle = c.solde != null ? c.solde + (c.resultat_latent || 0) : null;
+  const actuelle = c.solde != null ? c.solde : null;  // Capital.com : le solde inclut déjà le latent
   const pts = serieValeur(d);
   const depart = d.valeur_depart ?? pts[0]?.v;
   const strats = strategies(d);
@@ -572,7 +572,7 @@ function afficher() {
   if (depart != null && actuelle != null) {
     const g = actuelle - depart;
     $("valeur-sous").innerHTML = `<span class="chip ${signe(g) || "neutre"}">${g >= 0 ? "▲" : "▼"} ${fmtS(g)}${dev} · ${fmtS(g / depart * 100)} %</span>
-      <span class="sous">depuis le lancement · solde ${fmt(c.solde)}${dev} · disponible ${fmt(c.disponible)}${dev}</span>`;
+      <span class="sous">depuis le lancement · réalisé ${fmt(c.depot)}${dev} · latent ${fmtS(c.resultat_latent || 0)}${dev} · disponible ${fmt(c.disponible)}${dev}</span>`;
   }
   segments("periode", [["1", "24H"], ["7", "7J"], ["30", "1M"], ["365", "1A"], ["0", "Tout"]], periode, v => { periode = v; memo.set("periode", v); afficher(); });
   $("gains").innerHTML = [["24 heures", JOUR], ["7 jours", 7 * JOUR], ["30 jours", 30 * JOUR], ["1 an", 365 * JOUR]].map(([nom, ms]) => {
