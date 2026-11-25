@@ -215,6 +215,11 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         etat_g = donnees.setdefault("garde_fous", {})
         etat_g["plus_haut"] = valeur
         etat_g["debut_jour"] = min(float(etat_g.get("debut_jour") or valeur), valeur)
+    if not donnees.get("tour_1min_2511"):  # une seule fois : date le changement de rythme dans le Journal
+        donnees["tour_1min_2511"] = True
+        noter("analyse", "", "Moteur : un tour toutes les 1 minute au lieu de 5 (demande de Mathis, test). Les stops et "
+              "les sorties sont surveillés chaque minute ; les signaux restent pris sur des bougies terminées et la "
+              "Rapide n'entre qu'une fois par bougie 5 min.")
     if action == "reprendre":
         garde.rearmer()
     instant = datetime.now(timezone.utc)
