@@ -1713,7 +1713,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T21:57:24Z",
+ "derniere_execution": "2026-11-25T21:58:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -8262,15 +8262,19 @@
   {
    "date": "2026-11-25T21:57:24Z",
    "valeur": 94.08
+  },
+  {
+   "date": "2026-11-25T21:58:24Z",
+   "valeur": 94.04
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 94.08,
+  "solde": 94.04,
   "depot": 96.11,
-  "resultat_latent": -2.03,
-  "disponible": 87.64
+  "resultat_latent": -2.07,
+  "disponible": 87.6
  },
  "positions": [
   {
@@ -8279,13 +8283,13 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": -2.03,
+   "resultat": -2.15,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 60220.375,
+   "prix": 60222.3,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 19) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -8841,7 +8845,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": -2.03,
+   "resultat": -2.15,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8998,7 +9002,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 94.08
+  "2026-11-25": 94.04
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -9172,7 +9176,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3587.9700000000003,
+    "prix": 3588.02,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
