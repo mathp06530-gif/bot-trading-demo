@@ -1,0 +1,30 @@
+name: Étude « stratégies des réseaux » (backtest ponctuel, temporaire)
+
+on:
+  push:
+    branches: [claude/project-thread-9j8i6a]
+    paths: [backtest/reseaux.py, .github/workflows/etude-reseaux.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  etude:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Bougies Capital.com (démo)
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+          UNITES: HOUR_4,HOUR
+          EPICS: GOLD,SILVER,BTCUSD
+        run: python backtest/telecharger.py
+      - name: Backtest des stratégies des réseaux
+        run: python backtest/reseaux.py
