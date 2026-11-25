@@ -41,9 +41,15 @@ EMPILER_RAPIDE = int(os.getenv("EMPILER_RAPIDE", "1"))  # positions max par marc
 RISQUE_RAPIDE_PCT = float(os.getenv("RISQUE_RAPIDE_PCT", "1"))
 LISTE = [m.strip() for m in os.getenv("RAPIDE_MARCHES", "GOLD,SILVER").split(",") if m.strip()]
 SORTIE_ENTREE_R = float(os.getenv("SORTIE_ENTREE_R", "0.5"))  # "0" = pas de protection du gain
+# Stop qui se resserre (25/11/2026, demandé par Mathis pour le voir en vrai en démo) : dès que le gain a atteint
+# GARDE_RAPIDE_APRES_R R, le stop garanti est remonté pour garder GARDE_RAPIDE_PCT % du meilleur gain.
+# Backtest or 5 min (backtest/serrage.py) : 9,0 R au lieu de 9,5 R (un peu MOINS bien), choisi car c'est la
+# variante qui agit vraiment et coûte le moins. EXPÉRIENCE : à juger au bilan (ordres séparés avant/après). "0" = aucun.
+GARDE_RAPIDE_APRES_R = float(os.getenv("GARDE_RAPIDE_APRES_R", "1.5"))
+GARDE_RAPIDE_PCT = float(os.getenv("GARDE_RAPIDE_PCT", "60"))
 ADX_RAPIDE_MIN = float(os.getenv("ADX_RAPIDE_MIN", "20"))  # 0 = pas de filtre ADX
 FILTRE_BOLLINGER = os.getenv("FILTRE_BOLLINGER", "oui").strip().lower() in ("oui", "1", "true", "on")
-NOM = f"Rapide 5 min : EMA {EMA_R}/{EMA_L} dans le sens des tendances 1 h et 4 h{", Bollinger qui s'élargissent" if FILTRE_BOLLINGER else ""}{f", ADX > {ADX_RAPIDE_MIN:g}" if ADX_RAPIDE_MIN > 0 else ""}, stop {STOP_PCT:g} %, suiveur {SUIVI_RAPIDE_PCT:g} %{f", sortie au prix d'entrée après +{SORTIE_ENTREE_R:g} R" if SORTIE_ENTREE_R > 0 else ""}, risque {RISQUE_RAPIDE_PCT:g} % (expérimentale)"
+NOM = f"Rapide 5 min : EMA {EMA_R}/{EMA_L} dans le sens des tendances 1 h et 4 h{", Bollinger qui s'élargissent" if FILTRE_BOLLINGER else ""}{f", ADX > {ADX_RAPIDE_MIN:g}" if ADX_RAPIDE_MIN > 0 else ""}, stop {STOP_PCT:g} %, suiveur {SUIVI_RAPIDE_PCT:g} %{f", sortie au prix d'entrée après +{SORTIE_ENTREE_R:g} R" if SORTIE_ENTREE_R > 0 else ""}{f", garde {GARDE_RAPIDE_PCT:g} % du gain après +{GARDE_RAPIDE_APRES_R:g} R" if GARDE_RAPIDE_APRES_R > 0 and GARDE_RAPIDE_PCT > 0 else ""}, risque {RISQUE_RAPIDE_PCT:g} % (expérimentale)"
 
 
 def decider_rapide(clotures: list[float]) -> str | None:
@@ -88,6 +94,9 @@ def id_position(conf: dict) -> str | None:
 def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, eurusd: float, noter, quand: str = "",
                 garde=None) -> str:
     etat = donnees.setdefault("rapide", {"deals": [], "nom": NOM})
+    if etat.get("nom") and etat["nom"] != NOM:  # changement de réglages : daté dans le Journal (bilan avant/après)
+        noter("analyse", epic, f"[Rapide] Réglages changés à partir de maintenant : {NOM}. "
+              f"Avant : {etat['nom']}. Le bilan sépare les trades d'avant et d'après.")
     etat["nom"] = NOM
     ouverts = {p["position"]["dealId"] for p in positions}
     etat["deals"] = [d for d in etat.setdefault("deals", []) if d in ouverts]  # oublie celles fermées par le stop
@@ -124,6 +133,8 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
     gardees = [p for p in miennes if p["position"]["direction"] == voulu]
     if gardees and SORTIE_ENTREE_R > 0:
         gardees = proteger_gain(api, donnees, etat, gardees, bougies, epic, noter, quand)
+    if gardees and SORTIE_ENTREE_R > 0 and GARDE_RAPIDE_APRES_R > 0 and GARDE_RAPIDE_PCT > 0:
+        garder_gain_rapide(api, donnees, etat, gardees, bougies, epic, noter)
     empile = ""
     if gardees:
         res = suivre_stop(api, gardees, bougies[-1]["closePrice"], epic, noter)
@@ -223,6 +234,36 @@ def proteger_gain(api, donnees: dict, etat: dict, gardees: list, bougies: list, 
             noter("erreur", epic, f"[Rapide] Fermeture au prix d'entrée refusée : {conf.get('reason', conf.get('dealStatus', '?'))}")
         restent.append(p)
     return restent
+
+
+def garder_gain_rapide(api, donnees: dict, etat: dict, gardees: list, bougies: list, epic: str, noter) -> None:
+    """Dès +GARDE_RAPIDE_APRES_R R de gain (meilleur prix suivi par proteger_gain), remonte le stop garanti pour
+    garder GARDE_RAPIDE_PCT % du meilleur gain. Ne recule jamais ; respecte la distance minimale Capital.com."""
+    meilleurs = etat.get("meilleur", {})
+    regles = regles_marche(api, epic, donnees.setdefault("_cache_marches", {}))
+    prix = (bougies[-1]["closePrice"]["bid"] + bougies[-1]["closePrice"]["ask"]) / 2
+    mini = (prix * (regles["stop_min_pct"] or 0) / 100 or (regles["stop_min_points"] or 0)) * 1.05
+    for p in gardees:
+        pos = p["position"]
+        suivi = meilleurs.get(pos["dealId"])
+        if not suivi:
+            continue
+        sens, entree, actuel = (1 if pos["direction"] == "BUY" else -1), float(pos["level"]), pos.get("stopLevel")
+        distance = entree * STOP_PCT / 100
+        gain_max = (suivi["prix"] - entree) * sens / distance
+        if gain_max < GARDE_RAPIDE_APRES_R:
+            continue
+        cible = entree + GARDE_RAPIDE_PCT / 100 * (suivi["prix"] - entree)
+        cible = min(cible, prix - mini) if sens > 0 else max(cible, prix + mini)
+        if actuel is not None and (cible - float(actuel)) * sens <= prix * 0.001:
+            continue
+        conf = api.modifier_stop(pos["dealId"], cible, bool(pos.get("guaranteedStop", True)))
+        if conf.get("dealStatus") == "ACCEPTED":
+            noter("stop", epic, f"[Rapide] Le gain a atteint {gain_max:.1f} R : stop garanti remonté de "
+                  f"{float(actuel or 0):.2f} à {cible:.2f} pour garder {GARDE_RAPIDE_PCT:g} % du meilleur gain.")
+            pos["stopLevel"] = cible  # le stop suiveur de base part de ce nouveau niveau
+        else:
+            noter("erreur", epic, f"[Rapide] Remontée du stop refusée : {conf.get('reason', conf.get('dealStatus', '?'))}")
 
 
 def _apres_entree(debut_bougie: str, entree: str) -> bool:

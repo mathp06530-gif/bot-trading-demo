@@ -166,7 +166,8 @@ def test_mode_suggestions_ne_change_rien():
 def test_les_trades_ne_melangent_pas_avant_et_apres_un_changement():
     env = {"ADX_RAPIDE_MIN": "25"}
     assert am.reglages_du_moment("rapide", env) == {"ADX_RAPIDE_MIN": 25.0, "FILTRE_BOLLINGER": "oui",
-                                                     "SUIVI_RAPIDE_PCT": 2.0}
+                                                     "SUIVI_RAPIDE_PCT": 2.0, "SORTIE_ENTREE_R": 0.5,
+                                                     "GARDE_RAPIDE_APRES_R": 1.5, "GARDE_RAPIDE_PCT": 60.0}
     assert am.reglages_du_moment("rapide_btc", env) is None
     avant = am.reglages_du_moment("rapide", {})
     apres = am.reglages_du_moment("rapide", env)
