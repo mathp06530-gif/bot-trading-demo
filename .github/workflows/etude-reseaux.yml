@@ -3,7 +3,7 @@ name: Étude « stratégies des réseaux » (backtest ponctuel, temporaire)
 on:
   push:
     branches: [claude/project-thread-9j8i6a]
-    paths: [backtest/reseaux.py, .github/workflows/etude-reseaux.yml]
+    paths: [backtest/reseaux.py, backtest/dukascopy.py, .github/workflows/etude-reseaux.yml]
 
 permissions:
   contents: read
@@ -26,5 +26,25 @@ jobs:
           UNITES: HOUR_4,HOUR
           EPICS: GOLD,SILVER,BTCUSD
         run: python backtest/telecharger.py
-      - name: Backtest des stratégies des réseaux
+      - name: Découpage des bougies 4 h de Capital.com (heures)
+        run: python -c "import pandas as p; d=p.read_csv('backtest/donnees/GOLD_HOUR_4.csv'); print(p.to_datetime(d.date).dt.hour.value_counts().sort_index().to_dict())"
+      - name: Backtest des stratégies des réseaux (2 ans Capital.com, déjà vus)
         run: python backtest/reseaux.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Données JAMAIS VUES par le bot (Dukascopy, 2015 -> janvier 2025, bid et ask)
+        run: |
+          mkdir -p backtest/dukascopy
+          for i in xauusd xagusd btcusd; do
+            for p in bid ask; do
+              npx -y dukascopy-node@1.51.1 -i $i -from 2015-01-01 -to 2025-01-24 -t h1 -p $p -f csv \
+                -dir backtest/dukascopy -fn ${i}_${p} -r 3 -bs 15 -bp 500 || echo "$i $p : échec"
+            done
+          done
+          ls -la backtest/dukascopy
+          python backtest/dukascopy.py backtest/dukascopy backtest/donnees_anciennes
+      - name: Backtest sur les données JAMAIS VUES (2015 -> janvier 2025)
+        env:
+          ANS: "10"
+        run: python backtest/reseaux.py backtest/donnees_anciennes

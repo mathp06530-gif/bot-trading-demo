@@ -30,6 +30,7 @@ si elle améliore le portefeuille sur les deux moitiés sans aggraver sa pire ba
 Usage : python backtest/reseaux.py [dossier]
 """
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -43,7 +44,7 @@ from backtest.smart_money import base, tenir  # noqa: E402
 if len(sys.argv) > 1:
     serrage.DOSSIER = Path(sys.argv[1])
 
-ANS = 2.0
+ANS = float(os.getenv("ANS", "2"))  # ANS=10 pour les données anciennes (2015-2024)
 
 
 # --------------------------------------------------------------------------- indicateurs
@@ -441,7 +442,7 @@ def principal():
     sortie["a_garder"] = a_garder
     print(f"\nÀ garder : {a_garder or 'aucune'}")
     robustesse(d)
-    (Path(__file__).resolve().parent / "resultats_reseaux.json").write_text(
+    (Path(__file__).resolve().parent / f"resultats_reseaux_{int(ANS)}ans.json").write_text(
         json.dumps(sortie, indent=1, ensure_ascii=False, default=str))
 
 
