@@ -41,8 +41,9 @@ def telecharger(api, EPIC, unite, minutes, jours):
         for b in prix:
             lignes[b["snapshotTimeUTC"]] = [
                 b["snapshotTimeUTC"],
-                b["openPrice"]["bid"], b["openPrice"]["ask"], b["highPrice"]["bid"], b["highPrice"]["ask"],
-                b["lowPrice"]["bid"], b["lowPrice"]["ask"], b["closePrice"]["bid"], b["closePrice"]["ask"],
+                # l'historique ancien n'a parfois que le prix vendeur (bid) : ask laissé vide, complété par le backtest
+                b["openPrice"].get("bid"), b["openPrice"].get("ask"), b["highPrice"].get("bid"), b["highPrice"].get("ask"),
+                b["lowPrice"].get("bid"), b["lowPrice"].get("ask"), b["closePrice"].get("bid"), b["closePrice"].get("ask"),
                 b.get("lastTradedVolume", 0)]
         a = de
         time.sleep(0.3)

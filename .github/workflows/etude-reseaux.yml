@@ -53,6 +53,12 @@ jobs:
           for f in t.DOSSIER.iterdir():
               if f.suffix == ".csv":
                   d = pd.read_csv(f)
+                  ecart = (d.close_ask - d.close_bid).median()  # spread médian là où le prix acheteur existe
+                  manque = d.close_ask.isna().mean()
+                  for x in ("open", "high", "low", "close"):
+                      d[f"{x}_ask"] = d[f"{x}_ask"].fillna(d[f"{x}_bid"] + ecart)
+                  d = d.dropna(subset=["close_bid"])
+                  print(f.name, f"spread médian {ecart:.4f}, prix acheteur reconstitué sur {manque:.0%} des bougies")
                   d = d[pd.to_datetime(d.date).dt.tz_localize(None) < "2025-01-24"]
                   d.to_csv(sortie / f.name, index=False)
                   print(f.name, len(d), "bougies jamais vues", d.date.min() if len(d) else "-", "->", d.date.max() if len(d) else "-")
