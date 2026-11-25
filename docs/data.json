@@ -1706,7 +1706,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T20:11:24Z",
+ "derniere_execution": "2026-11-25T20:12:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -7831,15 +7831,19 @@
   {
    "date": "2026-11-25T20:11:24Z",
    "valeur": 95.58
+  },
+  {
+   "date": "2026-11-25T20:12:24Z",
+   "valeur": 95.67
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 95.58,
+  "solde": 95.67,
   "depot": 98.52,
-  "resultat_latent": -2.94,
-  "disponible": 84.33
+  "resultat_latent": -2.85,
+  "disponible": 84.43
  },
  "positions": [
   {
@@ -7848,7 +7852,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3500.82,
-   "resultat": -1.68,
+   "resultat": -1.65,
    "ouverte_le": "2026-11-25T12:05:23.276"
   },
   {
@@ -7857,7 +7861,7 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": -1.26,
+   "resultat": -1.2,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
@@ -8419,7 +8423,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": -1.26,
+   "resultat": -1.2,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8463,7 +8467,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T12:05:23Z",
    "statut": "ouvert",
-   "resultat": -1.68,
+   "resultat": -1.65,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8575,7 +8579,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 95.58
+  "2026-11-25": 95.67
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -8721,7 +8725,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 40.866,
+   "prix": 40.9055,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.66,
@@ -8748,7 +8752,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3561.05,
+    "prix": 3560.74,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -9459,7 +9463,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 40.87,
+    "prix": 40.91,
     "ema200": 50.69,
     "atr": 1.14,
     "trou_achat_atr": -1.74,
