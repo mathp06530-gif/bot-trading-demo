@@ -1616,7 +1616,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T15:40:24Z",
+ "derniere_execution": "2026-11-25T15:45:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -7441,15 +7441,19 @@
   {
    "date": "2026-11-25T15:40:24Z",
    "valeur": 109.08
+  },
+  {
+   "date": "2026-11-25T15:45:25Z",
+   "valeur": 112.36
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 103.73,
+  "solde": 105.37,
   "depot": 98.38,
-  "resultat_latent": 5.35,
-  "disponible": 78.66
+  "resultat_latent": 6.99,
+  "disponible": 80.4
  },
  "positions": [
   {
@@ -7458,7 +7462,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3518.9,
-   "resultat": 1.85,
+   "resultat": 2.17,
    "ouverte_le": "2026-11-25T12:20:25.942"
   },
   {
@@ -7467,7 +7471,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3431.49,
-   "resultat": -0.55,
+   "resultat": -0.23,
    "ouverte_le": "2026-11-25T15:20:26.527"
   },
   {
@@ -7476,7 +7480,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3500.82,
-   "resultat": 1.35,
+   "resultat": 1.67,
    "ouverte_le": "2026-11-25T12:05:23.276"
   },
   {
@@ -7485,7 +7489,7 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": 2.17,
+   "resultat": 2.52,
    "ouverte_le": "2026-11-25T08:05:23.800"
   },
   {
@@ -7494,13 +7498,13 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3471.23,
-   "resultat": 0.54,
+   "resultat": 0.86,
    "ouverte_le": "2026-11-25T14:30:26.075"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 58444.649999999994,
+   "prix": 58138.7,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 19) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -8056,7 +8060,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": 2.17,
+   "resultat": 2.52,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8100,7 +8104,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T12:05:23Z",
    "statut": "ouvert",
-   "resultat": 1.35,
+   "resultat": 1.67,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8121,7 +8125,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T12:20:25Z",
    "statut": "ouvert",
-   "resultat": 1.85,
+   "resultat": 2.17,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8143,7 +8147,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T14:30:26Z",
    "statut": "ouvert",
-   "resultat": 0.54,
+   "resultat": 0.86,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8165,7 +8169,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T15:20:26Z",
    "statut": "ouvert",
-   "resultat": -0.55,
+   "resultat": -0.23,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8183,7 +8187,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 109.08
+  "2026-11-25": 112.36
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -8237,7 +8241,7 @@
    "description": "Un sous-bot pour l'or et un pour l'argent : il achète quand le prix casse le plus haut des 20 dernières bougies de 4 h (vend sous le plus bas), dans le sens de l'EMA 200, avec stop garanti. Environ 4 trades par mois.",
    "unite": "HOUR_4",
    "risque_pct": 3.0,
-   "reglages": "Cassure 20 bougies 4 h dans le sens de l'EMA 200, stop garanti 2 ATR",
+   "reglages": "Cassure 20 bougies 4 h dans le sens de l'EMA 200, stop garanti 2 ATR, garde 50 % du gain après +1.5 R",
    "marches": [
     "GOLD",
     "SILVER"
@@ -8291,24 +8295,24 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3452.955,
+   "prix": 3440.855,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3502.93,
    "ema200": 3930.75,
    "action": "Position conservée",
    "atr": 43.5,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 38.79 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 26.88 de plus dans le bon sens"
   },
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 38.783500000000004,
+   "prix": 38.615,
    "plus_haut_20": 44.25,
    "plus_bas_20": 40.08,
    "ema200": 50.88,
    "action": "Position conservée",
    "atr": 0.96,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 0.51 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 0.43 de plus dans le bon sens"
   }
  },
  "deals_par_strategie": {
@@ -8333,7 +8337,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3451.26,
+    "prix": 3441.165,
     "action": "Position conservée",
     "empilement": "3 position(s) ouverte(s) sur ce marché (maximum 3)"
    },
@@ -9029,6 +9033,18 @@
     "FILTRE_BOLLINGER": "oui",
     "SUIVI_RAPIDE_PCT": 2.0
    }
+  }
+ },
+ "cassure_garde": {
+  "00000000-76bd-694a-049f-c46d0015549e": {
+   "dist": 87.0,
+   "depuis": "2026-11-25T12:05",
+   "meilleur": 3426.62
+  },
+  "00000000-7684-793f-049f-c46d0015549e": {
+   "dist": 1.9000000000000057,
+   "depuis": "2026-11-25T08:05",
+   "meilleur": 38.1995
   }
  }
 }
