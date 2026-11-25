@@ -3,7 +3,7 @@ name: Étude « stratégies des réseaux » (backtest ponctuel, temporaire)
 on:
   push:
     branches: [claude/project-thread-9j8i6a]
-    paths: [backtest/reseaux.py, backtest/dukascopy.py, .github/workflows/etude-reseaux.yml]
+    paths: [backtest/reseaux.py, backtest/dukascopy.py, backtest/reseaux2.py, .github/workflows/etude-reseaux.yml]
 
 permissions:
   contents: read
@@ -30,6 +30,8 @@ jobs:
         run: python -c "import pandas as p; d=p.read_csv('backtest/donnees/GOLD_HOUR_4.csv'); print(p.to_datetime(d.date).dt.hour.value_counts().sort_index().to_dict())"
       - name: Backtest des stratégies des réseaux (2 ans Capital.com, déjà vus)
         run: python backtest/reseaux.py
+      - name: 2e vague (2 ans Capital.com)
+        run: python backtest/reseaux2.py
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -48,3 +50,7 @@ jobs:
         env:
           ANS: "10"
         run: python backtest/reseaux.py backtest/donnees_anciennes
+      - name: 2e vague sur les données JAMAIS VUES
+        env:
+          ANS: "10"
+        run: python backtest/reseaux2.py backtest/donnees_anciennes
