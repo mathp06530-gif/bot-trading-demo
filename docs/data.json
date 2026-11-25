@@ -1706,7 +1706,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T20:09:24Z",
+ "derniere_execution": "2026-11-25T20:10:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -7823,6 +7823,10 @@
   {
    "date": "2026-11-25T20:09:24Z",
    "valeur": 95.6
+  },
+  {
+   "date": "2026-11-25T20:10:24Z",
+   "valeur": 95.6
   }
  ],
  "compte": {
@@ -7840,7 +7844,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3500.82,
-   "resultat": -1.64,
+   "resultat": -1.63,
    "ouverte_le": "2026-11-25T12:05:23.276"
   },
   {
@@ -8455,7 +8459,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T12:05:23Z",
    "statut": "ouvert",
-   "resultat": -1.64,
+   "resultat": -1.63,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8740,7 +8744,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3561.31,
+    "prix": 3561.26,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -9467,7 +9471,7 @@
   "deals": {},
   "marches": {
    "ETHUSD": {
-    "prix": 1681.54,
+    "prix": 1680.85,
     "ligne": 1735.66,
     "sens": -1,
     "atr": 41.73,
