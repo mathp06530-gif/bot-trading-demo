@@ -11,6 +11,12 @@ Règles, sur des bougies de 5 minutes (prix milieu), pour chaque marché de RAPI
     Test 20/11/2026 (5 mois de 5 min, or + argent, 2 moitiés) : l'ADX améliore les deux moitiés
     (-21 -> -20 R, puis +1 -> +6 R) ; RSI et ATR testés, rejetés (mieux sur une moitié, pire sur l'autre).
   - Stop garanti à 1 % du prix (ou le minimum imposé par Capital.com), stop suiveur à SUIVI_RAPIDE_PCT (2 %).
+  - Protection du gain (25/11/2026) : dès qu'une position a été en gain d'au moins SORTIE_ENTREE_R (0,5 R,
+    1 R = la distance du stop = 1 % du prix), le bot la ferme si une bougie 5 min se termine de nouveau au
+    prix d'entrée ou en dessous (un gain qui disparaît ne devient pas une perte).
+    Backtest or 5 min, 13/05 -> 25/11/2026, net de frais (backtest/sortie_rapide.py) : +9,4 R -> +10,1 R,
+    mieux sur les deux moitiés, et pareil de 0,3 à 0,8 R. Rejetés car moins bons : prendre la moitié du gain
+    à +1/+1,5/+2 R, suiveur qui se resserre après +1/+1,5/+2 R, stop garanti remonté au point d'entrée.
   - Taille : RISQUE_RAPIDE_PCT (1 %) du capital perdu au maximum, au moins la taille minimale du marché.
   - Les positions de cette stratégie sont repérées par leur numéro (dealId). Elle attend quand la
     cassure 4 h a une position dans l'autre sens sur le même marché (compte sans couverture).
@@ -32,9 +38,10 @@ SUIVI_RAPIDE_PCT = float(os.getenv("SUIVI_RAPIDE_PCT", "2"))  # "0" = pas de sto
 EMPILER_RAPIDE = int(os.getenv("EMPILER_RAPIDE", "1"))  # positions max par marché (empilement)
 RISQUE_RAPIDE_PCT = float(os.getenv("RISQUE_RAPIDE_PCT", "1"))
 LISTE = [m.strip() for m in os.getenv("RAPIDE_MARCHES", "GOLD,SILVER").split(",") if m.strip()]
+SORTIE_ENTREE_R = float(os.getenv("SORTIE_ENTREE_R", "0.5"))  # "0" = pas de protection du gain
 ADX_RAPIDE_MIN = float(os.getenv("ADX_RAPIDE_MIN", "20"))  # 0 = pas de filtre ADX
 FILTRE_BOLLINGER = os.getenv("FILTRE_BOLLINGER", "oui").strip().lower() in ("oui", "1", "true", "on")
-NOM = f"Rapide 5 min : EMA {EMA_R}/{EMA_L} dans le sens des tendances 1 h et 4 h{", Bollinger qui s'élargissent" if FILTRE_BOLLINGER else ""}{f", ADX > {ADX_RAPIDE_MIN:g}" if ADX_RAPIDE_MIN > 0 else ""}, stop {STOP_PCT:g} %, suiveur {SUIVI_RAPIDE_PCT:g} %, risque {RISQUE_RAPIDE_PCT:g} % (expérimentale)"
+NOM = f"Rapide 5 min : EMA {EMA_R}/{EMA_L} dans le sens des tendances 1 h et 4 h{", Bollinger qui s'élargissent" if FILTRE_BOLLINGER else ""}{f", ADX > {ADX_RAPIDE_MIN:g}" if ADX_RAPIDE_MIN > 0 else ""}, stop {STOP_PCT:g} %, suiveur {SUIVI_RAPIDE_PCT:g} %{f", sortie au prix d'entrée après +{SORTIE_ENTREE_R:g} R" if SORTIE_ENTREE_R > 0 else ""}, risque {RISQUE_RAPIDE_PCT:g} % (expérimentale)"
 
 
 def decider_rapide(clotures: list[float]) -> str | None:
@@ -82,6 +89,9 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
     etat["nom"] = NOM
     ouverts = {p["position"]["dealId"] for p in positions}
     etat["deals"] = [d for d in etat.setdefault("deals", []) if d in ouverts]  # oublie celles fermées par le stop
+    meilleurs = etat.setdefault("meilleur", {})  # dealId -> {"depuis": bougie d'entrée, "prix": meilleur prix vu}
+    for d in [d for d in meilleurs if d not in ouverts]:
+        del meilleurs[d]
     mes_ids = set(etat["deals"])
     miennes = [p for p in positions if p["position"]["dealId"] in mes_ids and p["market"]["epic"] == epic]
     marche = etat.setdefault("marches", {}).setdefault(epic, {})
@@ -110,6 +120,8 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
         return (f"À l'écart : signal 5 min en {mots[signal]}, mais tendance 1 h en {mots[t1]} "
                 f"et 4 h en {mots[t4]} (pas d'accord)")
     gardees = [p for p in miennes if p["position"]["direction"] == voulu]
+    if gardees and SORTIE_ENTREE_R > 0:
+        gardees = proteger_gain(api, donnees, etat, gardees, bougies, epic, noter, quand)
     empile = ""
     if gardees:
         res = suivre_stop(api, gardees, bougies[-1]["closePrice"], epic, noter)
@@ -161,11 +173,61 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
         deal = id_position(conf)
         if deal:
             etat["deals"].append(deal)
+            etat["meilleur"][deal] = {"depuis": bougies[-1]["snapshotTimeUTC"], "prix": float(conf.get("level") or prix)}
         noter("ordre", epic, f"[Rapide] {'Empilement (' + empile + ') : ' if empile else ''}{mot} de {taille} à {float(conf.get('level') or prix):.2f}, "
               f"stop garanti à {distance:.2f} $.")
         return f"{mot} de {taille}"
     noter("erreur", epic, f"[Rapide] Ordre {mot} refusé : {conf.get('reason', conf.get('dealStatus', '?'))}")
     return "Ordre refusé"
+
+
+def proteger_gain(api, donnees: dict, etat: dict, gardees: list, bougies: list, epic: str, noter, quand: str) -> list:
+    """Ferme une position qui a été en gain d'au moins SORTIE_ENTREE_R R et dont la dernière bougie 5 min
+    TERMINÉE est revenue au prix d'entrée (ou pire). Renvoie les positions gardées.
+    Le meilleur prix est suivi sur les bougies terminées depuis la bougie d'entrée (comme le backtest)."""
+    meilleurs = etat.setdefault("meilleur", {})
+    terminees = bougies[:-1]
+    if not terminees:
+        return gardees
+    restent = []
+    for p in gardees:
+        pos = p["position"]
+        deal, sens = pos["dealId"], 1 if pos["direction"] == "BUY" else -1
+        entree = float(pos["level"])
+        suivi = meilleurs.get(deal)
+        if suivi is None:  # position ouverte avant cette règle : on suit à partir de son heure d'ouverture
+            depuis = (pos.get("createdDateUTC") or bougies[-1]["snapshotTimeUTC"])[:16]
+            suivi = meilleurs[deal] = {"depuis": depuis, "prix": entree}
+        for b in terminees:
+            if not _apres_entree(b["snapshotTimeUTC"], suivi["depuis"]):
+                continue  # bougie d'avant l'entrée (celle qui contient l'heure d'entrée compte)
+            cote = "highPrice" if sens > 0 else "lowPrice"
+            extreme = (b[cote]["bid"] + b[cote]["ask"]) / 2
+            suivi["prix"] = max(suivi["prix"], extreme) if sens > 0 else min(suivi["prix"], extreme)
+        distance = entree * STOP_PCT / 100
+        gain_max = (suivi["prix"] - entree) * sens / distance
+        cloture = terminees[-1]["closePrice"]["bid" if sens > 0 else "ask"]
+        if gain_max >= SORTIE_ENTREE_R and (cloture - entree) * sens <= 0:
+            conf = api.fermer(deal)
+            if conf.get("dealStatus") == "ACCEPTED":
+                noter_fermeture(donnees, p, conf, quand, "[Rapide] Retour au prix d'entrée")
+                if deal in etat["deals"]:
+                    etat["deals"].remove(deal)
+                meilleurs.pop(deal, None)
+                noter("fermeture", epic, f"[Rapide] Le gain avait atteint {gain_max:.1f} R et le prix est revenu au "
+                      f"prix d'entrée ({entree:.2f}) : position fermée pour ne pas transformer un gain en perte "
+                      f"(gain/perte : {pos.get('upl', 0):.2f}).")
+                continue
+            noter("erreur", epic, f"[Rapide] Fermeture au prix d'entrée refusée : {conf.get('reason', conf.get('dealStatus', '?'))}")
+        restent.append(p)
+    return restent
+
+
+def _apres_entree(debut_bougie: str, entree: str) -> bool:
+    """La bougie 5 min qui commence à `debut_bougie` est-elle celle de l'entrée ou une suivante ?"""
+    b, e = debut_bougie[:16], entree[:16]  # « AAAA-MM-JJTHH:MM »
+    minute = int(e[14:16]) // 5 * 5
+    return b >= f"{e[:14]}{minute:02d}"
 
 
 def suivre_stop(api, gardees: list, prix: dict, epic: str, noter) -> str:

@@ -457,3 +457,60 @@ def test_cassure_entre_sur_un_nouveau_plus_haut_pendant_une_tendance_en_cours(tm
     d2 = {}
     main.un_tour(d2, faux2)
     assert not faux2.ouvertes
+
+
+def test_rapide_sort_au_prix_d_entree_apres_un_gain(tmp_path, monkeypatch):
+    """Le prix monte de plus de 0,5 R puis revient au prix d'entrée : la rapide ferme (le gain ne devient pas une perte)."""
+    from bot import rapide
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "MARCHES", [])
+    monkeypatch.setattr(rapide, "LISTE", ["GOLD"])
+    monkeypatch.setattr(rapide, "FILTRE_BOLLINGER", False)
+    monkeypatch.setattr(rapide, "ADX_RAPIDE_MIN", 0)
+    monkeypatch.setattr(rapide, "SUIVI_RAPIDE_PCT", 0)
+    monkeypatch.setattr(rapide, "SORTIE_ENTREE_R", 0.5)
+    monkeypatch.setattr(rapide, "tendances_superieures", lambda api, epic: ("BUY", "BUY"))
+    debut, _ = serie_achat()
+    faux = FauxCapital(debut, [3000 + i for i in range(80)])
+    d = {"strategies": {"rapide": {"active": True}}}
+    main.un_tour(d, faux)
+    assert len(faux.ouvertes) == 1
+    entree = faux.niveaux["d0"]
+    main.un_tour(d, faux)  # rien n'a bougé : on garde (les bougies d'avant l'entrée ne comptent pas)
+    assert not faux.fermees
+    # les mèches des fausses bougies montent de 30 (= 1 R sur ~3080) : gain max >= 0,5 R ; clôture encore au-dessus
+    faux.prix_rapide = faux.prix_rapide + [3090, 3095]
+    main.un_tour(d, faux)
+    assert not faux.fermees
+    # la bougie se termine au prix d'entrée (EMA 9 toujours au-dessus de l'EMA 50) : sortie
+    faux.prix_rapide = faux.prix_rapide + [entree - 1]
+    main.un_tour(d, faux)
+    assert faux.fermees == ["d0"]
+    assert d["ordres"][0]["motif_sortie"] == "[Rapide] Retour au prix d'entrée"
+    assert "d0" not in d["rapide"]["meilleur"]
+
+
+def test_rapide_sans_gain_suffisant_ne_sort_pas(tmp_path, monkeypatch):
+    from bot import rapide
+    from bot.rapide import _apres_entree
+    assert _apres_entree("2026-11-24T13:50:00", "2026-11-24T13:52:24.123")
+    assert not _apres_entree("2026-11-24T13:45:00", "2026-11-24T13:52:24.123")
+    assert _apres_entree("2026-11-24T14:00:00", "2026-11-24T13:52:24")
+    monkeypatch.setattr(rapide, "SORTIE_ENTREE_R", 0.5)
+    etat = {"deals": ["x"], "meilleur": {"x": {"depuis": "2026-01-01T00:00", "prix": 3000}}}
+    pos = {"position": {"dealId": "x", "direction": "SELL", "level": 3000, "size": 0.01, "upl": -0.1},
+           "market": {"epic": "GOLD", "instrumentName": "Gold"}}
+    px = lambda x: {"bid": x - 0.5, "ask": x + 0.5}
+    b = lambda t, h, l, c: {"snapshotTimeUTC": f"2026-01-01T00:{t:02d}:00", "highPrice": px(h), "lowPrice": px(l), "closePrice": px(c)}
+    class Api:
+        fermees = []
+        def fermer(self, d): self.fermees.append(d); return {"dealStatus": "ACCEPTED"}
+    api = Api()
+    # vente : plus bas à 2990 = 0,33 R seulement, puis retour à 3001 -> on garde (le stop garanti protège)
+    garde = rapide.proteger_gain(api, {}, etat, [pos], [b(0, 3002, 2990, 2995), b(5, 3003, 2996, 3001), b(10, 3001, 3001, 3001)],
+                                 "GOLD", lambda *a: None, "2026-01-01T00:10:00Z")
+    assert garde == [pos] and not api.fermees
+    # plus bas à 2980 (0,67 R) puis clôture à 3000 -> sortie
+    garde = rapide.proteger_gain(api, {}, etat, [pos], [b(15, 3001, 2980, 2990), b(20, 3001, 2995, 3000), b(25, 3000, 3000, 3000)],
+                                 "GOLD", lambda *a: None, "2026-01-01T00:25:00Z")
+    assert garde == [] and api.fermees == ["x"] and etat["deals"] == []
