@@ -1567,7 +1567,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T14:10:25Z",
+ "derniere_execution": "2026-11-25T14:15:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -7320,15 +7320,19 @@
   {
    "date": "2026-11-25T14:10:25Z",
    "valeur": 103.56
+  },
+  {
+   "date": "2026-11-25T14:15:25Z",
+   "valeur": 103.6
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 100.97,
+  "solde": 100.99,
   "depot": 98.38,
-  "resultat_latent": 2.59,
-  "disponible": 85.23
+  "resultat_latent": 2.61,
+  "disponible": 85.25
  },
  "positions": [
   {
@@ -7355,13 +7359,13 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": 1.15,
+   "resultat": 1.19,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 58219.2,
+   "prix": 58239.35,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 19) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -7917,7 +7921,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": 1.15,
+   "resultat": 1.19,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8000,7 +8004,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 103.56
+  "2026-11-25": 103.6
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -8117,24 +8121,24 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3487.57,
+   "prix": 3482.325,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3502.93,
    "ema200": 3930.75,
    "action": "Position conservée",
    "atr": 43.5,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 73.50 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 68.23 de plus dans le bon sens"
   },
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 39.382000000000005,
+   "prix": 39.338,
    "plus_haut_20": 44.25,
    "plus_bas_20": 40.08,
    "ema200": 50.88,
    "action": "Position conservée",
    "atr": 0.96,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 1.14 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 1.06 de plus dans le bon sens"
   }
  },
  "deals_par_strategie": {
@@ -8156,10 +8160,10 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 3.25,
-     "adx": 36.1
+     "bollinger": 3.18,
+     "adx": 36.0
     },
-    "prix": 3482.62,
+    "prix": 3484.005,
     "action": "Refusé (garde-fous) : pause actualité : « Core PCE Price Index m/m » (annonce américaine importante) à 14 h 30, heure de Paris",
     "empilement": "le prix a avancé de 1 R depuis la dernière entrée : position 2/3 ajoutée"
    },
