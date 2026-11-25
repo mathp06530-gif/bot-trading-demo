@@ -14,6 +14,7 @@ from pathlib import Path
 from bot.capital import CapitalDemo, ErreurCapital
 from bot.garde_fous import GardeFous, surveiller_series_de_stops
 from bot import rapide as module_rapide
+from bot import elan as module_elan
 from bot import actualites
 from bot.empilement import EMPILER_MAX, peut_empiler
 from bot.cassure import LISTE as MARCHES_CASSURE
@@ -137,7 +138,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                  "n'est ouverte que si le 2e cerveau (indicateurs + structure sommets/creux + tendance 1 h) est d'accord. "
                  "Backtest 2 ans : +16,2 R -> +17,4 R, pire baisse -3,7 R -> -2,7 R. À comparer au bilan du 4/12.")
 
-    toutes = ["tendance_4h", "cassure_4h", "rapide"]  # 20/11/2026 : test de 2 semaines de ces 3 stratégies
+    toutes = ["tendance_4h", "cassure_4h", "rapide", "elan_4h"]  # 25/11/2026 : + « Élan » (expérimentale)
     strategie = strategie if strategie in toutes else "toutes"
     cibles = toutes if strategie == "toutes" else [strategie]
     etats = donnees.setdefault("strategies", {})
@@ -152,16 +153,19 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     etats.setdefault("tendance_4h", {}).setdefault("active", True)
     etats.setdefault("cassure_4h", {}).setdefault("active", True)
     etats.setdefault("rapide", {}).setdefault("active", module_rapide.ACTIVE)
+    etats.setdefault("elan_4h", {}).setdefault("active", module_elan.ACTIVE)
     if set(donnees.get("rapide", {}).get("deals", [])) and "marches" not in donnees["rapide"]:
         donnees["rapide"] = {"deals": []}  # ancienne rapide du Bitcoin : on repart de zéro
     noms = {"tendance_4h": "Tendance 4 h (Bitcoin)", "cassure_4h": "Cassure 4 h (or et argent)",
-            "rapide": "Rapide 5 min (or et argent)"}
+            "rapide": "Rapide 5 min (or et argent)", "elan_4h": "Élan des gros acteurs 4 h (expérimentale)"}
     lancer = set(cibles) if action == "lancer" else set()
 
     api.connexion()
     positions = api.positions()
     ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
+    ids_elan = set(donnees.get("elan", {}).get("deals", {}))
     strat_de = lambda p: ("rapide" if p["position"]["dealId"] in ids_rapide else
+                          "elan_4h" if p["position"]["dealId"] in ids_elan else
                           "cassure_4h" if p["market"]["epic"] in MARCHES_CASSURE else "tendance_4h")
 
     # --- Commandes envoyées depuis l'application (téléphone, tablette, PC) ---
@@ -412,6 +416,24 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                             "description": ("Trade souvent sur des bougies de 5 min, sur l'or et l'argent, seulement dans le "
                                             "sens des tendances 1 h et 4 h. Expérience : perdante en backtest à cause des frais."),
                             "action": "Actif" if actif_r else ("En pause" if en_pause else "Désactivée")})
+
+    # --- Élan des gros acteurs 4 h (EXPÉRIMENTALE, 25/11/2026) : séparée, après la Cassure (qui passe en priorité) ---
+    actif_e = ("elan_4h" in lancer) or (not en_pause and etats["elan_4h"]["active"])
+    if actif_e or not en_pause:
+        noter_e = lambda t, m, x: noter(t, m, x, "elan_4h")
+        module_elan.premiere_fois(donnees, noter_e)
+        for epic in module_elan.LISTE:
+            try:
+                res = module_elan.tour_elan(api, donnees, epic, api.positions(), capital, disponible, eurusd, noter_e,
+                                            garde, maintenant(), peut_entrer=actif_e)
+            except Exception as e:  # un marché en erreur ne bloque pas les autres
+                res = "Erreur"
+                noter_e("erreur", epic, f"[Élan] {str(e)[:300]}")
+            donnees.setdefault("elan", {}).setdefault("marches", {}).setdefault(epic, {})["action"] = res
+    etats["elan_4h"].update({"nom": noms["elan_4h"], "unite": module_elan.UNITE, "risque_pct": module_elan.RISQUE_ELAN_PCT,
+                             "reglages": module_elan.NOM, "marches": module_elan.LISTE, "description": module_elan.DESCRIPTION,
+                             "debut": module_elan.DEBUT,
+                             "action": "Actif" if actif_e else ("En pause" if en_pause else "Désactivée")})
     donnees.pop("_cache_marches", None)
 
     # État final du compte, après les ordres
@@ -422,9 +444,12 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     api.deconnexion()
     synchroniser(donnees, positions, maintenant(), activites, eurusd)
     ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
+    ids_elan = set(donnees.get("elan", {}).get("deals", {}))
     for o in donnees.get("ordres", []):
         if o["id"] in ids_rapide:
             o["strategie"] = "rapide"
+        elif o["id"] in ids_elan or (o.get("motif_sortie") or "").startswith("[Élan]"):
+            o["strategie"] = "elan_4h"
         elif o.get("strategie") == "rapide" and o["marche"] not in module_rapide.LISTE:
             o["strategie"] = "rapide_btc"  # ancienne rapide du Bitcoin (avant le 20/11/2026)
         o.setdefault("strategie", "cassure_4h" if o["marche"] in MARCHES_CASSURE else "tendance_4h")

@@ -185,6 +185,20 @@ def principal():
                             v, ok, ds = tenir(sig, dist, len(df), duree)
                             jeux.append((e, df, v, ok, ds, ds * k, cond[e]))
                         res[f"élan 4 h {titre_m}{' + EMA 200' if tendance else ''}, trou > {mini:g} ATR, obj {k:g} R, max {duree}"] = evaluer(jeux)
+    # Version EXACTE du bot (bot/elan.py) avec ses règles de cohabitation : pas d'entrée contre la Cassure 4 h,
+    # et sortie si la Cassure veut aller dans l'autre sens.
+    from bot.cassure import signaux_cassure
+    from bot.elan import signaux_elan
+    jeux = []
+    for e in ("GOLD", "SILVER"):
+        df = donnees[(e, "HOUR_4")]
+        se = signaux_elan(df)
+        cc = signaux_cassure(df, entree=20, sortie=20).cible.values
+        sig = np.where(cc == -se.sig.values, 0, se.sig.values)
+        v, ok, ds = tenir(sig, se.dist.values, len(df), 20)
+        v = np.where(cc == -v, 0, v)
+        jeux.append((e, df, v, ok, ds, ds * 2.0, cond[e]))
+    res["ÉLAN DU BOT (avec règles Cassure), obj 2 R, max 20"] = evaluer(jeux)
     for seuil in (0.2, 0.3, 0.5):
         jeux = []
         for e in ("GOLD", "SILVER"):
