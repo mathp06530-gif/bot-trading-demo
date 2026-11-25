@@ -1450,7 +1450,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T03:35:25Z",
+ "derniere_execution": "2026-11-25T03:40:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -6687,6 +6687,10 @@
   {
    "date": "2026-11-25T03:35:25Z",
    "valeur": 98.88
+  },
+  {
+   "date": "2026-11-25T03:40:25Z",
+   "valeur": 98.88
   }
  ],
  "compte": {
@@ -6700,7 +6704,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 59423.75,
+   "prix": 59441.45,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 20) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -7347,7 +7351,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3552.7,
+   "prix": 3550.71,
    "plus_haut_20": 3692.38,
    "plus_bas_20": 3502.93,
    "ema200": 3943.23,
@@ -7358,7 +7362,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 40.809,
+   "prix": 40.82,
    "plus_haut_20": 44.89,
    "plus_bas_20": 40.74,
    "ema200": 51.2,
@@ -7376,14 +7380,16 @@
   "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 2 %, risque 1 % (expérimentale)",
   "marches": {
    "GOLD": {
-    "tendance": "BUY",
+    "tendance": "SELL",
     "filtre": {
-     "signal_5min": "BUY",
+     "signal_5min": "SELL",
      "tendance_1h": "SELL",
-     "tendance_4h": "SELL"
+     "tendance_4h": "SELL",
+     "bollinger": 1.23,
+     "adx": 14.0
     },
-    "prix": 3552.745,
-    "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
+    "prix": 3550.95,
+    "action": "En attente : tendance 5 min trop faible (ADX 14 ≤ 20)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 36.00 de plus dans le bon sens"
    },
    "SILVER": {
@@ -7398,7 +7404,7 @@
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)"
    }
   },
-  "tendance": "BUY"
+  "tendance": "SELL"
  },
  "debut_test": "2026-11-20T16:20:00Z",
  "ordres_avant_test": [
