@@ -102,6 +102,22 @@ def fvg(df, tendance):
     return sig, dist
 
 
+def elan(df, tendance=False, mini_atr=0.0):
+    """ÉLAN d'un gros ordre (« displacement ») : la bougie qui vient de se terminer laisse un trou avec la bougie
+    d'il y a 2 bougies (bas actuel > haut d'il y a 2 bougies) -> ACHAT à l'ouverture suivante (VENTE à l'inverse).
+    Stop de l'autre côté du trou (+0,1 ATR). mini_atr : taille minimale du trou en ATR."""
+    o, h, l, c, atr, e = base(df)
+    h2, l2 = np.r_[np.nan, np.nan, h[:-2]], np.r_[np.nan, np.nan, l[:-2]]
+    achat = (l - h2 > mini_atr * atr)
+    vente = (l2 - h > mini_atr * atr)
+    if tendance:
+        achat &= c > e
+        vente &= c < e
+    sig = np.where(achat, 1, np.where(vente, -1, 0))
+    dist = np.where(sig == 1, c - h2, l2 - c) + 0.1 * atr
+    return sig, dist
+
+
 def ecart_lundi(df, seuil=0.3):
     o, h, l, c, atr, e = base(df)
     n = len(df)
@@ -157,6 +173,18 @@ def principal():
                         v, ok, ds = tenir(sig, dist, len(df), 20)
                         jeux.append((e, df, v, ok, ds, ds * k, cond[e]))
                     res[f"FVG {u} {titre_m}{t}, obj {k:g} R"] = evaluer(jeux)
+    for e_set, titre_m in ((("GOLD", "SILVER"), "or+argent"), (("BTCUSD",), "BTC")):
+        for tendance in (False, True):
+            for mini in (0.0, 0.25, 0.5):
+                for k in (1.5, 2.0, 3.0):
+                    for duree in (10, 20):
+                        jeux = []
+                        for e in e_set:
+                            df = donnees[(e, "HOUR_4")]
+                            sig, dist = elan(df, tendance, mini)
+                            v, ok, ds = tenir(sig, dist, len(df), duree)
+                            jeux.append((e, df, v, ok, ds, ds * k, cond[e]))
+                        res[f"élan 4 h {titre_m}{' + EMA 200' if tendance else ''}, trou > {mini:g} ATR, obj {k:g} R, max {duree}"] = evaluer(jeux)
     for seuil in (0.2, 0.3, 0.5):
         jeux = []
         for e in ("GOLD", "SILVER"):
@@ -175,16 +203,19 @@ def principal():
             prometteuses.append(nom)
         print(f"{nom:58s} {s['R']:7.2f} {s['R_1']:7.2f} {s['R_2']:7.2f} {s['trades']:6d} {s['reussite']:6.1f} "
               f"{s['pire_baisse_R']:7.2f}{'  <- 2 moitiés +' if ok else ''}")
-    print("\nDétail FVG 4 h (obj 3 R), par marché et par sens :")
+    print("\nDétail ÉLAN 4 h (obj 3 R, max 20), par marché et par sens :")
     for e in ("GOLD", "SILVER", "BTCUSD"):
         df = donnees[(e, "HOUR_4")]
-        sig, dist = fvg(df, False)
+        sig, dist = elan(df)
         v, ok, ds = tenir(sig, dist, len(df), 20)
         t = serrage.simuler(df, v, ok, ds, None, cond[e], dobj=ds * 3)
         sens = v[df.index.get_indexer(t.date) - 1] if len(t) else []
         for s_, mot in ((1, "achats"), (-1, "ventes")):
             r = t.R[np.asarray(sens) == s_]
             print(f"  {e:7s} {mot:7s} {r.sum():7.2f} R sur {len(r)} trades")
+        an = t[t.date >= t.date.max() - pd.Timedelta(days=365)]
+        print(f"  {e:7s} dernière année {an.R.sum():7.2f} R ; par trimestre : "
+              + ", ".join(f"{x:.1f}" for x in t.groupby(t.date.dt.to_period('Q')).R.sum().values))
     print(f"\n{len(prometteuses)} idées gagnantes sur les 2 moitiés, sur {len(res)} testées.")
     (Path(__file__).resolve().parent / "resultats_smart_money.json").write_text(
         json.dumps({"prometteuses": prometteuses, "resultats": res}, indent=1, ensure_ascii=False, default=str))
