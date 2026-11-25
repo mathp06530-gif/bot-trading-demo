@@ -1637,7 +1637,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T16:30:25Z",
+ "derniere_execution": "2026-11-25T16:35:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -7502,15 +7502,19 @@
   {
    "date": "2026-11-25T16:30:25Z",
    "valeur": 104.81
+  },
+  {
+   "date": "2026-11-25T16:35:25Z",
+   "valeur": 105.85
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 102.34,
+  "solde": 102.86,
   "depot": 99.87,
-  "resultat_latent": 2.47,
-  "disponible": 81.97
+  "resultat_latent": 2.99,
+  "disponible": 82.54
  },
  "positions": [
   {
@@ -7519,7 +7523,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3431.49,
-   "resultat": -0.8,
+   "resultat": -0.68,
    "ouverte_le": "2026-11-25T15:20:26.527"
   },
   {
@@ -7528,7 +7532,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3500.82,
-   "resultat": 1.1,
+   "resultat": 1.22,
    "ouverte_le": "2026-11-25T12:05:23.276"
   },
   {
@@ -7537,7 +7541,7 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": 1.95,
+   "resultat": 2.07,
    "ouverte_le": "2026-11-25T08:05:23.800"
   },
   {
@@ -7546,13 +7550,13 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3471.23,
-   "resultat": 0.29,
+   "resultat": 0.41,
    "ouverte_le": "2026-11-25T14:30:26.075"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 58636.45,
+   "prix": 58552.600000000006,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 20) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -8108,7 +8112,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": 1.95,
+   "resultat": 2.07,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8152,7 +8156,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T12:05:23Z",
    "statut": "ouvert",
-   "resultat": 1.1,
+   "resultat": 1.22,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8196,7 +8200,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T14:30:26Z",
    "statut": "ouvert",
-   "resultat": 0.29,
+   "resultat": 0.41,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8218,7 +8222,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T15:20:26Z",
    "statut": "ouvert",
-   "resultat": -0.8,
+   "resultat": -0.68,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8236,7 +8240,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 104.81
+  "2026-11-25": 105.85
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -8344,24 +8348,24 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3462.565,
+   "prix": 3461.81,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3484.58,
    "ema200": 3925.93,
    "action": "Position conservée",
    "atr": 47.8,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 57.22 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 56.34 de plus dans le bon sens"
   },
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 38.944,
+   "prix": 38.838499999999996,
    "plus_haut_20": 44.25,
    "plus_bas_20": 39.35,
    "ema200": 50.76,
    "action": "Position conservée",
    "atr": 1.04,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 0.88 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 0.79 de plus dans le bon sens"
   }
  },
  "deals_par_strategie": {
@@ -8385,9 +8389,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3461.7349999999997,
+    "prix": 3456.33,
     "action": "Position conservée",
-    "empilement": "position 3/3 possible quand le prix aura avancé de 64.60 de plus dans le bon sens"
+    "empilement": "position 3/3 possible quand le prix aura avancé de 59.15 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
