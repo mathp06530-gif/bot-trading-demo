@@ -16,6 +16,8 @@ Règles, sur des bougies de 4 h TERMINÉES (prix milieu) :
 
 Backtest 2 ans (backtest/smart_money.py, 25/11/2024 -> 25/11/2026, net de frais, or + argent) : +54 R sur
 190 trades, 50 % gagnants, gagnante sur les 2 moitiés (+29 R puis +25 R), pire baisse -11,5 R.
+Avec les règles de cohabitation avec la Cassure (version exacte du bot) : +44 R sur 185 trades (+23 R puis +21 R),
+pire baisse -15,5 R.
 31 réglages voisins sur 36 gagnaient aussi sur les 2 moitiés. Sur le Bitcoin : faible, pas utilisée.
 LIMITES : 2 ans seulement, l'or et l'argent ont beaucoup monté (les achats font l'essentiel du gain),
 et 243 variantes ont été essayées (une partie du résultat peut venir de la chance). Preuve FAIBLE : EXPÉRIENCE.
@@ -43,7 +45,7 @@ NOM = (f"Élan des gros acteurs 4 h : trou > {TROU_MIN_ATR:g} ATR entre 3 bougie
        f"stop de l'autre côté du trou, objectif {OBJECTIF_ELAN_R:g} R, sortie après {MAX_BOUGIES_ELAN} bougies, "
        f"risque {RISQUE_ELAN_PCT:g} % (expérimentale)")
 DESCRIPTION = ("Expérience lancée le 25/11/2026 : repère les bougies de 4 h où un gros ordre a fait sauter le prix "
-               "(un « trou » entre les bougies) sur l'or et l'argent, et suit cet élan. Backtest 2 ans : +54 R, "
+               "(un « trou » entre les bougies) sur l'or et l'argent, et suit cet élan. Backtest 2 ans : +44 R, "
                "mais preuve faible (2 ans, marché très haussier).")
 
 
@@ -179,5 +181,5 @@ def premiere_fois(donnees: dict, noter) -> None:
     donnees["elan"]["depuis"] = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     noter("commande", "", "Nouveau (25/11/2026) : stratégie EXPÉRIMENTALE « Élan des gros acteurs » sur l'or et "
           "l'argent, risque 1 %. Elle suit les bougies de 4 h où un gros ordre a fait sauter le prix. "
-          "Backtest 2 ans : +54 R sur 190 trades, mais preuve faible. Séparée des autres stratégies : "
+          "Backtest 2 ans : +44 R sur 185 trades, mais preuve faible. Séparée des autres stratégies : "
           "elle ne change rien à la Cassure, à la Tendance ni à la Rapide.")
