@@ -1630,7 +1630,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T15:55:25Z",
+ "derniere_execution": "2026-11-25T16:00:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -7467,15 +7467,19 @@
   {
    "date": "2026-11-25T15:55:25Z",
    "valeur": 110.24
+  },
+  {
+   "date": "2026-11-25T16:00:25Z",
+   "valeur": 110.56
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 104.31,
+  "solde": 104.47,
   "depot": 98.38,
-  "resultat_latent": 5.93,
-  "disponible": 79.27
+  "resultat_latent": 6.09,
+  "disponible": 79.45
  },
  "positions": [
   {
@@ -7484,7 +7488,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3518.9,
-   "resultat": 1.96,
+   "resultat": 1.99,
    "ouverte_le": "2026-11-25T12:20:25.942"
   },
   {
@@ -7493,7 +7497,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3431.49,
-   "resultat": -0.43,
+   "resultat": -0.4,
    "ouverte_le": "2026-11-25T15:20:26.527"
   },
   {
@@ -7502,7 +7506,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3500.82,
-   "resultat": 1.47,
+   "resultat": 1.5,
    "ouverte_le": "2026-11-25T12:05:23.276"
   },
   {
@@ -7511,7 +7515,7 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": 2.24,
+   "resultat": 2.3,
    "ouverte_le": "2026-11-25T08:05:23.800"
   },
   {
@@ -7520,13 +7524,13 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3471.23,
-   "resultat": 0.66,
+   "resultat": 0.69,
    "ouverte_le": "2026-11-25T14:30:26.075"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 58338.274999999994,
+   "prix": 58309.7,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 19) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -8082,7 +8086,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": 2.24,
+   "resultat": 2.3,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8126,7 +8130,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T12:05:23Z",
    "statut": "ouvert",
-   "resultat": 1.47,
+   "resultat": 1.5,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8147,7 +8151,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T12:20:25Z",
    "statut": "ouvert",
-   "resultat": 1.96,
+   "resultat": 1.99,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8169,7 +8173,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T14:30:26Z",
    "statut": "ouvert",
-   "resultat": 0.66,
+   "resultat": 0.69,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8191,7 +8195,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T15:20:26Z",
    "statut": "ouvert",
-   "resultat": -0.43,
+   "resultat": -0.4,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8209,7 +8213,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 110.24
+  "2026-11-25": 110.56
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -8317,24 +8321,24 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3447.09,
+   "prix": 3448.0699999999997,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3502.93,
    "ema200": 3930.75,
    "action": "Position conservée",
    "atr": 43.5,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 33.02 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 34.09 de plus dans le bon sens"
   },
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 38.6355,
+   "prix": 38.676500000000004,
    "plus_haut_20": 44.25,
    "plus_bas_20": 40.08,
    "ema200": 50.88,
    "action": "Position conservée",
    "atr": 0.96,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 0.41 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 0.48 de plus dans le bon sens"
   }
  },
  "deals_par_strategie": {
@@ -8359,7 +8363,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3446.355,
+    "prix": 3444.71,
     "action": "Position conservée",
     "empilement": "3 position(s) ouverte(s) sur ce marché (maximum 3)"
    },
