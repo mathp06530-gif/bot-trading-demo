@@ -1447,10 +1447,17 @@
    "marche": "GOLD",
    "texte": "[Rapide] Plus d'accord avec la tendance de fond 1 h / 4 h : position fermée (gain/perte : -0.10). Statut : ACCEPTED",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-25T04:05:22Z",
+   "type": "analyse",
+   "marche": "BTCUSD",
+   "texte": "Tendance baissière nette (ADX 19) : on veut être VENDEUR. Mais le signal n'est pas récent (il date du 2026-10-24 04:00) : on attend le prochain pour ne pas entrer en retard.",
+   "strategie": "tendance_4h"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T04:00:25Z",
+ "derniere_execution": "2026-11-25T04:05:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -6707,6 +6714,10 @@
   {
    "date": "2026-11-25T04:00:25Z",
    "valeur": 98.88
+  },
+  {
+   "date": "2026-11-25T04:05:24Z",
+   "valeur": 98.88
   }
  ],
  "compte": {
@@ -6720,13 +6731,12 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 59318.975000000006,
+   "prix": 59191.65,
    "tendance": "SELL",
-   "explication": "Tendance baissière nette (ADX 20) : on veut être VENDEUR.",
+   "explication": "Tendance baissière nette (ADX 19) : on veut être VENDEUR.",
    "action": "Aucune action",
    "graphique": {
     "dates": [
-     "2026-11-09T00:00:00",
      "2026-11-09T04:00:00",
      "2026-11-09T08:00:00",
      "2026-11-09T12:00:00",
@@ -6821,10 +6831,10 @@
      "2026-11-24T08:00:00",
      "2026-11-24T12:00:00",
      "2026-11-24T16:00:00",
-     "2026-11-24T20:00:00"
+     "2026-11-24T20:00:00",
+     "2026-11-25T00:00:00"
     ],
     "clotures": [
-     74763.25,
      73775.0,
      74271.85,
      75435.5,
@@ -6919,10 +6929,10 @@
      60349.7,
      59642.05,
      59600.8,
-     59742.9
+     59742.9,
+     59330.75
     ],
     "ema_rapide": [
-     75965.19,
      75756.6,
      75615.19,
      75598.08,
@@ -7017,48 +7027,48 @@
      60803.74,
      60693.1,
      60589.07,
-     60508.48
+     60508.48,
+     60396.32
     ],
     "ema_lente": [
-     79451.92,
      79395.44,
      79344.46,
-     79305.56,
+     79305.57,
      79260.57,
-     79220.76,
+     79220.77,
      79173.42,
      79129.29,
      79081.49,
      79022.29,
      78966.23,
-     78913.78,
+     78913.79,
      78861.63,
      78813.15,
      78764.44,
      78716.16,
-     78672.56,
-     78625.33,
-     78576.41,
+     78672.57,
+     78625.34,
+     78576.42,
      78526.5,
      78470.1,
      78401.97,
      78334.29,
      78264.99,
      78171.61,
-     78075.57,
-     77987.77,
+     78075.58,
+     77987.78,
      77896.64,
-     77808.03,
+     77808.04,
      77712.8,
-     77603.07,
+     77603.08,
      77499.27,
      77396.91,
      77280.42,
      77164.95,
      77035.15,
      76913.2,
-     76784.46,
-     76670.34,
+     76784.47,
+     76670.35,
      76551.3,
      76435.46,
      76324.81,
@@ -7066,7 +7076,7 @@
      76100.27,
      75983.63,
      75868.39,
-     75760.24,
+     75760.25,
      75651.37,
      75545.34,
      75437.18,
@@ -7074,31 +7084,31 @@
      75220.3,
      75105.44,
      75003.67,
-     74897.95,
+     74897.96,
      74797.57,
      74691.68,
      74575.82,
-     74457.31,
+     74457.32,
      74343.17,
-     74231.64,
+     74231.65,
      74126.55,
      74024.58,
      73915.19,
      73799.56,
      73681.3,
-     73565.9,
+     73565.91,
      73448.73,
-     73332.26,
+     73332.27,
      73193.63,
      73047.19,
      72905.56,
      72743.74,
      72574.26,
-     72430.34,
-     72304.95,
+     72430.35,
+     72304.96,
      72184.81,
      72064.41,
-     71936.66,
+     71936.67,
      71808.45,
      71700.57,
      71592.11,
@@ -7115,7 +7125,8 @@
      70496.48,
      70388.48,
      70281.14,
-     70176.28
+     70176.28,
+     70068.37
     ]
    }
   }
@@ -7293,11 +7304,11 @@
    "tendance": "SELL",
    "reglages": "Tendance 4 h : EMA 20/200 + ADX > 20, stop 2 ATR, suiveur 5 ATR",
    "indicateurs": {
-    "Prix": 59742.9,
-    "EMA 20": 60508.48,
-    "EMA 200": 70176.28,
-    "ADX (force)": 19.6,
-    "ATR (agitation)": 1290.05
+    "Prix": 59330.75,
+    "EMA 20": 60396.32,
+    "EMA 200": 70068.37,
+    "ADX (force)": 19.1,
+    "ATR (agitation)": 1261.09
    }
   },
   "cassure_4h": {
@@ -7367,21 +7378,21 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3547.84,
-   "plus_haut_20": 3692.38,
+   "prix": 3547.31,
+   "plus_haut_20": 3689.63,
    "plus_bas_20": 3502.93,
-   "ema200": 3943.24,
+   "ema200": 3939.31,
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)",
    "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)",
-   "atr": 42.44
+   "atr": 42.37
   },
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 40.775999999999996,
-   "plus_haut_20": 44.89,
-   "plus_bas_20": 40.74,
-   "ema200": 51.2,
+   "prix": 40.726,
+   "plus_haut_20": 44.25,
+   "plus_bas_20": 40.69,
+   "ema200": 51.1,
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)",
    "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)",
    "atr": 0.96
@@ -7401,10 +7412,10 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 1.28,
-     "adx": 12.8
+     "bollinger": 1.29,
+     "adx": 13.4
     },
-    "prix": 3548.01,
+    "prix": 3544.645,
     "action": "En attente : tendance 5 min trop faible (ADX 13 ≤ 20)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 36.00 de plus dans le bon sens"
    },
