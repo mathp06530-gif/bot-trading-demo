@@ -33,7 +33,16 @@ ENTREE = int(float(os.getenv("CASSURE_ENTREE", "20")))
 SORTIE = int(float(os.getenv("CASSURE_SORTIE", "20")))
 STOP_ATR, FILTRE_EMA = 2.0, 200
 UNITE = "HOUR_4"
-NOM = f"Cassure {ENTREE} bougies 4 h dans le sens de l'EMA {FILTRE_EMA}, stop garanti {STOP_ATR:g} ATR"
+# Stop qui se resserre après un gain (25/11/2026, demande de Mathis : « suivre les profits de près ») :
+# dès que le gain a atteint GARDE_CASSURE_APRES_R R (1 R = distance du stop de départ), le stop garanti est
+# remonté pour garder GARDE_CASSURE_PCT % du meilleur gain atteint (il ne recule jamais).
+# Backtest 2 ans or + argent (backtest/serrage.py) : +43,8 R -> +64,3 R, mieux sur les 2 années,
+# pire baisse -14,5 R -> -7,8 R. "0" = désactivé.
+GARDE_CASSURE_APRES_R = float(os.getenv("GARDE_CASSURE_APRES_R", "1.5"))
+GARDE_CASSURE_PCT = float(os.getenv("GARDE_CASSURE_PCT", "50"))
+NOM = (f"Cassure {ENTREE} bougies 4 h dans le sens de l'EMA {FILTRE_EMA}, stop garanti {STOP_ATR:g} ATR"
+       + (f", garde {GARDE_CASSURE_PCT:g} % du gain après +{GARDE_CASSURE_APRES_R:g} R"
+          if GARDE_CASSURE_APRES_R > 0 and GARDE_CASSURE_PCT > 0 else ""))
 
 
 def signaux_cassure(df: pd.DataFrame, entree=ENTREE, sortie=SORTIE, stop_atr=STOP_ATR, filtre_ema=FILTRE_EMA,
@@ -57,8 +66,61 @@ def signaux_cassure(df: pd.DataFrame, entree=ENTREE, sortie=SORTIE, stop_atr=STO
         elif vendre.iat[i] and ventes:
             etat = -1
         cible[i] = etat
-    return pd.DataFrame({"cible": cible, "stop": a * stop_atr, "atr": a, "haut": hh, "bas": ll,
-                         "ema": t, "cloture": m.close}, index=df.index)
+    out = pd.DataFrame({"cible": cible, "stop": a * stop_atr, "atr": a, "haut": hh, "bas": ll,
+                        "ema": t, "cloture": m.close}, index=df.index)
+    if GARDE_CASSURE_APRES_R > 0 and GARDE_CASSURE_PCT > 0:
+        out.attrs["garde"] = (GARDE_CASSURE_APRES_R, GARDE_CASSURE_PCT / 100)  # lu par backtest/moteur.py
+    return out
+
+
+def _bougie_4h_de(quand: str) -> str:
+    """Début (« AAAA-MM-JJTHH ») de la bougie 4 h qui contient l'instant `quand`."""
+    return f"{quand[:11]}{int(quand[11:13]) // 4 * 4:02d}"
+
+
+def garder_gain(api, donnees: dict, miennes: list, bougies: list, regles: dict, epic: str, noter) -> None:
+    """Stop qui se resserre : une fois le gain à +GARDE_CASSURE_APRES_R R, remonte le stop garanti pour garder
+    GARDE_CASSURE_PCT % du meilleur gain. Le meilleur prix est suivi sur les bougies 4 h depuis l'entrée,
+    y compris la bougie en cours (le bot passe toutes les 5 min)."""
+    if not (GARDE_CASSURE_APRES_R > 0 and GARDE_CASSURE_PCT > 0) or not bougies:
+        return
+    suivi = donnees.setdefault("cassure_garde", {})
+    part = GARDE_CASSURE_PCT / 100
+    for p in miennes:
+        pos = p["position"]
+        deal, sens = pos["dealId"], 1 if pos["direction"] == "BUY" else -1
+        entree, actuel = float(pos["level"]), pos.get("stopLevel")
+        s = suivi.get(deal)
+        if s is None:  # position ouverte avant cette règle : 1 R = distance actuelle du stop (jamais déplacé)
+            if actuel is None:
+                continue
+            depuis = (pos.get("createdDateUTC") or bougies[-1]["snapshotTimeUTC"])[:16]
+            s = suivi[deal] = {"dist": abs(entree - float(actuel)), "depuis": depuis, "meilleur": entree}
+        if s["dist"] <= 0:
+            continue
+        debut = _bougie_4h_de(s["depuis"])
+        cote = "highPrice" if sens > 0 else "lowPrice"
+        for b in bougies:
+            if b["snapshotTimeUTC"][:13] >= debut:
+                x = (b[cote]["bid"] + b[cote]["ask"]) / 2
+                s["meilleur"] = max(s["meilleur"], x) if sens > 0 else min(s["meilleur"], x)
+        gain_max = (s["meilleur"] - entree) * sens / s["dist"]
+        if gain_max < GARDE_CASSURE_APRES_R:
+            continue
+        prix = (bougies[-1]["closePrice"]["bid"] + bougies[-1]["closePrice"]["ask"]) / 2
+        mini = (prix * (regles.get("stop_min_pct") or 0) / 100 or (regles.get("stop_min_points") or 0)) * 1.05
+        cible = entree + part * (s["meilleur"] - entree)
+        cible = min(cible, prix - mini) if sens > 0 else max(cible, prix + mini)  # distance minimale Capital.com
+        mieux = actuel is None or (cible - float(actuel)) * sens > prix * 0.001
+        if not mieux:
+            continue
+        conf = api.modifier_stop(deal, cible, bool(pos.get("guaranteedStop", True)))
+        if conf.get("dealStatus") == "ACCEPTED":
+            noter("stop", epic, f"Le gain a atteint {gain_max:.1f} R : stop garanti remonté de {float(actuel or 0):.2f} "
+                  f"à {cible:.2f} pour garder {GARDE_CASSURE_PCT:g} % du meilleur gain.")
+            pos["stopLevel"] = cible
+        else:
+            noter("erreur", epic, f"Déplacement du stop refusé : {conf.get('reason', conf.get('dealStatus', '?'))}")
 
 
 def taux_devise(regles: dict, eurusd: float, prix: float) -> float:
@@ -143,6 +205,13 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
         noter("fermeture", epic, f"{raison} : position fermée (gain/perte : {p['position'].get('upl', 0):.2f}).")
         action = "Position fermée"
     miennes = [p for p in miennes if p["position"]["direction"] == voulu or not sortie_signal]
+    if cle == "cassure":
+        ouverts = {p["position"]["dealId"] for p in positions}
+        garde_etat = donnees.setdefault("cassure_garde", {})
+        for d in [d for d in garde_etat if d not in ouverts]:
+            del garde_etat[d]
+        if miennes and signaux is None:
+            garder_gain(api, donnees, miennes, bougies, regles, epic, noter)
     empile = ""
     if miennes:
         ok_e, empile = peut_empiler(miennes, voulu, prix_achat if voulu == "BUY" else prix_vente, float(der.stop))
@@ -206,6 +275,10 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
                 deal = (conf.get("affectedDeals") or [{}])[0].get("dealId") or conf.get("dealId")
                 if deal:
                     tous_deals.append(deal)
+                    if cle == "cassure":
+                        donnees.setdefault("cassure_garde", {})[deal] = {
+                            "dist": distance, "depuis": bougies[-1]["snapshotTimeUTC"][:16],
+                            "meilleur": float(conf.get("level") or prix)}
                 stop = prix - distance if voulu == "BUY" else prix + distance
                 garde.enregistrer({"market": {"epic": epic}, "position": {"level": prix, "stopLevel": stop, "size": taille,
                                                 "direction": voulu}})

@@ -76,11 +76,13 @@ def executer(df: pd.DataFrame, signaux: pd.DataFrame, capital: float, risque_pct
     dobj = signaux.objectif.values if "objectif" in signaux else np.full(len(df), np.nan)
     dsuivi = signaux.suivi.values if "suivi" in signaux else np.full(len(df), np.nan)
     entree_nouvelle = bool(signaux.attrs.get("entree_nouvelle", True))
+    garde = signaux.attrs.get("garde")  # (seuil en R, part du gain gardée) : stop qui se resserre après un gain
 
     eq = capital
     courbe = np.empty(len(df))
     pos = 0
     taille = entree = stop = obj = 0.0
+    dist0 = meilleur = 0.0
     frais_trade = 0.0
     date_entree = None
     trades = []
@@ -118,6 +120,7 @@ def executer(df: pd.DataFrame, signaux: pd.DataFrame, capital: float, risque_pct
                     t = taille_fixe if taille_fixe * prix * cond.marge <= eq * cond.eurusd else 0
                 if t >= cond.taille_min:
                     pos, taille, entree = int(c), t, prix
+                    dist0, meilleur = dist, prix
                     stop = prix - dist * pos
                     obj = prix + dobj[i - 1] * pos if dobj[i - 1] == dobj[i - 1] else np.nan
                     date_entree = dates[i]
@@ -145,6 +148,15 @@ def executer(df: pd.DataFrame, signaux: pd.DataFrame, capital: float, risque_pct
             if dsuivi[i] == dsuivi[i]:
                 milieu = (cb[i] + ca[i]) / 2
                 stop = max(stop, milieu - dsuivi[i]) if pos > 0 else min(stop, milieu + dsuivi[i])
+            if garde:
+                m = (cb[i] + ca[i]) / 2
+                haut = (hb[i] + ha[i]) / 2 if pos > 0 else (lb[i] + la[i]) / 2
+                meilleur = max(meilleur, haut) if pos > 0 else min(meilleur, haut)
+                if (meilleur - entree) * pos >= garde[0] * dist0:
+                    c_ = entree + garde[1] * (meilleur - entree)
+                    lim = m - m * cond.stop_garanti_min_pct / 100 * pos
+                    c_ = min(c_, lim) if pos > 0 else max(c_, lim)
+                    stop = max(stop, c_) if pos > 0 else min(stop, c_)
         latent = ((cb[i] - entree) if pos > 0 else (entree - ca[i])) * taille / cond.eurusd if pos else 0.0
         courbe[i] = eq + latent
         if courbe[i] <= 0:

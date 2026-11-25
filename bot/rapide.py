@@ -17,6 +17,8 @@ Règles, sur des bougies de 5 minutes (prix milieu), pour chaque marché de RAPI
     Backtest or 5 min, 13/05 -> 25/11/2026, net de frais (backtest/sortie_rapide.py) : +9,4 R -> +10,1 R,
     mieux sur les deux moitiés, et pareil de 0,3 à 0,8 R. Rejetés car moins bons : prendre la moitié du gain
     à +1/+1,5/+2 R, suiveur qui se resserre après +1/+1,5/+2 R, stop garanti remonté au point d'entrée.
+    Retesté le 25/11 avec la protection du gain (backtest/serrage.py) : stop qui garde 50 à 80 % du gain ou suit
+    à 0,5-1,5 R après +1 à +3 R -> jamais mieux (9,5 R au mieux, autant que l'actuelle).
   - Taille : RISQUE_RAPIDE_PCT (1 %) du capital perdu au maximum, au moins la taille minimale du marché.
   - Les positions de cette stratégie sont repérées par leur numéro (dealId). Elle attend quand la
     cassure 4 h a une position dans l'autre sens sur le même marché (compte sans couverture).

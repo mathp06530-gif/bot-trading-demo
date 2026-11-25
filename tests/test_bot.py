@@ -514,3 +514,37 @@ def test_rapide_sans_gain_suffisant_ne_sort_pas(tmp_path, monkeypatch):
     garde = rapide.proteger_gain(api, {}, etat, [pos], [b(15, 3001, 2980, 2990), b(20, 3001, 2995, 3000), b(25, 3000, 3000, 3000)],
                                  "GOLD", lambda *a: None, "2026-01-01T00:25:00Z")
     assert garde == [] and api.fermees == ["x"] and etat["deals"] == []
+
+
+def test_cassure_resserre_le_stop_apres_un_gain(tmp_path, monkeypatch):
+    """Après +1,5 R de gain, le stop garanti de la cassure est remonté pour garder 50 % du meilleur gain."""
+    from bot import cassure
+    from bot.cassure import signaux_cassure
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "MARCHES_CASSURE", ["GOLD"])
+    prix = [2000 + 25 * ((i % 8) - 4) for i in range(250)] + [2000 + 45 * i for i in range(80)]
+    for n in range(240, 290):
+        c = signaux_cassure(bougies_vers_df([bougie(i, p) for i, p in enumerate(prix[:n])])).cible.values
+        if c[-1] == 1 and c[-2] == 0:
+            break
+    faux = FauxCapitalActions(prix[:n])
+    d = {}
+    main.un_tour(d, faux)
+    deal, _, _, stop0 = faux.ouvertes[0]
+    entree = faux.niveaux[deal]
+    dist = d["cassure_garde"][deal]["dist"]
+    assert math.isclose(entree - stop0, dist)
+    faux.prix_action = prix[:n] + [entree + 0.5 * dist]  # +0,5 R : rien ne bouge
+    main.un_tour(d, faux)
+    assert not faux.stops
+    faux.prix_action = prix[:n] + [entree + 0.5 * dist, entree + 3 * dist, entree + 3 * dist]
+    main.un_tour(d, faux)
+    deals = [s for s in faux.stops if s[0] == deal]
+    assert deals, "le stop aurait dû être remonté"
+    meilleur = d["cassure_garde"][deal]["meilleur"]
+    assert meilleur > entree + 3 * dist - 1
+    assert deals[-1][1] > entree  # le trade ne peut plus finir en perte
+    assert deals[-1][1] <= entree + cassure.GARDE_CASSURE_PCT / 100 * (meilleur - entree) + 1e-6
+    assert any("50 % du meilleur gain" in l["texte"] for l in d["journal"])
+    main.un_tour(d, faux)  # même prix : le stop ne bouge plus (et ne recule jamais)
+    assert len([s for s in faux.stops if s[0] == deal]) == len(deals)
