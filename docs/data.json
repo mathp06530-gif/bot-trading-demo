@@ -1720,7 +1720,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T22:03:25Z",
+ "derniere_execution": "2026-11-25T22:04:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -8293,6 +8293,10 @@
   {
    "date": "2026-11-25T22:03:25Z",
    "valeur": 94.04
+  },
+  {
+   "date": "2026-11-25T22:04:24Z",
+   "valeur": 94.04
   }
  ],
  "compte": {
@@ -9164,7 +9168,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3588.775,
+   "prix": 3588.87,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3922.16,
@@ -9901,7 +9905,7 @@
   "deals": {},
   "marches": {
    "GOLD": {
-    "prix": 3588.78,
+    "prix": 3588.87,
     "ema200": 3923.45,
     "atr": 52.52,
     "trou_achat_atr": -1.83,
