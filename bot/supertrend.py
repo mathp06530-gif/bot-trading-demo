@@ -135,7 +135,12 @@ def tour_supertrend(api, donnees: dict, epic: str, positions: list, capital: flo
     taille_marge = math.floor(disponible * taux / (prix * regles["marge"]) * 0.5 / pas) * pas
     taille = round(min(taille, taille_marge), 6)
     if not refus and taille < regles["taille_min"]:
-        refus = f"capital trop faible pour la taille minimale ({regles['taille_min']})"
+        # petit compte : on accepte la taille minimale si elle ne risque pas plus de 2 × le risque prévu
+        mini_eur = regles["taille_min"] * distance / taux
+        if mini_eur <= capital * 2 * RISQUE_SUPERTREND_PCT / 100 and regles["taille_min"] <= taille_marge:
+            taille = regles["taille_min"]
+        else:
+            refus = f"capital trop faible pour la taille minimale ({regles['taille_min']}, risque {mini_eur:.2f} €)"
     if not refus and garde is not None:
         garde.taux[epic] = taux
         ok, raison = garde.autoriser(taille * distance / taux, distance, "supertrend_4h", epic)
