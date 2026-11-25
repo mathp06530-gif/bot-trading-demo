@@ -548,3 +548,28 @@ def test_cassure_resserre_le_stop_apres_un_gain(tmp_path, monkeypatch):
     assert any("50 % du meilleur gain" in l["texte"] for l in d["journal"])
     main.un_tour(d, faux)  # même prix : le stop ne bouge plus (et ne recule jamais)
     assert len([s for s in faux.stops if s[0] == deal]) == len(deals)
+
+
+def test_rapide_resserre_le_stop_apres_un_gain(tmp_path, monkeypatch):
+    """Rapide : après +1,5 R, le stop garanti garde 60 % du meilleur gain ; changement daté dans le Journal."""
+    from bot import rapide
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "MARCHES", [])
+    monkeypatch.setattr(rapide, "LISTE", ["GOLD"])
+    monkeypatch.setattr(rapide, "FILTRE_BOLLINGER", False)
+    monkeypatch.setattr(rapide, "ADX_RAPIDE_MIN", 0)
+    monkeypatch.setattr(rapide, "EMPILER_RAPIDE", 1)
+    monkeypatch.setattr(rapide, "tendances_superieures", lambda api, epic: ("BUY", "BUY"))
+    debut, _ = serie_achat()
+    faux = FauxCapital(debut, [100 + i for i in range(80)])
+    d = {"strategies": {"rapide": {"active": True}}, "rapide": {"nom": "ancienne version", "deals": []}}
+    main.un_tour(d, faux)
+    assert any("Réglages changés" in l["texte"] for l in d["journal"])
+    deal = faux.ouvertes[0][0]
+    entree = faux.niveaux[deal]
+    dist = entree * 0.01
+    faux.prix_rapide = faux.prix_rapide + [entree + 3 * dist] * 3  # +3 R environ (bougies terminées)
+    main.un_tour(d, faux)
+    remontes = [n for x, n in faux.stops if x == deal]
+    assert remontes and max(remontes) > entree
+    assert any("60 % du meilleur gain" in l["texte"] for l in d["journal"])

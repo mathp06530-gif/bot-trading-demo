@@ -74,7 +74,13 @@ REGLAGES = {
         "SUIVI_RAPIDE_PCT": [2, 2.5, 3, 4],                         # stop suiveur (jamais plus serré que 2 %)
     },
 }
-DEFAUTS = {"ADX_TENDANCE_MIN": 20, "SUIVI_TENDANCE_ATR": 5, "TP_PARTIEL_ATR": 1, "CASSURE_ENTREE": 20,
+# Réglages fixes (jamais changés par l'auto-amélioration) mais notés sur chaque ordre, pour que le bilan
+# sépare « avant / après » un changement fait à la main (25/11/2026 : stops qui se resserrent).
+NOTES_SEULEMENT = {"cassure_4h": ["GARDE_CASSURE_APRES_R", "GARDE_CASSURE_PCT"],
+                   "rapide": ["SORTIE_ENTREE_R", "GARDE_RAPIDE_APRES_R", "GARDE_RAPIDE_PCT"]}
+DEFAUTS = {"GARDE_CASSURE_APRES_R": 1.5, "GARDE_CASSURE_PCT": 50, "SORTIE_ENTREE_R": 0.5,
+           "GARDE_RAPIDE_APRES_R": 1.5, "GARDE_RAPIDE_PCT": 60,
+           "ADX_TENDANCE_MIN": 20, "SUIVI_TENDANCE_ATR": 5, "TP_PARTIEL_ATR": 1, "CASSURE_ENTREE": 20,
            "CASSURE_SORTIE": 20, "ADX_RAPIDE_MIN": 20, "FILTRE_BOLLINGER": "oui", "SUIVI_RAPIDE_PCT": 2}
 NOMS = {"tendance_4h": "Tendance 4 h", "cassure_4h": "Cassure 4 h", "rapide": "Rapide 5 min"}
 EXPLICATIONS = {
@@ -289,7 +295,7 @@ def reglages_du_moment(strategie: str, env=None) -> dict | None:
     if strategie not in REGLAGES:
         return None
     env = os.environ if env is None else env
-    return {cle: valeur(env, cle) for cle in REGLAGES[strategie]}
+    return {cle: valeur(env, cle) for cle in list(REGLAGES[strategie]) + NOTES_SEULEMENT.get(strategie, [])}
 
 
 def bilan_reel(ordres: list, debut: str, fin: str) -> dict:
