@@ -1669,10 +1669,17 @@
    "marche": "GOLD",
    "texte": "[Rapide] Réglages changés à partir de maintenant : Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 1 %, sortie au prix d'entrée après +0.5 R, garde 60 % du gain après +1.5 R, sortie si le croisement inverse dure 3 bougies, jusqu'à 2 position(s), risque 1 % (expérimentale). Avant : Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 2 %, sortie au prix d'entrée après +0.5 R, garde 60 % du gain après +1.5 R, risque 1 % (expérimentale). Le bilan sépare les trades d'avant et d'après.",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-25T18:15:25Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Nouveau (25/11/2026) : stratégie EXPÉRIMENTALE « Élan des gros acteurs » sur l'or et l'argent, risque 1 %. Elle suit les bougies de 4 h où un gros ordre a fait sauter le prix. Backtest 2 ans : +44 R sur 185 trades, mais preuve faible. Séparée des autres stratégies : elle ne change rien à la Cassure, à la Tendance ni à la Rapide.",
+   "strategie": "elan_4h"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T18:10:25Z",
+ "derniere_execution": "2026-11-25T18:15:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -7617,15 +7624,19 @@
   {
    "date": "2026-11-25T18:10:25Z",
    "valeur": 96.5
+  },
+  {
+   "date": "2026-11-25T18:15:26Z",
+   "valeur": 96.88
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 97.51,
+  "solde": 97.7,
   "depot": 98.52,
-  "resultat_latent": -1.01,
-  "disponible": 86.41
+  "resultat_latent": -0.82,
+  "disponible": 86.62
  },
  "positions": [
   {
@@ -7634,7 +7645,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3500.82,
-   "resultat": -0.82,
+   "resultat": -0.69,
    "ouverte_le": "2026-11-25T12:05:23.276"
   },
   {
@@ -7643,13 +7654,13 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": -0.21,
+   "resultat": -0.11,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 59666.0,
+   "prix": 59651.5,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 20) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -8205,7 +8216,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": -0.21,
+   "resultat": -0.11,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8249,7 +8260,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T12:05:23Z",
    "statut": "ouvert",
-   "resultat": -0.82,
+   "resultat": -0.69,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8361,7 +8372,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 96.5
+  "2026-11-25": 96.88
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -8433,6 +8444,20 @@
    ],
    "description": "Trade souvent sur des bougies de 5 min, sur l'or et l'argent, seulement dans le sens des tendances 1 h et 4 h. Expérience : perdante en backtest à cause des frais.",
    "action": "Actif"
+  },
+  "elan_4h": {
+   "active": true,
+   "nom": "Élan des gros acteurs 4 h (expérimentale)",
+   "unite": "HOUR_4",
+   "risque_pct": 1.0,
+   "reglages": "Élan des gros acteurs 4 h : trou > 0.25 ATR entre 3 bougies, dans le sens de l'EMA 200, stop de l'autre côté du trou, objectif 2 R, sortie après 20 bougies, risque 1 % (expérimentale)",
+   "marches": [
+    "GOLD",
+    "SILVER"
+   ],
+   "description": "Expérience lancée le 25/11/2026 : repère les bougies de 4 h où un gros ordre a fait sauter le prix (un « trou » entre les bougies) sur l'or et l'argent, et suit cet élan. Backtest 2 ans : +44 R, mais preuve faible (2 ans, marché très haussier).",
+   "debut": "2026-11-25",
+   "action": "Actif"
   }
  },
  "garde_fous": {
@@ -8469,24 +8494,24 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3523.245,
+   "prix": 3529.29,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3484.58,
    "ema200": 3925.93,
    "action": "Position conservée",
    "atr": 47.8,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 117.63 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 123.82 de plus dans le bon sens"
   },
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 40.150000000000006,
+   "prix": 40.2385,
    "plus_haut_20": 44.25,
    "plus_bas_20": 39.35,
    "ema200": 50.76,
    "action": "Position conservée",
    "atr": 1.04,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 2.00 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 2.16 de plus dans le bon sens"
   }
  },
  "deals_par_strategie": {
@@ -8507,7 +8532,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3530.03,
+    "prix": 3526.56,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -9204,5 +9229,27 @@
    "meilleur": 38.1995
   }
  },
- "deux_cerveaux_depuis": "2026-11-25T17:25:21Z"
+ "deux_cerveaux_depuis": "2026-11-25T17:25:21Z",
+ "elan": {
+  "depuis": "2026-11-25T18:15:25Z",
+  "deals": {},
+  "marches": {
+   "GOLD": {
+    "prix": 3529.29,
+    "ema200": 3927.24,
+    "atr": 47.8,
+    "trou_achat_atr": -2.74,
+    "trou_vente_atr": -0.37,
+    "action": "En attente d'un trou (élan d'un gros ordre)"
+   },
+   "SILVER": {
+    "prix": 40.24,
+    "ema200": 50.79,
+    "atr": 1.04,
+    "trou_achat_atr": -2.61,
+    "trou_vente_atr": -0.16,
+    "action": "En attente d'un trou (élan d'un gros ordre)"
+   }
+  }
+ }
 }
