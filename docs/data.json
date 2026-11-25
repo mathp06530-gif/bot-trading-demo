@@ -1641,10 +1641,17 @@
    "marche": "GOLD",
    "texte": "[Rapide] Le gain avait atteint 1.3 R et le prix est revenu au prix d'entrée (3471.23) : position fermée pour ne pas transformer un gain en perte (gain/perte : -0.19).",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-25T17:10:25Z",
+   "type": "ordre",
+   "marche": "GOLD",
+   "texte": "[Rapide] VENTE de 0.03 à 3492.26, stop garanti à 34.92 $.",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T17:05:25Z",
+ "derniere_execution": "2026-11-25T17:10:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -7537,15 +7544,19 @@
   {
    "date": "2026-11-25T17:05:25Z",
    "valeur": 102.9
+  },
+  {
+   "date": "2026-11-25T17:10:25Z",
+   "valeur": 100.88
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 100.8,
+  "solde": 99.79,
   "depot": 98.7,
-  "resultat_latent": 2.1,
-  "disponible": 85.16
+  "resultat_latent": 1.09,
+  "disponible": 84.05
  },
  "positions": [
   {
@@ -7553,8 +7564,17 @@
    "nom": "Gold",
    "sens": "SELL",
    "taille": 0.03,
+   "prix_entree": 3492.26,
+   "resultat": -0.01,
+   "ouverte_le": "2026-11-25T17:10:24.858"
+  },
+  {
+   "marche": "GOLD",
+   "nom": "Gold",
+   "sens": "SELL",
+   "taille": 0.03,
    "prix_entree": 3500.82,
-   "resultat": 0.6,
+   "resultat": 0.22,
    "ouverte_le": "2026-11-25T12:05:23.276"
   },
   {
@@ -7563,13 +7583,13 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": 1.46,
+   "resultat": 0.89,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 58619.024999999994,
+   "prix": 59153.8,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 20) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -8125,7 +8145,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": 1.46,
+   "resultat": 0.89,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8169,7 +8189,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T12:05:23Z",
    "statut": "ouvert",
-   "resultat": 0.6,
+   "resultat": 0.22,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8247,6 +8267,31 @@
     "SUIVI_RAPIDE_PCT": 2.0
    },
    "resultat_estime": true
+  },
+  {
+   "id": "00000000-76c1-d9e7-049f-c46d0015549e",
+   "marche": "GOLD",
+   "nom": "Gold",
+   "sens": "SELL",
+   "taille": 0.03,
+   "prix_entree": 3492.26,
+   "stop": 3527.18,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-25T17:10:24Z",
+   "statut": "ouvert",
+   "resultat": -0.01,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "rapide",
+   "reglages": {
+    "ADX_RAPIDE_MIN": 20.0,
+    "FILTRE_BOLLINGER": "oui",
+    "SUIVI_RAPIDE_PCT": 2.0,
+    "SORTIE_ENTREE_R": 0.5,
+    "GARDE_RAPIDE_APRES_R": 1.5,
+    "GARDE_RAPIDE_PCT": 60.0
+   }
   }
  ],
  "historique_jour": {
@@ -8255,7 +8300,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 102.9
+  "2026-11-25": 100.88
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -8363,24 +8408,24 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3474.94,
+   "prix": 3486.15,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3484.58,
    "ema200": 3925.93,
    "action": "Position conservée",
    "atr": 47.8,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 69.45 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 80.68 de plus dans le bon sens"
   },
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 39.007,
+   "prix": 39.2035,
    "plus_haut_20": 44.25,
    "plus_bas_20": 39.35,
    "ema200": 50.76,
    "action": "Position conservée",
    "atr": 1.04,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 0.93 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 1.10 de plus dans le bon sens"
   }
  },
  "deals_par_strategie": {
@@ -8391,7 +8436,9 @@
  },
  "pause": false,
  "rapide": {
-  "deals": [],
+  "deals": [
+   "00000000-76c1-d9e7-049f-c46d0015549e"
+  ],
   "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 2 %, sortie au prix d'entrée après +0.5 R, garde 60 % du gain après +1.5 R, risque 1 % (expérimentale)",
   "marches": {
    "GOLD": {
@@ -8400,10 +8447,11 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 0.96
+     "bollinger": 1.2,
+     "adx": 27.2
     },
-    "prix": 3478.16,
-    "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
+    "prix": 3492.17,
+    "action": "VENTE de 0.03",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
    "SILVER": {
@@ -8419,7 +8467,12 @@
    }
   },
   "tendance": "SELL",
-  "meilleur": {}
+  "meilleur": {
+   "00000000-76c1-d9e7-049f-c46d0015549e": {
+    "depuis": "2026-11-25T17:10:00",
+    "prix": 3492.26
+   }
+  }
  },
  "debut_test": "2026-11-20T16:20:00Z",
  "ordres_avant_test": [
