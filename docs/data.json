@@ -1720,7 +1720,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T22:39:23Z",
+ "derniere_execution": "2026-11-25T22:40:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -8437,6 +8437,10 @@
   {
    "date": "2026-11-25T22:39:23Z",
    "valeur": 94.04
+  },
+  {
+   "date": "2026-11-25T22:40:24Z",
+   "valeur": 94.04
   }
  ],
  "compte": {
@@ -10069,7 +10073,7 @@
   "deals": {},
   "marches": {
    "ETHUSD": {
-    "prix": 1683.37,
+    "prix": 1685.78,
     "ligne": 1735.66,
     "sens": -1,
     "atr": 41.73,
