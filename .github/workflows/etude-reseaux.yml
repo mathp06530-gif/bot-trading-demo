@@ -11,7 +11,7 @@ permissions:
 jobs:
   etude:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -24,20 +24,22 @@ jobs:
           CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
           CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
           UNITES: HOUR_4,HOUR
-          EPICS: GOLD,SILVER,BTCUSD
+          EPICS: GOLD,SILVER,BTCUSD,DOGEUSD,SHIBUSD,PEPEUSD,SOLUSD,XRPUSD,ETHUSD
         run: python backtest/telecharger.py
       - name: Découpage des bougies 4 h de Capital.com (heures)
         run: python -c "import pandas as p; d=p.read_csv('backtest/donnees/GOLD_HOUR_4.csv'); print(p.to_datetime(d.date).dt.hour.value_counts().sort_index().to_dict())"
       - name: Backtest des stratégies des réseaux (2 ans Capital.com, déjà vus)
         run: python backtest/reseaux.py
       - name: 2e vague (2 ans Capital.com)
+        env:
+          AUTRES: DOGEUSD,SHIBUSD,PEPEUSD,SOLUSD,XRPUSD,ETHUSD
         run: python backtest/reseaux2.py
       - name: Données JAMAIS VUES par le bot (historique long Capital.com, coupé AVANT les 2 ans déjà utilisés)
         env:
           CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
           CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
           CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
-          EPICS: GOLD,SILVER,BTCUSD
+          EPICS: GOLD,SILVER,BTCUSD,DOGEUSD,SHIBUSD,PEPEUSD,SOLUSD,XRPUSD,ETHUSD
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -64,4 +66,5 @@ jobs:
       - name: 2e vague sur les données JAMAIS VUES
         env:
           ANS: "10"
+          AUTRES: DOGEUSD,SHIBUSD,PEPEUSD,SOLUSD,XRPUSD,ETHUSD
         run: python backtest/reseaux2.py backtest/donnees_anciennes

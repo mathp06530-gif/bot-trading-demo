@@ -385,6 +385,35 @@ def idees(d):
     return res
 
 
+def autres_marches(p):
+    """Petites cryptos / memecoins (idée de Mathis du 25/11) : les meilleures idées appliquées marché par marché."""
+    from bot.cassure import signaux_cassure
+    res = {}
+    for e in [x.strip() for x in os.getenv("AUTRES", "").split(",") if x.strip()]:
+        try:
+            h1, h4 = serrage.lire(e, "HOUR"), serrage.lire(e, "HOUR_4")
+        except FileNotFoundError:
+            print(f"{e} : pas de données (marché absent chez Capital.com ?)")
+            continue
+        sig = signaux_cassure(h4, entree=20, sortie=20)
+        c = sig.cible.values
+        essais = {
+            "Cassure 20 4 h (actuelle or/argent)": [(e, h4, c, np.r_[True, c[1:] != c[:-1]], sig.stop.values, None, None, 1.0)],
+            "TTM Squeeze 4 h": [(e, h4, *r1.squeeze(h4), 1.0)],
+            "Supertrend 10/3 4 h": [(e, h4, *r1.supertrend(h4), 1.0)],
+            "SMA 40 jour (achat/rien)": [(e, h1, *sma_jour(h1, 40), 1.0)],
+            "Tortues 55/20 jour": [(e, h1, *tortue_55_20(h1), 1.0)],
+            "ln(prix) > moyenne 7 j": [(e, h1, *log_moyenne_7j(h1), 1.0)],
+        }
+        for nom, jeux in essais.items():
+            t = r1.jouer(jeux)
+            s = r1.resume(t, (max(p[0], h1.index[0] + pd.Timedelta(days=60)), p[1], p[2]))
+            res[f"{e} : {nom}"] = s
+            print(f"{e + ' : ' + nom:56s} {s['R']:7.2f} {s['R_1']:7.2f} {s['R_2']:7.2f} {s['trades']:6d} "
+                  f"{s['mois']:5.1f} {s['reussite']:6.1f} {s['pire_baisse_R']:7.2f}")
+    return res
+
+
 def principal():
     d = {(e, u): serrage.lire(e, u) for e in ("GOLD", "SILVER", "BTCUSD") for u in ("HOUR", "HOUR_4")}
     p = r1.periode([d[k] for k in d])
@@ -398,6 +427,7 @@ def principal():
         print(f"{nom:56s} {s['R']:7.2f} {s['R_1']:7.2f} {s['R_2']:7.2f} {s['trades']:6d} {s['mois']:5.1f} "
               f"{s['reussite']:6.1f} {s['pire_baisse_R']:7.2f}{'  <- 2 moitiés +' if s['deux_moities'] else ''}")
     print(f"\n{sum(s['deux_moities'] for s in sortie.values())} idées sur {len(sortie)} gagnent sur les 2 moitiés.")
+    sortie["_autres_marches"] = autres_marches(p)
     (Path(__file__).resolve().parent / f"resultats_reseaux2_{int(ANS)}ans.json").write_text(
         json.dumps({"periode": [str(x) for x in p], "resultats": sortie}, indent=1, ensure_ascii=False, default=str))
 
