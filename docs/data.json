@@ -1706,7 +1706,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T20:25:24Z",
+ "derniere_execution": "2026-11-25T20:26:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -7887,15 +7887,19 @@
   {
    "date": "2026-11-25T20:25:24Z",
    "valeur": 95.09
+  },
+  {
+   "date": "2026-11-25T20:26:24Z",
+   "valeur": 95.13
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 95.09,
+  "solde": 95.13,
   "depot": 98.52,
-  "resultat_latent": -3.43,
-  "disponible": 83.81
+  "resultat_latent": -3.39,
+  "disponible": 83.85
  },
  "positions": [
   {
@@ -7904,7 +7908,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3500.82,
-   "resultat": -2.07,
+   "resultat": -2.06,
    "ouverte_le": "2026-11-25T12:05:23.276"
   },
   {
@@ -7919,7 +7923,7 @@
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 59988.1,
+   "prix": 59967.2,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 19) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -8519,7 +8523,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T12:05:23Z",
    "statut": "ouvert",
-   "resultat": -2.07,
+   "resultat": -2.06,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8631,7 +8635,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 95.09
+  "2026-11-25": 95.13
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -8777,13 +8781,13 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 40.926500000000004,
+   "prix": 40.947,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.66,
    "action": "Position conservée",
    "atr": 1.14,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 3.06 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 3.10 de plus dans le bon sens"
   }
  },
  "deals_par_strategie": {
@@ -8804,7 +8808,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3576.47,
+    "prix": 3575.56,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -9515,7 +9519,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 40.93,
+    "prix": 40.95,
     "ema200": 50.69,
     "atr": 1.14,
     "trou_achat_atr": -1.74,
