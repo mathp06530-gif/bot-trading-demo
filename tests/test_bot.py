@@ -319,7 +319,7 @@ def test_commandes_par_strategie(tmp_path, monkeypatch):
     faux = FauxCapital(debut)
     d = {"strategies": {"rapide": {"active": False}, "londres": {"active": True}}, "londres": {}}
     main.un_tour(d, faux, "desactiver", "tendance_4h")
-    assert set(d["strategies"]) == {"tendance_4h", "cassure_4h", "rapide"}  # anciennes stratégies supprimées
+    assert set(d["strategies"]) == {"tendance_4h", "cassure_4h", "rapide", "elan_4h"}  # anciennes stratégies supprimées
     assert "londres" not in d
     assert d["strategies"]["tendance_4h"]["active"] is False and not faux.ouvertes
     main.un_tour(d, faux, "activer", "tendance_4h")
@@ -659,3 +659,40 @@ def test_rapide_attend_3_bougies_avant_de_sortir_sur_croisement_inverse(tmp_path
     main.un_tour(d, faux)
     assert not faux.ouvertes  # 3 bougies contre : fermée
     assert any("confirmé sur 3 bougies" in l["texte"] for l in d["journal"])
+
+
+def test_elan_identique_au_backtest():
+    import numpy as np
+    import pandas as pd
+    from backtest.smart_money import elan as elan_backtest
+    from bot.elan import signaux_elan
+    rng = np.random.default_rng(3)
+    m = 2000 * np.exp(np.cumsum(rng.normal(0, 0.01, 600)))
+    o = np.r_[m[0], m[:-1]]
+    df = pd.DataFrame({"open_bid": o, "open_ask": o, "high_bid": np.maximum(o, m) * 1.002, "high_ask": np.maximum(o, m) * 1.002,
+                       "low_bid": np.minimum(o, m) * 0.998, "low_ask": np.minimum(o, m) * 0.998, "close_bid": m, "close_ask": m},
+                      index=pd.date_range("2026-01-01", periods=600, freq="4h"))
+    sig, dist = elan_backtest(df, True, 0.25)
+    s = signaux_elan(df)
+    assert (s.sig.values[30:] == sig[30:]).all() and s.sig.abs().sum() > 5
+    assert np.allclose(s.dist.values[30:][sig[30:] != 0], dist[30:][sig[30:] != 0])
+
+
+def test_elan_achete_sur_un_trou_puis_sort_apres_20_bougies(tmp_path, monkeypatch):
+    from bot import elan
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "MARCHES", [])
+    monkeypatch.setattr(elan, "LISTE", ["GOLD"])
+    prix = [2000 + 2 * i + 10 * ((i % 4) - 2) for i in range(300)] + [2700, 2760]  # gros saut : trou > 0,25 ATR
+    faux = FauxCapitalActions(prix)
+    d = {}
+    main.un_tour(d, faux)
+    assert [(o[1], faux.epics[o[0]]) for o in faux.ouvertes] == [("BUY", "GOLD")]
+    assert faux.objectifs[-1] and d["ordres"][0]["strategie"] == "elan_4h"
+    assert d["strategies"]["elan_4h"]["action"] == "Actif" and d["elan"]["depuis"]
+    assert any("EXPÉRIMENTALE" in l["texte"] for l in d["journal"])
+    main.un_tour(d, faux)  # même signal : pas de 2e ordre
+    assert len(faux.ouvertes) == 1
+    faux.prix_action = prix + [2760] * 20  # 20 bougies plus tard : sortie forcée
+    main.un_tour(d, faux)
+    assert faux.fermees == ["d0"] and d["ordres"][0]["strategie"] == "elan_4h"
