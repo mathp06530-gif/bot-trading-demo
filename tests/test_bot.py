@@ -573,3 +573,35 @@ def test_rapide_resserre_le_stop_apres_un_gain(tmp_path, monkeypatch):
     remontes = [n for x, n in faux.stops if x == deal]
     assert remontes and max(remontes) > entree
     assert any("60 % du meilleur gain" in l["texte"] for l in d["journal"])
+
+
+def test_tendance_n_entre_que_si_les_deux_cerveaux_sont_d_accord(tmp_path, monkeypatch):
+    import bot.cerveaux as cv
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    debut, _ = serie_achat()
+    monkeypatch.setattr(cv, "avis_detail", lambda df4, df1: {"conseil": 0, "texte": "pas d'avis"})
+    faux, d = FauxCapital(debut), {}
+    main.un_tour(d, faux)
+    assert not faux.ouvertes  # 2e cerveau pas d'accord : aucune position
+    assert any("2e cerveau n'est pas d'accord" in l["texte"] for l in d["journal"])
+    monkeypatch.setattr(cv, "avis_detail", lambda df4, df1: {"conseil": 1, "texte": "achat"})
+    main.un_tour(d, faux)
+    assert not faux.ouvertes  # signal déjà refusé : on attend le suivant (comme le backtest)
+
+    faux, d = FauxCapital(debut), {}
+    main.un_tour(d, faux)
+    assert [o[1] for o in faux.ouvertes] == ["BUY", "BUY"]
+    assert any("2 cerveaux sont d'accord" in l["texte"] for l in d["journal"] if l["type"] == "ordre")
+
+
+def test_deuxieme_cerveau_structure_et_vote():
+    import numpy as np
+    from bot.cerveaux import avis_structure, conseil
+    zigzag = []
+    for k in range(12):  # sommets et creux de plus en plus hauts
+        zigzag += [1000 + 40 * k + 20 * i for i in range(5)] + [1060 + 40 * k - 20 * i for i in range(4)]
+    df = bougies_vers_df([bougie(i, p) for i, p in enumerate(zigzag)])
+    assert avis_structure(df)[-1] == 1
+    df_bas = bougies_vers_df([bougie(i, 3000 - p) for i, p in enumerate(zigzag)])
+    assert avis_structure(df_bas)[-1] == -1
+    assert set(np.unique(conseil(df, None))) <= {-1, 0, 1}

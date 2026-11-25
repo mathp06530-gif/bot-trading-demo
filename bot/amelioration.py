@@ -76,9 +76,10 @@ REGLAGES = {
 }
 # Réglages fixes (jamais changés par l'auto-amélioration) mais notés sur chaque ordre, pour que le bilan
 # sépare « avant / après » un changement fait à la main (25/11/2026 : stops qui se resserrent).
-NOTES_SEULEMENT = {"cassure_4h": ["GARDE_CASSURE_APRES_R", "GARDE_CASSURE_PCT"],
+NOTES_SEULEMENT = {"tendance_4h": ["DEUX_CERVEAUX_TENDANCE"],
+                   "cassure_4h": ["GARDE_CASSURE_APRES_R", "GARDE_CASSURE_PCT"],
                    "rapide": ["SORTIE_ENTREE_R", "GARDE_RAPIDE_APRES_R", "GARDE_RAPIDE_PCT"]}
-DEFAUTS = {"GARDE_CASSURE_APRES_R": 1.5, "GARDE_CASSURE_PCT": 50, "SORTIE_ENTREE_R": 0.5,
+DEFAUTS = {"DEUX_CERVEAUX_TENDANCE": 1, "GARDE_CASSURE_APRES_R": 1.5, "GARDE_CASSURE_PCT": 50, "SORTIE_ENTREE_R": 0.5,
            "GARDE_RAPIDE_APRES_R": 1.5, "GARDE_RAPIDE_PCT": 60,
            "ADX_TENDANCE_MIN": 20, "SUIVI_TENDANCE_ATR": 5, "TP_PARTIEL_ATR": 1, "CASSURE_ENTREE": 20,
            "CASSURE_SORTIE": 20, "ADX_RAPIDE_MIN": 20, "FILTRE_BOLLINGER": "oui", "SUIVI_RAPIDE_PCT": 2}
