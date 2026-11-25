@@ -8,7 +8,7 @@ import json
 import math
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from bot.capital import CapitalDemo, ErreurCapital
@@ -99,6 +99,26 @@ def repartir_du_test(donnees: dict):
     g.pop("jour", None)
     g["plus_haut"] = 0
     g["coupe_circuit"] = False
+
+
+def lire_activites(api, donnees: dict, positions: list) -> list:
+    """Historique Capital.com des dernières heures, seulement s'il y a une fermeture à vérifier
+    (position disparue, ou résultat encore estimé) : donne le VRAI prix de sortie au stop."""
+    ouverts = {p["position"]["dealId"] for p in positions}
+    limite = (datetime.now(timezone.utc) - timedelta(hours=20)).strftime("%Y-%m-%dT%H:%M:%S")
+    a_verifier = [o for o in donnees.get("ordres", [])
+                  if (o.get("statut") == "ouvert" and o["id"] not in ouverts)
+                  or (o.get("statut") == "ferme" and o.get("resultat_estime") and (o.get("ferme_le") or "") >= limite)]
+    if not a_verifier or not hasattr(api, "activites"):
+        return []
+    fin = datetime.now(timezone.utc)
+    for heures in (20, 4):  # si la période est refusée, on réessaie plus court
+        try:
+            return api.activites((fin - timedelta(hours=heures)).strftime("%Y-%m-%dT%H:%M:%S"),
+                                 fin.strftime("%Y-%m-%dT%H:%M:%S"))
+        except Exception as e:  # pas bloquant : on garde l'estimation
+            print(f"Historique Capital.com indisponible ({heures} h) : {e}")
+    return []
 
 
 def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = "toutes"):
@@ -398,8 +418,9 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     compte = next((c for c in api.comptes() if c.get("preferred")), None) or (api.comptes() or [{}])[0]
     solde = compte.get("balance", {})
     positions = api.positions()
+    activites = lire_activites(api, donnees, positions)
     api.deconnexion()
-    synchroniser(donnees, positions, maintenant())
+    synchroniser(donnees, positions, maintenant(), activites, eurusd)
     ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
     for o in donnees.get("ordres", []):
         if o["id"] in ids_rapide:

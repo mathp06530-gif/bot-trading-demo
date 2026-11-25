@@ -139,6 +139,12 @@ class CapitalDemo:
         ref = self._requete("DELETE", f"/positions/{deal_id}").get("dealReference")
         return self.confirmation(ref) if ref else {}
 
+    def activites(self, depuis: str, jusqu_a: str) -> list:
+        """Historique des opérations (ouvertures, stops modifiés, fermetures par le stop…), dates UTC
+        « AAAA-MM-JJTHH:MM:SS ». Sert à connaître le VRAI prix de fermeture d'une position fermée par le stop."""
+        return self._requete("GET", "/history/activity", params={
+            "from": depuis, "to": jusqu_a, "detailed": "true"}).get("activities", [])
+
     def confirmation(self, reference: str):
         # La confirmation peut mettre une seconde à arriver.
         for _ in range(5):

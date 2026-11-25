@@ -605,3 +605,27 @@ def test_deuxieme_cerveau_structure_et_vote():
     df_bas = bougies_vers_df([bougie(i, 3000 - p) for i, p in enumerate(zigzag)])
     assert avis_structure(df_bas)[-1] == -1
     assert set(np.unique(conseil(df, None))) <= {-1, 0, 1}
+
+
+def test_fermeture_par_le_stop_au_vrai_prix_capital():
+    """25/11 : une vente fermée par son stop REMONTÉ apparaissait en perte (calcul avec le stop de départ, en $).
+    Le registre suit maintenant le stop actuel et lit le vrai prix de fermeture dans l'historique Capital.com."""
+    from bot.registre import synchroniser
+    pos = {"position": {"dealId": "a", "direction": "SELL", "size": 0.03, "level": 3518.9, "stopLevel": 3554.09,
+                        "upl": 0.5, "guaranteedStop": True}, "market": {"epic": "GOLD", "instrumentName": "Gold"}}
+    d = {}
+    synchroniser(d, [pos], "t0")
+    pos["position"]["stopLevel"] = 3463.53  # stop remonté par le bot
+    synchroniser(d, [pos], "t1")
+    assert d["ordres"][0]["stop"] == 3463.53
+    d["ordres"][0]["dernier_prix"] = 3470.0
+    sans_historique = json.loads(json.dumps(d))
+    synchroniser(sans_historique, [], "t2", taux=1.1)  # estimation : au stop ACTUEL, en euros
+    o = sans_historique["ordres"][0]
+    assert o["prix_sortie"] == 3463.53 and o["resultat"] == round((3518.9 - 3463.53) * 0.03 / 1.1, 2) > 0
+    activites = [{"dealId": "a", "type": "POSITION", "status": "ACCEPTED", "source": "SL",
+                  "details": {"level": 3463.6, "openPrice": 3518.9, "direction": "BUY"}}]
+    synchroniser(d, [], "t2", activites, taux=1.1)
+    o = d["ordres"][0]
+    assert o["prix_sortie"] == 3463.6 and o["resultat_estime"] is False and o["motif_sortie"] == "Stop touché"
+    assert o["resultat"] == round((3518.9 - 3463.6) * 0.03 / 1.1, 2)

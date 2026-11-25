@@ -29,8 +29,44 @@ def noter_fermeture(donnees: dict, position: dict, conf: dict, quand: str, motif
     })
 
 
-def synchroniser(donnees: dict, positions: list, quand: str):
-    """Ajoute les nouvelles positions et repère celles fermées sans le bot (stop touché…)."""
+MOTIFS_COURTIER = {"SL": "Stop touché", "TP": "Objectif atteint"}
+
+
+def fermeture_reelle(activites: list, deal_id: str):
+    """(prix, motif) de la fermeture d'une position d'après l'historique Capital.com, ou None."""
+    for a in activites or []:
+        d = a.get("details") or {}
+        if (a.get("dealId") == deal_id and a.get("type") == "POSITION" and a.get("status") == "ACCEPTED"
+                and d.get("openPrice") is not None and d.get("level")):
+            return float(d["level"]), MOTIFS_COURTIER.get(a.get("source"), "Fermée chez Capital.com")
+    return None
+
+
+def _resultat_eur(o: dict, sortie: float, taux: float) -> float:
+    sens = 1 if o["sens"] == "BUY" else -1
+    return round((sortie - o["prix_entree"]) * o["taille"] * sens / (taux or 1.0), 2)
+
+
+def corriger_avec_historique(donnees: dict, activites: list, taux: float = 1.0) -> int:
+    """Remplace les résultats ESTIMÉS par les vrais prix de fermeture de Capital.com. Renvoie le nombre corrigé."""
+    n = 0
+    for o in donnees.get("ordres", []):
+        if o.get("statut") != "ferme" or not o.get("resultat_estime"):
+            continue
+        reel = fermeture_reelle(activites, o["id"])
+        if reel is None:
+            continue
+        sortie, motif = reel
+        o.update({"prix_sortie": sortie, "resultat": _resultat_eur(o, sortie, taux), "resultat_estime": False,
+                  "motif_sortie": motif})
+        n += 1
+    return n
+
+
+def synchroniser(donnees: dict, positions: list, quand: str, activites: list | None = None, taux: float = 1.0):
+    """Ajoute les nouvelles positions et repère celles fermées sans le bot (stop touché…).
+    activites : historique Capital.com récent (vrai prix de fermeture) ; taux : unités de la devise du
+    marché pour 1 € (les résultats sont en €, comme le compte)."""
     ordres = donnees.setdefault("ordres", [])
     ids_ouverts = set()
     for p in positions:
@@ -41,6 +77,8 @@ def synchroniser(donnees: dict, positions: list, quand: str):
             ordres.append(_depuis_position(p))
         else:
             ordre["resultat"] = p["position"].get("upl")  # résultat en cours, mis à jour à chaque tour
+            if p["position"].get("stopLevel") is not None:
+                ordre["stop"] = p["position"]["stopLevel"]  # le stop a pu être remonté (suiveur) : on suit le vrai
 
     for o in ordres:
         if o["statut"] == "ouvert" and o["id"] not in ids_ouverts:
@@ -56,10 +94,12 @@ def synchroniser(donnees: dict, positions: list, quand: str):
                 "statut": "ferme",
                 "ferme_le": quand,
                 "prix_sortie": sortie,
-                "resultat": round((sortie - o["prix_entree"]) * o["taille"] * sens, 2),
+                "resultat": _resultat_eur(o, sortie, taux),
                 "resultat_estime": True,
                 "motif_sortie": "Stop de sécurité ou fermeture manuelle",
             })
+    if activites:
+        corriger_avec_historique(donnees, activites, taux)
 
 
 def mettre_a_jour_prix(donnees: dict, epic: str, prix: float | None):
