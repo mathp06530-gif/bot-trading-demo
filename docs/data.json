@@ -1713,7 +1713,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T21:54:24Z",
+ "derniere_execution": "2026-11-25T21:55:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -8250,15 +8250,19 @@
   {
    "date": "2026-11-25T21:54:24Z",
    "valeur": 94.3
+  },
+  {
+   "date": "2026-11-25T21:55:24Z",
+   "valeur": 94.08
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 94.3,
+  "solde": 94.08,
   "depot": 96.11,
-  "resultat_latent": -1.81,
-  "disponible": 87.89
+  "resultat_latent": -2.03,
+  "disponible": 87.64
  },
  "positions": [
   {
@@ -8267,7 +8271,7 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": -1.78,
+   "resultat": -1.99,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
@@ -8829,7 +8833,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": -1.78,
+   "resultat": -1.99,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8986,7 +8990,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 94.3
+  "2026-11-25": 94.08
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -9160,7 +9164,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3581.8199999999997,
+    "prix": 3585.74,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -9882,7 +9886,7 @@
   "deals": {},
   "marches": {
    "ETHUSD": {
-    "prix": 1686.86,
+    "prix": 1685.43,
     "ligne": 1735.66,
     "sens": -1,
     "atr": 41.73,
