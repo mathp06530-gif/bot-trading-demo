@@ -348,6 +348,29 @@ def test_rapide_or_achete_dans_le_sens_des_tendances(tmp_path, monkeypatch):
     assert "d0" in faux.fermees
 
 
+def test_rapide_une_seule_entree_par_bougie_5_min(tmp_path, monkeypatch):
+    """Le moteur passe chaque minute : après un stop, pas de nouvelle entrée sur la même bougie 5 min terminée."""
+    from bot import rapide
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "MARCHES", [])
+    monkeypatch.setattr(rapide, "LISTE", ["GOLD"])
+    monkeypatch.setattr(rapide, "FILTRE_BOLLINGER", False)
+    monkeypatch.setattr(rapide, "ADX_RAPIDE_MIN", 0)
+    monkeypatch.setattr(rapide, "tendances_superieures", lambda api, epic: ("BUY", "BUY"))
+    debut, _ = serie_achat()
+    faux = FauxCapital(debut, [100 + i for i in range(80)])
+    d = {"strategies": {"rapide": {"active": True}}}
+    main.un_tour(d, faux)
+    assert len(faux.ouvertes) == 1
+    faux.ouvertes = []  # touchée par le stop pendant la même bougie 5 min
+    main.un_tour(d, faux)
+    assert faux.n == 1 and "prochaine bougie" in d["rapide"]["marches"]["GOLD"]["action"]
+    faux.prix_rapide = faux.prix_rapide + [180]  # nouvelle bougie 5 min : la rapide peut entrer à nouveau
+    main.un_tour(d, faux)
+    assert len(faux.ouvertes) == 1 and faux.n == 2
+    assert any("1 minute" in l["texte"] for l in d["journal"])
+
+
 def test_repartir_du_test_ne_compte_pas_le_retrait():
     d = {"historique": [{"date": "2026-11-19T17:48:29Z", "valeur": 21000.0}, {"date": "2026-11-20T16:20:30Z", "valeur": 98.21}],
          "historique_jour": {"2026-11-19": 21069.4}, "valeur_depart": 21000.0,
