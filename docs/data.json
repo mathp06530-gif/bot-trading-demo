@@ -1706,7 +1706,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T20:16:24Z",
+ "derniere_execution": "2026-11-25T20:17:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -7851,15 +7851,19 @@
   {
    "date": "2026-11-25T20:16:24Z",
    "valeur": 95.13
+  },
+  {
+   "date": "2026-11-25T20:17:25Z",
+   "valeur": 95.12
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 95.13,
+  "solde": 95.12,
   "depot": 98.52,
-  "resultat_latent": -3.39,
-  "disponible": 83.85
+  "resultat_latent": -3.4,
+  "disponible": 83.84
  },
  "positions": [
   {
@@ -7868,7 +7872,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3500.82,
-   "resultat": -1.99,
+   "resultat": -2.03,
    "ouverte_le": "2026-11-25T12:05:23.276"
   },
   {
@@ -8483,7 +8487,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T12:05:23Z",
    "statut": "ouvert",
-   "resultat": -1.99,
+   "resultat": -2.03,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8595,7 +8599,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 95.13
+  "2026-11-25": 95.12
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -8741,7 +8745,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 40.9385,
+   "prix": 40.986999999999995,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.66,
@@ -8768,7 +8772,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3573.225,
+    "prix": 3573.59,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -9479,7 +9483,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 40.94,
+    "prix": 40.99,
     "ema200": 50.69,
     "atr": 1.14,
     "trou_achat_atr": -1.74,
