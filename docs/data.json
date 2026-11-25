@@ -1696,10 +1696,17 @@
    "marche": "BTCUSD",
    "texte": "Tendance baissière nette (ADX 19) : on veut être VENDEUR. Mais le signal n'est pas récent (il date du 2026-10-24 04:00) : on attend le prochain pour ne pas entrer en retard.",
    "strategie": "tendance_4h"
+  },
+  {
+   "date": "2026-11-25T20:07:23Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Nouveau (25/11/2026) : stratégie EXPÉRIMENTALE « Supertrend 4 h » sur l'Ethereum, risque 1 %, trouvée sur les réseaux. Seule idée sur 48 qui gagne sur des données jamais vues (2017-2025 : +138 R) et sur les 2 dernières années (+10 R). Marché à part : elle ne change rien aux autres stratégies.",
+   "strategie": "supertrend_4h"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T20:06:23Z",
+ "derniere_execution": "2026-11-25T20:07:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -7804,15 +7811,19 @@
   {
    "date": "2026-11-25T20:06:23Z",
    "valeur": 96.04
+  },
+  {
+   "date": "2026-11-25T20:07:24Z",
+   "valeur": 95.69
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 96.04,
+  "solde": 95.69,
   "depot": 98.52,
-  "resultat_latent": -2.48,
-  "disponible": 84.82
+  "resultat_latent": -2.83,
+  "disponible": 84.44
  },
  "positions": [
   {
@@ -7821,7 +7832,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3500.82,
-   "resultat": -1.39,
+   "resultat": -1.6,
    "ouverte_le": "2026-11-25T12:05:23.276"
   },
   {
@@ -7830,7 +7841,7 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": -1.09,
+   "resultat": -1.26,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
@@ -8392,7 +8403,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": -1.09,
+   "resultat": -1.26,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8436,7 +8447,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T12:05:23Z",
    "statut": "ouvert",
-   "resultat": -1.39,
+   "resultat": -1.6,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8548,7 +8559,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 96.04
+  "2026-11-25": 95.69
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -8634,6 +8645,19 @@
    "description": "Expérience lancée le 25/11/2026 : repère les bougies de 4 h où un gros ordre a fait sauter le prix (un « trou » entre les bougies) sur l'or et l'argent, et suit cet élan. Backtest 2 ans : +44 R, mais preuve faible (2 ans, marché très haussier).",
    "debut": "2026-11-25",
    "action": "Actif"
+  },
+  "supertrend_4h": {
+   "active": true,
+   "nom": "Supertrend 4 h Ethereum (expérimentale, trouvée sur les réseaux)",
+   "unite": "HOUR_4",
+   "risque_pct": 1.0,
+   "reglages": "Supertrend 10/3 4 h : toujours dans le sens de la ligne, retournement quand elle est franchie, stop garanti sur la ligne, risque 1 % (expérimentale)",
+   "marches": [
+    "ETHUSD"
+   ],
+   "description": "Expérience lancée le 25/11/2026, trouvée sur les réseaux (Supertrend 10/3) : suit la tendance de l'Ethereum en 4 h. Seule idée sur 48 qui gagne sur des données jamais vues (2017-2025 : +138 R) ET sur les 2 dernières années (+10 R). Avantage en baisse : preuve moyenne.",
+   "debut": "2026-11-25",
+   "action": "Actif"
   }
  },
  "garde_fous": {
@@ -8681,7 +8705,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 40.8235,
+   "prix": 40.825,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.66,
@@ -8708,7 +8732,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3551.77,
+    "prix": 3557.425,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -9419,7 +9443,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 40.82,
+    "prix": 40.83,
     "ema200": 50.69,
     "atr": 1.14,
     "trou_achat_atr": -1.74,
@@ -9429,5 +9453,18 @@
   }
  },
  "valeur_corrigee_2511": true,
- "tour_1min_2511": true
+ "tour_1min_2511": true,
+ "supertrend": {
+  "depuis": "2026-11-25T20:07:23Z",
+  "deals": {},
+  "marches": {
+   "ETHUSD": {
+    "prix": 1681.54,
+    "ligne": 1735.66,
+    "sens": -1,
+    "atr": 41.73,
+    "action": "En attente d'un retournement (sens actuel : baisse)"
+   }
+  }
+ }
 }
