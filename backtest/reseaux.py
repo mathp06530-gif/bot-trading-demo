@@ -127,12 +127,12 @@ def btc_rsi5(df):
     return voulu, ok, dstop, None
 
 
-def squeeze(df, serre_min=6, duree=20):
+def squeeze(df, serre_min=6, duree=20, kc=1.5, sortie_elan=True):
     o, h, l, c, atr, e = base(df)
     s = pd.Series(c)
     moy, et = s.rolling(20).mean(), s.rolling(20).std()
     a20 = pd.Series(atr)  # ATR 14 (Wilder), proche du « range » de LazyBear
-    serre = ((moy + 2 * et) < (moy + 1.5 * a20)) & ((moy - 2 * et) > (moy - 1.5 * a20))
+    serre = ((moy + 2 * et) < (moy + kc * a20)) & ((moy - 2 * et) > (moy - kc * a20))
     hh, ll = pd.Series(h).rolling(20).max(), pd.Series(l).rolling(20).min()
     x = s - ((hh + ll) / 2 + moy) / 2
     elan = x.rolling(20).apply(lambda v: np.polyfit(np.arange(20), v, 1)[1] + np.polyfit(np.arange(20), v, 1)[0] * 19,
@@ -142,7 +142,7 @@ def squeeze(df, serre_min=6, duree=20):
     sig = np.where(sortie & (elan > 0), 1, np.where(sortie & (elan < 0), -1, 0))
     v, ok, ds = tenir(sig, 2 * atr, len(c), duree)
     # sortie quand l'élan change de signe
-    for i in range(1, len(v)):
+    for i in range(1, len(v) if sortie_elan else 0):
         if v[i] and not ok[i] and np.sign(elan[i]) != v[i]:
             k = i
             while k < len(v) and v[k] == v[i] and not ok[k]:
@@ -340,6 +340,53 @@ def portefeuille(trades, poids, p):
             "pct_2": round(float(s[s.index >= p[1]].sum()), 1), "pire_baisse_pct": round(baisse, 1)}
 
 
+def robustesse(d):
+    """Réglages VOISINS des deux meilleures idées : un vrai avantage doit tenir quand on bouge un peu les réglages."""
+    from bot.cassure import signaux_cassure
+    p = periode([d[k] for k in d])
+    print("\n=== Robustesse (réglages voisins), or + argent 4 h")
+    print(f"{'variante':48s} {'R':>7s} {'an 1':>7s} {'an 2':>7s} {'trades':>6s} {'baisse':>7s}")
+    lignes = {}
+    for serre_min in (3, 6, 10):
+        for duree in (10, 20, 40):
+            for kc in (1.5, 2.0):
+                for se in (True, False):
+                    jeux = [(e, d[(e, "HOUR_4")], *squeeze(d[(e, "HOUR_4")], serre_min, duree, kc, se), 1.0)
+                            for e in ("GOLD", "SILVER")]
+                    lignes[f"Squeeze serré>={serre_min} max {duree} KC {kc:g}{'' if se else ' sans sortie élan'}"] = jouer(jeux)
+    # Version « bot » : pas d'entrée contre la Cassure, sortie si la Cassure part dans l'autre sens
+    jeux = []
+    for e in ("GOLD", "SILVER"):
+        df = d[(e, "HOUR_4")]
+        v, ok, ds, dob = squeeze(df)
+        cc = signaux_cassure(df, entree=20, sortie=20).cible.values
+        ok = ok & (cc != -v)
+        v = np.where(cc == -v, 0, v)
+        jeux.append((e, df, v, ok, ds, dob, 1.0))
+    lignes["Squeeze 6/20/1,5 AVEC règles Cassure (version bot)"] = jouer(jeux)
+    for n, m in ((7, 3.0), (10, 2.0), (10, 4.0), (14, 3.0), (20, 3.0)):
+        jeux = [(e, d[(e, "HOUR_4")], *supertrend(d[(e, "HOUR_4")], n, m), 1.0) for e in ("GOLD", "SILVER")]
+        lignes[f"Supertrend {n}/{m:g}"] = jouer(jeux)
+    for e in ("GOLD", "SILVER"):
+        df = d[(e, "HOUR_4")]
+        lignes[f"Squeeze 6/20/1,5 {e} seul"] = jouer([(e, df, *squeeze(df), 1.0)])
+        lignes[f"Supertrend 10/3 {e} seul"] = jouer([(e, df, *supertrend(df), 1.0)])
+    pos = 0
+    for nom, t in lignes.items():
+        s = resume(t, p)
+        pos += s["R_1"] > 0 and s["R_2"] > 0
+        print(f"{nom:48s} {s['R']:7.2f} {s['R_1']:7.2f} {s['R_2']:7.2f} {s['trades']:6d} {s['pire_baisse_R']:7.2f}")
+    print(f"{pos} variantes sur {len(lignes)} gagnent sur les 2 moitiés")
+    # Recouvrement avec la Cassure : part des trades Squeeze ouverts pendant qu'une Cassure est déjà en position
+    for e in ("GOLD", "SILVER"):
+        df = d[(e, "HOUR_4")]
+        v, ok, ds, dob = squeeze(df)
+        cc = signaux_cassure(df, entree=20, sortie=20).cible.values
+        entrees = np.where(ok & (v != 0))[0]
+        meme = int(np.sum(cc[entrees] == v[entrees]))
+        print(f"  {e} : {len(entrees)} entrées Squeeze, dont {meme} alors que la Cassure est déjà dans le même sens")
+
+
 def principal():
     d = {(e, u): serrage.lire(e, u) for e in ("GOLD", "SILVER", "BTCUSD") for u in ("HOUR", "HOUR_4")}
     p = periode([d[k] for k in d])
@@ -393,6 +440,7 @@ def principal():
               + ", ".join(f"{x:.1f}" for x in t.groupby(t.date.dt.to_period('Q')).R.sum().values))
     sortie["a_garder"] = a_garder
     print(f"\nÀ garder : {a_garder or 'aucune'}")
+    robustesse(d)
     (Path(__file__).resolve().parent / "resultats_reseaux.json").write_text(
         json.dumps(sortie, indent=1, ensure_ascii=False, default=str))
 
