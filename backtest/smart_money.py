@@ -84,12 +84,8 @@ def fvg(df, tendance):
     dist = np.full(n, np.nan)
     trous = []  # (sens, haut, bas, expire)
     for i in range(2, n):
-        if l[i] > h[i - 2]:
-            trous.append((1, l[i], h[i - 2], i + 10))
-        if h[i] < l[i - 2]:
-            trous.append((-1, l[i - 2], h[i], i + 10))
         trous = [t for t in trous if t[3] > i]
-        for t in list(trous):
+        for t in list(trous):  # trous formés AVANT cette bougie (ajoutés après le test)
             s, haut, bas, _ = t
             if (s == 1 and l[i] <= haut and c[i] > bas) or (s == -1 and h[i] >= bas and c[i] < haut):
                 if tendance and ((s == 1 and c[i] < e[i]) or (s == -1 and c[i] > e[i])):
@@ -99,6 +95,10 @@ def fvg(df, tendance):
                 dist[i] = (c[i] - bas if s == 1 else haut - c[i]) + 0.1 * atr[i]
                 trous.remove(t)
                 break
+        if l[i] > h[i - 2]:
+            trous.append((1, l[i], h[i - 2], i + 10))
+        if h[i] < l[i - 2]:
+            trous.append((-1, l[i - 2], h[i], i + 10))
     return sig, dist
 
 
@@ -175,6 +175,16 @@ def principal():
             prometteuses.append(nom)
         print(f"{nom:58s} {s['R']:7.2f} {s['R_1']:7.2f} {s['R_2']:7.2f} {s['trades']:6d} {s['reussite']:6.1f} "
               f"{s['pire_baisse_R']:7.2f}{'  <- 2 moitiés +' if ok else ''}")
+    print("\nDétail FVG 4 h (obj 3 R), par marché et par sens :")
+    for e in ("GOLD", "SILVER", "BTCUSD"):
+        df = donnees[(e, "HOUR_4")]
+        sig, dist = fvg(df, False)
+        v, ok, ds = tenir(sig, dist, len(df), 20)
+        t = serrage.simuler(df, v, ok, ds, None, cond[e], dobj=ds * 3)
+        sens = v[df.index.get_indexer(t.date) - 1] if len(t) else []
+        for s_, mot in ((1, "achats"), (-1, "ventes")):
+            r = t.R[np.asarray(sens) == s_]
+            print(f"  {e:7s} {mot:7s} {r.sum():7.2f} R sur {len(r)} trades")
     print(f"\n{len(prometteuses)} idées gagnantes sur les 2 moitiés, sur {len(res)} testées.")
     (Path(__file__).resolve().parent / "resultats_smart_money.json").write_text(
         json.dumps({"prometteuses": prometteuses, "resultats": res}, indent=1, ensure_ascii=False, default=str))
