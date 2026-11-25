@@ -20,6 +20,7 @@ from bot.cassure import LISTE as MARCHES_CASSURE
 from bot.cassure import NOM as NOM_CASSURE
 from bot.cassure import RISQUE_CASSURE_PCT, tour_cassure
 from bot.amelioration import reglages_du_moment
+from bot import cerveaux
 from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
 from bot.strategie import NOM as NOM_STRATEGIE
 from bot.strategie import EMA_LENTE, EMA_RAPIDE, bougies_vers_df, decider
@@ -34,6 +35,11 @@ RISQUE_PCT = float(os.getenv("RISQUE_PCT", "1"))  # % du capital perdu au maximu
 NB_BOUGIES = 1000  # ~5 mois de bougies 4 h, pour que l'EMA 200 soit fiable
 STOP_GARANTI_MIN_PCT = 0.55  # Capital.com impose un stop garanti à 0,5 % minimum du prix (+ marge)
 PAS_TAILLE = 0.0001  # plus petite taille de position en BTC chez Capital.com
+# « Deux cerveaux » (25/11/2026, idée de Mathis) : une NOUVELLE entrée de la Tendance 4 h n'est prise que si
+# le 2e cerveau (bot/cerveaux.py : note des indicateurs + structure sommets/creux + tendance 1 h, 2 avis sur 3)
+# est d'accord. Backtest 2 ans BTC (backtest/deux_cerveaux.py) : +16,2 R -> +17,4 R, mieux les 2 années,
+# 48 trades au lieu de 58, pire baisse -3,7 R -> -2,7 R. Sur la Cassure or/argent, il ferait MOINS bien : pas utilisé.
+DEUX_CERVEAUX = os.getenv("DEUX_CERVEAUX_TENDANCE", "1") == "1"
 TP_PARTIEL_ATR = float(os.getenv("TP_PARTIEL_ATR", "1"))  # moitié de la position avec un TP à N × ATR (0 = aucun)
 MARGE = 0.5  # levier crypto 2:1 en Europe : il faut bloquer 50 % de la valeur
 
@@ -105,6 +111,11 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         journal.append(ligne)
 
     noter_4h = lambda t, m, x: noter(t, m, x, "tendance_4h")
+    if DEUX_CERVEAUX and not donnees.get("deux_cerveaux_depuis"):
+        donnees["deux_cerveaux_depuis"] = maintenant()  # une seule fois : changement daté pour les bilans
+        noter_4h("commande", "BTCUSD", "Nouveau (25/11/2026) : deux cerveaux sur la Tendance 4 h. Une nouvelle position "
+                 "n'est ouverte que si le 2e cerveau (indicateurs + structure sommets/creux + tendance 1 h) est d'accord. "
+                 "Backtest 2 ans : +16,2 R -> +17,4 R, pire baisse -3,7 R -> -2,7 R. À comparer au bilan du 4/12.")
 
     toutes = ["tendance_4h", "cassure_4h", "rapide"]  # 20/11/2026 : test de 2 semaines de ces 3 stratégies
     strategie = strategie if strategie in toutes else "toutes"
@@ -266,7 +277,21 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                 elif entrees.get(epic) == signal["debut_etat"]:
                     if not deja_note:
                         noter_4h("analyse", epic, "Ce signal a déjà été utilisé (position fermée par le stop) : on attend un nouveau signal.")
-                if empile or (signal["nouveau"] and entrees.get(epic) != signal["debut_etat"]):
+                cerveau2 = None
+                if DEUX_CERVEAUX and not empile and signal["nouveau"] and entrees.get(epic) != signal["debut_etat"]:
+                    try:
+                        df1 = bougies_vers_df(api.bougies(epic, "HOUR", 300)[:-1])
+                    except Exception:
+                        df1 = None
+                    cerveau2 = cerveaux.avis_detail(df, df1)
+                    etats["tendance_4h"]["cerveau2"] = cerveau2["texte"]
+                    if cerveau2["conseil"] != {"BUY": 1, "SELL": -1}[voulu]:
+                        entrees[epic] = signal["debut_etat"]  # comme le backtest : signal refusé = on attend le suivant
+                        noter_4h("analyse", epic, f"{signal['explication']} Mais le 2e cerveau n'est pas d'accord "
+                                 f"({cerveau2['texte']}) : pas d'entrée, on attend un signal de meilleure qualité.")
+                        action = "Refusé (2e cerveau pas d'accord)"
+                        cerveau2 = False
+                if cerveau2 is not False and (empile or (signal["nouveau"] and entrees.get(epic) != signal["debut_etat"])):
                     mot = "ACHAT" if voulu == "BUY" else "VENTE"
                     prix_entree = prix_achat if voulu == "BUY" else prix_vente
                     distance = max(float(derniere.stop), prix_entree * STOP_GARANTI_MIN_PCT / 100)
@@ -295,7 +320,8 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                                 entrees[epic] = signal["debut_etat"]
                                 action = f"{mot} de {taille} {epic}"
                                 texte_tp = f", TP à +{obj:.0f} $" if obj else ", sans TP (stop suiveur)"
-                                noter_4h("ordre", epic, f"{'Empilement : ' + empile + '.' if empile else signal['explication']} Ordre {mot} de {t} passé à "
+                                accord = f" Les 2 cerveaux sont d'accord ({cerveau2['texte']})." if cerveau2 else ""
+                                noter_4h("ordre", epic, f"{'Empilement : ' + empile + '.' if empile else signal['explication'] + accord} Ordre {mot} de {t} passé à "
                                       f"{float(conf.get('level') or prix_entree):.2f}, stop garanti à {distance:.0f} $"
                                       f"{texte_tp} (risque max ≈ {t * distance / eurusd:.2f} €).")
                             else:

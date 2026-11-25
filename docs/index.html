@@ -658,7 +658,7 @@ function indicateurs(s) {
     <div class="tags" style="margin:6px 0">${chips.join("")}</div><div class="sb-act" style="text-align:left">${esc(action || "—")}</div></div>`;
   let html = "";
   if (s.id === "tendance_4h" && s.indicateurs)
-    html = bloc("Bitcoin", Object.entries(s.indicateurs).map(([k, v]) => chip(k, fmt(v, k.startsWith("ADX") ? 0 : 2))), s.action);
+    html = bloc("Bitcoin", Object.entries(s.indicateurs).map(([k, v]) => chip(k, fmt(v, k.startsWith("ADX") ? 0 : 2))).concat(s.cerveau2 ? [chip("2e cerveau", s.cerveau2.split("-> 2e cerveau : ")[1] || "")] : []), s.action);
   if (s.id === "cassure_4h")
     html = Object.entries(D?.cassure || {}).map(([e, b]) => bloc(NOMS[e] || b.nom || e, [chip("Prix", fmt(b.prix, 2)), chip("Plus haut 20 bougies", fmt(b.plus_haut_20, 2)),
       chip("Plus bas 20 bougies", fmt(b.plus_bas_20, 2)), chip("EMA 200", fmt(b.ema200, 2)), ...(b.atr != null ? [chip("ATR", fmt(b.atr, 2))] : [])], b.action)).join("");
