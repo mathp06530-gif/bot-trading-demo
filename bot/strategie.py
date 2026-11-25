@@ -21,17 +21,19 @@ Règles, sur des bougies de 4 heures (prix milieu entre achat et vente) :
   TAILLE       : calculée pour ne perdre que RISQUE_PCT % du capital si le stop est touché.
   Après un stop, on attend un NOUVEAU signal avant de reprendre position.
 """
+import os
+
 import numpy as np
 import pandas as pd
 
 EMA_RAPIDE = 20
 EMA_LENTE = 200
-ADX_MIN = 20
+ADX_MIN = float(os.getenv("ADX_TENDANCE_MIN", "20"))  # réglable (auto-amélioration hebdomadaire)
 STOP_ATR = 2.0
-SUIVI_ATR = 5.0
+SUIVI_ATR = float(os.getenv("SUIVI_TENDANCE_ATR", "5"))  # réglable (auto-amélioration hebdomadaire)
 SPREAD_MAX_PCT = 10.0
 VENTES = True
-NOM = f"Tendance 4 h : EMA {EMA_RAPIDE}/{EMA_LENTE} + ADX > {ADX_MIN}, stop {STOP_ATR:g} ATR, suiveur {SUIVI_ATR:g} ATR"
+NOM = f"Tendance 4 h : EMA {EMA_RAPIDE}/{EMA_LENTE} + ADX > {ADX_MIN:g}, stop {STOP_ATR:g} ATR, suiveur {SUIVI_ATR:g} ATR"
 
 
 # --- Indicateurs (identiques à TradingView) -------------------------------------
@@ -148,7 +150,7 @@ def decider(df: pd.DataFrame) -> dict:
     elif etat == -1:
         explication = f"Tendance baissière nette (ADX {derniere.adx:.0f}) : on veut être VENDEUR."
     elif derniere.adx <= ADX_MIN:
-        explication = f"Tendance {tendance} mais trop faible (ADX {derniere.adx:.0f} ≤ {ADX_MIN}) : on attend."
+        explication = f"Tendance {tendance} mais trop faible (ADX {derniere.adx:.0f} ≤ {ADX_MIN:g}) : on attend."
     else:
         explication = f"Tendance {tendance}, mais le prix n'est pas encore du bon côté de l'EMA {EMA_RAPIDE} : on attend."
     return {

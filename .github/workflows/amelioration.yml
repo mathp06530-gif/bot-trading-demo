@@ -1,0 +1,63 @@
+name: Auto-amélioration (chaque semaine)
+
+# Chaque dimanche soir, le bot fait le bilan de sa semaine, vérifie le changement de la semaine
+# d'avant (et l'annule s'il a fait moins bien), puis cherche UNE amélioration par stratégie.
+# Tout est expliqué dans bot/amelioration.py et écrit dans le Journal de l'application.
+# Réglage du mode dans reglages.env : AUTO_AMELIORATION ("auto", "suggestions" ou "non").
+
+on:
+  workflow_dispatch:
+    inputs:
+      forcer:
+        description: "Relancer même si c'est déjà fait cette semaine (oui/non)"
+        default: "non"
+  schedule:
+    - cron: "0 18 * * 0"   # dimanche 18 h UTC (19 h à Paris), marchés de l'or fermés
+    - cron: "0 6 * * 1"    # lundi 6 h UTC, en secours si dimanche n'est pas passé
+
+permissions:
+  contents: write
+
+concurrency:
+  group: amelioration
+  cancel-in-progress: false
+
+jobs:
+  amelioration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Tester les variantes sur l'historique récent
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+          FORCER: ${{ inputs.forcer }}
+        run: python -m bot.amelioration calculer
+
+      - name: Enregistrer les décisions (réglages, journal)
+        run: |
+          [ -f amelioration_plan.json ] || { echo "Rien à enregistrer."; exit 0; }
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          for essai in 1 2 3 4 5; do
+            git fetch -q origin main && git reset -q --hard origin/main
+            python -m bot.amelioration appliquer
+            git add reglages.env docs/data.json docs/amelioration.json
+            git diff --cached --quiet && exit 0
+            git commit -qm "Auto-amélioration hebdomadaire $(date -u +%Y-%m-%d)"
+            git push -q origin HEAD:main && exit 0
+            echo "Un tour du bot a enregistré en même temps : on recommence ($essai/5)."
+            sleep $((RANDOM % 10 + 5))
+          done
+          exit 1

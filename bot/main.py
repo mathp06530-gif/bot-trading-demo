@@ -12,13 +12,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from bot.capital import CapitalDemo, ErreurCapital
-from bot.garde_fous import GardeFous
+from bot.garde_fous import GardeFous, surveiller_series_de_stops
 from bot import rapide as module_rapide
 from bot import actualites
 from bot.empilement import EMPILER_MAX, peut_empiler
 from bot.cassure import LISTE as MARCHES_CASSURE
 from bot.cassure import NOM as NOM_CASSURE
 from bot.cassure import RISQUE_CASSURE_PCT, tour_cassure
+from bot.amelioration import reglages_du_moment
 from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
 from bot.strategie import NOM as NOM_STRATEGIE
 from bot.strategie import EMA_LENTE, EMA_RAPIDE, bougies_vers_df, decider
@@ -273,7 +274,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                     taille = math.floor(risque_usd / distance / PAS_TAILLE) * PAS_TAILLE
                     taille_marge = math.floor(disponible * eurusd / (prix_entree * MARGE) * 0.9 / PAS_TAILLE) * PAS_TAILLE
                     taille = round(min(taille, taille_marge), 4)
-                    autorise, raison = garde.autoriser(taille * distance / eurusd, distance)
+                    autorise, raison = garde.autoriser(taille * distance / eurusd, distance, "tendance_4h", epic)
                     if taille < PAS_TAILLE:
                         noter_4h("erreur", epic, f"Capital trop faible pour ouvrir la plus petite position ({PAS_TAILLE} BTC).")
                     elif not autorise:
@@ -380,6 +381,11 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         elif o.get("strategie") == "rapide" and o["marche"] not in module_rapide.LISTE:
             o["strategie"] = "rapide_btc"  # ancienne rapide du Bitcoin (avant le 20/11/2026)
         o.setdefault("strategie", "cassure_4h" if o["marche"] in MARCHES_CASSURE else "tendance_4h")
+        if o.get("statut") == "ouvert" and "reglages" not in o:
+            # réglages en vigueur à l'ouverture (auto-amélioration : on ne mélange jamais avant / après un changement)
+            o["reglages"] = reglages_du_moment(o["strategie"])
+    # Garde-fou n° 9 : 3 stops perdants d'affilée sur une stratégie et un marché -> pause de 24 h pour ce couple
+    surveiller_series_de_stops(donnees, maintenant(), noter)
 
     donnees["compte"] = {
         "nom": compte.get("accountName", "Démo"),

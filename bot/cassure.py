@@ -28,7 +28,10 @@ from bot.strategie import atr, bougies_vers_df, ema, milieu
 
 LISTE = [m.strip() for m in os.getenv("CASSURE_MARCHES", "GOLD,SILVER").split(",") if m.strip()]
 RISQUE_CASSURE_PCT = float(os.getenv("RISQUE_CASSURE_PCT", "0.5"))
-ENTREE, SORTIE, STOP_ATR, FILTRE_EMA = 20, 20, 2.0, 200
+# ENTREE et SORTIE sont réglables dans reglages.env (auto-amélioration hebdomadaire)
+ENTREE = int(float(os.getenv("CASSURE_ENTREE", "20")))
+SORTIE = int(float(os.getenv("CASSURE_SORTIE", "20")))
+STOP_ATR, FILTRE_EMA = 2.0, 200
 UNITE = "HOUR_4"
 NOM = f"Cassure {ENTREE} bougies 4 h dans le sens de l'EMA {FILTRE_EMA}, stop garanti {STOP_ATR:g} ATR"
 
@@ -186,7 +189,8 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
         if not refus and taille < regles["taille_min"]:
             refus = f"capital trop faible pour la taille minimale ({regles['taille_min']})"
         if not refus:
-            ok, raison = garde.autoriser(taille * distance / taux, distance)
+            ok, raison = garde.autoriser(taille * distance / taux, distance,
+                                        "cassure_4h" if cle == "cassure" else cle, epic)
             refus = None if ok else raison
         mot = "ACHAT" if voulu == "BUY" else "VENTE"
         if refus:
