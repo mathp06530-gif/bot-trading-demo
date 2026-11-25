@@ -1727,7 +1727,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T23:08:24Z",
+ "derniere_execution": "2026-11-25T23:09:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -8560,15 +8560,19 @@
   {
    "date": "2026-11-25T23:08:24Z",
    "valeur": 94.28
+  },
+  {
+   "date": "2026-11-25T23:09:24Z",
+   "valeur": 94.29
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 94.28,
+  "solde": 94.29,
   "depot": 96.11,
-  "resultat_latent": -1.83,
-  "disponible": 87.86
+  "resultat_latent": -1.82,
+  "disponible": 87.88
  },
  "positions": [
   {
@@ -8577,7 +8581,7 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": -1.83,
+   "resultat": -1.81,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
@@ -9139,7 +9143,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": -1.83,
+   "resultat": -1.81,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -9296,7 +9300,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 94.28
+  "2026-11-25": 94.29
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -9431,7 +9435,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3583.685,
+   "prix": 3575.865,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3922.16,
@@ -9443,7 +9447,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.2555,
+   "prix": 41.254,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.66,
@@ -9470,7 +9474,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3574.335,
+    "prix": 3576.37,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -10168,7 +10172,7 @@
   "deals": {},
   "marches": {
    "GOLD": {
-    "prix": 3583.68,
+    "prix": 3575.86,
     "ema200": 3923.45,
     "atr": 52.52,
     "trou_achat_atr": -1.83,
@@ -10176,7 +10180,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 41.26,
+    "prix": 41.25,
     "ema200": 50.69,
     "atr": 1.14,
     "trou_achat_atr": -1.74,
