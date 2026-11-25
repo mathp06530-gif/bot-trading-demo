@@ -140,6 +140,27 @@ def strat_cassure(epics):
     return jeux
 
 
+def strat_cassure_5min(epics):
+    """Vérification : mêmes signaux 4 h, mais stop suivi toutes les 5 min (comme le bot, qui tourne toutes les 5 min)."""
+    jeux = []
+    for e in epics:
+        df4, df5 = lire(e, "HOUR_4"), lire(e, "MINUTE_5")
+        sig = signaux_cassure(df4, entree=20, sortie=20)
+        c = sig.cible.values
+        neuf = np.r_[True, c[1:] != c[:-1]]
+        fin4 = df4.index + pd.Timedelta(hours=4)  # le signal est connu à la fin de la bougie 4 h
+        fin5 = df5.index + pd.Timedelta(minutes=5)
+        pos = np.searchsorted(fin4.values, fin5.values, side="right") - 1  # dernière bougie 4 h terminée
+        valide = pos >= 0
+        p = np.where(valide, pos, 0)
+        c5 = np.where(valide, c[p], 0)
+        premier = np.r_[True, p[1:] != p[:-1]]  # 1re bougie 5 min après la clôture 4 h
+        ok5 = valide & neuf[p] & premier
+        st5 = np.where(valide, sig.stop.values[p], np.nan)
+        jeux.append((e, df5, c5, ok5, st5, None, None, conditions(e, float(df5.close_bid.iloc[-1]))))
+    return jeux
+
+
 def strat_tendance(epics):
     """Tendance 4 h : deux moitiés (une avec TP 1 ATR), stop 2 ATR, suiveur 5 ATR, ADX > 20."""
     jeux = []
@@ -167,7 +188,7 @@ def strat_rapide():
 def evaluer(jeux, poids, be=None, ans=2.0):
     fin = max(j[1].index[-1] for j in jeux)
     debut = fin - pd.Timedelta(days=365 * ans)
-    debut = max(debut, max(j[1].index[0] for j in jeux) + pd.Timedelta(days=60 if ans > 1 else 3))
+    debut = max(debut, max(j[1].index[0] for j in jeux) + pd.Timedelta(days=60 if ans > 1 else 3 if ans == 1 else 1))
     milieu_ = debut + (fin - debut) / 2
     res = {}
     for nom, regle in VARIANTES.items():
@@ -200,7 +221,9 @@ def principal():
     for titre, jeux, poids, be, ans in (
             ("Cassure 4 h or + argent", strat_cassure(["GOLD", "SILVER"]), [1, 1], None, 2.0),
             ("Tendance 4 h BTC", strat_tendance(["BTCUSD"]), [0.5, 0.5], None, 2.0),
-            ("Rapide 5 min or", strat_rapide(), [1], 0.5, 1.0)):
+            ("Rapide 5 min or", strat_rapide(), [1], 0.5, 1.0),
+            ("Cassure 4 h or + argent, mêmes 6 mois (stop suivi toutes les 4 h)", strat_cassure(["GOLD", "SILVER"]), [1, 1], None, 0.5),
+            ("Cassure or + argent, stop suivi toutes les 5 min (vérif. 6 mois)", strat_cassure_5min(["GOLD", "SILVER"]), [1, 1], None, 0.5)):
         res, periode = evaluer(jeux, poids, be=be, ans=ans)
         gagnantes = afficher(titre, res, periode)
         sortie[titre] = {"periode": [str(p) for p in periode], "meilleures": gagnantes, "resultats": res}
