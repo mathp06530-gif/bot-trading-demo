@@ -1533,7 +1533,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T11:50:25Z",
+ "derniere_execution": "2026-11-25T11:55:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -7170,15 +7170,19 @@
   {
    "date": "2026-11-25T11:50:25Z",
    "valeur": 99.18
+  },
+  {
+   "date": "2026-11-25T11:55:25Z",
+   "valeur": 99.68
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 98.85,
+  "solde": 99.1,
   "depot": 98.52,
-  "resultat_latent": 0.33,
-  "disponible": 87.78
+  "resultat_latent": 0.58,
+  "disponible": 88.05
  },
  "positions": [
   {
@@ -7187,7 +7191,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3514.57,
-   "resultat": -0.02,
+   "resultat": 0.1,
    "ouverte_le": "2026-11-25T11:50:24.536"
   },
   {
@@ -7196,13 +7200,13 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": 0.32,
+   "resultat": 0.48,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 58549.65,
+   "prix": 58714.8,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 19) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -7758,7 +7762,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": 0.32,
+   "resultat": 0.48,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -7779,7 +7783,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T11:50:24Z",
    "statut": "ouvert",
-   "resultat": -0.02,
+   "resultat": 0.1,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -7797,7 +7801,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 99.18
+  "2026-11-25": 99.68
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -7913,7 +7917,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3514.93,
+   "prix": 3512.6,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3502.93,
    "ema200": 3935.17,
@@ -7924,13 +7928,13 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 39.781,
+   "prix": 39.867000000000004,
    "plus_haut_20": 44.25,
    "plus_bas_20": 40.55,
    "ema200": 50.99,
    "action": "Position conservée",
    "atr": 0.95,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 1.54 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 1.63 de plus dans le bon sens"
   }
  },
  "deals_par_strategie": {
@@ -7950,13 +7954,11 @@
     "filtre": {
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
-     "tendance_4h": "SELL",
-     "bollinger": 1.64,
-     "adx": 22.1
+     "tendance_4h": "SELL"
     },
-    "prix": 3514.075,
-    "action": "VENTE de 0.03",
-    "empilement": "position 2/3 possible quand le prix aura avancé de 45.04 de plus dans le bon sens"
+    "prix": 3510.9,
+    "action": "Position conservée",
+    "empilement": "position 2/3 possible quand le prix aura avancé de 31.19 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -7974,7 +7976,7 @@
   "meilleur": {
    "00000000-76bd-2250-049f-c46d0015549e": {
     "depuis": "2026-11-25T11:50:00",
-    "prix": 3514.57
+    "prix": 3511.44
    }
   }
  },
