@@ -47,9 +47,12 @@ SORTIE_ENTREE_R = float(os.getenv("SORTIE_ENTREE_R", "0.5"))  # "0" = pas de pro
 # variante qui agit vraiment et coûte le moins. EXPÉRIENCE : à juger au bilan (ordres séparés avant/après). "0" = aucun.
 GARDE_RAPIDE_APRES_R = float(os.getenv("GARDE_RAPIDE_APRES_R", "1.5"))
 GARDE_RAPIDE_PCT = float(os.getenv("GARDE_RAPIDE_PCT", "60"))
+# 25/11/2026 (backtest/rapide_defauts.py, or 5 min, 13/05 -> 25/11) : sortie sur croisement inverse seulement
+# s'il dure 3 bougies 5 min : +17,6 R -> +26,7 R (mieux sur les 2 moitiés). "1" = sortie immédiate (avant).
+SORTIE_CONFIRMEE_RAPIDE = int(float(os.getenv("SORTIE_CONFIRMEE_RAPIDE", "3")))
 ADX_RAPIDE_MIN = float(os.getenv("ADX_RAPIDE_MIN", "20"))  # 0 = pas de filtre ADX
 FILTRE_BOLLINGER = os.getenv("FILTRE_BOLLINGER", "oui").strip().lower() in ("oui", "1", "true", "on")
-NOM = f"Rapide 5 min : EMA {EMA_R}/{EMA_L} dans le sens des tendances 1 h et 4 h{", Bollinger qui s'élargissent" if FILTRE_BOLLINGER else ""}{f", ADX > {ADX_RAPIDE_MIN:g}" if ADX_RAPIDE_MIN > 0 else ""}, stop {STOP_PCT:g} %, suiveur {SUIVI_RAPIDE_PCT:g} %{f", sortie au prix d'entrée après +{SORTIE_ENTREE_R:g} R" if SORTIE_ENTREE_R > 0 else ""}{f", garde {GARDE_RAPIDE_PCT:g} % du gain après +{GARDE_RAPIDE_APRES_R:g} R" if GARDE_RAPIDE_APRES_R > 0 and GARDE_RAPIDE_PCT > 0 else ""}, risque {RISQUE_RAPIDE_PCT:g} % (expérimentale)"
+NOM = f"Rapide 5 min : EMA {EMA_R}/{EMA_L} dans le sens des tendances 1 h et 4 h{", Bollinger qui s'élargissent" if FILTRE_BOLLINGER else ""}{f", ADX > {ADX_RAPIDE_MIN:g}" if ADX_RAPIDE_MIN > 0 else ""}, stop {STOP_PCT:g} %, suiveur {SUIVI_RAPIDE_PCT:g} %{f", sortie au prix d'entrée après +{SORTIE_ENTREE_R:g} R" if SORTIE_ENTREE_R > 0 else ""}{f", garde {GARDE_RAPIDE_PCT:g} % du gain après +{GARDE_RAPIDE_APRES_R:g} R" if GARDE_RAPIDE_APRES_R > 0 and GARDE_RAPIDE_PCT > 0 else ""}{f", sortie si le croisement inverse dure {SORTIE_CONFIRMEE_RAPIDE} bougies" if SORTIE_CONFIRMEE_RAPIDE > 1 else ""}, jusqu'à {EMPILER_RAPIDE} position(s), risque {RISQUE_RAPIDE_PCT:g} % (expérimentale)"
 
 
 def decider_rapide(clotures: list[float]) -> str | None:
@@ -118,26 +121,35 @@ def tour_rapide(api, donnees: dict, epic: str, positions: list, capital: float, 
                    "prix": (bougies[-1]["closePrice"]["bid"] + bougies[-1]["closePrice"]["ask"]) / 2})
     voulu = signal if signal == t1 == t4 else None
 
-    for p in [p for p in miennes if p["position"]["direction"] != voulu]:
+    # Croisement inverse CONFIRMÉ : on ne ferme que si le sens voulu n'est plus celui de la position sur les
+    # SORTIE_CONFIRMEE_RAPIDE dernières bougies 5 min terminées (25/11 : moins de sorties sur un faux signal).
+    recents = []
+    for j in range(max(1, SORTIE_CONFIRMEE_RAPIDE)):
+        s_j = decider_rapide(clotures[:len(clotures) - j]) if j else signal
+        recents.append(s_j if s_j == t1 == t4 else None)
+    a_fermer = [p for p in miennes if all(v != p["position"]["direction"] for v in recents)]
+    for p in a_fermer:
         conf = api.fermer(p["position"]["dealId"])
         if conf.get("dealStatus") == "ACCEPTED":
             noter_fermeture(donnees, p, conf, quand, "[Rapide] Croisement inverse")
         etat["deals"].remove(p["position"]["dealId"])
         raison = f"Croisement EMA {EMA_R}/{EMA_L}" if voulu else "Plus d'accord avec la tendance de fond 1 h / 4 h"
-        noter("fermeture", epic, f"[Rapide] {raison} : position fermée "
+        noter("fermeture", epic, f"[Rapide] {raison} (confirmé sur {len(recents)} bougies) : position fermée "
               f"(gain/perte : {p['position'].get('upl', 0):.2f}). Statut : {conf.get('dealStatus', '?')}")
-    if voulu is None:
-        mots = {"BUY": "hausse", "SELL": "baisse", None: "?"}
-        return (f"À l'écart : signal 5 min en {mots[signal]}, mais tendance 1 h en {mots[t1]} "
-                f"et 4 h en {mots[t4]} (pas d'accord)")
-    gardees = [p for p in miennes if p["position"]["direction"] == voulu]
+    gardees = [p for p in miennes if p not in a_fermer]
     if gardees and SORTIE_ENTREE_R > 0:
         gardees = proteger_gain(api, donnees, etat, gardees, bougies, epic, noter, quand)
     if gardees and SORTIE_ENTREE_R > 0 and GARDE_RAPIDE_APRES_R > 0 and GARDE_RAPIDE_PCT > 0:
         garder_gain_rapide(api, donnees, etat, gardees, bougies, epic, noter)
+    res = suivre_stop(api, gardees, bougies[-1]["closePrice"], epic, noter) if gardees else ""
+    if voulu is None and not gardees:
+        mots = {"BUY": "hausse", "SELL": "baisse", None: "?"}
+        return (f"À l'écart : signal 5 min en {mots[signal]}, mais tendance 1 h en {mots[t1]} "
+                f"et 4 h en {mots[t4]} (pas d'accord)")
+    if gardees and gardees[0]["position"]["direction"] != voulu:
+        return "Position gardée : le signal contraire n'est pas encore confirmé"
     empile = ""
     if gardees:
-        res = suivre_stop(api, gardees, bougies[-1]["closePrice"], epic, noter)
         px = bougies[-1]["closePrice"]["ask" if voulu == "BUY" else "bid"]
         ok_e, empile = peut_empiler(gardees, voulu, px, px * STOP_PCT / 100, EMPILER_RAPIDE)
         marche["empilement"] = empile

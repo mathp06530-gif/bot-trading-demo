@@ -71,18 +71,19 @@ REGLAGES = {
     "rapide": {
         "ADX_RAPIDE_MIN": [15, 20, 25, 30],                         # force minimale (bougies 5 min)
         "FILTRE_BOLLINGER": ["oui", "non"],                         # n'entrer que si le marché s'agite
-        "SUIVI_RAPIDE_PCT": [2, 2.5, 3, 4],                         # stop suiveur (jamais plus serré que 2 %)
+        "SUIVI_RAPIDE_PCT": [1, 1.25, 1.5, 2, 2.5, 3, 4],           # stop suiveur (25/11 : 1 % choisi par Mathis)
     },
 }
 # Réglages fixes (jamais changés par l'auto-amélioration) mais notés sur chaque ordre, pour que le bilan
 # sépare « avant / après » un changement fait à la main (25/11/2026 : stops qui se resserrent).
 NOTES_SEULEMENT = {"tendance_4h": ["DEUX_CERVEAUX_TENDANCE"],
                    "cassure_4h": ["GARDE_CASSURE_APRES_R", "GARDE_CASSURE_PCT"],
-                   "rapide": ["SORTIE_ENTREE_R", "GARDE_RAPIDE_APRES_R", "GARDE_RAPIDE_PCT"]}
+                   "rapide": ["SORTIE_ENTREE_R", "GARDE_RAPIDE_APRES_R", "GARDE_RAPIDE_PCT",
+                              "SORTIE_CONFIRMEE_RAPIDE", "EMPILER_RAPIDE"]}
 DEFAUTS = {"DEUX_CERVEAUX_TENDANCE": 1, "GARDE_CASSURE_APRES_R": 1.5, "GARDE_CASSURE_PCT": 50, "SORTIE_ENTREE_R": 0.5,
-           "GARDE_RAPIDE_APRES_R": 1.5, "GARDE_RAPIDE_PCT": 60,
+           "GARDE_RAPIDE_APRES_R": 1.5, "GARDE_RAPIDE_PCT": 60, "SORTIE_CONFIRMEE_RAPIDE": 3, "EMPILER_RAPIDE": 2,
            "ADX_TENDANCE_MIN": 20, "SUIVI_TENDANCE_ATR": 5, "TP_PARTIEL_ATR": 1, "CASSURE_ENTREE": 20,
-           "CASSURE_SORTIE": 20, "ADX_RAPIDE_MIN": 20, "FILTRE_BOLLINGER": "oui", "SUIVI_RAPIDE_PCT": 2}
+           "CASSURE_SORTIE": 20, "ADX_RAPIDE_MIN": 20, "FILTRE_BOLLINGER": "oui", "SUIVI_RAPIDE_PCT": 1}
 NOMS = {"tendance_4h": "Tendance 4 h", "cassure_4h": "Cassure 4 h", "rapide": "Rapide 5 min"}
 EXPLICATIONS = {
     "ADX_TENDANCE_MIN": "force minimale de la tendance (ADX)", "SUIVI_TENDANCE_ATR": "stop suiveur (en ATR)",
@@ -224,9 +225,12 @@ def signaux_rapide(df5: pd.DataFrame, df1h: pd.DataFrame, df4h: pd.DataFrame, p:
     adx_min = p["ADX_RAPIDE_MIN"]
     cible = np.zeros(len(m), dtype=int)
     etat = 0
+    confirme = int(os.getenv("SORTIE_CONFIRMEE_RAPIDE", "3"))  # croisement inverse confirmé sur N bougies
+    contre = 0
     for i in range(len(m)):
-        if etat and etat != voulu[i]:
-            etat = 0
+        contre = contre + 1 if (etat and etat != voulu[i]) else 0
+        if etat and contre >= max(confirme, 1):
+            etat, contre = 0, 0
         if not etat and voulu[i]:
             ok_bb = (not avec_bb) or (bb[i] == bb[i] and bb[i] > 1)
             ok_adx = adx_min <= 0 or (force[i] == force[i] and force[i] > adx_min)
