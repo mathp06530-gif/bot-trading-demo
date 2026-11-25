@@ -1443,7 +1443,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T00:15:24Z",
+ "derniere_execution": "2026-11-25T00:20:23Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -6516,15 +6516,19 @@
   {
    "date": "2026-11-25T00:15:24Z",
    "valeur": 99.14
+  },
+  {
+   "date": "2026-11-25T00:20:23Z",
+   "valeur": 99.64
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 99.06,
+  "solde": 99.31,
   "depot": 98.98,
-  "resultat_latent": 0.08,
-  "disponible": 94.17
+  "resultat_latent": 0.33,
+  "disponible": 94.43
  },
  "positions": [
   {
@@ -6533,13 +6537,13 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3554.42,
-   "resultat": 0.13,
+   "resultat": 0.34,
    "ouverte_le": "2026-11-24T23:45:24.449"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 59499.55,
+   "prix": 59403.575,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 20) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -7059,7 +7063,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-24T23:45:24Z",
    "statut": "ouvert",
-   "resultat": 0.13,
+   "resultat": 0.34,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -7072,7 +7076,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 99.14
+  "2026-11-25": 99.64
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -7185,7 +7189,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3550.39,
+   "prix": 3542.335,
    "plus_haut_20": 3692.38,
    "plus_bas_20": 3502.93,
    "ema200": 3943.23,
@@ -7196,7 +7200,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 40.887,
+   "prix": 40.8225,
    "plus_haut_20": 44.89,
    "plus_bas_20": 40.74,
    "ema200": 51.2,
@@ -7222,9 +7226,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3551.71,
+    "prix": 3543.0699999999997,
     "action": "Position conservée",
-    "empilement": "position 2/3 possible quand le prix aura avancé de 32.16 de plus dans le bon sens"
+    "empilement": "position 2/3 possible quand le prix aura avancé de 23.75 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
