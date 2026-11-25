@@ -1,0 +1,64 @@
+name: Étude « gros acteurs » (backtest ponctuel)
+
+# Lancé à chaque envoi sur la branche d'étude : télécharge 2 ans de bougies Capital.com (démo),
+# les rapports COT de la CFTC, puis compare les filtres « gros acteurs » à la version actuelle.
+on:
+  push:
+    branches: [claude/project-thread-bhd9gi]
+    paths: [backtest/gros_acteurs.py, .github/workflows/etude-gros-acteurs.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  etude:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Bougies Capital.com (démo)
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+          UNITES: HOUR_4,HOUR
+          EPICS: GOLD,SILVER,BTCUSD
+        run: python backtest/telecharger.py
+      - name: Sentiment des clients Capital.com (seulement la valeur du moment)
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+        run: |
+          python - <<'PY' || true
+          import os
+          from bot.capital import CapitalDemo
+          api = CapitalDemo(os.environ["CAPITAL_API_KEY"], os.environ["CAPITAL_IDENTIFIER"], os.environ["CAPITAL_PASSWORD"])
+          api.connexion()
+          for e in ("GOLD", "SILVER", "BTCUSD"):
+              try:
+                  print(e, api._requete("GET", f"/clientsentiment/{e}"))
+              except Exception as ex:
+                  print(e, "sentiment indisponible :", ex)
+          api.deconnexion()
+          PY
+      - name: Rapports COT de la CFTC
+        run: |
+          mkdir -p backtest/donnees/cot/disagg backtest/donnees/cot/fin
+          for an in 2023 2024 2025 2026; do
+            curl -sfL -o /tmp/d$an.zip https://www.cftc.gov/files/dea/history/fut_disagg_txt_$an.zip && unzip -oq /tmp/d$an.zip -d /tmp/d$an && cp /tmp/d$an/*.txt backtest/donnees/cot/disagg/d$an.txt || echo "COT or/argent $an absent"
+            curl -sfL -o /tmp/f$an.zip https://www.cftc.gov/files/dea/history/fut_fin_txt_$an.zip && unzip -oq /tmp/f$an.zip -d /tmp/f$an && cp /tmp/f$an/*.txt backtest/donnees/cot/fin/f$an.txt || echo "COT BTC $an absent"
+          done
+          ls -la backtest/donnees/cot/*
+      - name: Backtest
+        run: python backtest/gros_acteurs.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: gros-acteurs
+          path: backtest/resultats_gros_acteurs.json
+          retention-days: 14
