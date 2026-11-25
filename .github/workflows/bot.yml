@@ -12,7 +12,7 @@ on:
         description: "Stratégie visée par la commande"
         type: choice
         default: toutes
-        options: [toutes, tendance_4h, cassure_4h, rapide, elan_4h, squeeze_4h]
+        options: [toutes, tendance_4h, cassure_4h, rapide, elan_4h, supertrend_4h]
 
 permissions:
   contents: write

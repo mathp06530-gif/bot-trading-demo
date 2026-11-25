@@ -23,7 +23,7 @@ def sans_elan_par_defaut(monkeypatch):
 
 
 @pytest.fixture(autouse=True)
-def sans_squeeze_par_defaut(monkeypatch):
-    """Les anciens tests ne voient pas la stratégie expérimentale « Squeeze » (testée à part)."""
-    from bot import squeeze
-    monkeypatch.setattr(squeeze, "LISTE", [])
+def sans_supertrend_par_defaut(monkeypatch):
+    """Les anciens tests ne voient pas la stratégie expérimentale « Supertrend » (testée à part)."""
+    from bot import supertrend
+    monkeypatch.setattr(supertrend, "LISTE", [])

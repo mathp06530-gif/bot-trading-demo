@@ -319,7 +319,7 @@ def test_commandes_par_strategie(tmp_path, monkeypatch):
     faux = FauxCapital(debut)
     d = {"strategies": {"rapide": {"active": False}, "londres": {"active": True}}, "londres": {}}
     main.un_tour(d, faux, "desactiver", "tendance_4h")
-    assert set(d["strategies"]) == {"tendance_4h", "cassure_4h", "rapide", "elan_4h"}  # anciennes stratégies supprimées
+    assert set(d["strategies"]) == {"tendance_4h", "cassure_4h", "rapide", "elan_4h", "supertrend_4h"}  # anciennes stratégies supprimées
     assert "londres" not in d
     assert d["strategies"]["tendance_4h"]["active"] is False and not faux.ouvertes
     main.un_tour(d, faux, "activer", "tendance_4h")
@@ -709,3 +709,41 @@ def test_valeur_du_compte_ne_compte_pas_le_latent_deux_fois(tmp_path, monkeypatc
     main.un_tour(d, faux)
     assert d["historique"][-1]["valeur"] == 97.40
     assert d["garde_fous"]["plus_haut"] == 97.40  # plus haut gonflé corrigé une fois
+
+
+def test_supertrend_identique_au_backtest():
+    import numpy as np
+    import pandas as pd
+    from backtest.reseaux import supertrend as st_backtest
+    from bot.supertrend import signaux_supertrend
+    rng = np.random.default_rng(5)
+    m = 2000 * np.exp(np.cumsum(rng.normal(0, 0.01, 600)))
+    o = np.r_[m[0], m[:-1]]
+    df = pd.DataFrame({"open_bid": o, "open_ask": o, "high_bid": np.maximum(o, m) * 1.002, "high_ask": np.maximum(o, m) * 1.002,
+                       "low_bid": np.minimum(o, m) * 0.998, "low_ask": np.minimum(o, m) * 0.998, "close_bid": m, "close_ask": m},
+                      index=pd.date_range("2026-01-01", periods=600, freq="4h"))
+    voulu, ok, dstop, _ = st_backtest(df)
+    s = signaux_supertrend(df)
+    assert (s.sens.values == voulu).all() and (s.nouveau.values == ok).all() and ok.sum() > 5
+    assert np.allclose(s.dist.values, dstop)
+
+
+def test_supertrend_achete_puis_se_retourne(tmp_path, monkeypatch):
+    from bot import supertrend
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "MARCHES", [])
+    monkeypatch.setattr(supertrend, "LISTE", ["GOLD"])
+    baisse = [2400 - 3 * i for i in range(150)]
+    prix = baisse + [baisse[-1] + 300]  # forte remontée : la ligne est franchie vers le haut
+    faux = FauxCapitalActions(prix)
+    d = {}
+    main.un_tour(d, faux)
+    assert [(o[1], faux.epics[o[0]]) for o in faux.ouvertes] == [("BUY", "GOLD")]
+    assert d["ordres"][0]["strategie"] == "supertrend_4h" and d["supertrend"]["depuis"]
+    assert d["strategies"]["supertrend_4h"]["action"] == "Actif"
+    main.un_tour(d, faux)  # même signal : pas de 2e ordre
+    assert len(faux.ouvertes) == 1
+    faux.prix_action = prix + [prix[-1] - 500]  # chute : la ligne est franchie vers le bas -> on ferme et on vend
+    main.un_tour(d, faux)
+    assert faux.fermees == ["d0"]
+    assert faux.ouvertes[-1][1] == "SELL"
