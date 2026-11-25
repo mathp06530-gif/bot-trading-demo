@@ -1685,7 +1685,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T19:47:43Z",
+ "derniere_execution": "2026-11-25T19:48:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -7714,15 +7714,19 @@
   {
    "date": "2026-11-25T19:47:43Z",
    "valeur": 96.57
+  },
+  {
+   "date": "2026-11-25T19:48:24Z",
+   "valeur": 96.66
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 96.57,
+  "solde": 96.66,
   "depot": 98.52,
-  "resultat_latent": -1.95,
-  "disponible": 85.39
+  "resultat_latent": -1.86,
+  "disponible": 85.49
  },
  "positions": [
   {
@@ -7731,7 +7735,7 @@
    "sens": "SELL",
    "taille": 0.03,
    "prix_entree": 3500.82,
-   "resultat": -1.05,
+   "resultat": -1,
    "ouverte_le": "2026-11-25T12:05:23.276"
   },
   {
@@ -7740,7 +7744,7 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": -0.89,
+   "resultat": -0.85,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
@@ -8302,7 +8306,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": -0.89,
+   "resultat": -0.85,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8346,7 +8350,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T12:05:23Z",
    "statut": "ouvert",
-   "resultat": -1.05,
+   "resultat": -1,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -8458,7 +8462,7 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 96.57
+  "2026-11-25": 96.66
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -8618,7 +8622,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3539.725,
+    "prix": 3536.76,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
