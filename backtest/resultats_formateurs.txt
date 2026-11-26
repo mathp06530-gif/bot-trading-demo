@@ -1,0 +1,17 @@
+Données : {'GOLD': '01/05/2017 -> 26/11/2026 (15203 bougies)', 'SILVER': '01/05/2017 -> 26/11/2026 (15203 bougies)'}
+Contrôle lookahead (0 = aucune fuite) : {'GOLD': 0, 'SILVER': 0}
+
+                                                            entraînement 2017-2021       validation 2022-06/2024             test 07/2024-auj.
+actuelle                                                12.3 R  238 tr DD  -30.0    16.7 R  121 tr DD   -8.7    63.5 R  125 tr DD   -8.4
+actuelle frais x1,5                                     14.1 R  238 tr DD  -44.4     8.8 R  121 tr DD   -8.8    57.0 R  125 tr DD   -8.4
+A tendance journalière (EMA n jours)     [        20]    22.4 R  135 tr DD  -11.7     0.7 R   64 tr DD   -7.7    39.6 R   74 tr DD  -10.5
+B stop temps (N bougies, gain mini)      [  (6, 0.5)]    29.8 R  238 tr DD  -14.1    -5.4 R  121 tr DD   -8.8    16.0 R  125 tr DD   -6.3
+C stop plus large (ATR)                  [       4.0]    19.1 R  238 tr DD  -16.2    24.0 R  121 tr DD   -8.2    38.5 R  125 tr DD   -7.4
+D demi-taille après k pertes d'affilée   [         2]    19.7 R  238 tr DD  -22.2    13.0 R  121 tr DD   -6.5    33.9 R  125 tr DD   -6.3
+E demi-taille sous la moyenne de la cour [        20]    14.8 R  238 tr DD  -21.7    10.2 R  121 tr DD   -8.7    44.9 R  125 tr DD   -6.9
+F sortie le vendredi soir                [      None]    19.5 R  238 tr DD  -35.6     5.0 R  121 tr DD   -7.5     7.9 R  127 tr DD   -7.8
+G perte max par semaine (R)              [       1.0]    32.4 R  168 tr DD  -16.2    20.6 R   97 tr DD   -9.5    27.9 R   94 tr DD   -7.1
+H un seul métal à la fois dans le même s [      None]    12.0 R  192 tr DD  -16.1    20.7 R   93 tr DD   -6.0    45.0 R   96 tr DD   -8.0
+
+Sur 30 jeux de prix au hasard, % de fois où l'idée « tient » (sans le contrôle frais x1,5) : {'A': 40.0, 'B': 50.0, 'C': 50.0, 'D': 13.3, 'E': 6.7, 'F': 33.3, 'G': 40.0, 'H': 13.3}
+Retenues (tiennent sur les vrais prix ET rarement sur du hasard) : aucune
