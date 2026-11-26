@@ -1734,7 +1734,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T01:47:25Z",
+ "derniere_execution": "2026-11-26T01:48:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -9207,15 +9207,19 @@
   {
    "date": "2026-11-26T01:47:25Z",
    "valeur": 94.67
+  },
+  {
+   "date": "2026-11-26T01:48:25Z",
+   "valeur": 94.6
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 94.67,
+  "solde": 94.6,
   "depot": 96.11,
-  "resultat_latent": -1.44,
-  "disponible": 88.29
+  "resultat_latent": -1.51,
+  "disponible": 88.21
  },
  "positions": [
   {
@@ -9224,13 +9228,13 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": -1.44,
+   "resultat": -1.5,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
  "analyses": {
   "BTCUSD": {
-   "prix": 60625.774999999994,
+   "prix": 60709.8,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 18) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -9786,7 +9790,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": -1.44,
+   "resultat": -1.5,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -9944,7 +9948,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 94.67
+  "2026-11-26": 94.6
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -10119,7 +10123,7 @@
      "tendance_4h": "SELL",
      "bollinger": 0.83
     },
-    "prix": 3560.9700000000003,
+    "prix": 3565.94,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
