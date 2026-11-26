@@ -23,11 +23,18 @@ import os
 import subprocess
 import time
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
+
+FUSEAU = ZoneInfo("Europe/Paris")
 from pathlib import Path
 
 HS = [2, 3, 5]
 NOYAU = ["sundial", "tide", "tcn", "nbeats", "nhits"]
 PRIORITE = {"GOLD": "Or", "SILVER": "Argent"}
+# Vue « frais bas » : seulement les prédictions où le VRAI spread Capital.com du moment était petit,
+# et la même chose limitée aux heures liquides (chevauchement Londres / New York, heure de Paris).
+SPREAD_BAS = 0.03            # % du prix
+HEURES_LIQUIDES = (14.5, 17.5)  # 14 h 30 - 17 h 30, heure de Paris
 EQUIPES = ["fixe", "evolutive"]
 PARIS = ["toujours", "sure"]
 ETA = 0.05
@@ -128,13 +135,28 @@ class SuperIA:
             r = rec.setdefault(m, [])
             r.append(int((p > 0.5) == bool(y)))
             del r[:-FENETRE_EQUIPE]
+        sp = self.e.setdefault("spreads", {}).setdefault(it["e"], [0.0, 0, 0])
+        sp[0] = round(sp[0] + it["sp"], 6)
+        sp[1] += 1
+        sp[2] += int(it["sp"] <= SPREAD_BAS)
         self.e["dernieres"].append({"t": it["t"], "e": it["e"], "h": it["h"], "up": y, "mv": it["mv"],
                                     **{equipe: [pr["q"], int(pr["sure"])] for equipe, pr in preds.items()}})
         del self.e["dernieres"][:-300]
 
     def _compter(self, variante, it, juste, gain):
         st = self.e["stats"].setdefault(str(it["h"]), {}).setdefault(variante, {"n": 0, "j": 0, "g": 0.0, "familles": {}, "marches": {}})
-        for d in (st, st["familles"].setdefault(it["ty"], {"n": 0, "j": 0, "g": 0.0}), st["marches"].setdefault(it["e"], {"n": 0, "j": 0, "g": 0.0})):
+        vide = {"n": 0, "j": 0, "g": 0.0}
+        cases = [st, st["familles"].setdefault(it["ty"], dict(vide)), st["marches"].setdefault(it["e"], dict(vide))]
+        t0 = datetime.fromtimestamp(it["ech"] - 60 * it["h"], FUSEAU)
+        heure = t0.hour + t0.minute / 60
+        hh = f"{t0.hour:02d}"
+        cases.append(st.setdefault("heures", {}).setdefault(hh, dict(vide)))
+        if it["sp"] <= SPREAD_BAS:
+            cases.append(st.setdefault("frais_bas", dict(vide)))
+            cases.append(st.setdefault("heures_frais_bas", {}).setdefault(hh, dict(vide)))
+            if HEURES_LIQUIDES[0] <= heure < HEURES_LIQUIDES[1]:
+                cases.append(st.setdefault("frais_bas_liquide", dict(vide)))
+        for d in cases:
             d["n"] += 1
             d["j"] += int(juste)
             d["g"] = round(d["g"] + gain, 5)
@@ -237,7 +259,9 @@ def publier(s):
     tableau = {"maj": iso(), "horizons": HS, "noyau": NOYAU, "priorite": PRIORITE, "equipes": EQUIPES, "paris": PARIS,
                "equipe_evolutive": s.e["equipe"], "changements": s.e["changements"], "stats": s.e["stats"],
                "dernieres": s.e["dernieres"][-150:], "coupure": iso(s.e["coupure"]) if s.e["coupure"] else None,
-               "couverture_visee": COUVERTURE}
+               "couverture_visee": COUVERTURE, "spread_bas": SPREAD_BAS, "heures_liquides": HEURES_LIQUIDES,
+               "spreads": {e: {"moyen": round(v[0] / v[1], 5), "n": v[1], "bas": round(v[2] / v[1], 3)}
+                           for e, v in s.e.get("spreads", {}).items() if v[1]}}
     (DOSSIER / "super_etat.json").write_text(json.dumps(s.e, separators=(",", ":")))
     (DOSSIER / "super.json").write_text(json.dumps(tableau, ensure_ascii=False, separators=(",", ":")))
     if os.getenv("SUPER_GIT", "oui") != "oui":
