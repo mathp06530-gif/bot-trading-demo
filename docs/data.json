@@ -1830,7 +1830,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T11:05:28Z",
+ "derniere_execution": "2026-11-26T11:06:28Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11511,15 +11511,19 @@
   {
    "date": "2026-11-26T11:05:28Z",
    "valeur": 93.01
+  },
+  {
+   "date": "2026-11-26T11:06:28Z",
+   "valeur": 92.99
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.01,
+  "solde": 92.99,
   "depot": 93.09,
-  "resultat_latent": -0.08,
-  "disponible": 89.75
+  "resultat_latent": -0.1,
+  "disponible": 89.73
  },
  "positions": [
   {
@@ -11528,7 +11532,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3555.46,
-   "resultat": -0.08,
+   "resultat": -0.1,
    "ouverte_le": "2026-11-26T10:50:25.127",
    "id": "00000000-76ca-6738-049f-c46d0015549e",
    "stop": 3591.01,
@@ -11886,7 +11890,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T10:50:25Z",
    "statut": "ouvert",
-   "resultat": -0.08,
+   "resultat": -0.1,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -11910,7 +11914,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.01
+  "2026-11-26": 92.99
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -12092,9 +12096,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3559.575,
+    "prix": 3559.985,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 39.45 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 40.00 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -12864,8 +12868,8 @@
    1795691100,
    3560.18,
    3560.37,
-   3559.53,
-   3559.57
+   3558.41,
+   3559.99
   ],
   "elan_4h-GOLD": [
    1795680000,
@@ -12904,9 +12908,29 @@
   ]
  },
  "veille": {
-  "titres_lus_le": "2026-11-26T10:06:22.654014+00:00",
+  "titres_lus_le": "2026-11-26T11:06:22.732251+00:00",
   "titres": {
    "ETHUSD": [
+    {
+     "titre": "Can Shiba Inu Reach $1 in 2027? The Answer Might Shock You.",
+     "lien": "https://www.fool.com/investing/2026/11/26/can-shiba-inu-reach-usd1-in-2027-answer-shock-you/?.tsrc=rss",
+     "date": "2026-11-26T10:27Z",
+     "sujets": []
+    },
+    {
+     "titre": "Why Is Crypto Up Today? BTC Back Above $60K – is the Bull Market Back?",
+     "lien": "https://cryptonews.com/news/why-is-crypto-up-today-btc-back-above-60k-bull-market-back/?.tsrc=rss",
+     "date": "2026-11-26T10:11Z",
+     "sujets": []
+    },
+    {
+     "titre": "Ethereum Price Reclaims $1,700: Network Activity Defies 39% Crash, $80M Shorts Liquidated",
+     "lien": "https://99bitcoins.com/news/altcoins/ethereum-price-39-percent-crash-vitalik-eth-selloff/?.tsrc=rss",
+     "date": "2026-11-26T08:47Z",
+     "sujets": [
+      "risque"
+     ]
+    },
     {
      "titre": "Why Is an Ethereum ICO Whale Selling Now, After a Decade?",
      "lien": "https://beincrypto.com/ethereum-whale-2014-ico-sells-eth/?.tsrc=rss",
@@ -12924,29 +12948,17 @@
      "lien": "https://beincrypto.com/shiba-inu-shibarium-privacy-upgrade/?.tsrc=rss",
      "date": "2026-11-25T22:30Z",
      "sujets": []
-    },
-    {
-     "titre": "Crypto Market Today, Nov. 25: Bitcoin, Ethereum, and Solana as Short Liquidations Fuel Fragile Rebound",
-     "lien": "https://www.fool.com/coverage/stock-market-today/2026/11/25/crypto-market-today-nov-25-bitcoin-ethereum-and-solana-as-short-liquidations-fuel-fragile-rebound/?.tsrc=rss",
-     "date": "2026-11-25T22:26Z",
-     "sujets": []
-    },
-    {
-     "titre": "Analyst explains why Bitcoin’s next move depends on Nasdaq",
-     "lien": "https://www.thestreet.com/crypto/markets/analyst-explains-why-bitcoins-next-move-depends-on-nasdaq?.tsrc=rss",
-     "date": "2026-11-25T22:00Z",
-     "sujets": []
-    },
-    {
-     "titre": "Fidelity Files for a Spot Chainlink ETF",
-     "lien": "https://www.bankless.com/read/news/fidelity-files-for-a-spot-chainlink-etf?.tsrc=rss",
-     "date": "2026-11-25T20:09Z",
-     "sujets": [
-      "régulation"
-     ]
     }
    ],
    "GOLD": [
+    {
+     "titre": "Gold Prices Mixed as Stronger US Dollar Pressures Spot Bullion While Futures Advance",
+     "lien": "https://investorshub.advfn.com/market-news/article/40751/gold-prices-mixed-as-stronger-us-dollar-pressures-spot-bullion-while-futures-advance?.tsrc=rss",
+     "date": "2026-11-26T09:58Z",
+     "sujets": [
+      "dollar"
+     ]
+    },
     {
      "titre": "Crossroads Gold gets exploration licence for Club Terrace Project in Australia",
      "lien": "https://www.mining-technology.com/news/crossroads-exploration-licence-club-terrace-project/?.tsrc=rss",
@@ -12979,12 +12991,6 @@
      "titre": "Ora Banda Mining expands Davyhurst gold pipeline with new Bluey trend and high-grade regional hits",
      "lien": "https://www.proactiveinvestors.com/companies/news/1102473/ora-banda-mining-expands-davyhurst-gold-pipeline-with-new-bluey-trend-and-high-grade-regional-hits-1102473.html?.tsrc=rss",
      "date": "2026-11-25T23:21Z",
-     "sujets": []
-    },
-    {
-     "titre": "Gold vs. Bitcoin: Analyst reveals why the tide is turning",
-     "lien": "https://www.thestreet.com/crypto/markets/gold-vs-bitcoin-analyst-reveals-why-the-tide-is-turning?.tsrc=rss",
-     "date": "2026-11-25T23:15Z",
      "sujets": []
     }
    ],
@@ -13114,13 +13120,13 @@
  "_pauses_marches_notees": {},
  "simulations": {
   "00000000-76ca-6738-049f-c46d0015549e": {
-   "p_stop": 45.4,
-   "p_objectif": 4.3,
-   "p_aucun": 50.3,
-   "p_gain_fin": 39.8,
-   "prix_p5": 3502.02,
-   "prix_median": 3565.06,
-   "prix_p95": 3626.58,
+   "p_stop": 46.1,
+   "p_objectif": 4.1,
+   "p_aucun": 49.8,
+   "p_gain_fin": 39.6,
+   "prix_p5": 3502.42,
+   "prix_median": 3565.47,
+   "prix_p95": 3627.0,
    "objectif": 3484.36,
    "objectif_type": "gain de 2 R",
    "objectif_r": 2.0,
@@ -13128,10 +13134,10 @@
    "horizon": "4 h",
    "tirages": 4000,
    "bougies_utilisees": 298,
-   "prix_depart": 3559.57,
+   "prix_depart": 3559.99,
    "calcule_sur": "2026-11-26T11:05:00",
    "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
-   "verdict": "Penche nettement vers le stop (9 % des cas tranchés, équilibre 33 %)."
+   "verdict": "Penche nettement vers le stop (8 % des cas tranchés, équilibre 33 %)."
   }
  }
 }
