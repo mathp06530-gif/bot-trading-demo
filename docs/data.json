@@ -1843,7 +1843,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T12:15:27Z",
+ "derniere_execution": "2026-11-26T12:16:27Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11800,6 +11800,10 @@
   {
    "date": "2026-11-26T12:15:27Z",
    "valeur": 92.85
+  },
+  {
+   "date": "2026-11-26T12:16:27Z",
+   "valeur": 92.85
   }
  ],
  "compte": {
@@ -12394,7 +12398,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3568.3,
+    "prix": 3568.08,
     "action": "Position gardée : le signal contraire n'est pas encore confirmé",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    },
@@ -13166,8 +13170,8 @@
    1795695300,
    3568.55,
    3568.6,
-   3568.23,
-   3568.3
+   3567.14,
+   3568.08
   ],
   "elan_4h-GOLD": [
    1795694400,
@@ -13456,13 +13460,13 @@
  "_pauses_marches_notees": {},
  "simulations": {
   "00000000-76ca-6738-049f-c46d0015549e": {
-   "p_stop": 60.4,
+   "p_stop": 60.0,
    "p_objectif": 2.5,
-   "p_aucun": 37.1,
-   "p_gain_fin": 32.2,
-   "prix_p5": 3509.04,
-   "prix_median": 3573.97,
-   "prix_p95": 3637.32,
+   "p_aucun": 37.5,
+   "p_gain_fin": 32.5,
+   "prix_p5": 3508.82,
+   "prix_median": 3573.75,
+   "prix_p95": 3637.09,
    "objectif": 3484.36,
    "objectif_type": "gain de 2 R",
    "objectif_r": 2.0,
@@ -13470,7 +13474,7 @@
    "horizon": "4 h",
    "tirages": 4000,
    "bougies_utilisees": 298,
-   "prix_depart": 3568.3,
+   "prix_depart": 3568.08,
    "calcule_sur": "2026-11-26T12:15:00",
    "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
    "verdict": "Penche nettement vers le stop (4 % des cas tranchés, équilibre 33 %)."
