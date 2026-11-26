@@ -1,0 +1,5185 @@
+{
+ "donnees": {
+  "jour": {
+   "GOLD": "11/2016-11/2026",
+   "SILVER": "11/2016-11/2026",
+   "PLATINUM": "11/2016-11/2026",
+   "PALLADIUM": "11/2016-11/2026",
+   "COPPER": "11/2016-11/2026",
+   "OIL_CRUDE": "11/2016-11/2026",
+   "OIL_BRENT": "11/2016-11/2026",
+   "NATURALGAS": "11/2016-11/2026",
+   "US500": "11/2016-11/2026",
+   "US100": "11/2016-11/2026",
+   "US30": "11/2016-11/2026",
+   "RTY": "11/2016-11/2026",
+   "DE40": "11/2016-11/2026",
+   "UK100": "11/2016-11/2026",
+   "FR40": "11/2016-11/2026",
+   "EU50": "11/2016-11/2026",
+   "J225": "11/2016-11/2026",
+   "HK50": "11/2016-11/2026",
+   "AU200": "11/2016-11/2026",
+   "EURUSD": "11/2016-11/2026",
+   "GBPUSD": "11/2016-11/2026",
+   "USDJPY": "11/2016-11/2026",
+   "AUDUSD": "11/2016-11/2026",
+   "USDCAD": "11/2016-11/2026",
+   "USDCHF": "11/2016-11/2026",
+   "NZDUSD": "11/2016-11/2026",
+   "EURGBP": "11/2016-11/2026",
+   "EURJPY": "11/2016-11/2026",
+   "GBPJPY": "11/2016-11/2026",
+   "BTCUSD": "11/2016-11/2026",
+   "ETHUSD": "11/2016-11/2026",
+   "SOLUSD": "02/2021-11/2026",
+   "XRPUSD": "11/2016-11/2026",
+   "LTCUSD": "11/2016-11/2026",
+   "AAPL": "11/2016-11/2026",
+   "MSFT": "11/2016-11/2026",
+   "NVDA": "11/2016-11/2026",
+   "TSLA": "11/2016-11/2026",
+   "AMZN": "11/2016-11/2026",
+   "META": "11/2016-11/2026",
+   "GOOGL": "05/2017-11/2026"
+  },
+  "heure": {
+   "US500": "05/2017-11/2026",
+   "US100": "05/2017-11/2026",
+   "US30": "05/2017-11/2026",
+   "RTY": "11/2016-11/2026",
+   "DE40": "05/2017-11/2026",
+   "EU50": "05/2017-11/2026",
+   "FR40": "05/2017-11/2026",
+   "UK100": "05/2017-11/2026",
+   "J225": "05/2017-11/2026",
+   "AU200": "05/2017-11/2026",
+   "GOLD": "05/2017-11/2026",
+   "SILVER": "05/2017-11/2026",
+   "EURUSD": "05/2017-11/2026",
+   "GBPUSD": "05/2017-11/2026",
+   "USDJPY": "05/2017-11/2026",
+   "AUDUSD": "05/2017-11/2026",
+   "BTCUSD": "05/2017-11/2026",
+   "ETHUSD": "05/2017-11/2026"
+  },
+  "dates_annonces": {
+   "ECB": 80,
+   "BOJ": 73,
+   "BOE": 74,
+   "CPI_US": 119,
+   "NFP": 119,
+   "RBA": 101,
+   "FOMC": 78
+  },
+  "exemple_heure_bougie_jour": {
+   "GOLD": "2026-11-26 00:00:00",
+   "SILVER": "2026-11-26 00:00:00",
+   "PLATINUM": "2026-11-26 00:00:00",
+   "PALLADIUM": "2026-11-26 00:00:00",
+   "COPPER": "2026-11-26 00:00:00"
+  }
+ },
+ "essais": {
+  "reglages_testes": 2982,
+  "couples_famille_marche": 249,
+  "t_minimum_bonferroni": 3.54
+ },
+ "resultats": [
+  {
+   "famille": "Veille BoE (indice anglais)",
+   "marche": "UK100",
+   "reglage": "achat J-2 et J-1, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 6.9,
+   "validation": 1.5,
+   "test": -1.8,
+   "trades": [
+    45,
+    20,
+    14
+   ],
+   "R_trade": 0.084,
+   "t_jv": -0.09,
+   "pire_baisse": -3.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Veille BoJ (Nikkei)",
+   "marche": "J225",
+   "reglage": "achat J-2 et J-1, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 9.1,
+   "validation": -1.4,
+   "test": 2.9,
+   "trades": [
+    50,
+    27,
+    13
+   ],
+   "R_trade": 0.118,
+   "t_jv": 0.4,
+   "pire_baisse": -6.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Veille BCE (indices zone euro)",
+   "marche": "DE40",
+   "reglage": "achat la veille, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 1.7,
+   "validation": 1.3,
+   "test": -1.7,
+   "trades": [
+    40,
+    20,
+    19
+   ],
+   "R_trade": 0.016,
+   "t_jv": -0.11,
+   "pire_baisse": -4.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Veille BCE (indices zone euro)",
+   "marche": "EU50",
+   "reglage": "achat J-2 et J-1, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 4.5,
+   "validation": 2.3,
+   "test": -5.3,
+   "trades": [
+    43,
+    21,
+    22
+   ],
+   "R_trade": 0.018,
+   "t_jv": -0.61,
+   "pire_baisse": -7.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Veille BCE (indices zone euro)",
+   "marche": "FR40",
+   "reglage": "achat J-2 et J-1, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 6.3,
+   "validation": -0.1,
+   "test": -1.5,
+   "trades": [
+    44,
+    20,
+    21
+   ],
+   "R_trade": 0.055,
+   "t_jv": -0.37,
+   "pire_baisse": -5.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Veille RBA (indice australien)",
+   "marche": "AU200",
+   "reglage": "achat la veille, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 8.7,
+   "validation": -1.7,
+   "test": -0.7,
+   "trades": [
+    55,
+    26,
+    19
+   ],
+   "R_trade": 0.062,
+   "t_jv": -0.86,
+   "pire_baisse": -4.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Inversion de fin de mois",
+   "marche": "US500",
+   "reglage": "achat 10 premiers jours après une fin de mois en baisse, stop 1.5 ATR",
+   "verdict": "passe, mais pourrait être le hasard",
+   "essais": 6,
+   "entrainement": 11.4,
+   "validation": 6.0,
+   "test": 7.5,
+   "trades": [
+    41,
+    24,
+    13
+   ],
+   "R_trade": 0.319,
+   "t_jv": 1.56,
+   "pire_baisse": -5.1,
+   "stress_jamais_vu": 11.6,
+   "p_jamais_vu": 0.0594
+  },
+  {
+   "famille": "Inversion de fin de mois",
+   "marche": "US100",
+   "reglage": "achat tout le mois après une fin de mois en baisse, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 26.6,
+   "validation": 14.3,
+   "test": -4.7,
+   "trades": [
+    25,
+    16,
+    16
+   ],
+   "R_trade": 0.637,
+   "t_jv": 0.75,
+   "pire_baisse": -8.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Inversion de fin de mois",
+   "marche": "US30",
+   "reglage": "achat 10 premiers jours après une fin de mois en baisse, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 20.4,
+   "validation": -2.2,
+   "test": 8.9,
+   "trades": [
+    47,
+    30,
+    16
+   ],
+   "R_trade": 0.292,
+   "t_jv": 0.76,
+   "pire_baisse": -6.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Inversion de fin de mois",
+   "marche": "RTY",
+   "reglage": "achat 5 premiers jours après une fin de mois en baisse, stop 1.5 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -1.8,
+   "validation": 0.4,
+   "test": 4.3,
+   "trades": [
+    49,
+    16,
+    19
+   ],
+   "R_trade": 0.034,
+   "t_jv": 0.64,
+   "pire_baisse": -10.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Inversion de fin de mois",
+   "marche": "DE40",
+   "reglage": "achat 5 premiers jours après une fin de mois en baisse, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 11.9,
+   "validation": 1.8,
+   "test": -5.9,
+   "trades": [
+    42,
+    21,
+    18
+   ],
+   "R_trade": 0.095,
+   "t_jv": -0.7,
+   "pire_baisse": -8.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Inversion de fin de mois",
+   "marche": "J225",
+   "reglage": "achat 10 premiers jours après une fin de mois en baisse, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 6.9,
+   "validation": -1.3,
+   "test": 14.8,
+   "trades": [
+    62,
+    26,
+    21
+   ],
+   "R_trade": 0.187,
+   "t_jv": 1.38,
+   "pire_baisse": -14.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Automne de l'or",
+   "marche": "GOLD",
+   "reglage": "septembre + novembre, stop 1.5 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 4,
+   "entrainement": -12.9,
+   "validation": -0.3,
+   "test": 3.6,
+   "trades": [
+    23,
+    10,
+    14
+   ],
+   "R_trade": -0.203,
+   "t_jv": 0.3,
+   "pire_baisse": -17.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Retournement hebdo des indices",
+   "marche": "US500",
+   "reglage": "avec les 10 derniers jours, tenu 1 semaine, stop 3 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 9.3,
+   "validation": 3.1,
+   "test": -13.7,
+   "trades": [
+    95,
+    42,
+    53
+   ],
+   "R_trade": -0.007,
+   "t_jv": -1.5,
+   "pire_baisse": -17.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Retournement hebdo des indices",
+   "marche": "US100",
+   "reglage": "avec les 10 derniers jours, tenu 1 semaine, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 3.7,
+   "validation": 4.8,
+   "test": -27.3,
+   "trades": [
+    120,
+    53,
+    78
+   ],
+   "R_trade": -0.075,
+   "t_jv": -1.46,
+   "pire_baisse": -29.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Retournement hebdo des indices",
+   "marche": "US30",
+   "reglage": "avec les 10 derniers jours, tenu 1 semaine, stop 3 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 3.7,
+   "validation": 4.8,
+   "test": -12.3,
+   "trades": [
+    95,
+    41,
+    52
+   ],
+   "R_trade": -0.021,
+   "t_jv": -0.99,
+   "pire_baisse": -14.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Retournement hebdo des indices",
+   "marche": "RTY",
+   "reglage": "avec les 5 derniers jours, tenu 1 semaine, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -16.4,
+   "validation": -5.3,
+   "test": -9.3,
+   "trades": [
+    158,
+    67,
+    66
+   ],
+   "R_trade": -0.106,
+   "t_jv": -1.95,
+   "pire_baisse": -31.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Retournement hebdo des indices",
+   "marche": "DE40",
+   "reglage": "contre les 5 derniers jours, tenu 1 semaine, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 17.9,
+   "validation": -27.1,
+   "test": -3.8,
+   "trades": [
+    225,
+    129,
+    124
+   ],
+   "R_trade": -0.027,
+   "t_jv": -1.7,
+   "pire_baisse": -47.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Retournement hebdo des indices",
+   "marche": "UK100",
+   "reglage": "avec les 5 derniers jours, tenu 1 semaine, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -0.5,
+   "validation": -7.9,
+   "test": -8.5,
+   "trades": [
+    136,
+    66,
+    70
+   ],
+   "R_trade": -0.062,
+   "t_jv": -2.37,
+   "pire_baisse": -22.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Retournement hebdo des indices",
+   "marche": "FR40",
+   "reglage": "avec les 5 derniers jours, tenu 1 semaine, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -6.7,
+   "validation": -4.7,
+   "test": -7.1,
+   "trades": [
+    129,
+    68,
+    64
+   ],
+   "R_trade": -0.071,
+   "t_jv": -1.58,
+   "pire_baisse": -21.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Retournement hebdo des indices",
+   "marche": "EU50",
+   "reglage": "contre les 10 derniers jours, tenu 1 semaine, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -5.8,
+   "validation": -6.6,
+   "test": -1.6,
+   "trades": [
+    136,
+    64,
+    72
+   ],
+   "R_trade": -0.051,
+   "t_jv": -0.87,
+   "pire_baisse": -19.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Retournement hebdo des indices",
+   "marche": "J225",
+   "reglage": "avec les 5 derniers jours, tenu 1 semaine, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -0.7,
+   "validation": -0.3,
+   "test": -4.0,
+   "trades": [
+    142,
+    60,
+    66
+   ],
+   "R_trade": -0.019,
+   "t_jv": -0.49,
+   "pire_baisse": -15.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Retournement hebdo des indices",
+   "marche": "HK50",
+   "reglage": "contre les 10 derniers jours, tenu 1 semaine, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 29.7,
+   "validation": -16.2,
+   "test": 13.0,
+   "trades": [
+    177,
+    106,
+    97
+   ],
+   "R_trade": 0.07,
+   "t_jv": -0.17,
+   "pire_baisse": -28.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Retournement hebdo des indices",
+   "marche": "AU200",
+   "reglage": "contre les 10 derniers jours, tenu 1 semaine, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -1.9,
+   "validation": -8.9,
+   "test": 4.5,
+   "trades": [
+    139,
+    62,
+    50
+   ],
+   "R_trade": -0.025,
+   "t_jv": -0.51,
+   "pire_baisse": -13.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Momentum hebdo crypto",
+   "marche": "BTCUSD",
+   "reglage": "achat/vente selon 28 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 12,
+   "entrainement": 163.1,
+   "validation": 5.0,
+   "test": -2.4,
+   "trades": [
+    94,
+    47,
+    66
+   ],
+   "R_trade": 0.801,
+   "t_jv": 0.11,
+   "pire_baisse": -18.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Momentum hebdo crypto",
+   "marche": "ETHUSD",
+   "reglage": "achat si hausse sur 28 j, stop 1.5 ATR",
+   "verdict": "passe, mais pourrait être le hasard",
+   "essais": 12,
+   "entrainement": 264.3,
+   "validation": 6.0,
+   "test": 7.1,
+   "trades": [
+    43,
+    25,
+    22
+   ],
+   "R_trade": 3.083,
+   "t_jv": 0.96,
+   "pire_baisse": -11.6,
+   "stress_jamais_vu": 7.4,
+   "p_jamais_vu": 0.1685
+  },
+  {
+   "famille": "Momentum hebdo crypto",
+   "marche": "SOLUSD",
+   "reglage": "achat si hausse sur 7 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 12,
+   "entrainement": 29.1,
+   "validation": -4.2,
+   "test": -14.2,
+   "trades": [
+    15,
+    61,
+    53
+   ],
+   "R_trade": 0.083,
+   "t_jv": -0.81,
+   "pire_baisse": -27.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Momentum hebdo crypto",
+   "marche": "XRPUSD",
+   "reglage": "achat si hausse sur 14 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 12,
+   "entrainement": 128.5,
+   "validation": -8.7,
+   "test": 13.0,
+   "trades": [
+    100,
+    37,
+    42
+   ],
+   "R_trade": 0.742,
+   "t_jv": 0.12,
+   "pire_baisse": -20.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Momentum hebdo crypto",
+   "marche": "LTCUSD",
+   "reglage": "achat si hausse sur 28 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 12,
+   "entrainement": 71.1,
+   "validation": -9.6,
+   "test": -4.1,
+   "trades": [
+    69,
+    33,
+    30
+   ],
+   "R_trade": 0.434,
+   "t_jv": -0.96,
+   "pire_baisse": -20.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Calendrier composite (Quantpedia)",
+   "marche": "US500",
+   "reglage": "lendemain du 15, sans filtre, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 16,
+   "entrainement": 2.7,
+   "validation": -3.0,
+   "test": -3.8,
+   "trades": [
+    61,
+    30,
+    29
+   ],
+   "R_trade": -0.035,
+   "t_jv": -2.46,
+   "pire_baisse": -9.5,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Calendrier composite (Quantpedia)",
+   "marche": "US100",
+   "reglage": "fin de mois, sans filtre, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 16,
+   "entrainement": 12.2,
+   "validation": 0.9,
+   "test": -6.0,
+   "trades": [
+    72,
+    33,
+    34
+   ],
+   "R_trade": 0.051,
+   "t_jv": -0.85,
+   "pire_baisse": -11.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Calendrier composite (Quantpedia)",
+   "marche": "US30",
+   "reglage": "lendemain du 15, sans filtre, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 16,
+   "entrainement": 8.8,
+   "validation": -2.4,
+   "test": -1.9,
+   "trades": [
+    61,
+    30,
+    29
+   ],
+   "R_trade": 0.037,
+   "t_jv": -1.37,
+   "pire_baisse": -6.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Calendrier composite (Quantpedia)",
+   "marche": "RTY",
+   "reglage": "fin de mois, filtre 200 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 16,
+   "entrainement": 6.8,
+   "validation": 2.3,
+   "test": -8.4,
+   "trades": [
+    44,
+    14,
+    25
+   ],
+   "R_trade": 0.009,
+   "t_jv": -1.49,
+   "pire_baisse": -9.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Crypto du 25 au 3",
+   "marche": "BTCUSD",
+   "reglage": "du 25 au 3, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 4,
+   "entrainement": 76.4,
+   "validation": 7.5,
+   "test": -19.6,
+   "trades": [
+    82,
+    33,
+    51
+   ],
+   "R_trade": 0.388,
+   "t_jv": -1.29,
+   "pire_baisse": -20.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Crypto du 25 au 3",
+   "marche": "ETHUSD",
+   "reglage": "du 28 au 5, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 4,
+   "entrainement": 83.7,
+   "validation": 5.9,
+   "test": -18.2,
+   "trades": [
+    86,
+    33,
+    49
+   ],
+   "R_trade": 0.426,
+   "t_jv": -1.58,
+   "pire_baisse": -20.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Début/fin de mois",
+   "marche": "US500",
+   "reglage": "3 derniers + 2 premiers jours, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 7.9,
+   "validation": 8.3,
+   "test": -12.4,
+   "trades": [
+    81,
+    34,
+    42
+   ],
+   "R_trade": 0.024,
+   "t_jv": -0.52,
+   "pire_baisse": -13.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Début/fin de mois",
+   "marche": "US100",
+   "reglage": "2 derniers + 2 premiers jours, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 13.9,
+   "validation": 1.2,
+   "test": -5.1,
+   "trades": [
+    78,
+    35,
+    38
+   ],
+   "R_trade": 0.066,
+   "t_jv": -0.55,
+   "pire_baisse": -10.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Début/fin de mois",
+   "marche": "US30",
+   "reglage": "2 derniers + 4 premiers jours, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 14.0,
+   "validation": -1.0,
+   "test": -0.6,
+   "trades": [
+    87,
+    38,
+    43
+   ],
+   "R_trade": 0.074,
+   "t_jv": -0.17,
+   "pire_baisse": -10.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Début/fin de mois",
+   "marche": "RTY",
+   "reglage": "1 derniers + 2 premiers jours, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 18,
+   "entrainement": -4.9,
+   "validation": 1.3,
+   "test": -2.4,
+   "trades": [
+    69,
+    30,
+    29
+   ],
+   "R_trade": -0.047,
+   "t_jv": -0.33,
+   "pire_baisse": -12.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Début/fin de mois",
+   "marche": "DE40",
+   "reglage": "1 derniers + 4 premiers jours, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 20.6,
+   "validation": -3.7,
+   "test": 1.5,
+   "trades": [
+    81,
+    38,
+    42
+   ],
+   "R_trade": 0.114,
+   "t_jv": -0.24,
+   "pire_baisse": -8.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Début/fin de mois",
+   "marche": "UK100",
+   "reglage": "3 derniers + 4 premiers jours, stop 3 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 1.3,
+   "validation": -2.4,
+   "test": 0.9,
+   "trades": [
+    69,
+    33,
+    31
+   ],
+   "R_trade": -0.002,
+   "t_jv": -0.35,
+   "pire_baisse": -6.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Début/fin de mois",
+   "marche": "FR40",
+   "reglage": "3 derniers + 4 premiers jours, stop 3 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 5.2,
+   "validation": -0.6,
+   "test": -4.4,
+   "trades": [
+    69,
+    32,
+    33
+   ],
+   "R_trade": 0.001,
+   "t_jv": -1.12,
+   "pire_baisse": -8.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Début/fin de mois",
+   "marche": "EU50",
+   "reglage": "3 derniers + 4 premiers jours, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 18,
+   "entrainement": -0.3,
+   "validation": -0.0,
+   "test": -1.0,
+   "trades": [
+    73,
+    33,
+    33
+   ],
+   "R_trade": -0.01,
+   "t_jv": -0.22,
+   "pire_baisse": -8.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Début/fin de mois",
+   "marche": "J225",
+   "reglage": "1 derniers + 2 premiers jours, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 3.0,
+   "validation": 1.8,
+   "test": -5.4,
+   "trades": [
+    72,
+    31,
+    35
+   ],
+   "R_trade": -0.005,
+   "t_jv": -0.58,
+   "pire_baisse": -13.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Début/fin de mois",
+   "marche": "HK50",
+   "reglage": "1 derniers + 4 premiers jours, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 0.9,
+   "validation": 1.6,
+   "test": -3.4,
+   "trades": [
+    83,
+    35,
+    36
+   ],
+   "R_trade": -0.005,
+   "t_jv": -0.22,
+   "pire_baisse": -8.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Début/fin de mois",
+   "marche": "AU200",
+   "reglage": "3 derniers + 2 premiers jours, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 18,
+   "entrainement": -0.9,
+   "validation": 3.6,
+   "test": -3.8,
+   "trades": [
+    63,
+    31,
+    28
+   ],
+   "R_trade": -0.01,
+   "t_jv": -0.08,
+   "pire_baisse": -5.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Début/fin de mois",
+   "marche": "GOLD",
+   "reglage": "1 derniers + 3 premiers jours, stop 1.5 ATR",
+   "verdict": "passe, mais pourrait être le hasard",
+   "essais": 18,
+   "entrainement": 18.8,
+   "validation": 3.9,
+   "test": 2.5,
+   "trades": [
+    75,
+    35,
+    34
+   ],
+   "R_trade": 0.175,
+   "t_jv": 0.81,
+   "pire_baisse": -5.5,
+   "stress_jamais_vu": 5.1,
+   "p_jamais_vu": 0.209
+  },
+  {
+   "famille": "Début/fin de mois",
+   "marche": "BTCUSD",
+   "reglage": "2 derniers + 3 premiers jours, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 60.9,
+   "validation": -4.4,
+   "test": -5.5,
+   "trades": [
+    67,
+    36,
+    39
+   ],
+   "R_trade": 0.359,
+   "t_jv": -1.4,
+   "pire_baisse": -12.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Veille de jour férié",
+   "marche": "US500",
+   "reglage": "2 veilles, stop 1.5 ATR",
+   "verdict": "passe, mais pourrait être le hasard",
+   "essais": 6,
+   "entrainement": 3.3,
+   "validation": 1.3,
+   "test": 2.0,
+   "trades": [
+    50,
+    31,
+    25
+   ],
+   "R_trade": 0.063,
+   "t_jv": 0.68,
+   "pire_baisse": -6.0,
+   "stress_jamais_vu": 2.2,
+   "p_jamais_vu": 0.2483
+  },
+  {
+   "famille": "Veille de jour férié",
+   "marche": "US100",
+   "reglage": "veille + lendemain, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 11.6,
+   "validation": -2.3,
+   "test": -1.4,
+   "trades": [
+    84,
+    50,
+    44
+   ],
+   "R_trade": 0.044,
+   "t_jv": -0.85,
+   "pire_baisse": -4.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Veille de jour férié",
+   "marche": "US30",
+   "reglage": "2 veilles, stop 1.5 ATR",
+   "verdict": "passe, mais pourrait être le hasard",
+   "essais": 6,
+   "entrainement": 9.9,
+   "validation": 1.1,
+   "test": 2.2,
+   "trades": [
+    49,
+    30,
+    25
+   ],
+   "R_trade": 0.127,
+   "t_jv": 0.74,
+   "pire_baisse": -2.6,
+   "stress_jamais_vu": 1.6,
+   "p_jamais_vu": 0.2296
+  },
+  {
+   "famille": "Veille de jour férié",
+   "marche": "RTY",
+   "reglage": "veille, stop 1.5 ATR",
+   "verdict": "passe, mais pourrait être le hasard",
+   "essais": 6,
+   "entrainement": 8.7,
+   "validation": 1.9,
+   "test": 1.6,
+   "trades": [
+    48,
+    25,
+    24
+   ],
+   "R_trade": 0.126,
+   "t_jv": 1.47,
+   "pire_baisse": -3.1,
+   "stress_jamais_vu": 2.8,
+   "p_jamais_vu": 0.0708
+  },
+  {
+   "famille": "Veille de jour férié",
+   "marche": "DE40",
+   "reglage": "veille + lendemain, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 1.9,
+   "validation": -0.3,
+   "test": 1.5,
+   "trades": [
+    77,
+    47,
+    45
+   ],
+   "R_trade": 0.019,
+   "t_jv": 0.28,
+   "pire_baisse": -3.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Veille de jour férié",
+   "marche": "UK100",
+   "reglage": "2 veilles, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 4.6,
+   "validation": -0.5,
+   "test": 5.2,
+   "trades": [
+    51,
+    29,
+    24
+   ],
+   "R_trade": 0.089,
+   "t_jv": 1.09,
+   "pire_baisse": -3.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Veille de jour férié",
+   "marche": "FR40",
+   "reglage": "2 veilles, stop 3 ATR",
+   "verdict": "passe, mais pourrait être le hasard",
+   "essais": 6,
+   "entrainement": 0.6,
+   "validation": 0.6,
+   "test": 0.7,
+   "trades": [
+    48,
+    25,
+    23
+   ],
+   "R_trade": 0.02,
+   "t_jv": 0.7,
+   "pire_baisse": -2.5,
+   "stress_jamais_vu": 0.6,
+   "p_jamais_vu": 0.242
+  },
+  {
+   "famille": "Veille de jour férié",
+   "marche": "EU50",
+   "reglage": "veille, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -0.1,
+   "validation": 0.7,
+   "test": 0.3,
+   "trades": [
+    44,
+    25,
+    23
+   ],
+   "R_trade": 0.01,
+   "t_jv": 0.84,
+   "pire_baisse": -2.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Veille de jour férié",
+   "marche": "J225",
+   "reglage": "veille, stop 1.5 ATR",
+   "verdict": "passe, mais pourrait être le hasard",
+   "essais": 6,
+   "entrainement": 5.4,
+   "validation": 0.7,
+   "test": 2.3,
+   "trades": [
+    48,
+    26,
+    23
+   ],
+   "R_trade": 0.086,
+   "t_jv": 0.99,
+   "pire_baisse": -2.2,
+   "stress_jamais_vu": 2.4,
+   "p_jamais_vu": 0.1611
+  },
+  {
+   "famille": "Veille de jour férié",
+   "marche": "HK50",
+   "reglage": "2 veilles, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 4.9,
+   "validation": -0.9,
+   "test": -1.5,
+   "trades": [
+    47,
+    28,
+    24
+   ],
+   "R_trade": 0.025,
+   "t_jv": -0.58,
+   "pire_baisse": -5.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Veille de jour férié",
+   "marche": "AU200",
+   "reglage": "2 veilles, stop 3 ATR",
+   "verdict": "passe, mais pourrait être le hasard",
+   "essais": 6,
+   "entrainement": 0.5,
+   "validation": 1.5,
+   "test": 0.4,
+   "trades": [
+    48,
+    25,
+    23
+   ],
+   "R_trade": 0.024,
+   "t_jv": 0.99,
+   "pire_baisse": -1.7,
+   "stress_jamais_vu": 1.0,
+   "p_jamais_vu": 0.1611
+  },
+  {
+   "famille": "Expiration des options",
+   "marche": "US500",
+   "reglage": "vente semaine après OPEX, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -1.6,
+   "validation": -3.5,
+   "test": -3.4,
+   "trades": [
+    62,
+    30,
+    28
+   ],
+   "R_trade": -0.072,
+   "t_jv": -1.86,
+   "pire_baisse": -12.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Expiration des options",
+   "marche": "US100",
+   "reglage": "achat semaine OPEX, stop 1.5 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -0.2,
+   "validation": -2.6,
+   "test": -6.2,
+   "trades": [
+    80,
+    39,
+    35
+   ],
+   "R_trade": -0.059,
+   "t_jv": -1.02,
+   "pire_baisse": -13.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Expiration des options",
+   "marche": "US30",
+   "reglage": "vente semaine après OPEX, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 2.0,
+   "validation": -2.6,
+   "test": -13.1,
+   "trades": [
+    74,
+    35,
+    38
+   ],
+   "R_trade": -0.093,
+   "t_jv": -2.03,
+   "pire_baisse": -23.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Expiration des options",
+   "marche": "RTY",
+   "reglage": "vente semaine après OPEX, stop 1.5 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -8.5,
+   "validation": -3.6,
+   "test": -9.2,
+   "trades": [
+    92,
+    37,
+    36
+   ],
+   "R_trade": -0.129,
+   "t_jv": -1.79,
+   "pire_baisse": -23.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Expiration des options",
+   "marche": "DE40",
+   "reglage": "vente semaine après OPEX, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 5.2,
+   "validation": 0.4,
+   "test": -13.4,
+   "trades": [
+    75,
+    38,
+    39
+   ],
+   "R_trade": -0.051,
+   "t_jv": -1.63,
+   "pire_baisse": -19.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "GOLD",
+   "reglage": "achat le vendredi, stop 1.5 ATR",
+   "verdict": "réglage isolé (voisins perdants)",
+   "essais": 20,
+   "entrainement": 44.4,
+   "validation": 8.2,
+   "test": 1.7,
+   "trades": [
+    256,
+    127,
+    123
+   ],
+   "R_trade": 0.107,
+   "t_jv": 1.11,
+   "pire_baisse": -7.4,
+   "stress_jamais_vu": 6.6
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "SILVER",
+   "reglage": "vente le jeudi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 6.5,
+   "validation": -1.7,
+   "test": -2.7,
+   "trades": [
+    259,
+    130,
+    125
+   ],
+   "R_trade": 0.004,
+   "t_jv": -0.52,
+   "pire_baisse": -19.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "PLATINUM",
+   "reglage": "achat le mercredi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 0.1,
+   "validation": -22.1,
+   "test": -16.3,
+   "trades": [
+    256,
+    130,
+    126
+   ],
+   "R_trade": -0.075,
+   "t_jv": -4.72,
+   "pire_baisse": -46.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "PALLADIUM",
+   "reglage": "achat le mercredi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 42.8,
+   "validation": -18.3,
+   "test": -19.1,
+   "trades": [
+    255,
+    129,
+    126
+   ],
+   "R_trade": 0.011,
+   "t_jv": -5.0,
+   "pire_baisse": -48.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "COPPER",
+   "reglage": "vente le jeudi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 0.7,
+   "validation": -9.1,
+   "test": -2.7,
+   "trades": [
+    264,
+    130,
+    125
+   ],
+   "R_trade": -0.021,
+   "t_jv": -1.45,
+   "pire_baisse": -22.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "OIL_CRUDE",
+   "reglage": "achat le mercredi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 8.7,
+   "validation": -12.0,
+   "test": -0.2,
+   "trades": [
+    264,
+    130,
+    126
+   ],
+   "R_trade": -0.007,
+   "t_jv": -1.47,
+   "pire_baisse": -19.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "OIL_BRENT",
+   "reglage": "achat le vendredi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 33.1,
+   "validation": 8.9,
+   "test": -1.5,
+   "trades": [
+    257,
+    127,
+    123
+   ],
+   "R_trade": 0.08,
+   "t_jv": 0.76,
+   "pire_baisse": -11.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "NATURALGAS",
+   "reglage": "achat le lundi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 13.1,
+   "validation": 8.1,
+   "test": -6.9,
+   "trades": [
+    259,
+    130,
+    126
+   ],
+   "R_trade": 0.028,
+   "t_jv": 0.16,
+   "pire_baisse": -11.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "US500",
+   "reglage": "achat le lundi, stop 1.5 ATR",
+   "verdict": "réglage isolé (voisins perdants)",
+   "essais": 20,
+   "entrainement": 23.1,
+   "validation": 2.3,
+   "test": 11.1,
+   "trades": [
+    262,
+    129,
+    126
+   ],
+   "R_trade": 0.071,
+   "t_jv": 1.96,
+   "pire_baisse": -9.6,
+   "stress_jamais_vu": 10.9
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "US100",
+   "reglage": "achat le jeudi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 32.3,
+   "validation": 2.6,
+   "test": -12.1,
+   "trades": [
+    264,
+    130,
+    125
+   ],
+   "R_trade": 0.044,
+   "t_jv": -1.08,
+   "pire_baisse": -13.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "US30",
+   "reglage": "achat le mercredi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 27.9,
+   "validation": -6.7,
+   "test": 2.6,
+   "trades": [
+    264,
+    130,
+    126
+   ],
+   "R_trade": 0.046,
+   "t_jv": -0.46,
+   "pire_baisse": -9.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "RTY",
+   "reglage": "achat le mercredi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 70.1,
+   "validation": -7.3,
+   "test": 0.8,
+   "trades": [
+    262,
+    130,
+    126
+   ],
+   "R_trade": 0.123,
+   "t_jv": -0.77,
+   "pire_baisse": -13.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "DE40",
+   "reglage": "vente le jeudi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 4.3,
+   "validation": -3.1,
+   "test": -4.9,
+   "trades": [
+    263,
+    130,
+    125
+   ],
+   "R_trade": -0.007,
+   "t_jv": -0.89,
+   "pire_baisse": -16.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "UK100",
+   "reglage": "vente le jeudi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 7.2,
+   "validation": -6.0,
+   "test": -9.6,
+   "trades": [
+    264,
+    130,
+    125
+   ],
+   "R_trade": -0.016,
+   "t_jv": -1.84,
+   "pire_baisse": -24.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "FR40",
+   "reglage": "achat le mardi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 3.3,
+   "validation": -6.6,
+   "test": -6.2,
+   "trades": [
+    263,
+    129,
+    126
+   ],
+   "R_trade": -0.018,
+   "t_jv": -1.85,
+   "pire_baisse": -27.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "EU50",
+   "reglage": "achat le mercredi, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 20,
+   "entrainement": -2.9,
+   "validation": -1.5,
+   "test": 1.0,
+   "trades": [
+    264,
+    130,
+    126
+   ],
+   "R_trade": -0.007,
+   "t_jv": -0.12,
+   "pire_baisse": -9.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "J225",
+   "reglage": "achat le mercredi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 23.4,
+   "validation": -4.0,
+   "test": 6.9,
+   "trades": [
+    264,
+    130,
+    126
+   ],
+   "R_trade": 0.051,
+   "t_jv": 0.34,
+   "pire_baisse": -10.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "HK50",
+   "reglage": "achat le mardi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 18.8,
+   "validation": -15.3,
+   "test": -6.9,
+   "trades": [
+    251,
+    127,
+    125
+   ],
+   "R_trade": -0.007,
+   "t_jv": -2.6,
+   "pire_baisse": -23.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "AU200",
+   "reglage": "achat le mercredi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 10.5,
+   "validation": -6.5,
+   "test": 3.0,
+   "trades": [
+    264,
+    130,
+    125
+   ],
+   "R_trade": 0.014,
+   "t_jv": -0.4,
+   "pire_baisse": -9.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "EURUSD",
+   "reglage": "achat le lundi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 15.6,
+   "validation": 0.4,
+   "test": -0.4,
+   "trades": [
+    265,
+    130,
+    126
+   ],
+   "R_trade": 0.03,
+   "t_jv": -0.0,
+   "pire_baisse": -6.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "GBPUSD",
+   "reglage": "achat le mercredi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 7.5,
+   "validation": 3.0,
+   "test": -10.7,
+   "trades": [
+    265,
+    130,
+    126
+   ],
+   "R_trade": -0.0,
+   "t_jv": -0.9,
+   "pire_baisse": -12.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "USDJPY",
+   "reglage": "achat le mercredi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 9.0,
+   "validation": -1.9,
+   "test": -1.3,
+   "trades": [
+    265,
+    130,
+    126
+   ],
+   "R_trade": 0.011,
+   "t_jv": -0.37,
+   "pire_baisse": -6.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "AUDUSD",
+   "reglage": "achat le lundi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 11.3,
+   "validation": -0.7,
+   "test": 5.0,
+   "trades": [
+    265,
+    130,
+    126
+   ],
+   "R_trade": 0.03,
+   "t_jv": 0.64,
+   "pire_baisse": -5.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "USDCAD",
+   "reglage": "achat le jeudi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 5.0,
+   "validation": -2.8,
+   "test": 1.0,
+   "trades": [
+    265,
+    130,
+    125
+   ],
+   "R_trade": 0.006,
+   "t_jv": -0.23,
+   "pire_baisse": -10.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "USDCHF",
+   "reglage": "achat le mercredi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 7.1,
+   "validation": -15.0,
+   "test": 5.9,
+   "trades": [
+    265,
+    130,
+    126
+   ],
+   "R_trade": -0.004,
+   "t_jv": -1.11,
+   "pire_baisse": -21.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "NZDUSD",
+   "reglage": "achat le lundi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 12.6,
+   "validation": -3.9,
+   "test": 1.1,
+   "trades": [
+    265,
+    130,
+    126
+   ],
+   "R_trade": 0.019,
+   "t_jv": -0.43,
+   "pire_baisse": -10.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "EURGBP",
+   "reglage": "vente le mercredi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 7.7,
+   "validation": -13.1,
+   "test": -6.9,
+   "trades": [
+    265,
+    130,
+    126
+   ],
+   "R_trade": -0.024,
+   "t_jv": -2.46,
+   "pire_baisse": -22.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "EURJPY",
+   "reglage": "achat le lundi, stop 1.5 ATR",
+   "verdict": "réglage isolé (voisins perdants)",
+   "essais": 20,
+   "entrainement": 10.6,
+   "validation": 7.8,
+   "test": 0.1,
+   "trades": [
+    265,
+    130,
+    126
+   ],
+   "R_trade": 0.035,
+   "t_jv": 1.12,
+   "pire_baisse": -7.7,
+   "stress_jamais_vu": 5.9
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "GBPJPY",
+   "reglage": "achat le mercredi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 16.4,
+   "validation": -0.3,
+   "test": -4.9,
+   "trades": [
+    265,
+    130,
+    126
+   ],
+   "R_trade": 0.022,
+   "t_jv": -0.68,
+   "pire_baisse": -7.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "BTCUSD",
+   "reglage": "achat le mercredi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 32,
+   "entrainement": 135.2,
+   "validation": -0.6,
+   "test": 4.7,
+   "trades": [
+    265,
+    130,
+    126
+   ],
+   "R_trade": 0.267,
+   "t_jv": 0.46,
+   "pire_baisse": -16.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "ETHUSD",
+   "reglage": "achat le week-end, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 32,
+   "entrainement": 195.9,
+   "validation": -2.8,
+   "test": -1.0,
+   "trades": [
+    277,
+    134,
+    128
+   ],
+   "R_trade": 0.356,
+   "t_jv": -0.5,
+   "pire_baisse": -13.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "SOLUSD",
+   "reglage": "achat le week-end, stop 3 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 32,
+   "entrainement": 3.0,
+   "validation": -11.3,
+   "test": -4.0,
+   "trades": [
+    46,
+    133,
+    126
+   ],
+   "R_trade": -0.04,
+   "t_jv": -3.62,
+   "pire_baisse": -16.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "XRPUSD",
+   "reglage": "achat le week-end, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 32,
+   "entrainement": 98.3,
+   "validation": -38.3,
+   "test": -4.6,
+   "trades": [
+    288,
+    136,
+    127
+   ],
+   "R_trade": 0.101,
+   "t_jv": -5.32,
+   "pire_baisse": -83.5,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "LTCUSD",
+   "reglage": "achat le vendredi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 32,
+   "entrainement": 126.9,
+   "validation": -12.5,
+   "test": 0.2,
+   "trades": [
+    266,
+    130,
+    125
+   ],
+   "R_trade": 0.22,
+   "t_jv": -1.45,
+   "pire_baisse": -23.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "AAPL",
+   "reglage": "achat le lundi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 9.2,
+   "validation": 2.3,
+   "test": -5.8,
+   "trades": [
+    240,
+    112,
+    117
+   ],
+   "R_trade": 0.012,
+   "t_jv": -1.1,
+   "pire_baisse": -7.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "MSFT",
+   "reglage": "achat le lundi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 5.9,
+   "validation": -1.2,
+   "test": -4.0,
+   "trades": [
+    240,
+    112,
+    117
+   ],
+   "R_trade": 0.002,
+   "t_jv": -1.63,
+   "pire_baisse": -7.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "NVDA",
+   "reglage": "achat le lundi, stop 1.5 ATR",
+   "verdict": "réglage isolé (voisins perdants)",
+   "essais": 20,
+   "entrainement": 5.9,
+   "validation": 18.4,
+   "test": 0.2,
+   "trades": [
+    240,
+    111,
+    117
+   ],
+   "R_trade": 0.052,
+   "t_jv": 1.25,
+   "pire_baisse": -3.1,
+   "stress_jamais_vu": 16.3
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "TSLA",
+   "reglage": "achat le lundi, stop 1.5 ATR",
+   "verdict": "réglage isolé (voisins perdants)",
+   "essais": 20,
+   "entrainement": 22.4,
+   "validation": 1.5,
+   "test": 5.1,
+   "trades": [
+    240,
+    112,
+    117
+   ],
+   "R_trade": 0.062,
+   "t_jv": 1.03,
+   "pire_baisse": -4.1,
+   "stress_jamais_vu": 2.5
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "AMZN",
+   "reglage": "achat le lundi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 0.4,
+   "validation": -0.4,
+   "test": -2.4,
+   "trades": [
+    240,
+    112,
+    117
+   ],
+   "R_trade": -0.005,
+   "t_jv": -0.73,
+   "pire_baisse": -12.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "META",
+   "reglage": "achat le lundi, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 20,
+   "entrainement": 0.9,
+   "validation": -1.5,
+   "test": 0.4,
+   "trades": [
+    240,
+    112,
+    117
+   ],
+   "R_trade": -0.0,
+   "t_jv": -0.23,
+   "pire_baisse": -4.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Jour de la semaine",
+   "marche": "GOOGL",
+   "reglage": "achat le jeudi, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 20,
+   "entrainement": -3.8,
+   "validation": -5.9,
+   "test": -10.7,
+   "trades": [
+    240,
+    130,
+    121
+   ],
+   "R_trade": -0.041,
+   "t_jv": -4.42,
+   "pire_baisse": -23.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "GOLD",
+   "reglage": "même mois, 3 années passées, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 12.4,
+   "validation": -2.0,
+   "test": 5.3,
+   "trades": [
+    32,
+    41,
+    34
+   ],
+   "R_trade": 0.147,
+   "t_jv": 0.14,
+   "pire_baisse": -18.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "SILVER",
+   "reglage": "même mois, 3 années passées, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 31.5,
+   "validation": -5.2,
+   "test": -8.8,
+   "trades": [
+    25,
+    49,
+    50
+   ],
+   "R_trade": 0.141,
+   "t_jv": -0.65,
+   "pire_baisse": -21.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "PLATINUM",
+   "reglage": "même mois, 3 années passées, stop 3 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 1.8,
+   "validation": -0.2,
+   "test": -9.2,
+   "trades": [
+    22,
+    23,
+    29
+   ],
+   "R_trade": -0.103,
+   "t_jv": -0.99,
+   "pire_baisse": -11.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "PALLADIUM",
+   "reglage": "même mois, 3 années passées, stop 3 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 1.6,
+   "validation": 1.3,
+   "test": -11.9,
+   "trades": [
+    19,
+    20,
+    34
+   ],
+   "R_trade": -0.123,
+   "t_jv": -1.43,
+   "pire_baisse": -16.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "COPPER",
+   "reglage": "même mois, 5 années passées, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 6.6,
+   "validation": -11.3,
+   "test": -18.3,
+   "trades": [
+    30,
+    50,
+    47
+   ],
+   "R_trade": -0.181,
+   "t_jv": -1.72,
+   "pire_baisse": -35.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "OIL_CRUDE",
+   "reglage": "même mois, 5 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -10.3,
+   "validation": -6.0,
+   "test": 10.3,
+   "trades": [
+    32,
+    27,
+    19
+   ],
+   "R_trade": -0.078,
+   "t_jv": 0.3,
+   "pire_baisse": -18.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "OIL_BRENT",
+   "reglage": "même mois, 5 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -9.2,
+   "validation": -6.6,
+   "test": 12.2,
+   "trades": [
+    29,
+    23,
+    18
+   ],
+   "R_trade": -0.051,
+   "t_jv": 0.39,
+   "pire_baisse": -18.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "NATURALGAS",
+   "reglage": "même mois, 3 années passées, stop 1.5 ATR",
+   "verdict": "passe, mais pourrait être le hasard",
+   "essais": 6,
+   "entrainement": 4.1,
+   "validation": 18.3,
+   "test": 3.0,
+   "trades": [
+    29,
+    29,
+    31
+   ],
+   "R_trade": 0.285,
+   "t_jv": 1.02,
+   "pire_baisse": -13.5,
+   "stress_jamais_vu": 19.6,
+   "p_jamais_vu": 0.1539
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "US500",
+   "reglage": "même mois, 3 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -3.6,
+   "validation": -4.1,
+   "test": -8.9,
+   "trades": [
+    22,
+    32,
+    26
+   ],
+   "R_trade": -0.207,
+   "t_jv": -1.62,
+   "pire_baisse": -16.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "US100",
+   "reglage": "même mois, 3 années passées, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 1.9,
+   "validation": -2.8,
+   "test": -25.0,
+   "trades": [
+    30,
+    46,
+    45
+   ],
+   "R_trade": -0.214,
+   "t_jv": -1.74,
+   "pire_baisse": -28.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "US30",
+   "reglage": "même mois, 5 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -8.1,
+   "validation": -9.5,
+   "test": -0.8,
+   "trades": [
+    28,
+    28,
+    19
+   ],
+   "R_trade": -0.244,
+   "t_jv": -1.26,
+   "pire_baisse": -21.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "RTY",
+   "reglage": "même mois, 3 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -5.9,
+   "validation": -5.1,
+   "test": -3.1,
+   "trades": [
+    28,
+    28,
+    25
+   ],
+   "R_trade": -0.174,
+   "t_jv": -1.09,
+   "pire_baisse": -14.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "DE40",
+   "reglage": "même mois, 5 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -13.0,
+   "validation": -6.5,
+   "test": -0.5,
+   "trades": [
+    30,
+    30,
+    22
+   ],
+   "R_trade": -0.244,
+   "t_jv": -0.75,
+   "pire_baisse": -22.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "UK100",
+   "reglage": "même mois, 3 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -2.6,
+   "validation": -5.3,
+   "test": -1.7,
+   "trades": [
+    23,
+    20,
+    24
+   ],
+   "R_trade": -0.143,
+   "t_jv": -0.87,
+   "pire_baisse": -14.5,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "FR40",
+   "reglage": "même mois, 5 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -19.7,
+   "validation": -10.5,
+   "test": -0.7,
+   "trades": [
+    33,
+    35,
+    18
+   ],
+   "R_trade": -0.36,
+   "t_jv": -1.68,
+   "pire_baisse": -33.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "EU50",
+   "reglage": "même mois, 5 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -18.5,
+   "validation": -13.9,
+   "test": -7.6,
+   "trades": [
+    30,
+    39,
+    22
+   ],
+   "R_trade": -0.441,
+   "t_jv": -2.92,
+   "pire_baisse": -40.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "J225",
+   "reglage": "même mois, 5 années passées, stop 1.5 ATR",
+   "verdict": "passe, mais pourrait être le hasard",
+   "essais": 6,
+   "entrainement": 3.0,
+   "validation": 3.6,
+   "test": 7.3,
+   "trades": [
+    35,
+    39,
+    40
+   ],
+   "R_trade": 0.122,
+   "t_jv": 0.53,
+   "pire_baisse": -21.2,
+   "stress_jamais_vu": 5.1,
+   "p_jamais_vu": 0.2981
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "HK50",
+   "reglage": "même mois, 3 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -3.4,
+   "validation": -1.0,
+   "test": -9.1,
+   "trades": [
+    24,
+    30,
+    25
+   ],
+   "R_trade": -0.17,
+   "t_jv": -1.19,
+   "pire_baisse": -17.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "AU200",
+   "reglage": "même mois, 3 années passées, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 3.3,
+   "validation": -12.4,
+   "test": -9.6,
+   "trades": [
+    28,
+    47,
+    39
+   ],
+   "R_trade": -0.164,
+   "t_jv": -1.46,
+   "pire_baisse": -27.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "EURUSD",
+   "reglage": "même mois, 3 années passées, stop 3 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 2.8,
+   "validation": 0.5,
+   "test": -8.3,
+   "trades": [
+    16,
+    27,
+    32
+   ],
+   "R_trade": -0.067,
+   "t_jv": -0.86,
+   "pire_baisse": -13.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "GBPUSD",
+   "reglage": "même mois, 5 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -5.8,
+   "validation": 4.9,
+   "test": -24.4,
+   "trades": [
+    26,
+    19,
+    40
+   ],
+   "R_trade": -0.298,
+   "t_jv": -2.3,
+   "pire_baisse": -25.5,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "USDJPY",
+   "reglage": "même mois, 3 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -10.2,
+   "validation": 18.7,
+   "test": -4.9,
+   "trades": [
+    26,
+    17,
+    29
+   ],
+   "R_trade": 0.049,
+   "t_jv": 1.11,
+   "pire_baisse": -12.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "AUDUSD",
+   "reglage": "même mois, 3 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -4.4,
+   "validation": -7.6,
+   "test": -15.3,
+   "trades": [
+    21,
+    34,
+    30
+   ],
+   "R_trade": -0.321,
+   "t_jv": -3.05,
+   "pire_baisse": -28.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "USDCAD",
+   "reglage": "même mois, 3 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -12.1,
+   "validation": -1.3,
+   "test": -19.9,
+   "trades": [
+    29,
+    28,
+    36
+   ],
+   "R_trade": -0.359,
+   "t_jv": -2.58,
+   "pire_baisse": -34.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "USDCHF",
+   "reglage": "même mois, 3 années passées, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 3.3,
+   "validation": -4.3,
+   "test": -28.5,
+   "trades": [
+    26,
+    46,
+    48
+   ],
+   "R_trade": -0.245,
+   "t_jv": -1.95,
+   "pire_baisse": -36.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "NZDUSD",
+   "reglage": "même mois, 3 années passées, stop 1.5 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": 0.0,
+   "validation": 8.9,
+   "test": -47.9,
+   "trades": [
+    31,
+    44,
+    67
+   ],
+   "R_trade": -0.275,
+   "t_jv": -2.21,
+   "pire_baisse": -47.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "EURGBP",
+   "reglage": "même mois, 5 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -7.4,
+   "validation": -3.7,
+   "test": -11.6,
+   "trades": [
+    23,
+    25,
+    28
+   ],
+   "R_trade": -0.299,
+   "t_jv": -2.53,
+   "pire_baisse": -22.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "EURJPY",
+   "reglage": "même mois, 5 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -6.4,
+   "validation": 0.1,
+   "test": 4.9,
+   "trades": [
+    28,
+    26,
+    22
+   ],
+   "R_trade": -0.019,
+   "t_jv": 0.52,
+   "pire_baisse": -17.5,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "GBPJPY",
+   "reglage": "même mois, 5 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -9.2,
+   "validation": 3.5,
+   "test": 3.2,
+   "trades": [
+    31,
+    24,
+    20
+   ],
+   "R_trade": -0.033,
+   "t_jv": 0.69,
+   "pire_baisse": -17.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "BTCUSD",
+   "reglage": "même mois, 3 années passées, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 0.8,
+   "validation": 35.8,
+   "test": -39.8,
+   "trades": [
+    49,
+    25,
+    62
+   ],
+   "R_trade": -0.023,
+   "t_jv": -0.08,
+   "pire_baisse": -41.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "ETHUSD",
+   "reglage": "même mois, 5 années passées, stop 3 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 2.1,
+   "validation": 4.7,
+   "test": -5.1,
+   "trades": [
+    24,
+    26,
+    33
+   ],
+   "R_trade": 0.02,
+   "t_jv": -0.04,
+   "pire_baisse": -8.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "SOLUSD",
+   "reglage": null,
+   "verdict": "trop peu de trades",
+   "essais": 6
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "XRPUSD",
+   "reglage": "même mois, 3 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -13.1,
+   "validation": -10.6,
+   "test": -13.5,
+   "trades": [
+    43,
+    32,
+    42
+   ],
+   "R_trade": -0.318,
+   "t_jv": -3.03,
+   "pire_baisse": -40.5,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "LTCUSD",
+   "reglage": "même mois, 3 années passées, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -12.1,
+   "validation": -0.2,
+   "test": -7.0,
+   "trades": [
+    31,
+    23,
+    28
+   ],
+   "R_trade": -0.236,
+   "t_jv": -0.85,
+   "pire_baisse": -23.5,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "AAPL",
+   "reglage": "même mois, 3 années passées, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 3.0,
+   "validation": 4.9,
+   "test": -9.1,
+   "trades": [
+    19,
+    19,
+    23
+   ],
+   "R_trade": -0.019,
+   "t_jv": -0.65,
+   "pire_baisse": -9.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "MSFT",
+   "reglage": null,
+   "verdict": "trop peu de trades",
+   "essais": 6
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "NVDA",
+   "reglage": "même mois, 3 années passées, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 2.9,
+   "validation": 9.3,
+   "test": -3.4,
+   "trades": [
+    17,
+    21,
+    19
+   ],
+   "R_trade": 0.153,
+   "t_jv": 0.58,
+   "pire_baisse": -7.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "TSLA",
+   "reglage": "même mois, 3 années passées, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 37.9,
+   "validation": -13.2,
+   "test": -6.0,
+   "trades": [
+    25,
+    52,
+    43
+   ],
+   "R_trade": 0.155,
+   "t_jv": -1.45,
+   "pire_baisse": -19.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "AMZN",
+   "reglage": "même mois, 3 années passées, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 16.9,
+   "validation": -4.4,
+   "test": 1.4,
+   "trades": [
+    15,
+    33,
+    20
+   ],
+   "R_trade": 0.205,
+   "t_jv": -0.38,
+   "pire_baisse": -7.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "META",
+   "reglage": "même mois, 3 années passées, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 7.1,
+   "validation": 0.1,
+   "test": -0.4,
+   "trades": [
+    21,
+    34,
+    21
+   ],
+   "R_trade": 0.09,
+   "t_jv": -0.02,
+   "pire_baisse": -8.5,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Saisonnalité même mois",
+   "marche": "GOOGL",
+   "reglage": "même mois, 3 années passées, stop 1.5 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -0.0,
+   "validation": -3.2,
+   "test": -5.2,
+   "trades": [
+    21,
+    29,
+    27
+   ],
+   "R_trade": -0.11,
+   "t_jv": -1.15,
+   "pire_baisse": -11.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Sell in May (Halloween)",
+   "marche": "US500",
+   "reglage": "achat de 10 à 5, stop 1.5 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -5.7,
+   "validation": 6.3,
+   "test": -6.9,
+   "trades": [
+    26,
+    10,
+    15
+   ],
+   "R_trade": -0.124,
+   "t_jv": -0.04,
+   "pire_baisse": -18.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Sell in May (Halloween)",
+   "marche": "US100",
+   "reglage": "achat de 10 à 5, stop 1.5 ATR",
+   "verdict": "trop peu de trades",
+   "essais": 8,
+   "entrainement": 11.8,
+   "validation": 6.7,
+   "test": -2.1,
+   "trades": [
+    20,
+    12,
+    15
+   ],
+   "R_trade": 0.349,
+   "t_jv": 0.26,
+   "pire_baisse": -13.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Sell in May (Halloween)",
+   "marche": "US30",
+   "reglage": "achat de 10 à 4, stop 1.5 ATR",
+   "verdict": "trop peu de trades",
+   "essais": 8,
+   "entrainement": 0.4,
+   "validation": 3.8,
+   "test": -9.8,
+   "trades": [
+    27,
+    9,
+    11
+   ],
+   "R_trade": -0.118,
+   "t_jv": -0.49,
+   "pire_baisse": -19.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Sell in May (Halloween)",
+   "marche": "RTY",
+   "reglage": "achat de 10 à 5, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -40.1,
+   "validation": -1.1,
+   "test": -2.0,
+   "trades": [
+    54,
+    8,
+    8
+   ],
+   "R_trade": -0.618,
+   "t_jv": -0.45,
+   "pire_baisse": -50.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Sell in May (Halloween)",
+   "marche": "DE40",
+   "reglage": "achat de 11 à 4, stop 1.5 ATR",
+   "verdict": "trop peu de trades",
+   "essais": 8,
+   "entrainement": 5.7,
+   "validation": 14.6,
+   "test": 0.5,
+   "trades": [
+    27,
+    7,
+    11
+   ],
+   "R_trade": 0.461,
+   "t_jv": 0.94,
+   "pire_baisse": -14.4,
+   "stress_jamais_vu": 12.1
+  },
+  {
+   "famille": "Sell in May (Halloween)",
+   "marche": "UK100",
+   "reglage": "achat de 11 à 5, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -3.6,
+   "validation": 3.7,
+   "test": -1.0,
+   "trades": [
+    15,
+    3,
+    5
+   ],
+   "R_trade": -0.04,
+   "t_jv": 0.52,
+   "pire_baisse": -7.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Sell in May (Halloween)",
+   "marche": "FR40",
+   "reglage": "achat de 10 à 4, stop 1.5 ATR",
+   "verdict": "trop peu de trades",
+   "essais": 8,
+   "entrainement": 0.1,
+   "validation": 10.9,
+   "test": -6.2,
+   "trades": [
+    29,
+    7,
+    10
+   ],
+   "R_trade": 0.103,
+   "t_jv": 0.39,
+   "pire_baisse": -17.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Sell in May (Halloween)",
+   "marche": "EU50",
+   "reglage": "achat de 11 à 4, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -1.4,
+   "validation": 6.6,
+   "test": -1.6,
+   "trades": [
+    19,
+    4,
+    5
+   ],
+   "R_trade": 0.126,
+   "t_jv": 0.79,
+   "pire_baisse": -9.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Sell in May (Halloween)",
+   "marche": "J225",
+   "reglage": "achat de 10 à 4, stop 1.5 ATR",
+   "verdict": "trop peu de trades",
+   "essais": 8,
+   "entrainement": 8.4,
+   "validation": 8.8,
+   "test": 7.3,
+   "trades": [
+    24,
+    9,
+    12
+   ],
+   "R_trade": 0.545,
+   "t_jv": 0.83,
+   "pire_baisse": -11.6,
+   "stress_jamais_vu": 12.9
+  },
+  {
+   "famille": "Sell in May (Halloween)",
+   "marche": "HK50",
+   "reglage": "achat de 11 à 4, stop 1.5 ATR",
+   "verdict": "trop peu de trades",
+   "essais": 8,
+   "entrainement": 4.6,
+   "validation": 0.4,
+   "test": -1.5,
+   "trades": [
+    20,
+    14,
+    9
+   ],
+   "R_trade": 0.081,
+   "t_jv": -0.1,
+   "pire_baisse": -12.5,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Sell in May (Halloween)",
+   "marche": "AU200",
+   "reglage": "achat de 11 à 4, stop 1.5 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -2.7,
+   "validation": 3.7,
+   "test": -8.5,
+   "trades": [
+    22,
+    6,
+    12
+   ],
+   "R_trade": -0.188,
+   "t_jv": -0.51,
+   "pire_baisse": -11.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "IBS (clôture près du bas)",
+   "marche": "US500",
+   "reglage": "IBS > 0.8, vente 1 j, stop 1.5 ATR",
+   "verdict": "réglage isolé (voisins perdants)",
+   "essais": 24,
+   "entrainement": 7.2,
+   "validation": 1.2,
+   "test": 2.9,
+   "trades": [
+    350,
+    181,
+    177
+   ],
+   "R_trade": 0.016,
+   "t_jv": 0.4,
+   "pire_baisse": -13.0,
+   "stress_jamais_vu": 2.8
+  },
+  {
+   "famille": "IBS (clôture près du bas)",
+   "marche": "US100",
+   "reglage": "IBS < 0.2, 3 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 24,
+   "entrainement": 35.7,
+   "validation": 10.8,
+   "test": -9.2,
+   "trades": [
+    194,
+    119,
+    97
+   ],
+   "R_trade": 0.091,
+   "t_jv": 0.12,
+   "pire_baisse": -16.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "IBS (clôture près du bas)",
+   "marche": "US30",
+   "reglage": "IBS > 0.8, vente 1 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 24,
+   "entrainement": 19.1,
+   "validation": -7.4,
+   "test": -1.1,
+   "trades": [
+    344,
+    171,
+    157
+   ],
+   "R_trade": 0.016,
+   "t_jv": -0.89,
+   "pire_baisse": -18.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "IBS (clôture près du bas)",
+   "marche": "RTY",
+   "reglage": "IBS > 0.8, vente 1 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 24,
+   "entrainement": 58.4,
+   "validation": 0.7,
+   "test": -10.2,
+   "trades": [
+    299,
+    160,
+    152
+   ],
+   "R_trade": 0.08,
+   "t_jv": -1.12,
+   "pire_baisse": -17.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "IBS (clôture près du bas)",
+   "marche": "DE40",
+   "reglage": "IBS > 0.8, vente 1 j, stop 1.5 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 24,
+   "entrainement": -3.1,
+   "validation": -4.8,
+   "test": -10.8,
+   "trades": [
+    248,
+    151,
+    170
+   ],
+   "R_trade": -0.033,
+   "t_jv": -1.73,
+   "pire_baisse": -25.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "IBS (clôture près du bas)",
+   "marche": "UK100",
+   "reglage": "IBS > 0.9, vente 1 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 24,
+   "entrainement": 1.6,
+   "validation": -0.1,
+   "test": -3.1,
+   "trades": [
+    158,
+    82,
+    112
+   ],
+   "R_trade": -0.005,
+   "t_jv": -0.46,
+   "pire_baisse": -10.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "IBS (clôture près du bas)",
+   "marche": "FR40",
+   "reglage": "IBS > 0.9, vente 1 j, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 24,
+   "entrainement": -1.4,
+   "validation": -1.0,
+   "test": -1.4,
+   "trades": [
+    193,
+    96,
+    80
+   ],
+   "R_trade": -0.01,
+   "t_jv": -0.73,
+   "pire_baisse": -5.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "IBS (clôture près du bas)",
+   "marche": "EU50",
+   "reglage": "IBS > 0.9, vente 1 j, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 24,
+   "entrainement": -4.3,
+   "validation": -0.5,
+   "test": -0.2,
+   "trades": [
+    173,
+    100,
+    116
+   ],
+   "R_trade": -0.013,
+   "t_jv": -0.21,
+   "pire_baisse": -7.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "IBS (clôture près du bas)",
+   "marche": "J225",
+   "reglage": "IBS > 0.7, vente 1 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 24,
+   "entrainement": 10.5,
+   "validation": -4.6,
+   "test": -4.1,
+   "trades": [
+    379,
+    213,
+    200
+   ],
+   "R_trade": 0.002,
+   "t_jv": -0.77,
+   "pire_baisse": -30.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "IBS (clôture près du bas)",
+   "marche": "HK50",
+   "reglage": "IBS < 0.2, 1 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 24,
+   "entrainement": 7.0,
+   "validation": -14.6,
+   "test": -0.9,
+   "trades": [
+    198,
+    138,
+    116
+   ],
+   "R_trade": -0.019,
+   "t_jv": -2.03,
+   "pire_baisse": -21.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "IBS (clôture près du bas)",
+   "marche": "AU200",
+   "reglage": "IBS > 0.9, vente 1 j, stop 3 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 24,
+   "entrainement": 1.5,
+   "validation": -1.9,
+   "test": 0.4,
+   "trades": [
+    190,
+    111,
+    83
+   ],
+   "R_trade": -0.0,
+   "t_jv": -0.46,
+   "pire_baisse": -4.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "IBS (clôture près du bas)",
+   "marche": "GOLD",
+   "reglage": "IBS < 0.3, 1 j, stop 1.5 ATR",
+   "verdict": "réglage isolé (voisins perdants)",
+   "essais": 24,
+   "entrainement": 54.8,
+   "validation": 1.1,
+   "test": 6.3,
+   "trades": [
+    341,
+    179,
+    152
+   ],
+   "R_trade": 0.092,
+   "t_jv": 0.7,
+   "pire_baisse": -14.0,
+   "stress_jamais_vu": 4.3
+  },
+  {
+   "famille": "IBS (clôture près du bas)",
+   "marche": "BTCUSD",
+   "reglage": "IBS > 0.7, vente 1 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 24,
+   "entrainement": 191.8,
+   "validation": -20.0,
+   "test": -7.0,
+   "trades": [
+    514,
+    224,
+    214
+   ],
+   "R_trade": 0.173,
+   "t_jv": -2.5,
+   "pire_baisse": -58.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "IBS (clôture près du bas)",
+   "marche": "ETHUSD",
+   "reglage": "IBS > 0.7, vente 1 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 24,
+   "entrainement": 244.2,
+   "validation": -15.3,
+   "test": -4.9,
+   "trades": [
+    496,
+    208,
+    203
+   ],
+   "R_trade": 0.247,
+   "t_jv": -2.02,
+   "pire_baisse": -67.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Baisses d'affilée",
+   "marche": "US500",
+   "reglage": "3 baisses -> achat 3 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 6.9,
+   "validation": -1.5,
+   "test": 6.4,
+   "trades": [
+    94,
+    55,
+    43
+   ],
+   "R_trade": 0.062,
+   "t_jv": 0.57,
+   "pire_baisse": -10.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Baisses d'affilée",
+   "marche": "US100",
+   "reglage": "2 baisses -> achat 5 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 17.8,
+   "validation": 1.6,
+   "test": -4.6,
+   "trades": [
+    167,
+    82,
+    87
+   ],
+   "R_trade": 0.044,
+   "t_jv": -0.2,
+   "pire_baisse": -16.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Baisses d'affilée",
+   "marche": "US30",
+   "reglage": "3 baisses -> achat 5 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 2.6,
+   "validation": -8.4,
+   "test": 9.6,
+   "trades": [
+    111,
+    59,
+    39
+   ],
+   "R_trade": 0.018,
+   "t_jv": 0.1,
+   "pire_baisse": -19.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Baisses d'affilée",
+   "marche": "RTY",
+   "reglage": "2 baisses -> achat 1 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 6.0,
+   "validation": -1.8,
+   "test": 5.9,
+   "trades": [
+    232,
+    111,
+    110
+   ],
+   "R_trade": 0.022,
+   "t_jv": 0.48,
+   "pire_baisse": -32.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Baisses d'affilée",
+   "marche": "DE40",
+   "reglage": "2 baisses -> achat 3 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 10.9,
+   "validation": 3.0,
+   "test": -4.2,
+   "trades": [
+    183,
+    100,
+    99
+   ],
+   "R_trade": 0.025,
+   "t_jv": -0.09,
+   "pire_baisse": -13.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Baisses d'affilée",
+   "marche": "UK100",
+   "reglage": "4 baisses -> achat 3 j, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 18,
+   "entrainement": -5.0,
+   "validation": -3.2,
+   "test": 0.0,
+   "trades": [
+    42,
+    18,
+    15
+   ],
+   "R_trade": -0.109,
+   "t_jv": -1.27,
+   "pire_baisse": -9.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Baisses d'affilée",
+   "marche": "FR40",
+   "reglage": "4 baisses -> achat 3 j, stop 1.5 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 18,
+   "entrainement": -5.2,
+   "validation": 0.1,
+   "test": -1.4,
+   "trades": [
+    50,
+    19,
+    18
+   ],
+   "R_trade": -0.074,
+   "t_jv": -0.25,
+   "pire_baisse": -8.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Baisses d'affilée",
+   "marche": "EU50",
+   "reglage": "4 baisses -> achat 5 j, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 18,
+   "entrainement": -5.7,
+   "validation": 0.5,
+   "test": -0.8,
+   "trades": [
+    45,
+    22,
+    13
+   ],
+   "R_trade": -0.075,
+   "t_jv": -0.09,
+   "pire_baisse": -9.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Baisses d'affilée",
+   "marche": "J225",
+   "reglage": "2 baisses -> achat 1 j, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 18,
+   "entrainement": -2.5,
+   "validation": 5.0,
+   "test": 6.1,
+   "trades": [
+    197,
+    95,
+    97
+   ],
+   "R_trade": 0.022,
+   "t_jv": 2.68,
+   "pire_baisse": -8.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Baisses d'affilée",
+   "marche": "HK50",
+   "reglage": "3 baisses -> achat 5 j, stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 18,
+   "entrainement": -1.4,
+   "validation": -1.0,
+   "test": -2.1,
+   "trades": [
+    70,
+    44,
+    40
+   ],
+   "R_trade": -0.029,
+   "t_jv": -0.59,
+   "pire_baisse": -8.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Baisses d'affilée",
+   "marche": "AU200",
+   "reglage": "2 baisses -> achat 3 j, stop 3 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 6.1,
+   "validation": -2.8,
+   "test": -2.4,
+   "trades": [
+    169,
+    82,
+    75
+   ],
+   "R_trade": 0.003,
+   "t_jv": -0.77,
+   "pire_baisse": -6.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Baisses d'affilée",
+   "marche": "GOLD",
+   "reglage": "2 baisses -> achat 1 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 5.0,
+   "validation": 1.6,
+   "test": -3.8,
+   "trades": [
+    220,
+    118,
+    103
+   ],
+   "R_trade": 0.007,
+   "t_jv": -0.26,
+   "pire_baisse": -13.5,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Baisses d'affilée",
+   "marche": "SILVER",
+   "reglage": "2 baisses -> achat 1 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 3.8,
+   "validation": -8.4,
+   "test": 4.3,
+   "trades": [
+    226,
+    117,
+    90
+   ],
+   "R_trade": -0.001,
+   "t_jv": -0.53,
+   "pire_baisse": -22.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Baisses d'affilée",
+   "marche": "BTCUSD",
+   "reglage": "2 baisses -> achat 5 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 75.2,
+   "validation": -2.7,
+   "test": -11.1,
+   "trades": [
+    173,
+    98,
+    112
+   ],
+   "R_trade": 0.16,
+   "t_jv": -0.86,
+   "pire_baisse": -19.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Baisses d'affilée",
+   "marche": "ETHUSD",
+   "reglage": "2 baisses -> achat 1 j, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 18,
+   "entrainement": 109.6,
+   "validation": -5.7,
+   "test": -7.4,
+   "trades": [
+    261,
+    137,
+    139
+   ],
+   "R_trade": 0.18,
+   "t_jv": -1.29,
+   "pire_baisse": -26.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Rééquilibrage fin de mois",
+   "marche": "US500",
+   "reglage": "5 derniers jours, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 12,
+   "entrainement": 12.6,
+   "validation": -5.2,
+   "test": 0.9,
+   "trades": [
+    72,
+    35,
+    36
+   ],
+   "R_trade": 0.058,
+   "t_jv": -0.56,
+   "pire_baisse": -8.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Rééquilibrage fin de mois",
+   "marche": "US100",
+   "reglage": "5 derniers jours, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 12,
+   "entrainement": 6.3,
+   "validation": -2.2,
+   "test": 0.4,
+   "trades": [
+    78,
+    39,
+    37
+   ],
+   "R_trade": 0.029,
+   "t_jv": -0.23,
+   "pire_baisse": -6.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Rééquilibrage fin de mois",
+   "marche": "US30",
+   "reglage": "5 derniers jours, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 12,
+   "entrainement": 15.7,
+   "validation": -6.8,
+   "test": -2.9,
+   "trades": [
+    73,
+    37,
+    34
+   ],
+   "R_trade": 0.042,
+   "t_jv": -1.31,
+   "pire_baisse": -19.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Rééquilibrage fin de mois",
+   "marche": "RTY",
+   "reglage": "2 derniers jours, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 12,
+   "entrainement": 5.7,
+   "validation": -0.1,
+   "test": 6.6,
+   "trades": [
+    67,
+    30,
+    28
+   ],
+   "R_trade": 0.097,
+   "t_jv": 1.43,
+   "pire_baisse": -10.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Rééquilibrage fin de mois",
+   "marche": "DE40",
+   "reglage": "5 derniers jours, stop 1.5 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 12,
+   "entrainement": 5.3,
+   "validation": -10.6,
+   "test": 3.6,
+   "trades": [
+    73,
+    38,
+    36
+   ],
+   "R_trade": -0.012,
+   "t_jv": -0.94,
+   "pire_baisse": -17.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Rééquilibrage fin de mois",
+   "marche": "UK100",
+   "reglage": "3 derniers jours (trimestre), stop 1.5 ATR",
+   "verdict": "trop peu de trades",
+   "essais": 12,
+   "entrainement": 1.0,
+   "validation": -2.8,
+   "test": -2.4,
+   "trades": [
+    22,
+    10,
+    9
+   ],
+   "R_trade": -0.103,
+   "t_jv": -1.73,
+   "pire_baisse": -5.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Rééquilibrage fin de mois",
+   "marche": "EU50",
+   "reglage": "2 derniers jours (trimestre), stop 3 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 12,
+   "entrainement": -2.1,
+   "validation": -1.1,
+   "test": -0.6,
+   "trades": [
+    21,
+    10,
+    9
+   ],
+   "R_trade": -0.096,
+   "t_jv": -1.36,
+   "pire_baisse": -4.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après l'emploi US (NFP)",
+   "marche": "US500",
+   "reglage": "achat après, stop 1 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 7.9,
+   "validation": 3.5,
+   "test": -10.3,
+   "trades": [
+    65,
+    34,
+    34
+   ],
+   "R_trade": 0.008,
+   "t_jv": -1.24,
+   "pire_baisse": -11.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après l'emploi US (NFP)",
+   "marche": "US100",
+   "reglage": "achat après, stop 1 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 11.6,
+   "validation": 3.5,
+   "test": -7.7,
+   "trades": [
+    64,
+    33,
+    36
+   ],
+   "R_trade": 0.056,
+   "t_jv": -0.76,
+   "pire_baisse": -8.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après l'emploi US (NFP)",
+   "marche": "GOLD",
+   "reglage": "vente avant, stop 2 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -0.4,
+   "validation": -0.1,
+   "test": -2.2,
+   "trades": [
+    56,
+    30,
+    28
+   ],
+   "R_trade": -0.024,
+   "t_jv": -1.69,
+   "pire_baisse": -3.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après l'emploi US (NFP)",
+   "marche": "EURUSD",
+   "reglage": "vente avant, stop 2 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 2.3,
+   "validation": 0.4,
+   "test": -2.0,
+   "trades": [
+    58,
+    30,
+    28
+   ],
+   "R_trade": 0.006,
+   "t_jv": -0.91,
+   "pire_baisse": -3.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après l'emploi US (NFP)",
+   "marche": "USDJPY",
+   "reglage": "achat avant, stop 1 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 4.2,
+   "validation": -0.1,
+   "test": -2.3,
+   "trades": [
+    60,
+    34,
+    31
+   ],
+   "R_trade": 0.015,
+   "t_jv": -0.51,
+   "pire_baisse": -6.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après l'inflation US (CPI)",
+   "marche": "US500",
+   "reglage": "vente avant, stop 1 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 8.0,
+   "validation": -5.1,
+   "test": -1.6,
+   "trades": [
+    57,
+    30,
+    28
+   ],
+   "R_trade": 0.011,
+   "t_jv": -2.13,
+   "pire_baisse": -9.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après l'inflation US (CPI)",
+   "marche": "US100",
+   "reglage": "vente avant, stop 1 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 5.9,
+   "validation": -4.4,
+   "test": -1.7,
+   "trades": [
+    57,
+    31,
+    28
+   ],
+   "R_trade": -0.001,
+   "t_jv": -2.1,
+   "pire_baisse": -8.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après l'inflation US (CPI)",
+   "marche": "GOLD",
+   "reglage": "achat avant, stop 1 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 14.5,
+   "validation": 2.9,
+   "test": -1.2,
+   "trades": [
+    58,
+    30,
+    29
+   ],
+   "R_trade": 0.139,
+   "t_jv": 0.56,
+   "pire_baisse": -4.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après l'inflation US (CPI)",
+   "marche": "EURUSD",
+   "reglage": "achat après, stop 1 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 4.4,
+   "validation": -0.0,
+   "test": -4.7,
+   "trades": [
+    62,
+    33,
+    31
+   ],
+   "R_trade": -0.002,
+   "t_jv": -0.97,
+   "pire_baisse": -9.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après l'inflation US (CPI)",
+   "marche": "USDJPY",
+   "reglage": "achat avant, stop 2 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -0.2,
+   "validation": -1.3,
+   "test": 2.1,
+   "trades": [
+    56,
+    30,
+    28
+   ],
+   "R_trade": 0.006,
+   "t_jv": 0.45,
+   "pire_baisse": -2.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après la BCE",
+   "marche": "DE40",
+   "reglage": "achat avant, stop 2 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 1.4,
+   "validation": -1.4,
+   "test": 0.5,
+   "trades": [
+    39,
+    20,
+    19
+   ],
+   "R_trade": 0.005,
+   "t_jv": -0.4,
+   "pire_baisse": -2.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après la BCE",
+   "marche": "EU50",
+   "reglage": "achat avant, stop 2 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 3.0,
+   "validation": -0.8,
+   "test": -0.5,
+   "trades": [
+    38,
+    21,
+    19
+   ],
+   "R_trade": 0.022,
+   "t_jv": -0.51,
+   "pire_baisse": -2.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après la BCE",
+   "marche": "FR40",
+   "reglage": "achat avant, stop 1 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 6.4,
+   "validation": -1.9,
+   "test": -0.1,
+   "trades": [
+    45,
+    24,
+    23
+   ],
+   "R_trade": 0.048,
+   "t_jv": -0.42,
+   "pire_baisse": -4.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après la BCE",
+   "marche": "EURUSD",
+   "reglage": "vente après, stop 1 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 5.6,
+   "validation": 1.6,
+   "test": -1.1,
+   "trades": [
+    42,
+    21,
+    19
+   ],
+   "R_trade": 0.074,
+   "t_jv": 0.12,
+   "pire_baisse": -3.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après la Banque d'Angleterre",
+   "marche": "UK100",
+   "reglage": "vente avant, stop 2 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 2.6,
+   "validation": -0.6,
+   "test": -0.1,
+   "trades": [
+    40,
+    22,
+    13
+   ],
+   "R_trade": 0.026,
+   "t_jv": -0.23,
+   "pire_baisse": -4.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après la Banque d'Angleterre",
+   "marche": "GBPUSD",
+   "reglage": "achat avant, stop 2 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 0.4,
+   "validation": 0.2,
+   "test": -1.0,
+   "trades": [
+    41,
+    20,
+    12
+   ],
+   "R_trade": -0.005,
+   "t_jv": -0.33,
+   "pire_baisse": -3.5,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après la Banque du Japon",
+   "marche": "J225",
+   "reglage": "achat avant, stop 1 ATR",
+   "verdict": "réglage isolé (voisins perdants)",
+   "essais": 8,
+   "entrainement": 9.3,
+   "validation": 0.2,
+   "test": 6.1,
+   "trades": [
+    50,
+    29,
+    13
+   ],
+   "R_trade": 0.17,
+   "t_jv": 1.15,
+   "pire_baisse": -9.7,
+   "stress_jamais_vu": 5.9
+  },
+  {
+   "famille": "Avant/après la Banque du Japon",
+   "marche": "USDJPY",
+   "reglage": "achat avant, stop 1 ATR",
+   "verdict": "réglage isolé (voisins perdants)",
+   "essais": 8,
+   "entrainement": 2.4,
+   "validation": 5.1,
+   "test": 3.0,
+   "trades": [
+    48,
+    26,
+    13
+   ],
+   "R_trade": 0.121,
+   "t_jv": 1.64,
+   "pire_baisse": -7.8,
+   "stress_jamais_vu": 8.1
+  },
+  {
+   "famille": "Avant/après la banque d'Australie",
+   "marche": "AU200",
+   "reglage": "vente avant, stop 1 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 3.3,
+   "validation": -0.5,
+   "test": 0.3,
+   "trades": [
+    62,
+    28,
+    20
+   ],
+   "R_trade": 0.028,
+   "t_jv": -0.04,
+   "pire_baisse": -7.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Avant/après la banque d'Australie",
+   "marche": "AUDUSD",
+   "reglage": "vente après, stop 1 ATR",
+   "verdict": "réglage isolé (voisins perdants)",
+   "essais": 8,
+   "entrainement": 0.3,
+   "validation": 0.2,
+   "test": 1.2,
+   "trades": [
+    51,
+    26,
+    19
+   ],
+   "R_trade": 0.018,
+   "t_jv": 0.78,
+   "pire_baisse": -1.4,
+   "stress_jamais_vu": 1.2
+  },
+  {
+   "famille": "Après la Fed (FOMC)",
+   "marche": "US500",
+   "reglage": "vente après, stop 1 ATR",
+   "verdict": "réglage isolé (voisins perdants)",
+   "essais": 4,
+   "entrainement": 3.8,
+   "validation": 4.9,
+   "test": 4.5,
+   "trades": [
+    37,
+    20,
+    19
+   ],
+   "R_trade": 0.173,
+   "t_jv": 2.24,
+   "pire_baisse": -2.6,
+   "stress_jamais_vu": 9.1
+  },
+  {
+   "famille": "Après la Fed (FOMC)",
+   "marche": "US100",
+   "reglage": "vente après, stop 1 ATR",
+   "verdict": "réglage isolé (voisins perdants)",
+   "essais": 4,
+   "entrainement": 3.6,
+   "validation": 4.2,
+   "test": 2.9,
+   "trades": [
+    37,
+    20,
+    19
+   ],
+   "R_trade": 0.141,
+   "t_jv": 2.02,
+   "pire_baisse": -3.0,
+   "stress_jamais_vu": 7.0
+  },
+  {
+   "famille": "Après la Fed (FOMC)",
+   "marche": "GOLD",
+   "reglage": "vente après, stop 2 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 4,
+   "entrainement": -1.4,
+   "validation": 0.5,
+   "test": 0.4,
+   "trades": [
+    37,
+    20,
+    19
+   ],
+   "R_trade": -0.007,
+   "t_jv": 0.71,
+   "pire_baisse": -2.5,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Après la Fed (FOMC)",
+   "marche": "EURUSD",
+   "reglage": "vente après, stop 2 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 4,
+   "entrainement": -1.5,
+   "validation": 1.1,
+   "test": 0.9,
+   "trades": [
+    37,
+    20,
+    19
+   ],
+   "R_trade": 0.006,
+   "t_jv": 1.87,
+   "pire_baisse": -1.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Momentum intraday US",
+   "marche": "US500",
+   "reglage": "15 h-16 h contre le matin, stop 1 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 12,
+   "entrainement": 49.6,
+   "validation": -16.9,
+   "test": -3.9,
+   "trades": [
+    1156,
+    633,
+    619
+   ],
+   "R_trade": 0.012,
+   "t_jv": -2.32,
+   "pire_baisse": -29.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Momentum intraday US",
+   "marche": "US100",
+   "reglage": "15 h-16 h dans le sens de la journée, stop 1 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 12,
+   "entrainement": 77.6,
+   "validation": 6.8,
+   "test": -3.5,
+   "trades": [
+    1161,
+    633,
+    620
+   ],
+   "R_trade": 0.034,
+   "t_jv": 0.43,
+   "pire_baisse": -12.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Momentum intraday US",
+   "marche": "US30",
+   "reglage": "14 h-16 h contre le matin, stop 1 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 12,
+   "entrainement": 144.7,
+   "validation": 8.7,
+   "test": -0.7,
+   "trades": [
+    1165,
+    634,
+    622
+   ],
+   "R_trade": 0.063,
+   "t_jv": 0.66,
+   "pire_baisse": -11.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Momentum intraday US",
+   "marche": "RTY",
+   "reglage": "15 h-16 h contre le matin, stop 2 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 12,
+   "entrainement": -1.4,
+   "validation": -3.8,
+   "test": -4.7,
+   "trades": [
+    749,
+    631,
+    620
+   ],
+   "R_trade": -0.005,
+   "t_jv": -2.36,
+   "pire_baisse": -11.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Gotobi (USD/JPY)",
+   "marche": "USDJPY",
+   "reglage": "achat de 5 h à 10 h (Tokyo), stop 2 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 12,
+   "entrainement": 0.4,
+   "validation": 1.6,
+   "test": -4.2,
+   "trades": [
+    334,
+    179,
+    173
+   ],
+   "R_trade": -0.003,
+   "t_jv": -1.13,
+   "pire_baisse": -4.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Séances de l'or",
+   "marche": "GOLD",
+   "reglage": "vente 14 h-16 h UTC, stop 1 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 14,
+   "entrainement": 39.3,
+   "validation": -11.0,
+   "test": 3.9,
+   "trades": [
+    1220,
+    650,
+    624
+   ],
+   "R_trade": 0.013,
+   "t_jv": -0.55,
+   "pire_baisse": -64.2,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Séances de l'or",
+   "marche": "SILVER",
+   "reglage": "vente 14 h-16 h UTC, stop 2 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 14,
+   "entrainement": -12.2,
+   "validation": -13.7,
+   "test": -6.3,
+   "trades": [
+    1207,
+    643,
+    622
+   ],
+   "R_trade": -0.013,
+   "t_jv": -3.07,
+   "pire_baisse": -63.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Fixing de fin de mois (dollar)",
+   "marche": "EURUSD",
+   "reglage": "dollar contre les actions US, 12 h-16 h, stop 2 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -5.2,
+   "validation": 0.1,
+   "test": -0.4,
+   "trades": [
+    54,
+    26,
+    27
+   ],
+   "R_trade": -0.051,
+   "t_jv": -0.15,
+   "pire_baisse": -6.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Fixing de fin de mois (dollar)",
+   "marche": "GBPUSD",
+   "reglage": "dollar contre les actions US, 12 h-16 h, stop 2 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -5.1,
+   "validation": -1.0,
+   "test": -2.2,
+   "trades": [
+    51,
+    26,
+    27
+   ],
+   "R_trade": -0.08,
+   "t_jv": -1.99,
+   "pire_baisse": -8.3,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Fixing de fin de mois (dollar)",
+   "marche": "USDJPY",
+   "reglage": "dollar contre les actions US, 12 h-16 h, stop 1 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 8,
+   "entrainement": 5.5,
+   "validation": -4.0,
+   "test": 0.6,
+   "trades": [
+    55,
+    27,
+    28
+   ],
+   "R_trade": 0.018,
+   "t_jv": -1.02,
+   "pire_baisse": -5.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Fixing de fin de mois (dollar)",
+   "marche": "AUDUSD",
+   "reglage": "dollar contre les actions US, 12 h-16 h, stop 2 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -9.3,
+   "validation": -3.3,
+   "test": -1.6,
+   "trades": [
+    57,
+    26,
+    27
+   ],
+   "R_trade": -0.129,
+   "t_jv": -3.4,
+   "pire_baisse": -15.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Fin de séance US -> ouverture Asie",
+   "marche": "J225",
+   "reglage": "contre US, 1 h après l'ouverture, stop 2 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -7.4,
+   "validation": -7.7,
+   "test": -0.5,
+   "trades": [
+    819,
+    502,
+    481
+   ],
+   "R_trade": -0.009,
+   "t_jv": -1.77,
+   "pire_baisse": -19.5,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Fin de séance US -> ouverture Asie",
+   "marche": "AU200",
+   "reglage": "contre US, 1 h après l'ouverture, stop 2 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -14.0,
+   "validation": -6.2,
+   "test": -3.8,
+   "trades": [
+    810,
+    492,
+    477
+   ],
+   "R_trade": -0.014,
+   "t_jv": -3.18,
+   "pire_baisse": -31.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Heures du Bitcoin",
+   "marche": "BTCUSD",
+   "reglage": "achat 22 h-0 h UTC, stop 1 ATR",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 148.7,
+   "validation": -58.5,
+   "test": -21.9,
+   "trades": [
+    1704,
+    912,
+    879
+   ],
+   "R_trade": 0.02,
+   "t_jv": -9.83,
+   "pire_baisse": -225.5,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "V du dollar autour des fixings",
+   "marche": "EURUSD",
+   "reglage": "dollar acheté 2 h-8 h (Europe), stop 1 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -0.3,
+   "validation": 11.6,
+   "test": -5.8,
+   "trades": [
+    1297,
+    661,
+    640
+   ],
+   "R_trade": 0.002,
+   "t_jv": 0.37,
+   "pire_baisse": -83.7,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "V du dollar autour des fixings",
+   "marche": "GBPUSD",
+   "reglage": "dollar vendu 21 h-2 h (après Tokyo), stop 2 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -21.3,
+   "validation": -8.2,
+   "test": -10.1,
+   "trades": [
+    1201,
+    648,
+    625
+   ],
+   "R_trade": -0.016,
+   "t_jv": -5.33,
+   "pire_baisse": -39.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "V du dollar autour des fixings",
+   "marche": "USDJPY",
+   "reglage": "dollar acheté 17 h-20 h (avant Tokyo), stop 2 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -18.8,
+   "validation": -17.0,
+   "test": -11.6,
+   "trades": [
+    941,
+    520,
+    499
+   ],
+   "R_trade": -0.024,
+   "t_jv": -9.39,
+   "pire_baisse": -54.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "V du dollar autour des fixings",
+   "marche": "AUDUSD",
+   "reglage": "dollar acheté 17 h-20 h (avant Tokyo), stop 2 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 8,
+   "entrainement": -35.1,
+   "validation": -14.1,
+   "test": -16.9,
+   "trades": [
+    947,
+    520,
+    499
+   ],
+   "R_trade": -0.034,
+   "t_jv": -11.67,
+   "pire_baisse": -66.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "BTC meneur de l'ETH",
+   "marche": "ETHUSD",
+   "reglage": "sens du BTC si |r| > 1.0%, stop 2 ATR",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -35.9,
+   "validation": -33.0,
+   "test": -7.0,
+   "trades": [
+    5052,
+    1271,
+    932
+   ],
+   "R_trade": -0.01,
+   "t_jv": -7.16,
+   "pire_baisse": -282.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Momentum entre marchés (portefeuille 41 marchés)",
+   "marche": "portefeuille",
+   "reglage": "meilleurs/pires 3 sur 63 j",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 12,
+   "entrainement": 335.9,
+   "validation": 4.7,
+   "test": -22.2,
+   "trades": [
+    327,
+    151,
+    163
+   ],
+   "R_trade": 0.497,
+   "t_jv": -0.74,
+   "pire_baisse": -56.8,
+   "stress_jamais_vu": null,
+   "tous_reglages": {
+    "meilleurs/pires 3 sur 21 j": {
+     "entrainement": 91.9,
+     "validation": -1.1,
+     "test": -20.8,
+     "trades": [
+      524,
+      202,
+      214
+     ],
+     "R_trade": 0.075,
+     "t_jv": -1.05,
+     "pire_baisse": -98.5
+    },
+    "meilleurs/pires 5 sur 21 j": {
+     "entrainement": 110.2,
+     "validation": -5.9,
+     "test": -7.7,
+     "trades": [
+      774,
+      309,
+      305
+     ],
+     "R_trade": 0.07,
+     "t_jv": -0.5,
+     "pire_baisse": -106.5
+    },
+    "signe du rendement sur 21 j": {
+     "entrainement": -170.6,
+     "validation": -175.9,
+     "test": -82.5,
+     "trades": [
+      2029,
+      1022,
+      822
+     ],
+     "R_trade": -0.111,
+     "t_jv": -4.19,
+     "pire_baisse": -510.3
+    },
+    "meilleurs/pires 3 sur 63 j": {
+     "entrainement": 335.9,
+     "validation": 4.7,
+     "test": -22.2,
+     "trades": [
+      327,
+      151,
+      163
+     ],
+     "R_trade": 0.497,
+     "t_jv": -0.74,
+     "pire_baisse": -56.8
+    },
+    "meilleurs/pires 5 sur 63 j": {
+     "entrainement": 324.7,
+     "validation": -7.3,
+     "test": -31.8,
+     "trades": [
+      455,
+      234,
+      239
+     ],
+     "R_trade": 0.308,
+     "t_jv": -1.24,
+     "pire_baisse": -65.7
+    },
+    "signe du rendement sur 63 j": {
+     "entrainement": 173.7,
+     "validation": -113.9,
+     "test": -138.4,
+     "trades": [
+      1246,
+      636,
+      581
+     ],
+     "R_trade": -0.032,
+     "t_jv": -3.78,
+     "pire_baisse": -502.7
+    },
+    "meilleurs/pires 3 sur 126 j": {
+     "entrainement": 46.1,
+     "validation": 4.7,
+     "test": -46.2,
+     "trades": [
+      275,
+      114,
+      140
+     ],
+     "R_trade": 0.009,
+     "t_jv": -1.77,
+     "pire_baisse": -81.4
+    },
+    "meilleurs/pires 5 sur 126 j": {
+     "entrainement": 75.0,
+     "validation": 6.3,
+     "test": -76.4,
+     "trades": [
+      379,
+      162,
+      192
+     ],
+     "R_trade": 0.007,
+     "t_jv": -2.47,
+     "pire_baisse": -119.8
+    },
+    "signe du rendement sur 126 j": {
+     "entrainement": -129.7,
+     "validation": -108.9,
+     "test": -187.6,
+     "trades": [
+      925,
+      477,
+      444
+     ],
+     "R_trade": -0.231,
+     "t_jv": -5.8,
+     "pire_baisse": -458.1
+    },
+    "meilleurs/pires 3 sur 252 j": {
+     "entrainement": -7.7,
+     "validation": -3.8,
+     "test": -32.7,
+     "trades": [
+      166,
+      106,
+      88
+     ],
+     "R_trade": -0.123,
+     "t_jv": -1.45,
+     "pire_baisse": -53.5
+    },
+    "meilleurs/pires 5 sur 252 j": {
+     "entrainement": -3.7,
+     "validation": -15.0,
+     "test": -43.0,
+     "trades": [
+      243,
+      163,
+      113
+     ],
+     "R_trade": -0.119,
+     "t_jv": -1.87,
+     "pire_baisse": -76.7
+    },
+    "signe du rendement sur 252 j": {
+     "entrainement": -198.8,
+     "validation": -65.6,
+     "test": -117.2,
+     "trades": [
+      638,
+      345,
+      217
+     ],
+     "R_trade": -0.318,
+     "t_jv": -3.67,
+     "pire_baisse": -381.5
+    }
+   }
+  },
+  {
+   "famille": "Paires (retour à la moyenne de l'écart)",
+   "marche": "GOLD/SILVER",
+   "reglage": "z 20 j, entrée 1.5",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 0.6,
+   "validation": 0.6,
+   "test": -3.6,
+   "trades": [
+    67,
+    39,
+    41
+   ],
+   "R_trade": -0.016,
+   "t_jv": -0.64,
+   "pire_baisse": -6.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Paires (retour à la moyenne de l'écart)",
+   "marche": "GOLD/PLATINUM",
+   "reglage": "z 60 j, entrée 1.5",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -0.6,
+   "validation": -3.5,
+   "test": -0.3,
+   "trades": [
+    51,
+    40,
+    34
+   ],
+   "R_trade": -0.035,
+   "t_jv": -1.86,
+   "pire_baisse": -5.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Paires (retour à la moyenne de l'écart)",
+   "marche": "OIL_BRENT/OIL_CRUDE",
+   "reglage": "z 60 j, entrée 2.5",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -0.9,
+   "validation": -1.7,
+   "test": 0.4,
+   "trades": [
+    20,
+    11,
+    18
+   ],
+   "R_trade": -0.044,
+   "t_jv": -1.03,
+   "pire_baisse": -3.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Paires (retour à la moyenne de l'écart)",
+   "marche": "US500/US100",
+   "reglage": "z 60 j, entrée 2",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -0.4,
+   "validation": 0.1,
+   "test": -1.1,
+   "trades": [
+    32,
+    15,
+    24
+   ],
+   "R_trade": -0.021,
+   "t_jv": -1.11,
+   "pire_baisse": -1.6,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Paires (retour à la moyenne de l'écart)",
+   "marche": "US500/RTY",
+   "reglage": "z 60 j, entrée 2",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -0.6,
+   "validation": -1.9,
+   "test": -0.3,
+   "trades": [
+    32,
+    11,
+    24
+   ],
+   "R_trade": -0.042,
+   "t_jv": -1.85,
+   "pire_baisse": -3.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Paires (retour à la moyenne de l'écart)",
+   "marche": "US30/US500",
+   "reglage": "z 60 j, entrée 2.5",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -1.3,
+   "validation": 0.9,
+   "test": -0.5,
+   "trades": [
+    22,
+    8,
+    10
+   ],
+   "R_trade": -0.021,
+   "t_jv": 0.37,
+   "pire_baisse": -1.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Paires (retour à la moyenne de l'écart)",
+   "marche": "DE40/EU50",
+   "reglage": "z 60 j, entrée 2.5",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -0.5,
+   "validation": -0.3,
+   "test": 0.3,
+   "trades": [
+    18,
+    15,
+    8
+   ],
+   "R_trade": -0.011,
+   "t_jv": 0.03,
+   "pire_baisse": -0.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Paires (retour à la moyenne de l'écart)",
+   "marche": "FR40/EU50",
+   "reglage": "z 60 j, entrée 2.5",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -0.7,
+   "validation": -0.1,
+   "test": -0.9,
+   "trades": [
+    17,
+    6,
+    11
+   ],
+   "R_trade": -0.05,
+   "t_jv": -2.29,
+   "pire_baisse": -2.1,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Paires (retour à la moyenne de l'écart)",
+   "marche": "AUDUSD/NZDUSD",
+   "reglage": "z 20 j, entrée 2.5",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 1.1,
+   "validation": -5.3,
+   "test": -1.4,
+   "trades": [
+    21,
+    12,
+    18
+   ],
+   "R_trade": -0.11,
+   "t_jv": -1.15,
+   "pire_baisse": -12.0,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Paires (retour à la moyenne de l'écart)",
+   "marche": "EURUSD/GBPUSD",
+   "reglage": "z 60 j, entrée 2",
+   "verdict": "passe, mais pourrait être le hasard",
+   "essais": 6,
+   "entrainement": 2.7,
+   "validation": 1.6,
+   "test": 2.3,
+   "trades": [
+    31,
+    15,
+    15
+   ],
+   "R_trade": 0.108,
+   "t_jv": 0.76,
+   "pire_baisse": -2.7,
+   "stress_jamais_vu": 1.0,
+   "p_jamais_vu": 0.2236
+  },
+  {
+   "famille": "Paires (retour à la moyenne de l'écart)",
+   "marche": "EURJPY/USDJPY",
+   "reglage": "z 20 j, entrée 2",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 0.5,
+   "validation": -0.0,
+   "test": -1.3,
+   "trades": [
+    48,
+    25,
+    28
+   ],
+   "R_trade": -0.007,
+   "t_jv": -1.46,
+   "pire_baisse": -1.9,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Paires (retour à la moyenne de l'écart)",
+   "marche": "BTCUSD/ETHUSD",
+   "reglage": "z 60 j, entrée 2",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -1.3,
+   "validation": 0.9,
+   "test": -1.8,
+   "trades": [
+    28,
+    15,
+    12
+   ],
+   "R_trade": -0.039,
+   "t_jv": -0.5,
+   "pire_baisse": -8.4,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Paires (retour à la moyenne de l'écart)",
+   "marche": "US100/NVDA",
+   "reglage": "z 20 j, entrée 2",
+   "verdict": "échoue sur les années jamais vues",
+   "essais": 6,
+   "entrainement": 10.7,
+   "validation": -0.7,
+   "test": 1.2,
+   "trades": [
+    45,
+    23,
+    24
+   ],
+   "R_trade": 0.121,
+   "t_jv": 0.11,
+   "pire_baisse": -2.8,
+   "stress_jamais_vu": null
+  },
+  {
+   "famille": "Paires (retour à la moyenne de l'écart)",
+   "marche": "MSFT/AAPL",
+   "reglage": "z 20 j, entrée 2.5",
+   "verdict": "perd à l'entraînement",
+   "essais": 6,
+   "entrainement": -0.9,
+   "validation": 0.2,
+   "test": 0.2,
+   "trades": [
+    25,
+    15,
+    14
+   ],
+   "R_trade": -0.01,
+   "t_jv": 0.14,
+   "pire_baisse": -2.4,
+   "stress_jamais_vu": null
+  }
+ ],
+ "bilan": {
+  "passe, mais pourrait être le hasard": 12,
+  "perd à l'entraînement": 77,
+  "réglage isolé (voisins perdants)": 12,
+  "trop peu de trades": 9,
+  "échoue sur les années jamais vues": 141
+ },
+ "controle_prix_melanges": [
+  {
+   "graine": 0,
+   "couples": 248,
+   "passent_tout_sauf_bonferroni": 23,
+   "dont_t_sup_1_645": 13,
+   "dont_bonferroni": 5,
+   "exemples": [
+    [
+     "Veille BCE (indices zone euro)",
+     "DE40",
+     "achat J-2 et J-1, stop 3 ATR",
+     0.88
+    ],
+    [
+     "Inversion de fin de mois",
+     "DE40",
+     "achat tout le mois après une fin de mois en baisse, stop 1.5 ATR",
+     1.39
+    ],
+    [
+     "Momentum hebdo crypto",
+     "BTCUSD",
+     "achat/vente selon 7 j, stop 1.5 ATR",
+     1.57
+    ],
+    [
+     "Momentum hebdo crypto",
+     "ETHUSD",
+     "achat/vente selon 28 j, stop 1.5 ATR",
+     0.83
+    ],
+    [
+     "Momentum hebdo crypto",
+     "LTCUSD",
+     "achat si hausse sur 7 j, stop 1.5 ATR",
+     1.84
+    ],
+    [
+     "Crypto du 25 au 3",
+     "BTCUSD",
+     "du 28 au 5, stop 1.5 ATR",
+     2.47
+    ],
+    [
+     "Crypto du 25 au 3",
+     "ETHUSD",
+     "du 25 au 3, stop 1.5 ATR",
+     2.04
+    ],
+    [
+     "Début/fin de mois",
+     "US500",
+     "1 derniers + 4 premiers jours, stop 1.5 ATR",
+     0.76
+    ]
+   ]
+  },
+  {
+   "graine": 1,
+   "couples": 250,
+   "passent_tout_sauf_bonferroni": 26,
+   "dont_t_sup_1_645": 15,
+   "dont_bonferroni": 5,
+   "exemples": [
+    [
+     "Momentum hebdo crypto",
+     "BTCUSD",
+     "achat/vente selon 7 j, stop 1.5 ATR",
+     3.61
+    ],
+    [
+     "Momentum hebdo crypto",
+     "ETHUSD",
+     "achat/vente selon 14 j, stop 1.5 ATR",
+     0.99
+    ],
+    [
+     "Crypto du 25 au 3",
+     "BTCUSD",
+     "du 25 au 3, stop 1.5 ATR",
+     3.11
+    ],
+    [
+     "Début/fin de mois",
+     "US500",
+     "1 derniers + 3 premiers jours, stop 1.5 ATR",
+     0.72
+    ],
+    [
+     "Début/fin de mois",
+     "UK100",
+     "3 derniers + 3 premiers jours, stop 1.5 ATR",
+     0.67
+    ],
+    [
+     "Début/fin de mois",
+     "J225",
+     "1 derniers + 4 premiers jours, stop 3 ATR",
+     0.86
+    ],
+    [
+     "Début/fin de mois",
+     "BTCUSD",
+     "2 derniers + 3 premiers jours, stop 1.5 ATR",
+     3.01
+    ],
+    [
+     "Veille de jour férié",
+     "J225",
+     "veille + lendemain, stop 3 ATR",
+     2.03
+    ]
+   ]
+  },
+  {
+   "graine": 2,
+   "couples": 249,
+   "passent_tout_sauf_bonferroni": 28,
+   "dont_t_sup_1_645": 14,
+   "dont_bonferroni": 5,
+   "exemples": [
+    [
+     "Veille BCE (indices zone euro)",
+     "FR40",
+     "achat la veille, stop 1.5 ATR",
+     1.0
+    ],
+    [
+     "Momentum hebdo crypto",
+     "BTCUSD",
+     "achat/vente selon 7 j, stop 1.5 ATR",
+     1.36
+    ],
+    [
+     "Momentum hebdo crypto",
+     "ETHUSD",
+     "achat si hausse sur 14 j, stop 1.5 ATR",
+     1.75
+    ],
+    [
+     "Calendrier composite (Quantpedia)",
+     "US100",
+     "fin de mois, sans filtre, stop 1.5 ATR",
+     1.11
+    ],
+    [
+     "Calendrier composite (Quantpedia)",
+     "RTY",
+     "lendemain du 15, sans filtre, stop 1.5 ATR",
+     1.51
+    ],
+    [
+     "Crypto du 25 au 3",
+     "BTCUSD",
+     "du 28 au 5, stop 1.5 ATR",
+     3.41
+    ],
+    [
+     "Crypto du 25 au 3",
+     "ETHUSD",
+     "du 28 au 5, stop 1.5 ATR",
+     1.59
+    ],
+    [
+     "Début/fin de mois",
+     "US500",
+     "1 derniers + 4 premiers jours, stop 1.5 ATR",
+     2.07
+    ]
+   ]
+  }
+ ]
+}

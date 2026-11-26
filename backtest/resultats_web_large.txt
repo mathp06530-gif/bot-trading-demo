@@ -1,0 +1,664 @@
+Veille BoE (indice anglais) : fait
+Veille BoJ (Nikkei) : fait
+Veille BCE (indices zone euro) : fait
+Veille RBA (indice australien) : fait
+Inversion de fin de mois : fait
+Automne de l'or : fait
+Retournement hebdo des indices : fait
+Momentum hebdo crypto : fait
+Calendrier composite (Quantpedia) : fait
+Crypto du 25 au 3 : fait
+Début/fin de mois : fait
+Veille de jour férié : fait
+Expiration des options : fait
+Jour de la semaine : fait
+Saisonnalité même mois : fait
+Sell in May (Halloween) : fait
+IBS (clôture près du bas) : fait
+Baisses d'affilée : fait
+Rééquilibrage fin de mois : fait
+Avant/après l'emploi US (NFP) : fait
+Avant/après l'inflation US (CPI) : fait
+Avant/après la BCE : fait
+Avant/après la Banque d'Angleterre : fait
+Avant/après la Banque du Japon : fait
+Avant/après la banque d'Australie : fait
+Après la Fed (FOMC) : fait
+Momentum intraday US : fait
+Gotobi (USD/JPY) : fait
+Séances de l'or : fait
+Fixing de fin de mois (dollar) : fait
+Fin de séance US -> ouverture Asie : fait
+Heures du Bitcoin : fait
+V du dollar autour des fixings : fait
+BTC meneur de l'ETH : fait
+momentum : fait
+paires : fait
+Veille BoE (indice anglais) : fait
+Veille BoJ (Nikkei) : fait
+Veille BCE (indices zone euro) : fait
+Veille RBA (indice australien) : fait
+Inversion de fin de mois : fait
+Automne de l'or : fait
+Retournement hebdo des indices : fait
+Momentum hebdo crypto : fait
+Calendrier composite (Quantpedia) : fait
+Crypto du 25 au 3 : fait
+Début/fin de mois : fait
+Veille de jour férié : fait
+Expiration des options : fait
+Jour de la semaine : fait
+Saisonnalité même mois : fait
+Sell in May (Halloween) : fait
+IBS (clôture près du bas) : fait
+Baisses d'affilée : fait
+Rééquilibrage fin de mois : fait
+Avant/après l'emploi US (NFP) : fait
+Avant/après l'inflation US (CPI) : fait
+Avant/après la BCE : fait
+Avant/après la Banque d'Angleterre : fait
+Avant/après la Banque du Japon : fait
+Avant/après la banque d'Australie : fait
+Après la Fed (FOMC) : fait
+Momentum intraday US : fait
+Gotobi (USD/JPY) : fait
+Séances de l'or : fait
+Fixing de fin de mois (dollar) : fait
+Fin de séance US -> ouverture Asie : fait
+Heures du Bitcoin : fait
+V du dollar autour des fixings : fait
+BTC meneur de l'ETH : fait
+momentum : fait
+paires : fait
+hasard 0 : 23 passent
+Veille BoE (indice anglais) : fait
+Veille BoJ (Nikkei) : fait
+Veille BCE (indices zone euro) : fait
+Veille RBA (indice australien) : fait
+Inversion de fin de mois : fait
+Automne de l'or : fait
+Retournement hebdo des indices : fait
+Momentum hebdo crypto : fait
+Calendrier composite (Quantpedia) : fait
+Crypto du 25 au 3 : fait
+Début/fin de mois : fait
+Veille de jour férié : fait
+Expiration des options : fait
+Jour de la semaine : fait
+Saisonnalité même mois : fait
+Sell in May (Halloween) : fait
+IBS (clôture près du bas) : fait
+Baisses d'affilée : fait
+Rééquilibrage fin de mois : fait
+Avant/après l'emploi US (NFP) : fait
+Avant/après l'inflation US (CPI) : fait
+Avant/après la BCE : fait
+Avant/après la Banque d'Angleterre : fait
+Avant/après la Banque du Japon : fait
+Avant/après la banque d'Australie : fait
+Après la Fed (FOMC) : fait
+Momentum intraday US : fait
+Gotobi (USD/JPY) : fait
+Séances de l'or : fait
+Fixing de fin de mois (dollar) : fait
+Fin de séance US -> ouverture Asie : fait
+Heures du Bitcoin : fait
+V du dollar autour des fixings : fait
+BTC meneur de l'ETH : fait
+momentum : fait
+paires : fait
+hasard 1 : 26 passent
+Veille BoE (indice anglais) : fait
+Veille BoJ (Nikkei) : fait
+Veille BCE (indices zone euro) : fait
+Veille RBA (indice australien) : fait
+Inversion de fin de mois : fait
+Automne de l'or : fait
+Retournement hebdo des indices : fait
+Momentum hebdo crypto : fait
+Calendrier composite (Quantpedia) : fait
+Crypto du 25 au 3 : fait
+Début/fin de mois : fait
+Veille de jour férié : fait
+Expiration des options : fait
+Jour de la semaine : fait
+Saisonnalité même mois : fait
+Sell in May (Halloween) : fait
+IBS (clôture près du bas) : fait
+Baisses d'affilée : fait
+Rééquilibrage fin de mois : fait
+Avant/après l'emploi US (NFP) : fait
+Avant/après l'inflation US (CPI) : fait
+Avant/après la BCE : fait
+Avant/après la Banque d'Angleterre : fait
+Avant/après la Banque du Japon : fait
+Avant/après la banque d'Australie : fait
+Après la Fed (FOMC) : fait
+Momentum intraday US : fait
+Gotobi (USD/JPY) : fait
+Séances de l'or : fait
+Fixing de fin de mois (dollar) : fait
+Fin de séance US -> ouverture Asie : fait
+Heures du Bitcoin : fait
+V du dollar autour des fixings : fait
+BTC meneur de l'ETH : fait
+momentum : fait
+paires : fait
+hasard 2 : 28 passent
+{
+ "donnees": {
+  "jour": {
+   "GOLD": "11/2016-11/2026",
+   "SILVER": "11/2016-11/2026",
+   "PLATINUM": "11/2016-11/2026",
+   "PALLADIUM": "11/2016-11/2026",
+   "COPPER": "11/2016-11/2026",
+   "OIL_CRUDE": "11/2016-11/2026",
+   "OIL_BRENT": "11/2016-11/2026",
+   "NATURALGAS": "11/2016-11/2026",
+   "US500": "11/2016-11/2026",
+   "US100": "11/2016-11/2026",
+   "US30": "11/2016-11/2026",
+   "RTY": "11/2016-11/2026",
+   "DE40": "11/2016-11/2026",
+   "UK100": "11/2016-11/2026",
+   "FR40": "11/2016-11/2026",
+   "EU50": "11/2016-11/2026",
+   "J225": "11/2016-11/2026",
+   "HK50": "11/2016-11/2026",
+   "AU200": "11/2016-11/2026",
+   "EURUSD": "11/2016-11/2026",
+   "GBPUSD": "11/2016-11/2026",
+   "USDJPY": "11/2016-11/2026",
+   "AUDUSD": "11/2016-11/2026",
+   "USDCAD": "11/2016-11/2026",
+   "USDCHF": "11/2016-11/2026",
+   "NZDUSD": "11/2016-11/2026",
+   "EURGBP": "11/2016-11/2026",
+   "EURJPY": "11/2016-11/2026",
+   "GBPJPY": "11/2016-11/2026",
+   "BTCUSD": "11/2016-11/2026",
+   "ETHUSD": "11/2016-11/2026",
+   "SOLUSD": "02/2021-11/2026",
+   "XRPUSD": "11/2016-11/2026",
+   "LTCUSD": "11/2016-11/2026",
+   "AAPL": "11/2016-11/2026",
+   "MSFT": "11/2016-11/2026",
+   "NVDA": "11/2016-11/2026",
+   "TSLA": "11/2016-11/2026",
+   "AMZN": "11/2016-11/2026",
+   "META": "11/2016-11/2026",
+   "GOOGL": "05/2017-11/2026"
+  },
+  "heure": {
+   "US500": "05/2017-11/2026",
+   "US100": "05/2017-11/2026",
+   "US30": "05/2017-11/2026",
+   "RTY": "11/2016-11/2026",
+   "DE40": "05/2017-11/2026",
+   "EU50": "05/2017-11/2026",
+   "FR40": "05/2017-11/2026",
+   "UK100": "05/2017-11/2026",
+   "J225": "05/2017-11/2026",
+   "AU200": "05/2017-11/2026",
+   "GOLD": "05/2017-11/2026",
+   "SILVER": "05/2017-11/2026",
+   "EURUSD": "05/2017-11/2026",
+   "GBPUSD": "05/2017-11/2026",
+   "USDJPY": "05/2017-11/2026",
+   "AUDUSD": "05/2017-11/2026",
+   "BTCUSD": "05/2017-11/2026",
+   "ETHUSD": "05/2017-11/2026"
+  },
+  "dates_annonces": {
+   "ECB": 80,
+   "BOJ": 73,
+   "BOE": 74,
+   "CPI_US": 119,
+   "NFP": 119,
+   "RBA": 101,
+   "FOMC": 78
+  },
+  "exemple_heure_bougie_jour": {
+   "GOLD": "2026-11-26 00:00:00",
+   "SILVER": "2026-11-26 00:00:00",
+   "PLATINUM": "2026-11-26 00:00:00",
+   "PALLADIUM": "2026-11-26 00:00:00",
+   "COPPER": "2026-11-26 00:00:00"
+  }
+ },
+ "essais": {
+  "reglages_testes": 2982,
+  "couples_famille_marche": 249,
+  "t_minimum_bonferroni": 3.54
+ },
+ "bilan": {
+  "passe, mais pourrait être le hasard": 12,
+  "perd à l'entraînement": 77,
+  "réglage isolé (voisins perdants)": 12,
+  "trop peu de trades": 9,
+  "échoue sur les années jamais vues": 141
+ },
+ "controle_prix_melanges": [
+  {
+   "graine": 0,
+   "couples": 248,
+   "passent_tout_sauf_bonferroni": 23,
+   "dont_t_sup_1_645": 13,
+   "dont_bonferroni": 5,
+   "exemples": [
+    [
+     "Veille BCE (indices zone euro)",
+     "DE40",
+     "achat J-2 et J-1, stop 3 ATR",
+     0.88
+    ],
+    [
+     "Inversion de fin de mois",
+     "DE40",
+     "achat tout le mois après une fin de mois en baisse, stop 1.5 ATR",
+     1.39
+    ],
+    [
+     "Momentum hebdo crypto",
+     "BTCUSD",
+     "achat/vente selon 7 j, stop 1.5 ATR",
+     1.57
+    ],
+    [
+     "Momentum hebdo crypto",
+     "ETHUSD",
+     "achat/vente selon 28 j, stop 1.5 ATR",
+     0.83
+    ],
+    [
+     "Momentum hebdo crypto",
+     "LTCUSD",
+     "achat si hausse sur 7 j, stop 1.5 ATR",
+     1.84
+    ],
+    [
+     "Crypto du 25 au 3",
+     "BTCUSD",
+     "du 28 au 5, stop 1.5 ATR",
+     2.47
+    ],
+    [
+     "Crypto du 25 au 3",
+     "ETHUSD",
+     "du 25 au 3, stop 1.5 ATR",
+     2.04
+    ],
+    [
+     "Début/fin de mois",
+     "US500",
+     "1 derniers + 4 premiers jours, stop 1.5 ATR",
+     0.76
+    ]
+   ]
+  },
+  {
+   "graine": 1,
+   "couples": 250,
+   "passent_tout_sauf_bonferroni": 26,
+   "dont_t_sup_1_645": 15,
+   "dont_bonferroni": 5,
+   "exemples": [
+    [
+     "Momentum hebdo crypto",
+     "BTCUSD",
+     "achat/vente selon 7 j, stop 1.5 ATR",
+     3.61
+    ],
+    [
+     "Momentum hebdo crypto",
+     "ETHUSD",
+     "achat/vente selon 14 j, stop 1.5 ATR",
+     0.99
+    ],
+    [
+     "Crypto du 25 au 3",
+     "BTCUSD",
+     "du 25 au 3, stop 1.5 ATR",
+     3.11
+    ],
+    [
+     "Début/fin de mois",
+     "US500",
+     "1 derniers + 3 premiers jours, stop 1.5 ATR",
+     0.72
+    ],
+    [
+     "Début/fin de mois",
+     "UK100",
+     "3 derniers + 3 premiers jours, stop 1.5 ATR",
+     0.67
+    ],
+    [
+     "Début/fin de mois",
+     "J225",
+     "1 derniers + 4 premiers jours, stop 3 ATR",
+     0.86
+    ],
+    [
+     "Début/fin de mois",
+     "BTCUSD",
+     "2 derniers + 3 premiers jours, stop 1.5 ATR",
+     3.01
+    ],
+    [
+     "Veille de jour férié",
+     "J225",
+     "veille + lendemain, stop 3 ATR",
+     2.03
+    ]
+   ]
+  },
+  {
+   "graine": 2,
+   "couples": 249,
+   "passent_tout_sauf_bonferroni": 28,
+   "dont_t_sup_1_645": 14,
+   "dont_bonferroni": 5,
+   "exemples": [
+    [
+     "Veille BCE (indices zone euro)",
+     "FR40",
+     "achat la veille, stop 1.5 ATR",
+     1.0
+    ],
+    [
+     "Momentum hebdo crypto",
+     "BTCUSD",
+     "achat/vente selon 7 j, stop 1.5 ATR",
+     1.36
+    ],
+    [
+     "Momentum hebdo crypto",
+     "ETHUSD",
+     "achat si hausse sur 14 j, stop 1.5 ATR",
+     1.75
+    ],
+    [
+     "Calendrier composite (Quantpedia)",
+     "US100",
+     "fin de mois, sans filtre, stop 1.5 ATR",
+     1.11
+    ],
+    [
+     "Calendrier composite (Quantpedia)",
+     "RTY",
+     "lendemain du 15, sans filtre, stop 1.5 ATR",
+     1.51
+    ],
+    [
+     "Crypto du 25 au 3",
+     "BTCUSD",
+     "du 28 au 5, stop 1.5 ATR",
+     3.41
+    ],
+    [
+     "Crypto du 25 au 3",
+     "ETHUSD",
+     "du 28 au 5, stop 1.5 ATR",
+     1.59
+    ],
+    [
+     "Début/fin de mois",
+     "US500",
+     "1 derniers + 4 premiers jours, stop 1.5 ATR",
+     2.07
+    ]
+   ]
+  }
+ ]
+}
+perd à l'entraînement  Baisses d'affilée                  J225         2 baisses -> achat 1 j, stop 3 ATR              -2.5     5.0     6.1 t= 2.68 [197, 95, 97]
+réglage isolé (voisins Après la Fed (FOMC)                US500        vente après, stop 1 ATR                          3.8     4.9     4.5 t= 2.24 [37, 20, 19]
+réglage isolé (voisins Après la Fed (FOMC)                US100        vente après, stop 1 ATR                          3.6     4.2     2.9 t= 2.02 [37, 20, 19]
+réglage isolé (voisins Jour de la semaine                 US500        achat le lundi, stop 1.5 ATR                    23.1     2.3    11.1 t= 1.96 [262, 129, 126]
+perd à l'entraînement  Après la Fed (FOMC)                EURUSD       vente après, stop 2 ATR                         -1.5     1.1     0.9 t= 1.87 [37, 20, 19]
+réglage isolé (voisins Avant/après la Banque du Japon     USDJPY       achat avant, stop 1 ATR                          2.4     5.1     3.0 t= 1.64 [48, 26, 13]
+passe, mais pourrait ê Inversion de fin de mois           US500        achat 10 premiers jours après une fin de moi    11.4     6.0     7.5 t= 1.56 [41, 24, 13]
+passe, mais pourrait ê Veille de jour férié               RTY          veille, stop 1.5 ATR                             8.7     1.9     1.6 t= 1.47 [48, 25, 24]
+échoue sur les années  Rééquilibrage fin de mois          RTY          2 derniers jours, stop 1.5 ATR                   5.7    -0.1     6.6 t= 1.43 [67, 30, 28]
+échoue sur les années  Inversion de fin de mois           J225         achat 10 premiers jours après une fin de moi     6.9    -1.3    14.8 t= 1.38 [62, 26, 21]
+réglage isolé (voisins Jour de la semaine                 NVDA         achat le lundi, stop 1.5 ATR                     5.9    18.4     0.2 t= 1.25 [240, 111, 117]
+réglage isolé (voisins Avant/après la Banque du Japon     J225         achat avant, stop 1 ATR                          9.3     0.2     6.1 t= 1.15 [50, 29, 13]
+réglage isolé (voisins Jour de la semaine                 EURJPY       achat le lundi, stop 1.5 ATR                    10.6     7.8     0.1 t= 1.12 [265, 130, 126]
+réglage isolé (voisins Jour de la semaine                 GOLD         achat le vendredi, stop 1.5 ATR                 44.4     8.2     1.7 t= 1.11 [256, 127, 123]
+perd à l'entraînement  Saisonnalité même mois             USDJPY       même mois, 3 années passées, stop 3 ATR        -10.2    18.7    -4.9 t= 1.11 [26, 17, 29]
+échoue sur les années  Veille de jour férié               UK100        2 veilles, stop 1.5 ATR                          4.6    -0.5     5.2 t= 1.09 [51, 29, 24]
+réglage isolé (voisins Jour de la semaine                 TSLA         achat le lundi, stop 1.5 ATR                    22.4     1.5     5.1 t= 1.03 [240, 112, 117]
+passe, mais pourrait ê Saisonnalité même mois             NATURALGAS   même mois, 3 années passées, stop 1.5 ATR        4.1    18.3     3.0 t= 1.02 [29, 29, 31]
+passe, mais pourrait ê Veille de jour férié               J225         veille, stop 1.5 ATR                             5.4     0.7     2.3 t= 0.99 [48, 26, 23]
+passe, mais pourrait ê Veille de jour férié               AU200        2 veilles, stop 3 ATR                            0.5     1.5     0.4 t= 0.99 [48, 25, 23]
+passe, mais pourrait ê Momentum hebdo crypto              ETHUSD       achat si hausse sur 28 j, stop 1.5 ATR         264.3     6.0     7.1 t= 0.96 [43, 25, 22]
+trop peu de trades     Sell in May (Halloween)            DE40         achat de 11 à 4, stop 1.5 ATR                    5.7    14.6     0.5 t= 0.94 [27, 7, 11]
+perd à l'entraînement  Veille de jour férié               EU50         veille, stop 3 ATR                              -0.1     0.7     0.3 t= 0.84 [44, 25, 23]
+trop peu de trades     Sell in May (Halloween)            J225         achat de 10 à 4, stop 1.5 ATR                    8.4     8.8     7.3 t= 0.83 [24, 9, 12]
+passe, mais pourrait ê Début/fin de mois                  GOLD         1 derniers + 3 premiers jours, stop 1.5 ATR     18.8     3.9     2.5 t= 0.81 [75, 35, 34]
+perd à l'entraînement  Sell in May (Halloween)            EU50         achat de 11 à 4, stop 3 ATR                     -1.4     6.6    -1.6 t= 0.79 [19, 4, 5]
+réglage isolé (voisins Avant/après la banque d'Australie  AUDUSD       vente après, stop 1 ATR                          0.3     0.2     1.2 t= 0.78 [51, 26, 19]
+échoue sur les années  Inversion de fin de mois           US30         achat 10 premiers jours après une fin de moi    20.4    -2.2     8.9 t= 0.76 [47, 30, 16]
+échoue sur les années  Jour de la semaine                 OIL_BRENT    achat le vendredi, stop 1.5 ATR                 33.1     8.9    -1.5 t= 0.76 [257, 127, 123]
+passe, mais pourrait ê Paires (retour à la moyenne de l'é EURUSD/GBPUSD z 60 j, entrée 2                                 2.7     1.6     2.3 t= 0.76 [31, 15, 15]
+échoue sur les années  Inversion de fin de mois           US100        achat tout le mois après une fin de mois en     26.6    14.3    -4.7 t= 0.75 [25, 16, 16]
+passe, mais pourrait ê Veille de jour férié               US30         2 veilles, stop 1.5 ATR                          9.9     1.1     2.2 t= 0.74 [49, 30, 25]
+perd à l'entraînement  Après la Fed (FOMC)                GOLD         vente après, stop 2 ATR                         -1.4     0.5     0.4 t= 0.71 [37, 20, 19]
+passe, mais pourrait ê Veille de jour férié               FR40         2 veilles, stop 3 ATR                            0.6     0.6     0.7 t= 0.70 [48, 25, 23]
+réglage isolé (voisins IBS (clôture près du bas)          GOLD         IBS < 0.3, 1 j, stop 1.5 ATR                    54.8     1.1     6.3 t= 0.70 [341, 179, 152]
+perd à l'entraînement  Saisonnalité même mois             GBPJPY       même mois, 5 années passées, stop 3 ATR         -9.2     3.5     3.2 t= 0.69 [31, 24, 20]
+passe, mais pourrait ê Veille de jour férié               US500        2 veilles, stop 1.5 ATR                          3.3     1.3     2.0 t= 0.68 [50, 31, 25]
+échoue sur les années  Momentum intraday US               US30         14 h-16 h contre le matin, stop 1 ATR          144.7     8.7    -0.7 t= 0.66 [1165, 634, 622]
+perd à l'entraînement  Inversion de fin de mois           RTY          achat 5 premiers jours après une fin de mois    -1.8     0.4     4.3 t= 0.64 [49, 16, 19]
+échoue sur les années  Jour de la semaine                 AUDUSD       achat le lundi, stop 1.5 ATR                    11.3    -0.7     5.0 t= 0.64 [265, 130, 126]
+échoue sur les années  Saisonnalité même mois             NVDA         même mois, 3 années passées, stop 1.5 ATR        2.9     9.3    -3.4 t= 0.58 [17, 21, 19]
+échoue sur les années  Baisses d'affilée                  US500        3 baisses -> achat 3 j, stop 1.5 ATR             6.9    -1.5     6.4 t= 0.57 [94, 55, 43]
+échoue sur les années  Avant/après l'inflation US (CPI)   GOLD         achat avant, stop 1 ATR                         14.5     2.9    -1.2 t= 0.56 [58, 30, 29]
+passe, mais pourrait ê Saisonnalité même mois             J225         même mois, 5 années passées, stop 1.5 ATR        3.0     3.6     7.3 t= 0.53 [35, 39, 40]
+perd à l'entraînement  Saisonnalité même mois             EURJPY       même mois, 5 années passées, stop 3 ATR         -6.4     0.1     4.9 t= 0.52 [28, 26, 22]
+perd à l'entraînement  Sell in May (Halloween)            UK100        achat de 11 à 5, stop 3 ATR                     -3.6     3.7    -1.0 t= 0.52 [15, 3, 5]
+échoue sur les années  Baisses d'affilée                  RTY          2 baisses -> achat 1 j, stop 1.5 ATR             6.0    -1.8     5.9 t= 0.48 [232, 111, 110]
+échoue sur les années  Jour de la semaine                 BTCUSD       achat le mercredi, stop 1.5 ATR                135.2    -0.6     4.7 t= 0.46 [265, 130, 126]
+perd à l'entraînement  Avant/après l'inflation US (CPI)   USDJPY       achat avant, stop 2 ATR                         -0.2    -1.3     2.1 t= 0.45 [56, 30, 28]
+échoue sur les années  Momentum intraday US               US100        15 h-16 h dans le sens de la journée, stop 1    77.6     6.8    -3.5 t= 0.43 [1161, 633, 620]
+échoue sur les années  Veille BoJ (Nikkei)                J225         achat J-2 et J-1, stop 1.5 ATR                   9.1    -1.4     2.9 t= 0.40 [50, 27, 13]
+réglage isolé (voisins IBS (clôture près du bas)          US500        IBS > 0.8, vente 1 j, stop 1.5 ATR               7.2     1.2     2.9 t= 0.40 [350, 181, 177]
+perd à l'entraînement  Saisonnalité même mois             OIL_BRENT    même mois, 5 années passées, stop 3 ATR         -9.2    -6.6    12.2 t= 0.39 [29, 23, 18]
+trop peu de trades     Sell in May (Halloween)            FR40         achat de 10 à 4, stop 1.5 ATR                    0.1    10.9    -6.2 t= 0.39 [29, 7, 10]
+perd à l'entraînement  V du dollar autour des fixings     EURUSD       dollar acheté 2 h-8 h (Europe), stop 1 ATR      -0.3    11.6    -5.8 t= 0.37 [1297, 661, 640]
+perd à l'entraînement  Paires (retour à la moyenne de l'é US30/US500   z 60 j, entrée 2.5                              -1.3     0.9    -0.5 t= 0.37 [22, 8, 10]
+échoue sur les années  Jour de la semaine                 J225         achat le mercredi, stop 1.5 ATR                 23.4    -4.0     6.9 t= 0.34 [264, 130, 126]
+perd à l'entraînement  Automne de l'or                    GOLD         septembre + novembre, stop 1.5 ATR             -12.9    -0.3     3.6 t= 0.30 [23, 10, 14]
+perd à l'entraînement  Saisonnalité même mois             OIL_CRUDE    même mois, 5 années passées, stop 3 ATR        -10.3    -6.0    10.3 t= 0.30 [32, 27, 19]
+échoue sur les années  Veille de jour férié               DE40         veille + lendemain, stop 1.5 ATR                 1.9    -0.3     1.5 t= 0.28 [77, 47, 45]
+trop peu de trades     Sell in May (Halloween)            US100        achat de 10 à 5, stop 1.5 ATR                   11.8     6.7    -2.1 t= 0.26 [20, 12, 15]
+échoue sur les années  Jour de la semaine                 NATURALGAS   achat le lundi, stop 1.5 ATR                    13.1     8.1    -6.9 t= 0.16 [259, 130, 126]
+échoue sur les années  Saisonnalité même mois             GOLD         même mois, 3 années passées, stop 1.5 ATR       12.4    -2.0     5.3 t= 0.14 [32, 41, 34]
+perd à l'entraînement  Paires (retour à la moyenne de l'é MSFT/AAPL    z 20 j, entrée 2.5                              -0.9     0.2     0.2 t= 0.14 [25, 15, 14]
+échoue sur les années  Momentum hebdo crypto              XRPUSD       achat si hausse sur 14 j, stop 1.5 ATR         128.5    -8.7    13.0 t= 0.12 [100, 37, 42]
+échoue sur les années  IBS (clôture près du bas)          US100        IBS < 0.2, 3 j, stop 1.5 ATR                    35.7    10.8    -9.2 t= 0.12 [194, 119, 97]
+échoue sur les années  Avant/après la BCE                 EURUSD       vente après, stop 1 ATR                          5.6     1.6    -1.1 t= 0.12 [42, 21, 19]
+échoue sur les années  Momentum hebdo crypto              BTCUSD       achat/vente selon 28 j, stop 1.5 ATR           163.1     5.0    -2.4 t= 0.11 [94, 47, 66]
+échoue sur les années  Paires (retour à la moyenne de l'é US100/NVDA   z 20 j, entrée 2                                10.7    -0.7     1.2 t= 0.11 [45, 23, 24]
+échoue sur les années  Baisses d'affilée                  US30         3 baisses -> achat 5 j, stop 1.5 ATR             2.6    -8.4     9.6 t= 0.10 [111, 59, 39]
+perd à l'entraînement  Paires (retour à la moyenne de l'é DE40/EU50    z 60 j, entrée 2.5                              -0.5    -0.3     0.3 t= 0.03 [18, 15, 8]
+échoue sur les années  Jour de la semaine                 EURUSD       achat le lundi, stop 1.5 ATR                    15.6     0.4    -0.4 t=-0.00 [265, 130, 126]
+échoue sur les années  Saisonnalité même mois             META         même mois, 3 années passées, stop 1.5 ATR        7.1     0.1    -0.4 t=-0.02 [21, 34, 21]
+échoue sur les années  Saisonnalité même mois             ETHUSD       même mois, 5 années passées, stop 3 ATR          2.1     4.7    -5.1 t=-0.04 [24, 26, 33]
+perd à l'entraînement  Sell in May (Halloween)            US500        achat de 10 à 5, stop 1.5 ATR                   -5.7     6.3    -6.9 t=-0.04 [26, 10, 15]
+échoue sur les années  Avant/après la banque d'Australie  AU200        vente avant, stop 1 ATR                          3.3    -0.5     0.3 t=-0.04 [62, 28, 20]
+perd à l'entraînement  Début/fin de mois                  AU200        3 derniers + 2 premiers jours, stop 3 ATR       -0.9     3.6    -3.8 t=-0.08 [63, 31, 28]
+échoue sur les années  Saisonnalité même mois             BTCUSD       même mois, 3 années passées, stop 1.5 ATR        0.8    35.8   -39.8 t=-0.08 [49, 25, 62]
+échoue sur les années  Veille BoE (indice anglais)        UK100        achat J-2 et J-1, stop 1.5 ATR                   6.9     1.5    -1.8 t=-0.09 [45, 20, 14]
+échoue sur les années  Baisses d'affilée                  DE40         2 baisses -> achat 3 j, stop 1.5 ATR            10.9     3.0    -4.2 t=-0.09 [183, 100, 99]
+perd à l'entraînement  Baisses d'affilée                  EU50         4 baisses -> achat 5 j, stop 3 ATR              -5.7     0.5    -0.8 t=-0.09 [45, 22, 13]
+trop peu de trades     Sell in May (Halloween)            HK50         achat de 11 à 4, stop 1.5 ATR                    4.6     0.4    -1.5 t=-0.10 [20, 14, 9]
+échoue sur les années  Veille BCE (indices zone euro)     DE40         achat la veille, stop 1.5 ATR                    1.7     1.3    -1.7 t=-0.11 [40, 20, 19]
+perd à l'entraînement  Jour de la semaine                 EU50         achat le mercredi, stop 3 ATR                   -2.9    -1.5     1.0 t=-0.12 [264, 130, 126]
+perd à l'entraînement  Fixing de fin de mois (dollar)     EURUSD       dollar contre les actions US, 12 h-16 h, sto    -5.2     0.1    -0.4 t=-0.15 [54, 26, 27]
+échoue sur les années  Retournement hebdo des indices     HK50         contre les 10 derniers jours, tenu 1 semaine    29.7   -16.2    13.0 t=-0.17 [177, 106, 97]
+échoue sur les années  Début/fin de mois                  US30         2 derniers + 4 premiers jours, stop 1.5 ATR     14.0    -1.0    -0.6 t=-0.17 [87, 38, 43]
+échoue sur les années  Baisses d'affilée                  US100        2 baisses -> achat 5 j, stop 1.5 ATR            17.8     1.6    -4.6 t=-0.20 [167, 82, 87]
+perd à l'entraînement  IBS (clôture près du bas)          EU50         IBS > 0.9, vente 1 j, stop 3 ATR                -4.3    -0.5    -0.2 t=-0.21 [173, 100, 116]
+perd à l'entraînement  Début/fin de mois                  EU50         3 derniers + 4 premiers jours, stop 3 ATR       -0.3    -0.0    -1.0 t=-0.22 [73, 33, 33]
+échoue sur les années  Début/fin de mois                  HK50         1 derniers + 4 premiers jours, stop 1.5 ATR      0.9     1.6    -3.4 t=-0.22 [83, 35, 36]
+échoue sur les années  Jour de la semaine                 USDCAD       achat le jeudi, stop 1.5 ATR                     5.0    -2.8     1.0 t=-0.23 [265, 130, 125]
+échoue sur les années  Jour de la semaine                 META         achat le lundi, stop 1.5 ATR                     0.9    -1.5     0.4 t=-0.23 [240, 112, 117]
+échoue sur les années  Rééquilibrage fin de mois          US100        5 derniers jours, stop 1.5 ATR                   6.3    -2.2     0.4 t=-0.23 [78, 39, 37]
+échoue sur les années  Avant/après la Banque d'Angleterre UK100        vente avant, stop 2 ATR                          2.6    -0.6    -0.1 t=-0.23 [40, 22, 13]
+échoue sur les années  Début/fin de mois                  DE40         1 derniers + 4 premiers jours, stop 1.5 ATR     20.6    -3.7     1.5 t=-0.24 [81, 38, 42]
+perd à l'entraînement  Baisses d'affilée                  FR40         4 baisses -> achat 3 j, stop 1.5 ATR            -5.2     0.1    -1.4 t=-0.25 [50, 19, 18]
+échoue sur les années  Baisses d'affilée                  GOLD         2 baisses -> achat 1 j, stop 1.5 ATR             5.0     1.6    -3.8 t=-0.26 [220, 118, 103]
+perd à l'entraînement  Début/fin de mois                  RTY          1 derniers + 2 premiers jours, stop 3 ATR       -4.9     1.3    -2.4 t=-0.33 [69, 30, 29]
+échoue sur les années  Avant/après la Banque d'Angleterre GBPUSD       achat avant, stop 2 ATR                          0.4     0.2    -1.0 t=-0.33 [41, 20, 12]
+échoue sur les années  Début/fin de mois                  UK100        3 derniers + 4 premiers jours, stop 3 ATR        1.3    -2.4     0.9 t=-0.35 [69, 33, 31]
+échoue sur les années  Veille BCE (indices zone euro)     FR40         achat J-2 et J-1, stop 1.5 ATR                   6.3    -0.1    -1.5 t=-0.37 [44, 20, 21]
+échoue sur les années  Jour de la semaine                 USDJPY       achat le mercredi, stop 1.5 ATR                  9.0    -1.9    -1.3 t=-0.37 [265, 130, 126]
+échoue sur les années  Saisonnalité même mois             AMZN         même mois, 3 années passées, stop 1.5 ATR       16.9    -4.4     1.4 t=-0.38 [15, 33, 20]
+échoue sur les années  Jour de la semaine                 AU200        achat le mercredi, stop 1.5 ATR                 10.5    -6.5     3.0 t=-0.40 [264, 130, 125]
+échoue sur les années  Avant/après la BCE                 DE40         achat avant, stop 2 ATR                          1.4    -1.4     0.5 t=-0.40 [39, 20, 19]
+échoue sur les années  Avant/après la BCE                 FR40         achat avant, stop 1 ATR                          6.4    -1.9    -0.1 t=-0.42 [45, 24, 23]
+échoue sur les années  Jour de la semaine                 NZDUSD       achat le lundi, stop 1.5 ATR                    12.6    -3.9     1.1 t=-0.43 [265, 130, 126]
+perd à l'entraînement  Sell in May (Halloween)            RTY          achat de 10 à 5, stop 3 ATR                    -40.1    -1.1    -2.0 t=-0.45 [54, 8, 8]
+échoue sur les années  Jour de la semaine                 US30         achat le mercredi, stop 1.5 ATR                 27.9    -6.7     2.6 t=-0.46 [264, 130, 126]
+échoue sur les années  IBS (clôture près du bas)          UK100        IBS > 0.9, vente 1 j, stop 1.5 ATR               1.6    -0.1    -3.1 t=-0.46 [158, 82, 112]
+échoue sur les années  IBS (clôture près du bas)          AU200        IBS > 0.9, vente 1 j, stop 3 ATR                 1.5    -1.9     0.4 t=-0.46 [190, 111, 83]
+perd à l'entraînement  Retournement hebdo des indices     J225         avec les 5 derniers jours, tenu 1 semaine, s    -0.7    -0.3    -4.0 t=-0.49 [142, 60, 66]
+trop peu de trades     Sell in May (Halloween)            US30         achat de 10 à 4, stop 1.5 ATR                    0.4     3.8    -9.8 t=-0.49 [27, 9, 11]
+échoue sur les années  Jour de la semaine                 ETHUSD       achat le week-end, stop 1.5 ATR                195.9    -2.8    -1.0 t=-0.50 [277, 134, 128]
+perd à l'entraînement  Paires (retour à la moyenne de l'é BTCUSD/ETHUSD z 60 j, entrée 2                                -1.3     0.9    -1.8 t=-0.50 [28, 15, 12]
+perd à l'entraînement  Retournement hebdo des indices     AU200        contre les 10 derniers jours, tenu 1 semaine    -1.9    -8.9     4.5 t=-0.51 [139, 62, 50]
+perd à l'entraînement  Sell in May (Halloween)            AU200        achat de 11 à 4, stop 1.5 ATR                   -2.7     3.7    -8.5 t=-0.51 [22, 6, 12]
+échoue sur les années  Avant/après l'emploi US (NFP)      USDJPY       achat avant, stop 1 ATR                          4.2    -0.1    -2.3 t=-0.51 [60, 34, 31]
+échoue sur les années  Avant/après la BCE                 EU50         achat avant, stop 2 ATR                          3.0    -0.8    -0.5 t=-0.51 [38, 21, 19]
+échoue sur les années  Début/fin de mois                  US500        3 derniers + 2 premiers jours, stop 1.5 ATR      7.9     8.3   -12.4 t=-0.52 [81, 34, 42]
+échoue sur les années  Jour de la semaine                 SILVER       vente le jeudi, stop 1.5 ATR                     6.5    -1.7    -2.7 t=-0.52 [259, 130, 125]
+échoue sur les années  Baisses d'affilée                  SILVER       2 baisses -> achat 1 j, stop 1.5 ATR             3.8    -8.4     4.3 t=-0.53 [226, 117, 90]
+échoue sur les années  Début/fin de mois                  US100        2 derniers + 2 premiers jours, stop 1.5 ATR     13.9     1.2    -5.1 t=-0.55 [78, 35, 38]
+échoue sur les années  Séances de l'or                    GOLD         vente 14 h-16 h UTC, stop 1 ATR                 39.3   -11.0     3.9 t=-0.55 [1220, 650, 624]
+échoue sur les années  Rééquilibrage fin de mois          US500        5 derniers jours, stop 1.5 ATR                  12.6    -5.2     0.9 t=-0.56 [72, 35, 36]
+échoue sur les années  Début/fin de mois                  J225         1 derniers + 2 premiers jours, stop 1.5 ATR      3.0     1.8    -5.4 t=-0.58 [72, 31, 35]
+échoue sur les années  Veille de jour férié               HK50         2 veilles, stop 1.5 ATR                          4.9    -0.9    -1.5 t=-0.58 [47, 28, 24]
+perd à l'entraînement  Baisses d'affilée                  HK50         3 baisses -> achat 5 j, stop 3 ATR              -1.4    -1.0    -2.1 t=-0.59 [70, 44, 40]
+échoue sur les années  Veille BCE (indices zone euro)     EU50         achat J-2 et J-1, stop 1.5 ATR                   4.5     2.3    -5.3 t=-0.61 [43, 21, 22]
+échoue sur les années  Paires (retour à la moyenne de l'é GOLD/SILVER  z 20 j, entrée 1.5                               0.6     0.6    -3.6 t=-0.64 [67, 39, 41]
+échoue sur les années  Saisonnalité même mois             SILVER       même mois, 3 années passées, stop 1.5 ATR       31.5    -5.2    -8.8 t=-0.65 [25, 49, 50]
+échoue sur les années  Saisonnalité même mois             AAPL         même mois, 3 années passées, stop 1.5 ATR        3.0     4.9    -9.1 t=-0.65 [19, 19, 23]
+échoue sur les années  Jour de la semaine                 GBPJPY       achat le mercredi, stop 1.5 ATR                 16.4    -0.3    -4.9 t=-0.68 [265, 130, 126]
+échoue sur les années  Inversion de fin de mois           DE40         achat 5 premiers jours après une fin de mois    11.9     1.8    -5.9 t=-0.70 [42, 21, 18]
+échoue sur les années  Jour de la semaine                 AMZN         achat le lundi, stop 1.5 ATR                     0.4    -0.4    -2.4 t=-0.73 [240, 112, 117]
+perd à l'entraînement  IBS (clôture près du bas)          FR40         IBS > 0.9, vente 1 j, stop 3 ATR                -1.4    -1.0    -1.4 t=-0.73 [193, 96, 80]
+échoue sur les années  Momentum entre marchés (portefeuil portefeuille meilleurs/pires 3 sur 63 j                     335.9     4.7   -22.2 t=-0.74 [327, 151, 163]
+perd à l'entraînement  Saisonnalité même mois             DE40         même mois, 5 années passées, stop 3 ATR        -13.0    -6.5    -0.5 t=-0.75 [30, 30, 22]
+échoue sur les années  Avant/après l'emploi US (NFP)      US100        achat après, stop 1 ATR                         11.6     3.5    -7.7 t=-0.76 [64, 33, 36]
+échoue sur les années  Jour de la semaine                 RTY          achat le mercredi, stop 1.5 ATR                 70.1    -7.3     0.8 t=-0.77 [262, 130, 126]
+échoue sur les années  IBS (clôture près du bas)          J225         IBS > 0.7, vente 1 j, stop 1.5 ATR              10.5    -4.6    -4.1 t=-0.77 [379, 213, 200]
+échoue sur les années  Baisses d'affilée                  AU200        2 baisses -> achat 3 j, stop 3 ATR               6.1    -2.8    -2.4 t=-0.77 [169, 82, 75]
+échoue sur les années  Momentum hebdo crypto              SOLUSD       achat si hausse sur 7 j, stop 1.5 ATR           29.1    -4.2   -14.2 t=-0.81 [15, 61, 53]
+échoue sur les années  Calendrier composite (Quantpedia)  US100        fin de mois, sans filtre, stop 1.5 ATR          12.2     0.9    -6.0 t=-0.85 [72, 33, 34]
+échoue sur les années  Veille de jour férié               US100        veille + lendemain, stop 1.5 ATR                11.6    -2.3    -1.4 t=-0.85 [84, 50, 44]
+perd à l'entraînement  Saisonnalité même mois             LTCUSD       même mois, 3 années passées, stop 3 ATR        -12.1    -0.2    -7.0 t=-0.85 [31, 23, 28]
+échoue sur les années  Veille RBA (indice australien)     AU200        achat la veille, stop 1.5 ATR                    8.7    -1.7    -0.7 t=-0.86 [55, 26, 19]
+échoue sur les années  Saisonnalité même mois             EURUSD       même mois, 3 années passées, stop 3 ATR          2.8     0.5    -8.3 t=-0.86 [16, 27, 32]
+échoue sur les années  Baisses d'affilée                  BTCUSD       2 baisses -> achat 5 j, stop 1.5 ATR            75.2    -2.7   -11.1 t=-0.86 [173, 98, 112]
+perd à l'entraînement  Retournement hebdo des indices     EU50         contre les 10 derniers jours, tenu 1 semaine    -5.8    -6.6    -1.6 t=-0.87 [136, 64, 72]
+perd à l'entraînement  Saisonnalité même mois             UK100        même mois, 3 années passées, stop 3 ATR         -2.6    -5.3    -1.7 t=-0.87 [23, 20, 24]
+échoue sur les années  Jour de la semaine                 DE40         vente le jeudi, stop 1.5 ATR                     4.3    -3.1    -4.9 t=-0.89 [263, 130, 125]
+échoue sur les années  IBS (clôture près du bas)          US30         IBS > 0.8, vente 1 j, stop 1.5 ATR              19.1    -7.4    -1.1 t=-0.89 [344, 171, 157]
+échoue sur les années  Jour de la semaine                 GBPUSD       achat le mercredi, stop 1.5 ATR                  7.5     3.0   -10.7 t=-0.90 [265, 130, 126]
+échoue sur les années  Avant/après l'emploi US (NFP)      EURUSD       vente avant, stop 2 ATR                          2.3     0.4    -2.0 t=-0.91 [58, 30, 28]
+échoue sur les années  Rééquilibrage fin de mois          DE40         5 derniers jours, stop 1.5 ATR                   5.3   -10.6     3.6 t=-0.94 [73, 38, 36]
+échoue sur les années  Momentum hebdo crypto              LTCUSD       achat si hausse sur 28 j, stop 1.5 ATR          71.1    -9.6    -4.1 t=-0.96 [69, 33, 30]
+échoue sur les années  Avant/après l'inflation US (CPI)   EURUSD       achat après, stop 1 ATR                          4.4    -0.0    -4.7 t=-0.97 [62, 33, 31]
+échoue sur les années  Retournement hebdo des indices     US30         avec les 10 derniers jours, tenu 1 semaine,      3.7     4.8   -12.3 t=-0.99 [95, 41, 52]
+échoue sur les années  Saisonnalité même mois             PLATINUM     même mois, 3 années passées, stop 3 ATR          1.8    -0.2    -9.2 t=-0.99 [22, 23, 29]
+perd à l'entraînement  Expiration des options             US100        achat semaine OPEX, stop 1.5 ATR                -0.2    -2.6    -6.2 t=-1.02 [80, 39, 35]
+échoue sur les années  Fixing de fin de mois (dollar)     USDJPY       dollar contre les actions US, 12 h-16 h, sto     5.5    -4.0     0.6 t=-1.02 [55, 27, 28]
+perd à l'entraînement  Paires (retour à la moyenne de l'é OIL_BRENT/OIL_CRUDE z 60 j, entrée 2.5                              -0.9    -1.7     0.4 t=-1.03 [20, 11, 18]
+échoue sur les années  Jour de la semaine                 US100        achat le jeudi, stop 1.5 ATR                    32.3     2.6   -12.1 t=-1.08 [264, 130, 125]
+perd à l'entraînement  Saisonnalité même mois             RTY          même mois, 3 années passées, stop 3 ATR         -5.9    -5.1    -3.1 t=-1.09 [28, 28, 25]
+échoue sur les années  Jour de la semaine                 AAPL         achat le lundi, stop 1.5 ATR                     9.2     2.3    -5.8 t=-1.10 [240, 112, 117]
+échoue sur les années  Jour de la semaine                 USDCHF       achat le mercredi, stop 1.5 ATR                  7.1   -15.0     5.9 t=-1.11 [265, 130, 126]
+perd à l'entraînement  Paires (retour à la moyenne de l'é US500/US100  z 60 j, entrée 2                                -0.4     0.1    -1.1 t=-1.11 [32, 15, 24]
+échoue sur les années  Début/fin de mois                  FR40         3 derniers + 4 premiers jours, stop 3 ATR        5.2    -0.6    -4.4 t=-1.12 [69, 32, 33]
+échoue sur les années  IBS (clôture près du bas)          RTY          IBS > 0.8, vente 1 j, stop 1.5 ATR              58.4     0.7   -10.2 t=-1.12 [299, 160, 152]
+échoue sur les années  Gotobi (USD/JPY)                   USDJPY       achat de 5 h à 10 h (Tokyo), stop 2 ATR          0.4     1.6    -4.2 t=-1.13 [334, 179, 173]
+perd à l'entraînement  Saisonnalité même mois             GOOGL        même mois, 3 années passées, stop 1.5 ATR       -0.0    -3.2    -5.2 t=-1.15 [21, 29, 27]
+échoue sur les années  Paires (retour à la moyenne de l'é AUDUSD/NZDUSD z 20 j, entrée 2.5                               1.1    -5.3    -1.4 t=-1.15 [21, 12, 18]
+perd à l'entraînement  Saisonnalité même mois             HK50         même mois, 3 années passées, stop 3 ATR         -3.4    -1.0    -9.1 t=-1.19 [24, 30, 25]
+échoue sur les années  Avant/après l'emploi US (NFP)      US500        achat après, stop 1 ATR                          7.9     3.5   -10.3 t=-1.24 [65, 34, 34]
+perd à l'entraînement  Saisonnalité même mois             US30         même mois, 5 années passées, stop 3 ATR         -8.1    -9.5    -0.8 t=-1.26 [28, 28, 19]
+perd à l'entraînement  Baisses d'affilée                  UK100        4 baisses -> achat 3 j, stop 3 ATR              -5.0    -3.2     0.0 t=-1.27 [42, 18, 15]
+échoue sur les années  Crypto du 25 au 3                  BTCUSD       du 25 au 3, stop 1.5 ATR                        76.4     7.5   -19.6 t=-1.29 [82, 33, 51]
+échoue sur les années  Baisses d'affilée                  ETHUSD       2 baisses -> achat 1 j, stop 1.5 ATR           109.6    -5.7    -7.4 t=-1.29 [261, 137, 139]
+échoue sur les années  Rééquilibrage fin de mois          US30         5 derniers jours, stop 1.5 ATR                  15.7    -6.8    -2.9 t=-1.31 [73, 37, 34]
+perd à l'entraînement  Rééquilibrage fin de mois          EU50         2 derniers jours (trimestre), stop 3 ATR        -2.1    -1.1    -0.6 t=-1.36 [21, 10, 9]
+échoue sur les années  Calendrier composite (Quantpedia)  US30         lendemain du 15, sans filtre, stop 1.5 ATR       8.8    -2.4    -1.9 t=-1.37 [61, 30, 29]
+échoue sur les années  Début/fin de mois                  BTCUSD       2 derniers + 3 premiers jours, stop 1.5 ATR     60.9    -4.4    -5.5 t=-1.40 [67, 36, 39]
+échoue sur les années  Saisonnalité même mois             PALLADIUM    même mois, 3 années passées, stop 3 ATR          1.6     1.3   -11.9 t=-1.43 [19, 20, 34]
+échoue sur les années  Jour de la semaine                 COPPER       vente le jeudi, stop 1.5 ATR                     0.7    -9.1    -2.7 t=-1.45 [264, 130, 125]
+échoue sur les années  Jour de la semaine                 LTCUSD       achat le vendredi, stop 1.5 ATR                126.9   -12.5     0.2 t=-1.45 [266, 130, 125]
+échoue sur les années  Saisonnalité même mois             TSLA         même mois, 3 années passées, stop 1.5 ATR       37.9   -13.2    -6.0 t=-1.45 [25, 52, 43]
+échoue sur les années  Retournement hebdo des indices     US100        avec les 10 derniers jours, tenu 1 semaine,      3.7     4.8   -27.3 t=-1.46 [120, 53, 78]
+échoue sur les années  Saisonnalité même mois             AU200        même mois, 3 années passées, stop 1.5 ATR        3.3   -12.4    -9.6 t=-1.46 [28, 47, 39]
+échoue sur les années  Paires (retour à la moyenne de l'é EURJPY/USDJPY z 20 j, entrée 2                                 0.5    -0.0    -1.3 t=-1.46 [48, 25, 28]
+échoue sur les années  Jour de la semaine                 OIL_CRUDE    achat le mercredi, stop 1.5 ATR                  8.7   -12.0    -0.2 t=-1.47 [264, 130, 126]
+échoue sur les années  Calendrier composite (Quantpedia)  RTY          fin de mois, filtre 200 j, stop 1.5 ATR          6.8     2.3    -8.4 t=-1.49 [44, 14, 25]
+échoue sur les années  Retournement hebdo des indices     US500        avec les 10 derniers jours, tenu 1 semaine,      9.3     3.1   -13.7 t=-1.50 [95, 42, 53]
+perd à l'entraînement  Retournement hebdo des indices     FR40         avec les 5 derniers jours, tenu 1 semaine, s    -6.7    -4.7    -7.1 t=-1.58 [129, 68, 64]
+échoue sur les années  Crypto du 25 au 3                  ETHUSD       du 28 au 5, stop 1.5 ATR                        83.7     5.9   -18.2 t=-1.58 [86, 33, 49]
+perd à l'entraînement  Saisonnalité même mois             US500        même mois, 3 années passées, stop 3 ATR         -3.6    -4.1    -8.9 t=-1.62 [22, 32, 26]
+échoue sur les années  Expiration des options             DE40         vente semaine après OPEX, stop 1.5 ATR           5.2     0.4   -13.4 t=-1.63 [75, 38, 39]
+échoue sur les années  Jour de la semaine                 MSFT         achat le lundi, stop 1.5 ATR                     5.9    -1.2    -4.0 t=-1.63 [240, 112, 117]
+perd à l'entraînement  Saisonnalité même mois             FR40         même mois, 5 années passées, stop 3 ATR        -19.7   -10.5    -0.7 t=-1.68 [33, 35, 18]
+perd à l'entraînement  Avant/après l'emploi US (NFP)      GOLD         vente avant, stop 2 ATR                         -0.4    -0.1    -2.2 t=-1.69 [56, 30, 28]
+échoue sur les années  Retournement hebdo des indices     DE40         contre les 5 derniers jours, tenu 1 semaine,    17.9   -27.1    -3.8 t=-1.70 [225, 129, 124]
+échoue sur les années  Saisonnalité même mois             COPPER       même mois, 5 années passées, stop 1.5 ATR        6.6   -11.3   -18.3 t=-1.72 [30, 50, 47]
+perd à l'entraînement  IBS (clôture près du bas)          DE40         IBS > 0.8, vente 1 j, stop 1.5 ATR              -3.1    -4.8   -10.8 t=-1.73 [248, 151, 170]
+trop peu de trades     Rééquilibrage fin de mois          UK100        3 derniers jours (trimestre), stop 1.5 ATR       1.0    -2.8    -2.4 t=-1.73 [22, 10, 9]
+échoue sur les années  Saisonnalité même mois             US100        même mois, 3 années passées, stop 1.5 ATR        1.9    -2.8   -25.0 t=-1.74 [30, 46, 45]
+perd à l'entraînement  Fin de séance US -> ouverture Asie J225         contre US, 1 h après l'ouverture, stop 2 ATR    -7.4    -7.7    -0.5 t=-1.77 [819, 502, 481]
+perd à l'entraînement  Expiration des options             RTY          vente semaine après OPEX, stop 1.5 ATR          -8.5    -3.6    -9.2 t=-1.79 [92, 37, 36]
+échoue sur les années  Jour de la semaine                 UK100        vente le jeudi, stop 1.5 ATR                     7.2    -6.0    -9.6 t=-1.84 [264, 130, 125]
+échoue sur les années  Jour de la semaine                 FR40         achat le mardi, stop 1.5 ATR                     3.3    -6.6    -6.2 t=-1.85 [263, 129, 126]
+perd à l'entraînement  Paires (retour à la moyenne de l'é US500/RTY    z 60 j, entrée 2                                -0.6    -1.9    -0.3 t=-1.85 [32, 11, 24]
+perd à l'entraînement  Expiration des options             US500        vente semaine après OPEX, stop 3 ATR            -1.6    -3.5    -3.4 t=-1.86 [62, 30, 28]
+perd à l'entraînement  Paires (retour à la moyenne de l'é GOLD/PLATINUM z 60 j, entrée 1.5                              -0.6    -3.5    -0.3 t=-1.86 [51, 40, 34]
+perd à l'entraînement  Retournement hebdo des indices     RTY          avec les 5 derniers jours, tenu 1 semaine, s   -16.4    -5.3    -9.3 t=-1.95 [158, 67, 66]
+échoue sur les années  Saisonnalité même mois             USDCHF       même mois, 3 années passées, stop 1.5 ATR        3.3    -4.3   -28.5 t=-1.95 [26, 46, 48]
+perd à l'entraînement  Fixing de fin de mois (dollar)     GBPUSD       dollar contre les actions US, 12 h-16 h, sto    -5.1    -1.0    -2.2 t=-1.99 [51, 26, 27]
+échoue sur les années  IBS (clôture près du bas)          ETHUSD       IBS > 0.7, vente 1 j, stop 1.5 ATR             244.2   -15.3    -4.9 t=-2.02 [496, 208, 203]
+échoue sur les années  Expiration des options             US30         vente semaine après OPEX, stop 1.5 ATR           2.0    -2.6   -13.1 t=-2.03 [74, 35, 38]
+échoue sur les années  IBS (clôture près du bas)          HK50         IBS < 0.2, 1 j, stop 1.5 ATR                     7.0   -14.6    -0.9 t=-2.03 [198, 138, 116]
+échoue sur les années  Avant/après l'inflation US (CPI)   US100        vente avant, stop 1 ATR                          5.9    -4.4    -1.7 t=-2.10 [57, 31, 28]
+échoue sur les années  Avant/après l'inflation US (CPI)   US500        vente avant, stop 1 ATR                          8.0    -5.1    -1.6 t=-2.13 [57, 30, 28]
+perd à l'entraînement  Saisonnalité même mois             NZDUSD       même mois, 3 années passées, stop 1.5 ATR        0.0     8.9   -47.9 t=-2.21 [31, 44, 67]
+perd à l'entraînement  Paires (retour à la moyenne de l'é FR40/EU50    z 60 j, entrée 2.5                              -0.7    -0.1    -0.9 t=-2.29 [17, 6, 11]
+perd à l'entraînement  Saisonnalité même mois             GBPUSD       même mois, 5 années passées, stop 3 ATR         -5.8     4.9   -24.4 t=-2.30 [26, 19, 40]
+échoue sur les années  Momentum intraday US               US500        15 h-16 h contre le matin, stop 1 ATR           49.6   -16.9    -3.9 t=-2.32 [1156, 633, 619]
+perd à l'entraînement  Momentum intraday US               RTY          15 h-16 h contre le matin, stop 2 ATR           -1.4    -3.8    -4.7 t=-2.36 [749, 631, 620]
+perd à l'entraînement  Retournement hebdo des indices     UK100        avec les 5 derniers jours, tenu 1 semaine, s    -0.5    -7.9    -8.5 t=-2.37 [136, 66, 70]
+échoue sur les années  Calendrier composite (Quantpedia)  US500        lendemain du 15, sans filtre, stop 1.5 ATR       2.7    -3.0    -3.8 t=-2.46 [61, 30, 29]
+échoue sur les années  Jour de la semaine                 EURGBP       vente le mercredi, stop 1.5 ATR                  7.7   -13.1    -6.9 t=-2.46 [265, 130, 126]
+échoue sur les années  IBS (clôture près du bas)          BTCUSD       IBS > 0.7, vente 1 j, stop 1.5 ATR             191.8   -20.0    -7.0 t=-2.50 [514, 224, 214]
+perd à l'entraînement  Saisonnalité même mois             EURGBP       même mois, 5 années passées, stop 3 ATR         -7.4    -3.7   -11.6 t=-2.53 [23, 25, 28]
+perd à l'entraînement  Saisonnalité même mois             USDCAD       même mois, 3 années passées, stop 3 ATR        -12.1    -1.3   -19.9 t=-2.58 [29, 28, 36]
+échoue sur les années  Jour de la semaine                 HK50         achat le mardi, stop 1.5 ATR                    18.8   -15.3    -6.9 t=-2.60 [251, 127, 125]
+perd à l'entraînement  Saisonnalité même mois             EU50         même mois, 5 années passées, stop 3 ATR        -18.5   -13.9    -7.6 t=-2.92 [30, 39, 22]
+perd à l'entraînement  Saisonnalité même mois             XRPUSD       même mois, 3 années passées, stop 3 ATR        -13.1   -10.6   -13.5 t=-3.03 [43, 32, 42]
+perd à l'entraînement  Saisonnalité même mois             AUDUSD       même mois, 3 années passées, stop 3 ATR         -4.4    -7.6   -15.3 t=-3.05 [21, 34, 30]
+perd à l'entraînement  Séances de l'or                    SILVER       vente 14 h-16 h UTC, stop 2 ATR                -12.2   -13.7    -6.3 t=-3.07 [1207, 643, 622]
+perd à l'entraînement  Fin de séance US -> ouverture Asie AU200        contre US, 1 h après l'ouverture, stop 2 ATR   -14.0    -6.2    -3.8 t=-3.18 [810, 492, 477]
+perd à l'entraînement  Fixing de fin de mois (dollar)     AUDUSD       dollar contre les actions US, 12 h-16 h, sto    -9.3    -3.3    -1.6 t=-3.40 [57, 26, 27]
+échoue sur les années  Jour de la semaine                 SOLUSD       achat le week-end, stop 3 ATR                    3.0   -11.3    -4.0 t=-3.62 [46, 133, 126]
+perd à l'entraînement  Jour de la semaine                 GOOGL        achat le jeudi, stop 3 ATR                      -3.8    -5.9   -10.7 t=-4.42 [240, 130, 121]
+échoue sur les années  Jour de la semaine                 PLATINUM     achat le mercredi, stop 1.5 ATR                  0.1   -22.1   -16.3 t=-4.72 [256, 130, 126]
+échoue sur les années  Jour de la semaine                 PALLADIUM    achat le mercredi, stop 1.5 ATR                 42.8   -18.3   -19.1 t=-5.00 [255, 129, 126]
+échoue sur les années  Jour de la semaine                 XRPUSD       achat le week-end, stop 1.5 ATR                 98.3   -38.3    -4.6 t=-5.32 [288, 136, 127]
+perd à l'entraînement  V du dollar autour des fixings     GBPUSD       dollar vendu 21 h-2 h (après Tokyo), stop 2    -21.3    -8.2   -10.1 t=-5.33 [1201, 648, 625]
+perd à l'entraînement  BTC meneur de l'ETH                ETHUSD       sens du BTC si |r| > 1.0%, stop 2 ATR          -35.9   -33.0    -7.0 t=-7.16 [5052, 1271, 932]
+perd à l'entraînement  V du dollar autour des fixings     USDJPY       dollar acheté 17 h-20 h (avant Tokyo), stop    -18.8   -17.0   -11.6 t=-9.39 [941, 520, 499]
+échoue sur les années  Heures du Bitcoin                  BTCUSD       achat 22 h-0 h UTC, stop 1 ATR                 148.7   -58.5   -21.9 t=-9.83 [1704, 912, 879]
+perd à l'entraînement  V du dollar autour des fixings     AUDUSD       dollar acheté 17 h-20 h (avant Tokyo), stop    -35.1   -14.1   -16.9 t=-11.67 [947, 520, 499]
