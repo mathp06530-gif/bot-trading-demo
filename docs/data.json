@@ -1868,7 +1868,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T13:22:25Z",
+ "derniere_execution": "2026-11-26T13:23:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -12085,6 +12085,10 @@
   {
    "date": "2026-11-26T13:22:25Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T13:23:26Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -12635,7 +12639,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.415,
+   "prix": 41.411500000000004,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.3,
@@ -12664,7 +12668,7 @@
      "tendance_4h": "SELL",
      "bollinger": 0.59
     },
-    "prix": 3568.435,
+    "prix": 3568.69,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    },
@@ -13432,7 +13436,7 @@
    3565.14,
    3570.29,
    3565.14,
-   3568.43
+   3568.69
   ],
   "elan_4h-GOLD": [
    1795694400,
