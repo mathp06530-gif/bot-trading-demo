@@ -1731,10 +1731,17 @@
    "marche": "BTCUSD",
    "texte": "Tendance baissière nette (ADX 18) : on veut être VENDEUR. Mais le signal n'est pas récent (il date du 2026-10-24 04:00) : on attend le prochain pour ne pas entrer en retard.",
    "strategie": "tendance_4h"
+  },
+  {
+   "date": "2026-11-26T02:36:23Z",
+   "type": "analyse",
+   "marche": "SILVER",
+   "texte": "Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-12 08:00).",
+   "strategie": "cassure_4h"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T02:35:24Z",
+ "derniere_execution": "2026-11-26T02:36:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -9399,27 +9406,21 @@
   {
    "date": "2026-11-26T02:35:24Z",
    "valeur": 93.24
+  },
+  {
+   "date": "2026-11-26T02:36:25Z",
+   "valeur": 93.15
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.24,
-  "depot": 96.11,
-  "resultat_latent": -2.87,
-  "disponible": 86.72
+  "solde": 93.15,
+  "depot": 93.15,
+  "resultat_latent": 0.0,
+  "disponible": 93.15
  },
- "positions": [
-  {
-   "marche": "SILVER",
-   "nom": "Silver",
-   "sens": "SELL",
-   "taille": 1.7,
-   "prix_entree": 40.117,
-   "resultat": -2.86,
-   "ouverte_le": "2026-11-25T08:05:23.800"
-  }
- ],
+ "positions": [],
  "analyses": {
   "BTCUSD": {
    "prix": 60817.8,
@@ -9977,16 +9978,17 @@
    "stop": 42.017,
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
-   "statut": "ouvert",
-   "resultat": -2.86,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
+   "statut": "ferme",
+   "resultat": -2.94,
+   "ferme_le": "2026-11-26T02:36:25Z",
+   "prix_sortie": 42.017,
+   "motif_sortie": "Stop touché",
    "strategie": "cassure_4h",
    "reglages": {
     "CASSURE_ENTREE": 20.0,
     "CASSURE_SORTIE": 20.0
-   }
+   },
+   "resultat_estime": false
   },
   {
    "id": "00000000-76bd-2250-049f-c46d0015549e",
@@ -10136,7 +10138,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.24
+  "2026-11-26": 93.15
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -10287,9 +10289,10 @@
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.56,
-   "action": "Position conservée",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)",
    "atr": 1.12,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 3.75 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 3.75 de plus dans le bon sens",
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)"
   }
  },
  "deals_par_strategie": {
@@ -10310,7 +10313,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3598.915,
+    "prix": 3599.91,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -10996,13 +10999,7 @@
    }
   }
  },
- "cassure_garde": {
-  "00000000-7684-793f-049f-c46d0015549e": {
-   "dist": 1.9000000000000057,
-   "depuis": "2026-11-25T08:05",
-   "meilleur": 38.1995
-  }
- },
+ "cassure_garde": {},
  "deux_cerveaux_depuis": "2026-11-25T17:25:21Z",
  "elan": {
   "depuis": "2026-11-25T18:15:25Z",
