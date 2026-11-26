@@ -1780,7 +1780,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T07:08:26Z",
+ "derniere_execution": "2026-11-26T07:09:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10533,15 +10533,19 @@
   {
    "date": "2026-11-26T07:08:26Z",
    "valeur": 93.17
+  },
+  {
+   "date": "2026-11-26T07:09:25Z",
+   "valeur": 93.22
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.17,
+  "solde": 93.22,
   "depot": 93.15,
-  "resultat_latent": 0.02,
-  "disponible": 89.89
+  "resultat_latent": 0.07,
+  "disponible": 89.95
  },
  "positions": [
   {
@@ -10550,7 +10554,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3572.1,
-   "resultat": 0.02,
+   "resultat": 0.07,
    "ouverte_le": "2026-11-26T06:10:23.892",
    "id": "00000000-76c8-6a0d-049f-c46d0015549e",
    "stop": 3601.86,
@@ -10878,7 +10882,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T06:10:23Z",
    "statut": "ouvert",
-   "resultat": 0.02,
+   "resultat": 0.07,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -10903,7 +10907,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.17
+  "2026-11-26": 93.22
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -11035,7 +11039,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3571.79,
+   "prix": 3567.92,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3915.3,
@@ -11077,9 +11081,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3570.97,
+    "prix": 3567.3450000000003,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 34.33 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 30.66 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -11777,7 +11781,7 @@
   "deals": {},
   "marches": {
    "GOLD": {
-    "prix": 3571.79,
+    "prix": 3567.92,
     "ema200": 3916.56,
     "atr": 52.29,
     "trou_achat_atr": -0.12,
@@ -11801,7 +11805,7 @@
   "deals": {},
   "marches": {
    "ETHUSD": {
-    "prix": 1686.38,
+    "prix": 1686.12,
     "ligne": 1735.66,
     "sens": -1,
     "atr": 39.94,
@@ -11815,7 +11819,7 @@
   "deals": {},
   "marches": {
    "NATURALGAS": {
-    "prix": 3.5048,
+    "prix": 3.5278,
     "sens": -1,
     "atr": 0.07024,
     "regle": "MACD 24/52/18, achat et vente, seulement si marché calme (ADX < 20), stop garanti 2.5 ATR, objectif 1 R, suiveur 3 ATR",
@@ -11836,7 +11840,7 @@
    3575.32,
    3605.17,
    3561.35,
-   3571.79
+   3567.92
   ],
   "cassure_4h-SILVER": [
    1795665600,
@@ -11849,15 +11853,15 @@
    1795676700,
    3570.9,
    3571.46,
-   3570.36,
-   3570.97
+   3566.98,
+   3567.35
   ],
   "elan_4h-GOLD": [
    1795665600,
    3575.32,
    3605.17,
    3561.35,
-   3571.79
+   3567.92
   ],
   "elan_4h-SILVER": [
    1795665600,
@@ -11871,14 +11875,14 @@
    1695.62,
    1705.19,
    1680.16,
-   1686.38
+   1686.12
   ],
   "usine-NATURALGAS": [
    1795665600,
    3.5873,
    3.5938,
    3.4878,
-   3.5048
+   3.5278
   ],
   "usine-TSLA": [
    1795651200,
