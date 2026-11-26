@@ -1,0 +1,45 @@
+name: Bot à part Élan crypto
+
+# Bot SÉPARÉ du bot principal (26/11/2026, demande de Mathis) : Élan 4 h dans le sens de la tendance sur
+# Ethereum, Litecoin, Solana et XRP, compte DÉMO, 1 % par trade. Code : elan_crypto/. Données : docs/elan_crypto.json.
+# Tourne toutes les 30 min (les bougies de 4 h se ferment à 0 h, 4 h, 8 h… UTC).
+# Couper : ELAN_CRYPTO="non" dans reglages.env, ou Actions > « Bot à part Élan crypto » > Disable workflow.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "2,32 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: elan-crypto
+  cancel-in-progress: false
+
+jobs:
+  tour:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Un tour du bot Élan crypto
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+        run: |
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          git pull -q --rebase origin main
+          set -a; [ -f reglages.env ] && . ./reglages.env; set +a
+          python -m elan_crypto.bot || echo "Le tour a signalé une erreur (voir docs/elan_crypto.json)."
+          git add docs/elan_crypto.json
+          git diff --cached --quiet && exit 0
+          git commit -qm "Tour Élan crypto $(date -u +%Y-%m-%dT%H:%MZ)"
+          for i in 1 2 3 4 5; do git pull -q --rebase origin main && git push -q origin HEAD:main && exit 0; sleep $((i * 3)); done
+          exit 1
