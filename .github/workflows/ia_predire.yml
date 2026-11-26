@@ -1,0 +1,102 @@
+name: IA - prédire la direction (test sur données jamais vues)
+
+# Système À PART du bot (dossier ia/) : 5 IA + vote + empilement, testées en walk-forward sur 8 marchés,
+# en 1 min, 5 min, 15 min, 1 h et 4 h. Ne passe AUCUN ordre. Résultat : ia/RESULTATS.md et ia/resultats.json.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+    paths: [ia/predire.py, .github/workflows/ia_predire.yml]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ia-predire-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  donnees:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ia/requirements.txt
+      - name: Historique Capital.com démo (bid + ask), un marché après l'autre
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+        run: |
+          for e in GOLD SILVER US100 US500 EURUSD BTCUSD ETHUSD OIL_CRUDE; do
+            python -u ia/predire.py telecharger donnees_ia $e || echo "$e : échec"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: donnees-ia
+          path: donnees_ia
+          retention-days: 7
+
+  tester:
+    needs: donnees
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        epic: [GOLD, SILVER, US100, US500, EURUSD, BTCUSD, ETHUSD, OIL_CRUDE]
+        unite: [MINUTE, MINUTE_5, MINUTE_15, HOUR, HOUR_4]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: |
+          pip install -r ia/requirements.txt
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - uses: actions/download-artifact@v4
+        with:
+          name: donnees-ia
+          path: donnees_ia
+      - name: Test ${{ matrix.epic }} ${{ matrix.unite }}
+        run: |
+          mkdir -p resultats
+          python -u ia/predire.py tester donnees_ia ${{ matrix.epic }} ${{ matrix.unite }} resultats/${{ matrix.epic }}_${{ matrix.unite }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: resultat-${{ matrix.epic }}-${{ matrix.unite }}
+          path: resultats
+          if-no-files-found: ignore
+          retention-days: 30
+
+  bilan:
+    needs: tester
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ia/requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: resultat-*
+          path: resultats
+          merge-multiple: true
+      - run: python ia/predire.py bilan resultats ia/RESULTATS.md ia/resultats.json
+      - name: Enregistrer le bilan
+        run: |
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          git add ia/RESULTATS.md ia/resultats.json
+          git diff --cached --quiet && exit 0
+          git commit -qm "IA : bilan du test sur données jamais vues $(date -u +%Y-%m-%d)"
+          for i in 1 2 3 4 5; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin HEAD:"${GITHUB_REF_NAME}" && exit 0; sleep 7; done
+          exit 1
