@@ -1798,7 +1798,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T09:05:26Z",
+ "derniere_execution": "2026-11-26T09:06:27Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11011,15 +11011,19 @@
   {
    "date": "2026-11-26T09:05:26Z",
    "valeur": 93.13
+  },
+  {
+   "date": "2026-11-26T09:06:27Z",
+   "valeur": 93.12
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.13,
+  "solde": 93.12,
   "depot": 93.15,
-  "resultat_latent": -0.02,
-  "disponible": 89.85
+  "resultat_latent": -0.03,
+  "disponible": 89.84
  },
  "positions": [
   {
@@ -11028,7 +11032,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3572.1,
-   "resultat": -0.02,
+   "resultat": -0.03,
    "ouverte_le": "2026-11-26T06:10:23.892",
    "id": "00000000-76c8-6a0d-049f-c46d0015549e",
    "stop": 3601.86,
@@ -11356,7 +11360,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T06:10:23Z",
    "statut": "ouvert",
-   "resultat": -0.02,
+   "resultat": -0.03,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -11381,7 +11385,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.13
+  "2026-11-26": 93.12
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -11563,9 +11567,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3573.24,
+    "prix": 3573.895,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 36.62 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 37.28 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -12334,9 +12338,9 @@
   "rapide-GOLD": [
    1795683900,
    3572.18,
-   3573.3,
+   3574.65,
    3572.12,
-   3573.24
+   3573.89
   ],
   "elan_4h-GOLD": [
    1795680000,
@@ -12375,9 +12379,15 @@
   ]
  },
  "veille": {
-  "titres_lus_le": "2026-11-26T08:05:22.022678+00:00",
+  "titres_lus_le": "2026-11-26T09:06:21.738530+00:00",
   "titres": {
    "ETHUSD": [
+    {
+     "titre": "Why Is an Ethereum ICO Whale Selling Now, After a Decade?",
+     "lien": "https://beincrypto.com/ethereum-whale-2014-ico-sells-eth/?.tsrc=rss",
+     "date": "2026-11-26T08:38Z",
+     "sujets": []
+    },
     {
      "titre": "How Low Can Bitcoin, Ethereum and XRP Fall? 4 Price Levels to Watch",
      "lien": "https://beincrypto.com/critical-price-levels-for-bitcoin-ethereum-xrp/?.tsrc=rss",
@@ -12409,17 +12419,15 @@
      "sujets": [
       "régulation"
      ]
-    },
-    {
-     "titre": "Franklin Templeton Adds Hyperliquid's HYPE to Its Crypto Index ETF",
-     "lien": "https://www.cryptoprowl.com/releases/franklin-templeton-adds-hyperliquids-hype-to-its-crypto-index-etf-8076?.tsrc=rss",
-     "date": "2026-11-25T18:15Z",
-     "sujets": [
-      "régulation"
-     ]
     }
    ],
    "GOLD": [
+    {
+     "titre": "Crossroads Gold gets exploration licence for Club Terrace Project in Australia",
+     "lien": "https://www.mining-technology.com/news/crossroads-exploration-licence-club-terrace-project/?.tsrc=rss",
+     "date": "2026-11-26T08:28Z",
+     "sujets": []
+    },
     {
      "titre": "Gold spot prices slip as dollar firms, while U.S. futures gain",
      "lien": "https://finance.yahoo.com/markets/commodities/articles/gold-eases-u-inflation-data-035043521.html?.tsrc=rss",
@@ -12453,12 +12461,6 @@
      "lien": "https://www.thestreet.com/crypto/markets/gold-vs-bitcoin-analyst-reveals-why-the-tide-is-turning?.tsrc=rss",
      "date": "2026-11-25T23:15Z",
      "sujets": []
-    },
-    {
-     "titre": "Horizon Gold hits 10.79 g/t gold at Kingfisher as Gum Creek resource growth potential builds",
-     "lien": "https://www.proactiveinvestors.com/companies/news/1102470/horizon-gold-hits-10-79-g-t-gold-at-kingfisher-as-gum-creek-resource-growth-potential-builds-1102470.html?.tsrc=rss",
-     "date": "2026-11-25T22:50Z",
-     "sujets": []
     }
    ],
    "NATURALGAS": [
@@ -12483,6 +12485,12 @@
      "sujets": []
     },
     {
+     "titre": "Constellation concludes 4.4GW natural gas-fired power plants sale",
+     "lien": "https://www.power-technology.com/news/constellation-natural-gas-fired-power-plants/?.tsrc=rss",
+     "date": "2026-11-26T07:57Z",
+     "sujets": []
+    },
+    {
      "titre": "Arrow Announces Q3 2026 Interim Results",
      "lien": "https://finance.yahoo.com/energy/articles/arrow-announces-q3-2026-interim-070000694.html?.tsrc=rss",
      "date": "2026-11-26T07:00Z",
@@ -12494,12 +12502,6 @@
      "titre": "3 Oil Stocks With Direct Exposure To Higher Crude Prices",
      "lien": "https://finance.yahoo.com/energy/articles/3-oil-stocks-direct-exposure-061445059.html?.tsrc=rss",
      "date": "2026-11-26T06:14Z",
-     "sujets": []
-    },
-    {
-     "titre": "Eni and Repsol Commit $2 Billion to Venezuela Oil and Gas Expansion",
-     "lien": "https://finance.yahoo.com/energy/articles/eni-repsol-commit-2-billion-180500763.html?.tsrc=rss",
-     "date": "2026-11-25T18:05Z",
      "sujets": []
     }
    ],
@@ -12587,13 +12589,13 @@
  "_pauses_marches_notees": {},
  "simulations": {
   "00000000-76c8-6a0d-049f-c46d0015549e": {
-   "p_stop": 52.8,
-   "p_objectif": 8.3,
-   "p_aucun": 38.9,
-   "p_gain_fin": 34.6,
-   "prix_p5": 3516.81,
-   "prix_median": 3581.52,
-   "prix_p95": 3644.32,
+   "p_stop": 53.9,
+   "p_objectif": 8.0,
+   "p_aucun": 38.1,
+   "p_gain_fin": 34.3,
+   "prix_p5": 3517.45,
+   "prix_median": 3582.18,
+   "prix_p95": 3644.99,
    "objectif": 3512.58,
    "objectif_type": "gain de 2 R",
    "objectif_r": 2.0,
@@ -12601,10 +12603,10 @@
    "horizon": "4 h",
    "tirages": 4000,
    "bougies_utilisees": 298,
-   "prix_depart": 3573.24,
+   "prix_depart": 3573.89,
    "calcule_sur": "2026-11-26T09:05:00",
    "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
-   "verdict": "Penche nettement vers le stop (14 % des cas tranchés, équilibre 33 %)."
+   "verdict": "Penche nettement vers le stop (13 % des cas tranchés, équilibre 33 %)."
   }
  }
 }
