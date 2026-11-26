@@ -1830,7 +1830,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T11:17:26Z",
+ "derniere_execution": "2026-11-26T11:18:27Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11559,15 +11559,19 @@
   {
    "date": "2026-11-26T11:17:26Z",
    "valeur": 92.9
+  },
+  {
+   "date": "2026-11-26T11:18:27Z",
+   "valeur": 92.88
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 92.9,
+  "solde": 92.88,
   "depot": 93.09,
-  "resultat_latent": -0.19,
-  "disponible": 89.63
+  "resultat_latent": -0.21,
+  "disponible": 89.61
  },
  "positions": [
   {
@@ -11576,7 +11580,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3555.46,
-   "resultat": -0.19,
+   "resultat": -0.21,
    "ouverte_le": "2026-11-26T10:50:25.127",
    "id": "00000000-76ca-6738-049f-c46d0015549e",
    "stop": 3591.01,
@@ -11934,7 +11938,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T10:50:25Z",
    "statut": "ouvert",
-   "resultat": -0.19,
+   "resultat": -0.21,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -11958,7 +11962,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 92.9
+  "2026-11-26": 92.88
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -12110,7 +12114,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.507,
+   "prix": 41.533,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.38,
@@ -12140,9 +12144,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3565.99,
+    "prix": 3566.35,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 45.94 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 46.30 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -12848,7 +12852,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 41.51,
+    "prix": 41.53,
     "ema200": 50.42,
     "atr": 1.13,
     "trou_achat_atr": -0.33,
@@ -12906,14 +12910,14 @@
    41.35,
    41.8,
    41.29,
-   41.51
+   41.53
   ],
   "rapide-GOLD": [
    1795691700,
    3567.07,
    3567.07,
    3565.13,
-   3565.99
+   3566.35
   ],
   "elan_4h-GOLD": [
    1795680000,
@@ -12927,7 +12931,7 @@
    41.35,
    41.8,
    41.29,
-   41.51
+   41.53
   ],
   "supertrend_4h-ETHUSD": [
    1795680000,
@@ -13164,13 +13168,13 @@
  "_pauses_marches_notees": {},
  "simulations": {
   "00000000-76ca-6738-049f-c46d0015549e": {
-   "p_stop": 57.6,
+   "p_stop": 58.2,
    "p_objectif": 2.1,
-   "p_aucun": 40.3,
-   "p_gain_fin": 33.6,
-   "prix_p5": 3511.44,
-   "prix_median": 3572.15,
-   "prix_p95": 3633.92,
+   "p_aucun": 39.8,
+   "p_gain_fin": 33.2,
+   "prix_p5": 3511.79,
+   "prix_median": 3572.51,
+   "prix_p95": 3634.29,
    "objectif": 3484.36,
    "objectif_type": "gain de 2 R",
    "objectif_r": 2.0,
@@ -13178,10 +13182,10 @@
    "horizon": "4 h",
    "tirages": 4000,
    "bougies_utilisees": 298,
-   "prix_depart": 3565.99,
+   "prix_depart": 3566.35,
    "calcule_sur": "2026-11-26T11:15:00",
    "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
-   "verdict": "Penche nettement vers le stop (4 % des cas tranchés, équilibre 33 %)."
+   "verdict": "Penche nettement vers le stop (3 % des cas tranchés, équilibre 33 %)."
   }
  }
 }
