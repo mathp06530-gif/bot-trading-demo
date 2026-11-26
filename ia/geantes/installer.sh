@@ -10,12 +10,14 @@ for f in ${IA_FAMILLES:-$FAMS}; do
     set -e
     PIP=$(python -c "from ia.geantes.familles import FAMILLES; print(' '.join(FAMILLES['$f']['pip']))")
     GIT=$(python -c "from ia.geantes.familles import FAMILLES; print(FAMILLES['$f'].get('git',''))")
-    uv venv -q --python 3.12 .venvs/$f
+    PY=$(python -c "from ia.geantes.familles import FAMILLES; print(FAMILLES['$f'].get('py','3.12'))")
+    SANSREQ=$(python -c "from ia.geantes.familles import FAMILLES; print(1 if FAMILLES['$f'].get('sans_requirements') else '')")
+    uv venv -q --python $PY .venvs/$f
     uv pip install -q --python .venvs/$f/bin/python --index-url https://download.pytorch.org/whl/cpu \
       --extra-index-url https://pypi.org/simple --index-strategy unsafe-best-match torch numpy pandas $PIP
     if [ -n "$GIT" ]; then
       [ -d ia/vendor/$f ] || git clone -q --depth 1 "$GIT" ia/vendor/$f
-      [ -f ia/vendor/$f/requirements.txt ] && uv pip install -q --python .venvs/$f/bin/python \
+      [ -z "$SANSREQ" ] && [ -f ia/vendor/$f/requirements.txt ] && uv pip install -q --python .venvs/$f/bin/python \
         --index-url https://download.pytorch.org/whl/cpu --extra-index-url https://pypi.org/simple \
         --index-strategy unsafe-best-match -r ia/vendor/$f/requirements.txt || true
     fi

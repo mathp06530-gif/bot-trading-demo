@@ -106,6 +106,11 @@
   </section>
 
   <section class="carte" style="margin-top:12px">
+    <h2>IA étudiées mais pas branchées</h2>
+    <div class="defile"><table id="exclues"></table></div>
+  </section>
+
+  <section class="carte" style="margin-top:12px">
     <h2>Par marché</h2>
     <div class="filtres"><input id="cherche2" placeholder="Chercher un marché"><select id="ia2"></select></div>
     <div class="defile haut"><table id="marches"></table></div>
@@ -273,11 +278,15 @@ function marches() {
   $("marches").innerHTML = l.length ? h : `<tr><td class="doux">Pas encore de prédictions jugées.</td></tr>`;
 }
 
+function exclues() {
+  const e = Object.entries(V.exclues || {});
+  $("exclues").innerHTML = e.length ? `<tr><th>IA</th><th>Pourquoi</th></tr>` + e.map(([n, r]) => `<tr><td>${echap(n)}</td><td class="doux" style="white-space:normal">${echap(r)}</td></tr>`).join("") : `<tr><td class="doux">—</td></tr>`;
+}
 function tout() {
   if (!S || !V) return;
   const t = totaux();
   $("maj").textContent = "Mis à jour : " + new Date(V.maj).toLocaleString("fr-FR") + " · actualisation auto";
-  kpis(t); classement(t); chaleur(); remplirSelects(); probas(); dernieres(); etat(); marches();
+  kpis(t); classement(t); chaleur(); remplirSelects(); probas(); dernieres(); etat(); marches(); exclues();
 }
 async function charger() {
   try {
