@@ -1868,7 +1868,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T13:40:33Z",
+ "derniere_execution": "2026-11-26T13:41:51Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -12157,6 +12157,10 @@
   {
    "date": "2026-11-26T13:40:33Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T13:41:51Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -12735,7 +12739,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3570.18,
+    "prix": 3570.2,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    },
@@ -13454,7 +13458,7 @@
   "deals": {},
   "marches": {
    "ETHUSD": {
-    "prix": 1702.88,
+    "prix": 1701.3,
     "ligne": 1735.66,
     "sens": -1,
     "atr": 37.44,
@@ -13501,9 +13505,9 @@
   "rapide-GOLD": [
    1795700400,
    3569.21,
-   3570.32,
+   3570.57,
    3568.95,
-   3570.18
+   3570.2
   ],
   "elan_4h-GOLD": [
    1795694400,
@@ -13524,7 +13528,7 @@
    1698.2,
    1709.6,
    1697.37,
-   1702.88
+   1701.3
   ],
   "usine-NATURALGAS": [
    1795694400,
