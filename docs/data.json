@@ -1741,7 +1741,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T03:16:25Z",
+ "derniere_execution": "2026-11-26T03:17:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -9570,6 +9570,10 @@
   {
    "date": "2026-11-26T03:16:25Z",
    "valeur": 93.15
+  },
+  {
+   "date": "2026-11-26T03:17:25Z",
+   "valeur": 93.15
   }
  ],
  "compte": {
@@ -9583,7 +9587,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 60609.4,
+   "prix": 60677.675,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 18) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -10445,7 +10449,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.7315,
+   "prix": 41.6935,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.56,
@@ -10473,7 +10477,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3581.95,
+    "prix": 3581.61,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -11174,7 +11178,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 41.73,
+    "prix": 41.69,
     "ema200": 50.6,
     "atr": 1.12,
     "trou_achat_atr": 0.41,
