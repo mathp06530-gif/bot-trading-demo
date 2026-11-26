@@ -1898,8 +1898,8 @@
    "texte": "Connexion refusée (429). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.too-many.requests\"}"
   }
  ],
- "statut": "erreur",
- "derniere_execution": "2026-11-26T19:59:21Z",
+ "statut": "ok",
+ "derniere_execution": "2026-11-26T20:00:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -13699,6 +13699,10 @@
   },
   {
    "date": "2026-11-26T19:58:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T20:00:24Z",
    "valeur": 92.86
   }
  ],
