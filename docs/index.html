@@ -499,7 +499,7 @@ const emas = r => r?.ema || (r?.unite === "HOUR_4" ? [20, 200] : [9, 21]);
 
 // Les stratégies : celles décrites par le bot (donnees.strategies), sinon déduites des réglages.
 const STRAT_INFO = {
-  tendance_4h: { ico: "🧭", couleur: COUL.cyan, titre: "Tendance 4 h (Bitcoin)",
+  tendance_4h: { ico: "🧭", couleur: COUL.cyan, titre: "Tendance 4 h (Bitcoin, retirée le 26/11)",
     desc: "Suit les grandes tendances du Bitcoin sur des bougies de 4 heures. Peu de trades, chacun visé pour durer, avec un stop garanti et un stop suiveur." },
   rapide: { ico: "⚡", couleur: COUL.violet, titre: "Rapide 5 min",
     desc: "Trade souvent sur l'or et l'argent avec des bougies de 5 minutes, seulement dans le sens des tendances 1 h et 4 h." },

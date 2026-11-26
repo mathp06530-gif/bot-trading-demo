@@ -95,7 +95,7 @@ Dans `.github/workflows/bot.yml` :
 
 | Réglage | Par défaut | Signification |
 |---|---|---|
-| `MARCHES` | `BTCUSD` | marchés à trader, séparés par des virgules (ex. `BTCUSD,GOLD`) |
+| `MARCHES` | vide (Bitcoin retiré le 26/11/2026) | marchés de la Tendance 4 h, séparés par des virgules (ex. `BTCUSD`) ; vide = stratégie arrêtée |
 | `TAILLE` | `0.01` | taille de chaque position |
 | `UNITE` | `MINUTE_15` | durée d'une bougie |
 | `STOP_PCT` | `3` | stop de sécurité en % du prix |

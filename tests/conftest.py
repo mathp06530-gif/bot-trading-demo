@@ -27,3 +27,11 @@ def sans_supertrend_par_defaut(monkeypatch):
     """Les anciens tests ne voient pas la stratégie expérimentale « Supertrend » (testée à part)."""
     from bot import supertrend
     monkeypatch.setattr(supertrend, "LISTE", [])
+
+
+@pytest.fixture(autouse=True)
+def tendance_btc_pour_les_tests(monkeypatch):
+    """Bitcoin est retiré en vrai (MARCHES="" depuis le 26/11/2026), mais les anciens tests gardent
+    la Tendance 4 h sur BTCUSD pour vérifier que son code marche toujours si on la relance."""
+    from bot import main
+    monkeypatch.setattr(main, "MARCHES", ["BTCUSD"])

@@ -770,3 +770,19 @@ def test_supertrend_achete_puis_se_retourne(tmp_path, monkeypatch):
     main.un_tour(d, faux)
     assert faux.fermees == ["d0"]
     assert faux.ouvertes[-1][1] == "SELL"
+
+
+def test_bitcoin_retire_plus_de_tendance_4h(tmp_path, monkeypatch):
+    """26/11/2026 : MARCHES vide -> aucun ordre BTC, Tendance 4 h cachée de l'appli, les autres restent."""
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "MARCHES", [])
+    debut, _ = serie_achat()
+    faux = FauxCapital(debut)
+    d = {"strategies": {"tendance_4h": {"active": True}}}
+    main.un_tour(d, faux)
+    assert not faux.ouvertes and "BTCUSD" not in d["analyses"]
+    assert "tendance_4h" not in d["strategies"]
+    assert {"cassure_4h", "rapide", "elan_4h", "supertrend_4h"} <= set(d["strategies"])
+    assert d["bitcoin_retire"] and sum("Bitcoin retiré" in l["texte"] for l in d["journal"]) == 1
+    main.un_tour(d, faux)
+    assert sum("Bitcoin retiré" in l["texte"] for l in d["journal"]) == 1
