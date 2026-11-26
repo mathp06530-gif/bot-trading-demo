@@ -1868,7 +1868,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T13:04:26Z",
+ "derniere_execution": "2026-11-26T13:05:27Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -12013,6 +12013,10 @@
   {
    "date": "2026-11-26T13:04:26Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T13:05:27Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -12585,14 +12589,15 @@
   "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 1 %, sortie au prix d'entrée après +0.5 R, garde 60 % du gain après +1.5 R, sortie si le croisement inverse dure 3 bougies, jusqu'à 2 position(s), risque 1 % (expérimentale)",
   "marches": {
    "GOLD": {
-    "tendance": "BUY",
+    "tendance": "SELL",
     "filtre": {
-     "signal_5min": "BUY",
+     "signal_5min": "SELL",
      "tendance_1h": "SELL",
-     "tendance_4h": "SELL"
+     "tendance_4h": "SELL",
+     "bollinger": 0.53
     },
-    "prix": 3565.465,
-    "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
+    "prix": 3564.07,
+    "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    },
    "SILVER": {
@@ -12607,7 +12612,7 @@
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)"
    }
   },
-  "tendance": "BUY",
+  "tendance": "SELL",
   "meilleur": {},
   "entree_bougie": {
    "GOLD": "2026-11-26T10:45:00"
@@ -13355,11 +13360,11 @@
    41.62
   ],
   "rapide-GOLD": [
-   1795698000,
-   3568.91,
-   3575.42,
-   3564.4,
-   3565.47
+   1795698300,
+   3564.28,
+   3564.74,
+   3563.34,
+   3564.07
   ],
   "elan_4h-GOLD": [
    1795694400,
