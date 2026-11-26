@@ -1741,7 +1741,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T03:33:25Z",
+ "derniere_execution": "2026-11-26T03:34:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -9638,6 +9638,10 @@
   {
    "date": "2026-11-26T03:33:25Z",
    "valeur": 93.15
+  },
+  {
+   "date": "2026-11-26T03:34:25Z",
+   "valeur": 93.15
   }
  ],
  "compte": {
@@ -10492,7 +10496,7 @@
     "titre": "Prelim GDP q/q"
    }
   ],
-  "lu_le": "2026-11-26T02:33:22.380741+00:00",
+  "lu_le": "2026-11-26T03:34:21.903815+00:00",
   "pause": null,
   "prochaines": []
  },
@@ -10501,7 +10505,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3579.4,
+   "prix": 3578.38,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3918.73,
@@ -10541,7 +10545,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3577.495,
+    "prix": 3579.44,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -11234,7 +11238,7 @@
   "deals": {},
   "marches": {
    "GOLD": {
-    "prix": 3579.4,
+    "prix": 3578.38,
     "ema200": 3919.99,
     "atr": 52.02,
     "trou_achat_atr": 0.27,
@@ -11258,7 +11262,7 @@
   "deals": {},
   "marches": {
    "ETHUSD": {
-    "prix": 1695.01,
+    "prix": 1693.73,
     "ligne": 1735.66,
     "sens": -1,
     "atr": 40.02,
