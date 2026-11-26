@@ -1734,7 +1734,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T02:00:24Z",
+ "derniere_execution": "2026-11-26T02:01:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -9259,15 +9259,19 @@
   {
    "date": "2026-11-26T02:00:24Z",
    "valeur": 94.48
+  },
+  {
+   "date": "2026-11-26T02:01:25Z",
+   "valeur": 94.46
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 94.48,
+  "solde": 94.46,
   "depot": 96.11,
-  "resultat_latent": -1.63,
-  "disponible": 88.08
+  "resultat_latent": -1.65,
+  "disponible": 88.06
  },
  "positions": [
   {
@@ -9276,7 +9280,7 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": -1.63,
+   "resultat": -1.65,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
@@ -9838,7 +9842,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": -1.63,
+   "resultat": -1.65,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -9996,7 +10000,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 94.48
+  "2026-11-26": 94.46
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -10171,7 +10175,7 @@
      "tendance_4h": "SELL",
      "bollinger": 0.77
     },
-    "prix": 3568.9,
+    "prix": 3570.695,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
