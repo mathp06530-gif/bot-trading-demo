@@ -1734,7 +1734,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T02:01:25Z",
+ "derniere_execution": "2026-11-26T02:02:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -9263,6 +9263,10 @@
   {
    "date": "2026-11-26T02:01:25Z",
    "valeur": 94.46
+  },
+  {
+   "date": "2026-11-26T02:02:25Z",
+   "valeur": 94.46
   }
  ],
  "compte": {
@@ -9280,7 +9284,7 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": -1.65,
+   "resultat": -1.64,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
@@ -9842,7 +9846,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": -1.65,
+   "resultat": -1.64,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -10147,13 +10151,13 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.146,
+   "prix": 41.1665,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.56,
    "action": "Position conservée",
    "atr": 1.12,
-   "empilement": "position 2/3 possible quand le prix aura avancé de 3.24 de plus dans le bon sens"
+   "empilement": "position 2/3 possible quand le prix aura avancé de 3.26 de plus dans le bon sens"
   }
  },
  "deals_par_strategie": {
@@ -10175,7 +10179,7 @@
      "tendance_4h": "SELL",
      "bollinger": 0.77
     },
-    "prix": 3570.695,
+    "prix": 3570.15,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -10882,7 +10886,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 41.15,
+    "prix": 41.17,
     "ema200": 50.6,
     "atr": 1.12,
     "trou_achat_atr": 0.41,
