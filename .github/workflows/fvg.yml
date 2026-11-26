@@ -27,14 +27,24 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - name: Historique 15 min (Capital.com démo, complété par Dukascopy si trop court)
+      - name: Historique 15 min Capital.com (démo)
+        timeout-minutes: 30
+        continue-on-error: true
         env:
           CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
           CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
           CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
-        run: python backtest/fvg.py telecharger donnees_fvg
+        run: python -u backtest/fvg.py capital donnees_fvg
+      - name: Début de l'historique par Dukascopy (si Capital.com est trop court)
+        timeout-minutes: 45
+        run: python -u backtest/fvg.py completer donnees_fvg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: donnees-fvg
+          path: donnees_fvg
+          retention-days: 7
       - name: Fouille + contrôles anti-hasard
-        run: python backtest/fvg.py fouiller donnees_fvg backtest/resultats_fvg.json 2>&1 | tee backtest/resultats_fvg.txt
+        run: python -u backtest/fvg.py fouiller donnees_fvg backtest/resultats_fvg.json 2>&1 | tee backtest/resultats_fvg.txt
       - name: Enregistrer le bilan
         run: |
           git config user.name "bot-trading-demo"

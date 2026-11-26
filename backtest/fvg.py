@@ -24,7 +24,8 @@ Règles simulées (bougies 15 min, prix acheteur/vendeur réels donc spread comp
   Pessimiste : si stop et objectif sont dans la même bougie, c'est le stop. Pas d'objectif sur la bougie d'entrée.
 
 Usage :
-  python backtest/fvg.py telecharger <dossier>     (GitHub Actions, clés de la démo)
+  python backtest/fvg.py capital <dossier>         (GitHub Actions, clés de la démo)
+  python backtest/fvg.py completer <dossier>       (début de l'historique par Dukascopy si Capital.com est trop court)
   python backtest/fvg.py fouiller <dossier> <sortie.json>
 """
 import io
@@ -77,85 +78,99 @@ TIERS = [k for k, s in enumerate(SORTIES) if s[0].startswith("3 tiers")]
 
 
 # =========================================================================== 1. données
-def dukascopy(sym: str, debut: date, fin: date) -> pd.DataFrame:
-    """Bougies 1 min bid + ask de Dukascopy (gratuit), regroupées en 15 min."""
-    import requests
+def _p(*a):
+    print(*a, flush=True)
 
-    def jour(d, cote):
-        url = f"https://datafeed.dukascopy.com/datafeed/{sym}/{d.year}/{d.month - 1:02d}/{d.day:02d}/{cote}_candles_min_1.bi5"
-        for essai in range(4):
+
+def telecharger_capital(dossier: Path):
+    """Bougies 15 min bid + ask de Capital.com (le courtier du bot), ~10 ans si elles existent."""
+    from backtest import telecharger as t
+    from bot.capital import CapitalDemo
+    cle, ident, mdp = (os.getenv(n, "").strip() for n in ("CAPITAL_API_KEY", "CAPITAL_IDENTIFIER", "CAPITAL_PASSWORD"))
+    dossier.mkdir(parents=True, exist_ok=True)
+    t.DOSSIER = dossier
+    for epic in MARCHES:
+        api = CapitalDemo(cle, ident, mdp)
+        api.connexion()
+        (dossier / f"{epic}_marche.json").write_text(json.dumps(api.marche(epic), ensure_ascii=False))
+        debut = time.time()
+        try:
+            t.telecharger(api, epic, "MINUTE_15", 15, int(os.getenv("JOURS_CAPITAL", "3650")))
+        except Exception as e:
+            _p(f"{epic} MINUTE_15 Capital.com : échec ({str(e)[:150]})")
+        _p(f"{epic} : Capital.com en {time.time() - debut:.0f} s")
+        api.deconnexion()
+
+
+def dukascopy(sym: str, debut: date, fin: date, ecart_rel: float) -> pd.DataFrame:
+    """Bougies 1 min (prix vendeur) de Dukascopy (gratuit), regroupées en 15 min ; prix acheteur = vendeur + spread
+    relatif de Capital.com (le vrai coût chez notre courtier)."""
+    import threading
+
+    import requests
+    local = threading.local()
+
+    def jour(d):
+        if not hasattr(local, "s"):
+            local.s = requests.Session()
+        url = f"https://datafeed.dukascopy.com/datafeed/{sym}/{d.year}/{d.month - 1:02d}/{d.day:02d}/BID_candles_min_1.bi5"
+        for essai in range(3):
             try:
-                r = requests.get(url, timeout=30)
+                r = local.s.get(url, timeout=10)
                 if r.status_code == 404 or not r.content:
                     return None
+                if r.status_code != 200:
+                    raise RuntimeError(r.status_code)
                 brut = lzma.decompress(r.content)
                 n = len(brut) // 24
                 v = np.frombuffer(brut[:n * 24], dtype=">u4").reshape(n, 6)
                 t = pd.Timestamp(d) + pd.to_timedelta(v[:, 0].astype(np.int64), unit="s")
                 p = v[:, 1:5].astype(float) / 1000.0  # open, close, low, high
                 vol = np.frombuffer(brut[:n * 24], dtype=">f4").reshape(n, 6)[:, 5]
-                return pd.DataFrame({"open": p[:, 0], "close": p[:, 1], "low": p[:, 2], "high": p[:, 3], "vol": vol},
-                                    index=t)
+                return pd.DataFrame({"open": p[:, 0], "close": p[:, 1], "low": p[:, 2], "high": p[:, 3], "vol": vol}, index=t)
             except Exception:
-                time.sleep(1 + essai)
+                time.sleep(0.5 + essai)
         return None
 
     jours = [debut + timedelta(days=k) for k in range((fin - debut).days + 1)]
     jours = [d for d in jours if d.weekday() != 5]
-    out = {}
-    for cote in ("BID", "ASK"):
-        with ThreadPoolExecutor(16) as ex:
-            morceaux = [m for m in ex.map(lambda d: jour(d, cote), jours) if m is not None and len(m)]
-        m = pd.concat(morceaux).sort_index()
-        m = m[m.vol > 0] if (m.vol > 0).mean() > 0.5 else m
-        out[cote] = m.resample("15min").agg({"open": "first", "high": "max", "low": "min", "close": "last"}).dropna()
-    b, a = out["BID"], out["ASK"].reindex(out["BID"].index)
+    morceaux, t0 = [], time.time()
+    with ThreadPoolExecutor(24) as ex:
+        for k, m in enumerate(ex.map(jour, jours)):
+            if m is not None and len(m):
+                morceaux.append(m[m.vol > 0] if (m.vol > 0).mean() > 0.5 else m)
+            if k % 500 == 0:
+                _p(f"  {sym} : {k}/{len(jours)} jours ({time.time() - t0:.0f} s)")
+    m = pd.concat(morceaux).sort_index()
+    b = m.resample("15min").agg({"open": "first", "high": "max", "low": "min", "close": "last"}).dropna()
     d = pd.DataFrame({"date": b.index.strftime("%Y-%m-%dT%H:%M:%S")})
     for x in ("open", "high", "low", "close"):
-        d[f"{x}_bid"], d[f"{x}_ask"] = b[x].values, a[x].values
+        d[f"{x}_bid"], d[f"{x}_ask"] = b[x].values, b[x].values * (1 + ecart_rel)
     d["volume"] = 0
-    return d.dropna()
+    return d
 
 
-def telecharger(dossier: Path):
-    from backtest import telecharger as t
-    from bot.capital import CapitalDemo
-    cle, ident, mdp = (os.getenv(n, "").strip() for n in ("CAPITAL_API_KEY", "CAPITAL_IDENTIFIER", "CAPITAL_PASSWORD"))
-    dossier.mkdir(parents=True, exist_ok=True)
-    t.DOSSIER = dossier
-    api = CapitalDemo(cle, ident, mdp)
-    api.connexion()
-    for epic in MARCHES:
-        (dossier / f"{epic}_marche.json").write_text(json.dumps(api.marche(epic), ensure_ascii=False))
-        try:
-            t.telecharger(api, epic, "MINUTE_15", 15, 3650)
-        except Exception as e:
-            print(f"{epic} MINUTE_15 Capital.com : échec ({str(e)[:150]})")
-        api.deconnexion()
-        api.connexion()
-    api.deconnexion()
+def completer(dossier: Path):
+    """Si Capital.com n'a pas ~10 ans en 15 min, on complète le DÉBUT avec Dukascopy."""
     for epic, sym in MARCHES.items():
         f = dossier / f"{epic}_MINUTE_15.csv"
         cap = pd.read_csv(f) if f.exists() else pd.DataFrame()
         premier = pd.Timestamp(cap.date.min()) if len(cap) else pd.Timestamp("2100-01-01")
-        print(f"{epic} : Capital.com 15 min depuis {premier} ({len(cap)} bougies)")
+        _p(f"{epic} : Capital.com 15 min depuis {premier} ({len(cap)} bougies)")
         if premier <= pd.Timestamp("2017-06-01"):
             continue
-        print(f"{epic} : historique trop court -> complété par Dukascopy ({sym})")
+        if len(cap):
+            r = cap.dropna(subset=["close_ask"]).tail(20000)
+            ecart = float(((r.close_ask - r.close_bid) / r.close_bid).median())
+        else:
+            ecart = 0.0002 if epic == "GOLD" else 0.0008
         fin = (premier - pd.Timedelta(days=1)).date() if len(cap) else datetime.now(timezone.utc).date()
-        duk = dukascopy(sym, date(2016, 11, 1), fin)
-        if len(cap):  # spread : jamais plus serré que celui de Capital.com (médiane récente)
-            ecart = float((cap.close_ask - cap.close_bid).dropna().tail(20000).median() / cap.close_bid.dropna().tail(20000).median())
-            mid = (duk[[f"{x}_bid" for x in ("open", "high", "low", "close")]].values +
-                   duk[[f"{x}_ask" for x in ("open", "high", "low", "close")]].values) / 2
-            dem = np.maximum((duk[[f"{x}_ask" for x in ("open", "high", "low", "close")]].values -
-                              duk[[f"{x}_bid" for x in ("open", "high", "low", "close")]].values) / 2, mid * ecart / 2)
-            for k, x in enumerate(("open", "high", "low", "close")):
-                duk[f"{x}_bid"], duk[f"{x}_ask"] = mid[:, k] - dem[:, k], mid[:, k] + dem[:, k]
+        _p(f"{epic} : complété par Dukascopy ({sym}) de 2016-11 à {fin}, spread Capital.com {ecart * 100:.4f} %")
+        duk = dukascopy(sym, date(2016, 11, 1), fin, ecart)
         tout = pd.concat([duk, cap[duk.columns]]) if len(cap) else duk
         tout.to_csv(f, index=False)
-        (dossier / f"{epic}_source.txt").write_text(f"Dukascopy jusqu'au {fin}, puis Capital.com\n")
-        print(f"{epic} : {len(tout)} bougies au total, depuis {tout.date.min()}")
+        (dossier / f"{epic}_source.txt").write_text(f"Dukascopy jusqu'au {fin} (spread de Capital.com), puis Capital.com\n")
+        _p(f"{epic} : {len(tout)} bougies au total, depuis {tout.date.min()}")
 
 
 # =========================================================================== 2. simulation vectorisée
@@ -393,7 +408,9 @@ def fouiller(dossier: Path, sortie: Path, garder: int = 40):
         mois_tr = [int(m.replace("-", "")) for m in pd.period_range(df.index[0].strftime("%Y-%m"), "2021-12", freq="M").strftime("%Y-%m")]
         table = {}
         srs_tr = []
-        for p in itertools.product(*AXES):
+        for q, p in enumerate(itertools.product(*AXES)):
+            if q % 500 == 0:
+                _p(f"  {epic} : {q} réglages d'entrée testés ({time.time() - t0:.0f} s)")
             res, _ = D.simuler(p)
             for s, (idx, r) in enumerate(res):
                 a, v, t = decoupe(D, idx)
@@ -404,7 +421,7 @@ def fouiller(dossier: Path, sortie: Path, garder: int = 40):
                     if x.std() > 0:
                         srs_tr.append(x.mean() / x.std(ddof=1))
         essais += len(table)
-        print(f"{epic} : {len(table)} combinaisons en {time.time() - t0:.0f} s")
+        _p(f"{epic} : {len(table)} combinaisons en {time.time() - t0:.0f} s")
 
         # comparaison des sorties (moyenne sur TOUTES les entrées, jamais vu) : 3 tiers contre sortie unique
         comp = {}
@@ -498,7 +515,9 @@ def fouiller(dossier: Path, sortie: Path, garder: int = 40):
 
 if __name__ == "__main__":
     cmd = sys.argv[1]
-    if cmd == "telecharger":
-        telecharger(Path(sys.argv[2]))
+    if cmd == "capital":
+        telecharger_capital(Path(sys.argv[2]))
+    elif cmd == "completer":
+        completer(Path(sys.argv[2]))
     elif cmd == "fouiller":
         fouiller(Path(sys.argv[2]), Path(sys.argv[3]), int(os.getenv("GARDER", "40")))
