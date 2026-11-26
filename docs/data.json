@@ -1786,7 +1786,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T07:32:26Z",
+ "derniere_execution": "2026-11-26T07:33:27Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10635,15 +10635,19 @@
   {
    "date": "2026-11-26T07:32:26Z",
    "valeur": 93.17
+  },
+  {
+   "date": "2026-11-26T07:33:27Z",
+   "valeur": 93.18
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.17,
+  "solde": 93.18,
   "depot": 93.15,
-  "resultat_latent": 0.02,
-  "disponible": 89.9
+  "resultat_latent": 0.03,
+  "disponible": 89.91
  },
  "positions": [
   {
@@ -11005,7 +11009,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.17
+  "2026-11-26": 93.18
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -11149,7 +11153,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.438,
+   "prix": 41.433,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.48,
@@ -11179,9 +11183,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3570.285,
+    "prix": 3569.665,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 33.69 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 33.01 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -11887,7 +11891,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 41.44,
+    "prix": 41.43,
     "ema200": 50.51,
     "atr": 1.14,
     "trou_achat_atr": -0.03,
@@ -11945,14 +11949,14 @@
    41.67,
    42.29,
    41.24,
-   41.44
+   41.43
   ],
   "rapide-GOLD": [
    1795678200,
    3570.31,
-   3570.93,
+   3571.03,
    3567.9,
-   3570.28
+   3569.66
   ],
   "elan_4h-GOLD": [
    1795665600,
@@ -11966,7 +11970,7 @@
    41.67,
    42.29,
    41.24,
-   41.44
+   41.43
   ],
   "supertrend_4h-ETHUSD": [
    1795665600,
