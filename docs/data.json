@@ -1785,8 +1785,8 @@
    "texte": "Connexion refusée (429). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.too-many.requests\"}"
   }
  ],
- "statut": "erreur",
- "derniere_execution": "2026-11-26T07:17:48Z",
+ "statut": "ok",
+ "derniere_execution": "2026-11-26T07:18:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10575,15 +10575,19 @@
   {
    "date": "2026-11-26T07:17:25Z",
    "valeur": 93.15
+  },
+  {
+   "date": "2026-11-26T07:18:26Z",
+   "valeur": 93.14
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.15,
+  "solde": 93.14,
   "depot": 93.15,
-  "resultat_latent": 0.0,
-  "disponible": 89.87
+  "resultat_latent": -0.01,
+  "disponible": 89.86
  },
  "positions": [
   {
@@ -10592,7 +10596,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3572.1,
-   "resultat": 0,
+   "resultat": -0.01,
    "ouverte_le": "2026-11-26T06:10:23.892",
    "id": "00000000-76c8-6a0d-049f-c46d0015549e",
    "stop": 3601.86,
@@ -10920,7 +10924,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T06:10:23Z",
    "statut": "ouvert",
-   "resultat": 0,
+   "resultat": -0.01,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -10945,7 +10949,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.15
+  "2026-11-26": 93.14
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -11089,7 +11093,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.315,
+   "prix": 41.449,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.48,
@@ -11119,9 +11123,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3572.39,
+    "prix": 3572.13,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 35.76 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 35.50 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -11827,7 +11831,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 41.31,
+    "prix": 41.45,
     "ema200": 50.51,
     "atr": 1.14,
     "trou_achat_atr": -0.03,
@@ -11885,14 +11889,14 @@
    41.67,
    42.29,
    41.24,
-   41.31
+   41.45
   ],
   "rapide-GOLD": [
    1795677300,
    3569.47,
-   3572.55,
+   3572.63,
    3569.27,
-   3572.39
+   3572.13
   ],
   "elan_4h-GOLD": [
    1795665600,
@@ -11906,7 +11910,7 @@
    41.67,
    42.29,
    41.24,
-   41.31
+   41.45
   ],
   "supertrend_4h-ETHUSD": [
    1795665600,
