@@ -402,7 +402,7 @@ def principal():
             prix_mat.append(arr[:, 3])
         etapes["ia_maison_s"] = round(time.time() - t_frais, 1)
         t0 = time.time()
-        reste = max(5.0, 40 - (time.time() - t_tour))
+        reste = max(5.0, min(16.0, 40 - (time.time() - t_tour)))  # les prix doivent rester frais : une IA trop lente saute la minute
         pg, infos = geantes.prevoir(np.array(prix_mat), np.array(ohlcv), HS, delai=reste)
         for cle, pr in pg.items():
             m, h = cle.rsplit("@", 1)
