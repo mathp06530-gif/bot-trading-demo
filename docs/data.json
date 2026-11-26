@@ -1830,7 +1830,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T10:58:27Z",
+ "derniere_execution": "2026-11-26T11:20:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11483,15 +11483,103 @@
   {
    "date": "2026-11-26T10:58:27Z",
    "valeur": 93.07
+  },
+  {
+   "date": "2026-11-26T10:59:26Z",
+   "valeur": 93.07
+  },
+  {
+   "date": "2026-11-26T11:00:27Z",
+   "valeur": 93.07
+  },
+  {
+   "date": "2026-11-26T11:01:27Z",
+   "valeur": 93.04
+  },
+  {
+   "date": "2026-11-26T11:02:26Z",
+   "valeur": 93.0
+  },
+  {
+   "date": "2026-11-26T11:03:27Z",
+   "valeur": 93.02
+  },
+  {
+   "date": "2026-11-26T11:04:27Z",
+   "valeur": 93.0
+  },
+  {
+   "date": "2026-11-26T11:05:28Z",
+   "valeur": 93.01
+  },
+  {
+   "date": "2026-11-26T11:06:28Z",
+   "valeur": 92.99
+  },
+  {
+   "date": "2026-11-26T11:07:27Z",
+   "valeur": 93.02
+  },
+  {
+   "date": "2026-11-26T11:08:27Z",
+   "valeur": 92.98
+  },
+  {
+   "date": "2026-11-26T11:09:27Z",
+   "valeur": 92.96
+  },
+  {
+   "date": "2026-11-26T11:10:26Z",
+   "valeur": 92.93
+  },
+  {
+   "date": "2026-11-26T11:11:26Z",
+   "valeur": 92.92
+  },
+  {
+   "date": "2026-11-26T11:12:26Z",
+   "valeur": 92.9
+  },
+  {
+   "date": "2026-11-26T11:13:26Z",
+   "valeur": 92.91
+  },
+  {
+   "date": "2026-11-26T11:14:26Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T11:15:26Z",
+   "valeur": 92.9
+  },
+  {
+   "date": "2026-11-26T11:16:26Z",
+   "valeur": 92.9
+  },
+  {
+   "date": "2026-11-26T11:17:26Z",
+   "valeur": 92.9
+  },
+  {
+   "date": "2026-11-26T11:18:27Z",
+   "valeur": 92.88
+  },
+  {
+   "date": "2026-11-26T11:19:26Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T11:20:26Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.07,
+  "solde": 92.86,
   "depot": 93.09,
-  "resultat_latent": -0.02,
-  "disponible": 89.81
+  "resultat_latent": -0.23,
+  "disponible": 89.59
  },
  "positions": [
   {
@@ -11500,7 +11588,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3555.46,
-   "resultat": -0.01,
+   "resultat": -0.24,
    "ouverte_le": "2026-11-26T10:50:25.127",
    "id": "00000000-76ca-6738-049f-c46d0015549e",
    "stop": 3591.01,
@@ -11858,7 +11946,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T10:50:25Z",
    "statut": "ouvert",
-   "resultat": -0.01,
+   "resultat": -0.24,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -11882,7 +11970,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.07
+  "2026-11-26": 92.86
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -12022,7 +12110,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3558.47,
+   "prix": 3567.18,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3911.81,
@@ -12034,7 +12122,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.382999999999996,
+   "prix": 41.533,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.38,
@@ -12064,9 +12152,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3555.785,
+    "prix": 3568.01,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 35.64 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 47.89 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -12084,7 +12172,7 @@
   "meilleur": {
    "00000000-76ca-6738-049f-c46d0015549e": {
     "depuis": "2026-11-26T10:50:00",
-    "prix": 3555.43
+    "prix": 3555.06
    }
   },
   "entree_bougie": {
@@ -12764,7 +12852,7 @@
   "deals": {},
   "marches": {
    "GOLD": {
-    "prix": 3558.47,
+    "prix": 3567.18,
     "ema200": 3913.07,
     "atr": 51.69,
     "trou_achat_atr": -0.55,
@@ -12772,7 +12860,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 41.38,
+    "prix": 41.53,
     "ema200": 50.42,
     "atr": 1.13,
     "trou_achat_atr": -0.33,
@@ -12788,7 +12876,7 @@
   "deals": {},
   "marches": {
    "ETHUSD": {
-    "prix": 1692.33,
+    "prix": 1698.71,
     "ligne": 1735.66,
     "sens": -1,
     "atr": 38.88,
@@ -12802,7 +12890,7 @@
   "deals": {},
   "marches": {
    "NATURALGAS": {
-    "prix": 3.5258,
+    "prix": 3.5333,
     "sens": -1,
     "atr": 0.07279,
     "regle": "MACD 24/52/18, achat et vente, seulement si marché calme (ADX < 20), stop garanti 2.5 ATR, objectif 1 R, suiveur 3 ATR",
@@ -12823,49 +12911,49 @@
    3564.91,
    3577.17,
    3552.16,
-   3558.47
+   3567.18
   ],
   "cassure_4h-SILVER": [
    1795680000,
    41.35,
    41.8,
    41.29,
-   41.38
+   41.53
   ],
   "rapide-GOLD": [
-   1795690500,
-   3558.81,
-   3560.98,
-   3555.27,
-   3555.78
+   1795692000,
+   3567.97,
+   3568.49,
+   3567.88,
+   3568.01
   ],
   "elan_4h-GOLD": [
    1795680000,
    3564.91,
    3577.17,
    3552.16,
-   3558.47
+   3567.18
   ],
   "elan_4h-SILVER": [
    1795680000,
    41.35,
    41.8,
    41.29,
-   41.38
+   41.53
   ],
   "supertrend_4h-ETHUSD": [
    1795680000,
    1687.69,
    1704.01,
    1685.31,
-   1692.33
+   1698.71
   ],
   "usine-NATURALGAS": [
    1795680000,
    3.5273,
    3.5493,
    3.4988,
-   3.5258
+   3.5333
   ],
   "usine-TSLA": [
    1795651200,
@@ -12876,9 +12964,29 @@
   ]
  },
  "veille": {
-  "titres_lus_le": "2026-11-26T10:06:22.654014+00:00",
+  "titres_lus_le": "2026-11-26T11:06:22.732251+00:00",
   "titres": {
    "ETHUSD": [
+    {
+     "titre": "Can Shiba Inu Reach $1 in 2027? The Answer Might Shock You.",
+     "lien": "https://www.fool.com/investing/2026/11/26/can-shiba-inu-reach-usd1-in-2027-answer-shock-you/?.tsrc=rss",
+     "date": "2026-11-26T10:27Z",
+     "sujets": []
+    },
+    {
+     "titre": "Why Is Crypto Up Today? BTC Back Above $60K – is the Bull Market Back?",
+     "lien": "https://cryptonews.com/news/why-is-crypto-up-today-btc-back-above-60k-bull-market-back/?.tsrc=rss",
+     "date": "2026-11-26T10:11Z",
+     "sujets": []
+    },
+    {
+     "titre": "Ethereum Price Reclaims $1,700: Network Activity Defies 39% Crash, $80M Shorts Liquidated",
+     "lien": "https://99bitcoins.com/news/altcoins/ethereum-price-39-percent-crash-vitalik-eth-selloff/?.tsrc=rss",
+     "date": "2026-11-26T08:47Z",
+     "sujets": [
+      "risque"
+     ]
+    },
     {
      "titre": "Why Is an Ethereum ICO Whale Selling Now, After a Decade?",
      "lien": "https://beincrypto.com/ethereum-whale-2014-ico-sells-eth/?.tsrc=rss",
@@ -12896,29 +13004,17 @@
      "lien": "https://beincrypto.com/shiba-inu-shibarium-privacy-upgrade/?.tsrc=rss",
      "date": "2026-11-25T22:30Z",
      "sujets": []
-    },
-    {
-     "titre": "Crypto Market Today, Nov. 25: Bitcoin, Ethereum, and Solana as Short Liquidations Fuel Fragile Rebound",
-     "lien": "https://www.fool.com/coverage/stock-market-today/2026/11/25/crypto-market-today-nov-25-bitcoin-ethereum-and-solana-as-short-liquidations-fuel-fragile-rebound/?.tsrc=rss",
-     "date": "2026-11-25T22:26Z",
-     "sujets": []
-    },
-    {
-     "titre": "Analyst explains why Bitcoin’s next move depends on Nasdaq",
-     "lien": "https://www.thestreet.com/crypto/markets/analyst-explains-why-bitcoins-next-move-depends-on-nasdaq?.tsrc=rss",
-     "date": "2026-11-25T22:00Z",
-     "sujets": []
-    },
-    {
-     "titre": "Fidelity Files for a Spot Chainlink ETF",
-     "lien": "https://www.bankless.com/read/news/fidelity-files-for-a-spot-chainlink-etf?.tsrc=rss",
-     "date": "2026-11-25T20:09Z",
-     "sujets": [
-      "régulation"
-     ]
     }
    ],
    "GOLD": [
+    {
+     "titre": "Gold Prices Mixed as Stronger US Dollar Pressures Spot Bullion While Futures Advance",
+     "lien": "https://investorshub.advfn.com/market-news/article/40751/gold-prices-mixed-as-stronger-us-dollar-pressures-spot-bullion-while-futures-advance?.tsrc=rss",
+     "date": "2026-11-26T09:58Z",
+     "sujets": [
+      "dollar"
+     ]
+    },
     {
      "titre": "Crossroads Gold gets exploration licence for Club Terrace Project in Australia",
      "lien": "https://www.mining-technology.com/news/crossroads-exploration-licence-club-terrace-project/?.tsrc=rss",
@@ -12951,12 +13047,6 @@
      "titre": "Ora Banda Mining expands Davyhurst gold pipeline with new Bluey trend and high-grade regional hits",
      "lien": "https://www.proactiveinvestors.com/companies/news/1102473/ora-banda-mining-expands-davyhurst-gold-pipeline-with-new-bluey-trend-and-high-grade-regional-hits-1102473.html?.tsrc=rss",
      "date": "2026-11-25T23:21Z",
-     "sujets": []
-    },
-    {
-     "titre": "Gold vs. Bitcoin: Analyst reveals why the tide is turning",
-     "lien": "https://www.thestreet.com/crypto/markets/gold-vs-bitcoin-analyst-reveals-why-the-tide-is-turning?.tsrc=rss",
-     "date": "2026-11-25T23:15Z",
      "sujets": []
     }
    ],
@@ -13086,13 +13176,13 @@
  "_pauses_marches_notees": {},
  "simulations": {
   "00000000-76ca-6738-049f-c46d0015549e": {
-   "p_stop": 39.6,
-   "p_objectif": 5.3,
-   "p_aucun": 55.1,
-   "p_gain_fin": 42.8,
-   "prix_p5": 3494.88,
-   "prix_median": 3559.98,
-   "prix_p95": 3623.29,
+   "p_stop": 60.8,
+   "p_objectif": 2.0,
+   "p_aucun": 37.2,
+   "p_gain_fin": 31.8,
+   "prix_p5": 3513.04,
+   "prix_median": 3575.07,
+   "prix_p95": 3638.1,
    "objectif": 3484.36,
    "objectif_type": "gain de 2 R",
    "objectif_r": 2.0,
@@ -13100,10 +13190,10 @@
    "horizon": "4 h",
    "tirages": 4000,
    "bougies_utilisees": 298,
-   "prix_depart": 3555.78,
-   "calcule_sur": "2026-11-26T10:55:00",
+   "prix_depart": 3568.01,
+   "calcule_sur": "2026-11-26T11:20:00",
    "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
-   "verdict": "Penche nettement vers le stop (12 % des cas tranchés, équilibre 33 %)."
+   "verdict": "Penche nettement vers le stop (3 % des cas tranchés, équilibre 33 %)."
   }
  }
 }

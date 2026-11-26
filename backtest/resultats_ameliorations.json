@@ -1,0 +1,2103 @@
+{
+ "methode": "(la même que l'usine, plus stricte) :\n  1. Réglage choisi sur 2017-2021 SEULEMENT (meilleur Sharpe mensuel).\n  2. Jugé sur 2022 -> aujourd'hui, jamais vu, en 2 morceaux (2022-mi-2024 et mi-2024-aujou",
+ "cassure_actuelle": {
+  "entrainement": {
+   "R": 11.5,
+   "trades": 234,
+   "sharpe": 0.141,
+   "baisse": -32.9
+  },
+  "jamais_vu": {
+   "R": 74.0,
+   "trades": 246,
+   "sharpe": 0.89,
+   "baisse": -12.3
+  },
+  "j1": {
+   "R": 14.6,
+   "trades": 121,
+   "sharpe": 0.461,
+   "baisse": -8.7
+  },
+  "j2": {
+   "R": 59.4,
+   "trades": 125,
+   "sharpe": 1.205,
+   "baisse": -7.9
+  }
+ },
+ "cassure_empilement": {
+  "1 position(s) max": {
+   "tout": {
+    "entrainement": {
+     "R": 11.5,
+     "trades": 234,
+     "sharpe": 0.141,
+     "baisse": -32.9
+    },
+    "jamais_vu": {
+     "R": 74.0,
+     "trades": 246,
+     "sharpe": 0.89,
+     "baisse": -12.3
+    },
+    "j1": {
+     "R": 14.6,
+     "trades": 121,
+     "sharpe": 0.461,
+     "baisse": -8.7
+    },
+    "j2": {
+     "R": 59.4,
+     "trades": 125,
+     "sharpe": 1.205,
+     "baisse": -7.9
+    }
+   },
+   "positions_ajoutees": 0
+  },
+  "2 position(s) max": {
+   "tout": {
+    "entrainement": {
+     "R": 50.3,
+     "trades": 331,
+     "sharpe": 0.369,
+     "baisse": -36.1
+    },
+    "jamais_vu": {
+     "R": 115.0,
+     "trades": 365,
+     "sharpe": 0.785,
+     "baisse": -22.8
+    },
+    "j1": {
+     "R": 16.1,
+     "trades": 180,
+     "sharpe": 0.443,
+     "baisse": -10.9
+    },
+    "j2": {
+     "R": 98.9,
+     "trades": 185,
+     "sharpe": 1.032,
+     "baisse": -16.2
+    }
+   },
+   "positions_ajoutees": 216
+  },
+  "3 position(s) max": {
+   "tout": {
+    "entrainement": {
+     "R": 69.8,
+     "trades": 375,
+     "sharpe": 0.369,
+     "baisse": -50.0
+    },
+    "jamais_vu": {
+     "R": 129.9,
+     "trades": 416,
+     "sharpe": 0.656,
+     "baisse": -27.9
+    },
+    "j1": {
+     "R": 8.6,
+     "trades": 202,
+     "sharpe": 0.22,
+     "baisse": -15.2
+    },
+    "j2": {
+     "R": 121.2,
+     "trades": 214,
+     "sharpe": 0.914,
+     "baisse": -19.9
+    }
+   },
+   "positions_ajoutees": 311
+  }
+ },
+ "controle_hasard_sorties_empilement": [
+  {
+   "graine": 0,
+   "R_trade_actuel": 0.005,
+   "chandelier_4ATR": 0.01,
+   "empilement_3": -0.053
+  },
+  {
+   "graine": 1,
+   "R_trade_actuel": -0.004,
+   "chandelier_4ATR": -0.012,
+   "empilement_3": -0.029
+  },
+  {
+   "graine": 2,
+   "R_trade_actuel": 0.049,
+   "chandelier_4ATR": 0.017,
+   "empilement_3": 0.089
+  },
+  {
+   "graine": 3,
+   "R_trade_actuel": -0.094,
+   "chandelier_4ATR": -0.09,
+   "empilement_3": -0.129
+  }
+ ],
+ "supertrend_marches": {
+  "ETHUSD": {
+   "entrainement": {
+    "R": 103.5,
+    "trades": 218,
+    "sharpe": 1.511,
+    "baisse": -8.7
+   },
+   "jamais_vu": {
+    "R": 24.3,
+    "trades": 297,
+    "sharpe": 0.4,
+    "baisse": -10.8
+   },
+   "j1": {
+    "R": 14.0,
+    "trades": 153,
+    "sharpe": 0.45,
+    "baisse": -10.2
+   },
+   "j2": {
+    "R": 10.3,
+    "trades": 144,
+    "sharpe": 0.335,
+    "baisse": -10.8
+   }
+  },
+  "BTCUSD": {
+   "entrainement": {
+    "R": 108.3,
+    "trades": 240,
+    "sharpe": 1.193,
+    "baisse": -9.9
+   },
+   "jamais_vu": {
+    "R": 47.5,
+    "trades": 297,
+    "sharpe": 0.522,
+    "baisse": -13.6
+   },
+   "j1": {
+    "R": 37.6,
+    "trades": 150,
+    "sharpe": 0.694,
+    "baisse": -8.9
+   },
+   "j2": {
+    "R": 10.0,
+    "trades": 147,
+    "sharpe": 0.269,
+    "baisse": -12.6
+   }
+  },
+  "SOLUSD": {
+   "entrainement": {
+    "R": 3.5,
+    "trades": 52,
+    "sharpe": 0.12,
+    "baisse": -8.6
+   },
+   "jamais_vu": {
+    "R": -29.2,
+    "trades": 279,
+    "sharpe": -0.568,
+    "baisse": -42.0
+   },
+   "j1": {
+    "R": -33.4,
+    "trades": 138,
+    "sharpe": -1.5,
+    "baisse": -36.0
+   },
+   "j2": {
+    "R": 4.1,
+    "trades": 141,
+    "sharpe": 0.145,
+    "baisse": -13.8
+   }
+  },
+  "XRPUSD": {
+   "entrainement": {
+    "R": 50.4,
+    "trades": 218,
+    "sharpe": 0.47,
+    "baisse": -33.7
+   },
+   "jamais_vu": {
+    "R": -24.4,
+    "trades": 263,
+    "sharpe": -0.222,
+    "baisse": -53.6
+   },
+   "j1": {
+    "R": -38.9,
+    "trades": 124,
+    "sharpe": -1.373,
+    "baisse": -40.6
+   },
+   "j2": {
+    "R": 14.5,
+    "trades": 139,
+    "sharpe": 0.201,
+    "baisse": -16.9
+   }
+  },
+  "LTCUSD": {
+   "entrainement": {
+    "R": 38.2,
+    "trades": 230,
+    "sharpe": 0.806,
+    "baisse": -7.6
+   },
+   "jamais_vu": {
+    "R": -45.6,
+    "trades": 271,
+    "sharpe": -0.953,
+    "baisse": -57.8
+   },
+   "j1": {
+    "R": -17.9,
+    "trades": 125,
+    "sharpe": -1.021,
+    "baisse": -24.9
+   },
+   "j2": {
+    "R": -27.7,
+    "trades": 146,
+    "sharpe": -0.948,
+    "baisse": -38.3
+   }
+  }
+ },
+ "familles_testees": 16,
+ "verdicts": [
+  {
+   "strategie": "Cassure",
+   "famille": "momentum",
+   "choisi_sur_2017_2021": "sens du prix sur 63 jours",
+   "garde_pct": 50.8,
+   "resultat": {
+    "entrainement": {
+     "R": 2.5,
+     "trades": 113,
+     "sharpe": 0.063,
+     "baisse": -17.4
+    },
+    "jamais_vu": {
+     "R": 51.4,
+     "trades": 131,
+     "sharpe": 0.657,
+     "baisse": -14.6
+    },
+    "j1": {
+     "R": -2.0,
+     "trades": 66,
+     "sharpe": -0.091,
+     "baisse": -14.6
+    },
+    "j2": {
+     "R": 53.3,
+     "trades": 65,
+     "sharpe": 1.067,
+     "baisse": -4.4
+    }
+   },
+   "gain_sharpe_jamais_vu": -0.233,
+   "bat_existant": false,
+   "voisins_mieux": "0/1",
+   "voisins_ok": false,
+   "p_hasard": 0.452,
+   "p_corrige": 1.0,
+   "solide": false
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "efficacite",
+   "choisi_sur_2017_2021": "efficacité 50 bougies >= 0.35",
+   "garde_pct": 1.0,
+   "resultat": {
+    "entrainement": {
+     "R": 10.3,
+     "trades": 3,
+     "sharpe": 0.411,
+     "baisse": -1.1
+    },
+    "jamais_vu": {
+     "R": 2.3,
+     "trades": 2,
+     "sharpe": 0.64,
+     "baisse": 0.0
+    },
+    "j1": {
+     "R": 1.0,
+     "trades": 1,
+     "sharpe": 0.622,
+     "baisse": 0.0
+    },
+    "j2": {
+     "R": 1.2,
+     "trades": 1,
+     "sharpe": 0.643,
+     "baisse": 0.0
+    }
+   },
+   "gain_sharpe_jamais_vu": -0.25,
+   "bat_existant": false,
+   "voisins_mieux": "0/3",
+   "voisins_ok": false,
+   "p_hasard": 0.198,
+   "p_corrige": 1.0,
+   "solide": false
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "calme",
+   "choisi_sur_2017_2021": "ATR14/ATR100 <= 0.8",
+   "garde_pct": 6.2,
+   "resultat": {
+    "entrainement": {
+     "R": 8.8,
+     "trades": 14,
+     "sharpe": 0.411,
+     "baisse": -4.7
+    },
+    "jamais_vu": {
+     "R": 4.2,
+     "trades": 16,
+     "sharpe": 0.322,
+     "baisse": -3.5
+    },
+    "j1": {
+     "R": 0.6,
+     "trades": 5,
+     "sharpe": 0.151,
+     "baisse": -2.2
+    },
+    "j2": {
+     "R": 3.6,
+     "trades": 11,
+     "sharpe": 0.43,
+     "baisse": -3.5
+    }
+   },
+   "gain_sharpe_jamais_vu": -0.568,
+   "bat_existant": false,
+   "voisins_mieux": "0/1",
+   "voisins_ok": false,
+   "p_hasard": 0.736,
+   "p_corrige": 1.0,
+   "solide": false
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "agite",
+   "choisi_sur_2017_2021": "ATR14/ATR100 >= 0.9",
+   "garde_pct": 74.2,
+   "resultat": {
+    "entrainement": {
+     "R": 16.7,
+     "trades": 172,
+     "sharpe": 0.23,
+     "baisse": -22.5
+    },
+    "jamais_vu": {
+     "R": 46.5,
+     "trades": 184,
+     "sharpe": 0.855,
+     "baisse": -11.6
+    },
+    "j1": {
+     "R": 26.6,
+     "trades": 96,
+     "sharpe": 0.937,
+     "baisse": -7.4
+    },
+    "j2": {
+     "R": 19.8,
+     "trades": 88,
+     "sharpe": 0.739,
+     "baisse": -11.6
+    }
+   },
+   "gain_sharpe_jamais_vu": -0.035,
+   "bat_existant": false,
+   "voisins_mieux": "0/2",
+   "voisins_ok": false,
+   "p_hasard": 0.186,
+   "p_corrige": 1.0,
+   "solide": false
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "jour_ema",
+   "choisi_sur_2017_2021": "bon côté de l'EMA 20 jour",
+   "garde_pct": 97.9,
+   "resultat": {
+    "entrainement": {
+     "R": 11.0,
+     "trades": 232,
+     "sharpe": 0.134,
+     "baisse": -33.4
+    },
+    "jamais_vu": {
+     "R": 73.8,
+     "trades": 238,
+     "sharpe": 0.883,
+     "baisse": -13.2
+    },
+    "j1": {
+     "R": 15.0,
+     "trades": 117,
+     "sharpe": 0.461,
+     "baisse": -9.6
+    },
+    "j2": {
+     "R": 58.8,
+     "trades": 121,
+     "sharpe": 1.195,
+     "baisse": -7.8
+    }
+   },
+   "gain_sharpe_jamais_vu": -0.007,
+   "bat_existant": false,
+   "voisins_mieux": "0/1",
+   "voisins_ok": false,
+   "p_hasard": 0.356,
+   "p_corrige": 1.0,
+   "solide": false
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "achats",
+   "choisi_sur_2017_2021": "achats seulement",
+   "garde_pct": 51.5,
+   "resultat": {
+    "entrainement": {
+     "R": -5.7,
+     "trades": 118,
+     "sharpe": -0.107,
+     "baisse": -30.6
+    },
+    "jamais_vu": {
+     "R": 67.7,
+     "trades": 129,
+     "sharpe": 0.831,
+     "baisse": -7.4
+    },
+    "j1": {
+     "R": 12.6,
+     "trades": 62,
+     "sharpe": 0.551,
+     "baisse": -7.4
+    },
+    "j2": {
+     "R": 55.1,
+     "trades": 67,
+     "sharpe": 1.051,
+     "baisse": -5.0
+    }
+   },
+   "gain_sharpe_jamais_vu": -0.059,
+   "bat_existant": false,
+   "voisins_mieux": "0/0",
+   "voisins_ok": true,
+   "p_hasard": 0.172,
+   "p_corrige": 1.0,
+   "solide": false
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "jumeau",
+   "choisi_sur_2017_2021": "l'autre métal dans le même sens",
+   "garde_pct": 56.2,
+   "resultat": {
+    "entrainement": {
+     "R": 36.5,
+     "trades": 126,
+     "sharpe": 0.604,
+     "baisse": -12.3
+    },
+    "jamais_vu": {
+     "R": 63.4,
+     "trades": 144,
+     "sharpe": 0.853,
+     "baisse": -7.6
+    },
+    "j1": {
+     "R": 8.6,
+     "trades": 71,
+     "sharpe": 0.392,
+     "baisse": -5.9
+    },
+    "j2": {
+     "R": 54.8,
+     "trades": 73,
+     "sharpe": 1.164,
+     "baisse": -6.1
+    }
+   },
+   "gain_sharpe_jamais_vu": -0.037,
+   "bat_existant": false,
+   "voisins_mieux": "1/1",
+   "voisins_ok": true,
+   "p_hasard": 0.252,
+   "p_corrige": 1.0,
+   "solide": false
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "taille_volatilite",
+   "choisi_sur_2017_2021": "risque x (ATR médian/ATR)^1.5",
+   "resultat": {
+    "entrainement": {
+     "R": 27.3,
+     "trades": 234,
+     "sharpe": 0.292,
+     "baisse": -29.2
+    },
+    "jamais_vu": {
+     "R": 78.7,
+     "trades": 246,
+     "sharpe": 0.8,
+     "baisse": -9.7
+    },
+    "j1": {
+     "R": 21.1,
+     "trades": 121,
+     "sharpe": 0.569,
+     "baisse": -8.6
+    },
+    "j2": {
+     "R": 57.6,
+     "trades": 125,
+     "sharpe": 0.974,
+     "baisse": -9.3
+    }
+   },
+   "gain_sharpe_jamais_vu": -0.09,
+   "bat_existant": false,
+   "voisins_mieux": "0/1",
+   "voisins_ok": false,
+   "p_hasard": 0.846,
+   "p_corrige": 1.0,
+   "solide": false
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "taille_correlation",
+   "choisi_sur_2017_2021": "2e métal même sens x0.5",
+   "resultat": {
+    "entrainement": {
+     "R": 12.9,
+     "trades": 234,
+     "sharpe": 0.16,
+     "baisse": -26.8
+    },
+    "jamais_vu": {
+     "R": 72.5,
+     "trades": 246,
+     "sharpe": 0.862,
+     "baisse": -12.5
+    },
+    "j1": {
+     "R": 18.8,
+     "trades": 121,
+     "sharpe": 0.578,
+     "baisse": -7.8
+    },
+    "j2": {
+     "R": 53.7,
+     "trades": 125,
+     "sharpe": 1.076,
+     "baisse": -8.8
+    }
+   },
+   "gain_sharpe_jamais_vu": -0.028,
+   "bat_existant": false,
+   "voisins_mieux": "0/1",
+   "voisins_ok": false,
+   "p_hasard": null,
+   "p_corrige": null,
+   "solide": false
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "chandelier",
+   "choisi_sur_2017_2021": "suiveur 4 ATR",
+   "resultat": {
+    "entrainement": {
+     "R": 15.7,
+     "trades": 234,
+     "sharpe": 0.182,
+     "baisse": -32.6
+    },
+    "jamais_vu": {
+     "R": 51.3,
+     "trades": 246,
+     "sharpe": 0.844,
+     "baisse": -12.1
+    },
+    "j1": {
+     "R": 14.0,
+     "trades": 121,
+     "sharpe": 0.45,
+     "baisse": -8.7
+    },
+    "j2": {
+     "R": 37.2,
+     "trades": 125,
+     "sharpe": 1.232,
+     "baisse": -7.9
+    }
+   },
+   "gain_sharpe_jamais_vu": -0.046,
+   "bat_existant": false,
+   "voisins_mieux": "0/2",
+   "voisins_ok": false,
+   "p_hasard": null,
+   "p_corrige": null,
+   "solide": false
+  },
+  {
+   "strategie": "Supertrend ETH",
+   "famille": "momentum",
+   "choisi_sur_2017_2021": "sens du prix sur 63 jours",
+   "garde_pct": 44.9,
+   "resultat": {
+    "entrainement": {
+     "R": 78.4,
+     "trades": 100,
+     "sharpe": 1.381,
+     "baisse": -4.1
+    },
+    "jamais_vu": {
+     "R": 14.9,
+     "trades": 131,
+     "sharpe": 0.293,
+     "baisse": -16.0
+    },
+    "j1": {
+     "R": -4.2,
+     "trades": 67,
+     "sharpe": -0.184,
+     "baisse": -16.0
+    },
+    "j2": {
+     "R": 19.2,
+     "trades": 64,
+     "sharpe": 0.69,
+     "baisse": -5.5
+    }
+   },
+   "gain_sharpe_jamais_vu": -0.107,
+   "bat_existant": false,
+   "voisins_mieux": "0/1",
+   "voisins_ok": false,
+   "p_hasard": 0.39,
+   "p_corrige": 1.0,
+   "solide": false
+  },
+  {
+   "strategie": "Supertrend ETH",
+   "famille": "efficacite",
+   "choisi_sur_2017_2021": "efficacité 20 bougies >= 0.15",
+   "garde_pct": 57.7,
+   "resultat": {
+    "entrainement": {
+     "R": 58.4,
+     "trades": 130,
+     "sharpe": 0.973,
+     "baisse": -6.5
+    },
+    "jamais_vu": {
+     "R": 6.1,
+     "trades": 167,
+     "sharpe": 0.123,
+     "baisse": -16.9
+    },
+    "j1": {
+     "R": -0.8,
+     "trades": 81,
+     "sharpe": -0.039,
+     "baisse": -13.1
+    },
+    "j2": {
+     "R": 7.0,
+     "trades": 86,
+     "sharpe": 0.248,
+     "baisse": -7.2
+    }
+   },
+   "gain_sharpe_jamais_vu": -0.277,
+   "bat_existant": false,
+   "voisins_mieux": "0/2",
+   "voisins_ok": false,
+   "p_hasard": 0.682,
+   "p_corrige": 1.0,
+   "solide": false
+  },
+  {
+   "strategie": "Supertrend ETH",
+   "famille": "calme",
+   "choisi_sur_2017_2021": "ATR14/ATR100 <= 1",
+   "garde_pct": 58.8,
+   "resultat": {
+    "entrainement": {
+     "R": 110.3,
+     "trades": 129,
+     "sharpe": 1.647,
+     "baisse": -6.1
+    },
+    "jamais_vu": {
+     "R": 30.3,
+     "trades": 174,
+     "sharpe": 0.506,
+     "baisse": -10.9
+    },
+    "j1": {
+     "R": 20.7,
+     "trades": 88,
+     "sharpe": 0.647,
+     "baisse": -6.6
+    },
+    "j2": {
+     "R": 9.6,
+     "trades": 86,
+     "sharpe": 0.333,
+     "baisse": -10.9
+    }
+   },
+   "gain_sharpe_jamais_vu": 0.106,
+   "bat_existant": false,
+   "voisins_mieux": "0/2",
+   "voisins_ok": false,
+   "p_hasard": 0.198,
+   "p_corrige": 1.0,
+   "solide": false
+  },
+  {
+   "strategie": "Supertrend ETH",
+   "famille": "agite",
+   "choisi_sur_2017_2021": "ATR14/ATR100 >= 0.8",
+   "garde_pct": 76.1,
+   "resultat": {
+    "entrainement": {
+     "R": 26.4,
+     "trades": 162,
+     "sharpe": 0.524,
+     "baisse": -9.6
+    },
+    "jamais_vu": {
+     "R": -2.8,
+     "trades": 230,
+     "sharpe": -0.074,
+     "baisse": -14.8
+    },
+    "j1": {
+     "R": -12.0,
+     "trades": 116,
+     "sharpe": -0.725,
+     "baisse": -14.8
+    },
+    "j2": {
+     "R": 9.2,
+     "trades": 114,
+     "sharpe": 0.44,
+     "baisse": -9.9
+    }
+   },
+   "gain_sharpe_jamais_vu": -0.474,
+   "bat_existant": false,
+   "voisins_mieux": "0/1",
+   "voisins_ok": false,
+   "p_hasard": 0.88,
+   "p_corrige": 1.0,
+   "solide": false
+  },
+  {
+   "strategie": "Supertrend ETH",
+   "famille": "jour_ema",
+   "choisi_sur_2017_2021": "bon côté de l'EMA 50 jour",
+   "garde_pct": 49.7,
+   "resultat": {
+    "entrainement": {
+     "R": 102.6,
+     "trades": 109,
+     "sharpe": 1.623,
+     "baisse": -4.8
+    },
+    "jamais_vu": {
+     "R": 26.0,
+     "trades": 147,
+     "sharpe": 0.506,
+     "baisse": -14.2
+    },
+    "j1": {
+     "R": 1.8,
+     "trades": 76,
+     "sharpe": 0.078,
+     "baisse": -14.2
+    },
+    "j2": {
+     "R": 24.1,
+     "trades": 71,
+     "sharpe": 0.871,
+     "baisse": -5.1
+    }
+   },
+   "gain_sharpe_jamais_vu": 0.106,
+   "bat_existant": false,
+   "voisins_mieux": "0/2",
+   "voisins_ok": false,
+   "p_hasard": 0.186,
+   "p_corrige": 1.0,
+   "solide": false
+  },
+  {
+   "strategie": "Supertrend ETH",
+   "famille": "taille_volatilite",
+   "choisi_sur_2017_2021": "risque x (ATR médian/ATR)^1.5",
+   "resultat": {
+    "entrainement": {
+     "R": 165.2,
+     "trades": 218,
+     "sharpe": 1.591,
+     "baisse": -10.2
+    },
+    "jamais_vu": {
+     "R": 50.6,
+     "trades": 297,
+     "sharpe": 0.576,
+     "baisse": -15.2
+    },
+    "j1": {
+     "R": 27.1,
+     "trades": 153,
+     "sharpe": 0.625,
+     "baisse": -15.2
+    },
+    "j2": {
+     "R": 23.6,
+     "trades": 144,
+     "sharpe": 0.514,
+     "baisse": -12.6
+    }
+   },
+   "gain_sharpe_jamais_vu": 0.176,
+   "bat_existant": false,
+   "voisins_mieux": "0/1",
+   "voisins_ok": false,
+   "p_hasard": 0.022,
+   "p_corrige": 0.352,
+   "solide": false
+  }
+ ],
+ "details": [
+  {
+   "strategie": "Cassure",
+   "famille": "momentum",
+   "toutes": [
+    {
+     "variante": "sens du prix sur 63 jours",
+     "garde_pct": 50.8,
+     "entrainement": {
+      "R": 2.5,
+      "trades": 113,
+      "sharpe": 0.063,
+      "baisse": -17.4
+     },
+     "jamais_vu": {
+      "R": 51.4,
+      "trades": 131,
+      "sharpe": 0.657,
+      "baisse": -14.6
+     }
+    },
+    {
+     "variante": "sens du prix sur 126 jours",
+     "garde_pct": 52.5,
+     "entrainement": {
+      "R": -18.6,
+      "trades": 113,
+      "sharpe": -0.434,
+      "baisse": -28.4
+     },
+     "jamais_vu": {
+      "R": 76.2,
+      "trades": 139,
+      "sharpe": 0.916,
+      "baisse": -8.2
+     }
+    },
+    {
+     "variante": "sens du prix sur 252 jours",
+     "garde_pct": 48.3,
+     "entrainement": {
+      "R": -19.0,
+      "trades": 99,
+      "sharpe": -0.602,
+      "baisse": -27.8
+     },
+     "jamais_vu": {
+      "R": 65.6,
+      "trades": 133,
+      "sharpe": 0.824,
+      "baisse": -5.6
+     }
+    }
+   ]
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "efficacite",
+   "toutes": [
+    {
+     "variante": "efficacité 20 bougies >= 0.15",
+     "garde_pct": 83.1,
+     "entrainement": {
+      "R": -0.6,
+      "trades": 193,
+      "sharpe": -0.01,
+      "baisse": -29.6
+     },
+     "jamais_vu": {
+      "R": 69.3,
+      "trades": 206,
+      "sharpe": 0.888,
+      "baisse": -8.7
+     }
+    },
+    {
+     "variante": "efficacité 20 bougies >= 0.25",
+     "garde_pct": 55.4,
+     "entrainement": {
+      "R": 2.8,
+      "trades": 130,
+      "sharpe": 0.054,
+      "baisse": -20.1
+     },
+     "jamais_vu": {
+      "R": 23.4,
+      "trades": 136,
+      "sharpe": 0.689,
+      "baisse": -6.7
+     }
+    },
+    {
+     "variante": "efficacité 20 bougies >= 0.35",
+     "garde_pct": 34.0,
+     "entrainement": {
+      "R": -10.7,
+      "trades": 79,
+      "sharpe": -0.273,
+      "baisse": -25.4
+     },
+     "jamais_vu": {
+      "R": 0.6,
+      "trades": 84,
+      "sharpe": 0.025,
+      "baisse": -11.3
+     }
+    },
+    {
+     "variante": "efficacité 50 bougies >= 0.15",
+     "garde_pct": 27.9,
+     "entrainement": {
+      "R": 8.3,
+      "trades": 60,
+      "sharpe": 0.222,
+      "baisse": -14.4
+     },
+     "jamais_vu": {
+      "R": -4.7,
+      "trades": 74,
+      "sharpe": -0.168,
+      "baisse": -17.6
+     }
+    },
+    {
+     "variante": "efficacité 50 bougies >= 0.25",
+     "garde_pct": 7.5,
+     "entrainement": {
+      "R": 10.6,
+      "trades": 17,
+      "sharpe": 0.37,
+      "baisse": -6.2
+     },
+     "jamais_vu": {
+      "R": 4.2,
+      "trades": 19,
+      "sharpe": 0.346,
+      "baisse": -3.1
+     }
+    },
+    {
+     "variante": "efficacité 50 bougies >= 0.35",
+     "garde_pct": 1.0,
+     "entrainement": {
+      "R": 10.3,
+      "trades": 3,
+      "sharpe": 0.411,
+      "baisse": -1.1
+     },
+     "jamais_vu": {
+      "R": 2.3,
+      "trades": 2,
+      "sharpe": 0.64,
+      "baisse": 0.0
+     }
+    },
+    {
+     "variante": "efficacité 100 bougies >= 0.15",
+     "garde_pct": 14.8,
+     "entrainement": {
+      "R": -0.5,
+      "trades": 39,
+      "sharpe": -0.03,
+      "baisse": -7.4
+     },
+     "jamais_vu": {
+      "R": 3.7,
+      "trades": 32,
+      "sharpe": 0.219,
+      "baisse": -10.5
+     }
+    },
+    {
+     "variante": "efficacité 100 bougies >= 0.25",
+     "garde_pct": 1.7,
+     "entrainement": {
+      "R": 0.7,
+      "trades": 3,
+      "sharpe": 0.183,
+      "baisse": -1.1
+     },
+     "jamais_vu": {
+      "R": 0.9,
+      "trades": 5,
+      "sharpe": 0.172,
+      "baisse": -1.4
+     }
+    },
+    {
+     "variante": "efficacité 100 bougies >= 0.35",
+     "garde_pct": 0.4,
+     "entrainement": {
+      "R": -1.1,
+      "trades": 1,
+      "sharpe": -0.459,
+      "baisse": -1.1
+     },
+     "jamais_vu": {
+      "R": 0.7,
+      "trades": 1,
+      "sharpe": 0.451,
+      "baisse": 0.0
+     }
+    }
+   ]
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "calme",
+   "toutes": [
+    {
+     "variante": "ATR14/ATR100 <= 0.8",
+     "garde_pct": 6.2,
+     "entrainement": {
+      "R": 8.8,
+      "trades": 14,
+      "sharpe": 0.411,
+      "baisse": -4.7
+     },
+     "jamais_vu": {
+      "R": 4.2,
+      "trades": 16,
+      "sharpe": 0.322,
+      "baisse": -3.5
+     }
+    },
+    {
+     "variante": "ATR14/ATR100 <= 0.9",
+     "garde_pct": 25.8,
+     "entrainement": {
+      "R": -5.2,
+      "trades": 62,
+      "sharpe": -0.142,
+      "baisse": -22.3
+     },
+     "jamais_vu": {
+      "R": 27.5,
+      "trades": 62,
+      "sharpe": 0.424,
+      "baisse": -16.6
+     }
+    },
+    {
+     "variante": "ATR14/ATR100 <= 1",
+     "garde_pct": 52.9,
+     "entrainement": {
+      "R": 4.1,
+      "trades": 128,
+      "sharpe": 0.076,
+      "baisse": -20.1
+     },
+     "jamais_vu": {
+      "R": 46.0,
+      "trades": 126,
+      "sharpe": 0.617,
+      "baisse": -11.5
+     }
+    },
+    {
+     "variante": "ATR14/ATR100 <= 1.1",
+     "garde_pct": 78.5,
+     "entrainement": {
+      "R": 11.3,
+      "trades": 191,
+      "sharpe": 0.157,
+      "baisse": -29.4
+     },
+     "jamais_vu": {
+      "R": 67.9,
+      "trades": 186,
+      "sharpe": 0.817,
+      "baisse": -10.6
+     }
+    },
+    {
+     "variante": "ATR14/ATR100 <= 1.2",
+     "garde_pct": 90.0,
+     "entrainement": {
+      "R": 10.3,
+      "trades": 213,
+      "sharpe": 0.129,
+      "baisse": -34.2
+     },
+     "jamais_vu": {
+      "R": 73.3,
+      "trades": 219,
+      "sharpe": 0.9,
+      "baisse": -9.3
+     }
+    }
+   ]
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "agite",
+   "toutes": [
+    {
+     "variante": "ATR14/ATR100 >= 0.8",
+     "garde_pct": 93.8,
+     "entrainement": {
+      "R": 2.7,
+      "trades": 220,
+      "sharpe": 0.036,
+      "baisse": -35.5
+     },
+     "jamais_vu": {
+      "R": 69.8,
+      "trades": 230,
+      "sharpe": 0.847,
+      "baisse": -12.0
+     }
+    },
+    {
+     "variante": "ATR14/ATR100 >= 0.9",
+     "garde_pct": 74.2,
+     "entrainement": {
+      "R": 16.7,
+      "trades": 172,
+      "sharpe": 0.23,
+      "baisse": -22.5
+     },
+     "jamais_vu": {
+      "R": 46.5,
+      "trades": 184,
+      "sharpe": 0.855,
+      "baisse": -11.6
+     }
+    },
+    {
+     "variante": "ATR14/ATR100 >= 1",
+     "garde_pct": 47.1,
+     "entrainement": {
+      "R": 7.4,
+      "trades": 106,
+      "sharpe": 0.168,
+      "baisse": -17.2
+     },
+     "jamais_vu": {
+      "R": 28.0,
+      "trades": 120,
+      "sharpe": 0.698,
+      "baisse": -9.3
+     }
+    },
+    {
+     "variante": "ATR14/ATR100 >= 1.1",
+     "garde_pct": 21.5,
+     "entrainement": {
+      "R": 0.2,
+      "trades": 43,
+      "sharpe": 0.006,
+      "baisse": -8.1
+     },
+     "jamais_vu": {
+      "R": 6.1,
+      "trades": 60,
+      "sharpe": 0.234,
+      "baisse": -10.1
+     }
+    },
+    {
+     "variante": "ATR14/ATR100 >= 1.2",
+     "garde_pct": 10.0,
+     "entrainement": {
+      "R": 1.2,
+      "trades": 21,
+      "sharpe": 0.068,
+      "baisse": -7.3
+     },
+     "jamais_vu": {
+      "R": 0.7,
+      "trades": 27,
+      "sharpe": 0.042,
+      "baisse": -5.7
+     }
+    }
+   ]
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "jour_ema",
+   "toutes": [
+    {
+     "variante": "bon côté de l'EMA 20 jour",
+     "garde_pct": 97.9,
+     "entrainement": {
+      "R": 11.0,
+      "trades": 232,
+      "sharpe": 0.134,
+      "baisse": -33.4
+     },
+     "jamais_vu": {
+      "R": 73.8,
+      "trades": 238,
+      "sharpe": 0.883,
+      "baisse": -13.2
+     }
+    },
+    {
+     "variante": "bon côté de l'EMA 50 jour",
+     "garde_pct": 83.3,
+     "entrainement": {
+      "R": -7.1,
+      "trades": 199,
+      "sharpe": -0.106,
+      "baisse": -31.2
+     },
+     "jamais_vu": {
+      "R": 65.3,
+      "trades": 201,
+      "sharpe": 0.783,
+      "baisse": -9.9
+     }
+    },
+    {
+     "variante": "bon côté de l'EMA 100 jour",
+     "garde_pct": 65.6,
+     "entrainement": {
+      "R": -20.8,
+      "trades": 149,
+      "sharpe": -0.503,
+      "baisse": -30.5
+     },
+     "jamais_vu": {
+      "R": 60.4,
+      "trades": 166,
+      "sharpe": 0.729,
+      "baisse": -11.2
+     }
+    }
+   ]
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "achats",
+   "toutes": [
+    {
+     "variante": "achats seulement",
+     "garde_pct": 51.5,
+     "entrainement": {
+      "R": -5.7,
+      "trades": 118,
+      "sharpe": -0.107,
+      "baisse": -30.6
+     },
+     "jamais_vu": {
+      "R": 67.7,
+      "trades": 129,
+      "sharpe": 0.831,
+      "baisse": -7.4
+     }
+    }
+   ]
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "jumeau",
+   "toutes": [
+    {
+     "variante": "l'autre métal pas en sens opposé",
+     "garde_pct": 76.5,
+     "entrainement": {
+      "R": 30.3,
+      "trades": 176,
+      "sharpe": 0.397,
+      "baisse": -20.1
+     },
+     "jamais_vu": {
+      "R": 77.5,
+      "trades": 191,
+      "sharpe": 0.984,
+      "baisse": -7.8
+     }
+    },
+    {
+     "variante": "l'autre métal dans le même sens",
+     "garde_pct": 56.2,
+     "entrainement": {
+      "R": 36.5,
+      "trades": 126,
+      "sharpe": 0.604,
+      "baisse": -12.3
+     },
+     "jamais_vu": {
+      "R": 63.4,
+      "trades": 144,
+      "sharpe": 0.853,
+      "baisse": -7.6
+     }
+    }
+   ]
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "taille_volatilite",
+   "toutes": [
+    {
+     "variante": "risque x (ATR médian/ATR)^0.5",
+     "entrainement": {
+      "R": 17.9,
+      "trades": 234,
+      "sharpe": 0.21,
+      "baisse": -31.0
+     },
+     "jamais_vu": {
+      "R": 77.6,
+      "trades": 246,
+      "sharpe": 0.885,
+      "baisse": -11.0
+     }
+    },
+    {
+     "variante": "risque x (ATR médian/ATR)^1",
+     "entrainement": {
+      "R": 22.9,
+      "trades": 234,
+      "sharpe": 0.257,
+      "baisse": -30.0
+     },
+     "jamais_vu": {
+      "R": 78.9,
+      "trades": 246,
+      "sharpe": 0.848,
+      "baisse": -9.9
+     }
+    },
+    {
+     "variante": "risque x (ATR médian/ATR)^1.5",
+     "entrainement": {
+      "R": 27.3,
+      "trades": 234,
+      "sharpe": 0.292,
+      "baisse": -29.2
+     },
+     "jamais_vu": {
+      "R": 78.7,
+      "trades": 246,
+      "sharpe": 0.8,
+      "baisse": -9.7
+     }
+    }
+   ]
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "taille_correlation",
+   "toutes": [
+    {
+     "variante": "2e métal même sens x0.5",
+     "entrainement": {
+      "R": 12.9,
+      "trades": 234,
+      "sharpe": 0.16,
+      "baisse": -26.8
+     },
+     "jamais_vu": {
+      "R": 72.5,
+      "trades": 246,
+      "sharpe": 0.862,
+      "baisse": -12.5
+     }
+    },
+    {
+     "variante": "2e métal même sens x0.7",
+     "entrainement": {
+      "R": 12.3,
+      "trades": 234,
+      "sharpe": 0.152,
+      "baisse": -29.4
+     },
+     "jamais_vu": {
+      "R": 73.1,
+      "trades": 246,
+      "sharpe": 0.879,
+      "baisse": -12.4
+     }
+    },
+    {
+     "variante": "2e métal même sens x0.85",
+     "entrainement": {
+      "R": 11.9,
+      "trades": 234,
+      "sharpe": 0.147,
+      "baisse": -31.2
+     },
+     "jamais_vu": {
+      "R": 73.6,
+      "trades": 246,
+      "sharpe": 0.886,
+      "baisse": -12.4
+     }
+    }
+   ]
+  },
+  {
+   "strategie": "Cassure",
+   "famille": "chandelier",
+   "toutes": [
+    {
+     "variante": "suiveur 3 ATR",
+     "entrainement": {
+      "R": 12.3,
+      "trades": 234,
+      "sharpe": 0.148,
+      "baisse": -35.1
+     },
+     "jamais_vu": {
+      "R": 45.2,
+      "trades": 248,
+      "sharpe": 0.724,
+      "baisse": -15.4
+     }
+    },
+    {
+     "variante": "suiveur 4 ATR",
+     "entrainement": {
+      "R": 15.7,
+      "trades": 234,
+      "sharpe": 0.182,
+      "baisse": -32.6
+     },
+     "jamais_vu": {
+      "R": 51.3,
+      "trades": 246,
+      "sharpe": 0.844,
+      "baisse": -12.1
+     }
+    },
+    {
+     "variante": "suiveur 5 ATR",
+     "entrainement": {
+      "R": 13.9,
+      "trades": 234,
+      "sharpe": 0.164,
+      "baisse": -32.9
+     },
+     "jamais_vu": {
+      "R": 79.3,
+      "trades": 246,
+      "sharpe": 0.91,
+      "baisse": -12.3
+     }
+    },
+    {
+     "variante": "suiveur 6 ATR",
+     "entrainement": {
+      "R": 12.6,
+      "trades": 234,
+      "sharpe": 0.152,
+      "baisse": -32.9
+     },
+     "jamais_vu": {
+      "R": 75.9,
+      "trades": 246,
+      "sharpe": 0.906,
+      "baisse": -12.3
+     }
+    },
+    {
+     "variante": "suiveur 8 ATR",
+     "entrainement": {
+      "R": 11.1,
+      "trades": 234,
+      "sharpe": 0.137,
+      "baisse": -32.9
+     },
+     "jamais_vu": {
+      "R": 74.0,
+      "trades": 246,
+      "sharpe": 0.89,
+      "baisse": -12.3
+     }
+    }
+   ]
+  },
+  {
+   "strategie": "Supertrend ETH",
+   "famille": "momentum",
+   "toutes": [
+    {
+     "variante": "sens du prix sur 63 jours",
+     "garde_pct": 44.9,
+     "entrainement": {
+      "R": 78.4,
+      "trades": 100,
+      "sharpe": 1.381,
+      "baisse": -4.1
+     },
+     "jamais_vu": {
+      "R": 14.9,
+      "trades": 131,
+      "sharpe": 0.293,
+      "baisse": -16.0
+     }
+    },
+    {
+     "variante": "sens du prix sur 126 jours",
+     "garde_pct": 46.0,
+     "entrainement": {
+      "R": 76.6,
+      "trades": 98,
+      "sharpe": 1.282,
+      "baisse": -4.6
+     },
+     "jamais_vu": {
+      "R": 5.6,
+      "trades": 139,
+      "sharpe": 0.131,
+      "baisse": -11.0
+     }
+    },
+    {
+     "variante": "sens du prix sur 252 jours",
+     "garde_pct": 44.3,
+     "entrainement": {
+      "R": 39.4,
+      "trades": 88,
+      "sharpe": 0.729,
+      "baisse": -9.6
+     },
+     "jamais_vu": {
+      "R": -2.7,
+      "trades": 140,
+      "sharpe": -0.066,
+      "baisse": -18.6
+     }
+    }
+   ]
+  },
+  {
+   "strategie": "Supertrend ETH",
+   "famille": "efficacite",
+   "toutes": [
+    {
+     "variante": "efficacité 20 bougies >= 0.15",
+     "garde_pct": 57.7,
+     "entrainement": {
+      "R": 58.4,
+      "trades": 130,
+      "sharpe": 0.973,
+      "baisse": -6.5
+     },
+     "jamais_vu": {
+      "R": 6.1,
+      "trades": 167,
+      "sharpe": 0.123,
+      "baisse": -16.9
+     }
+    },
+    {
+     "variante": "efficacité 20 bougies >= 0.25",
+     "garde_pct": 31.3,
+     "entrainement": {
+      "R": 42.9,
+      "trades": 72,
+      "sharpe": 0.854,
+      "baisse": -7.2
+     },
+     "jamais_vu": {
+      "R": -7.0,
+      "trades": 89,
+      "sharpe": -0.273,
+      "baisse": -12.5
+     }
+    },
+    {
+     "variante": "efficacité 20 bougies >= 0.35",
+     "garde_pct": 12.4,
+     "entrainement": {
+      "R": 32.7,
+      "trades": 30,
+      "sharpe": 0.699,
+      "baisse": -3.2
+     },
+     "jamais_vu": {
+      "R": -10.6,
+      "trades": 34,
+      "sharpe": -1.189,
+      "baisse": -11.8
+     }
+    },
+    {
+     "variante": "efficacité 50 bougies >= 0.15",
+     "garde_pct": 26.0,
+     "entrainement": {
+      "R": 5.9,
+      "trades": 61,
+      "sharpe": 0.191,
+      "baisse": -7.1
+     },
+     "jamais_vu": {
+      "R": -10.2,
+      "trades": 73,
+      "sharpe": -0.562,
+      "baisse": -10.9
+     }
+    },
+    {
+     "variante": "efficacité 50 bougies >= 0.25",
+     "garde_pct": 5.6,
+     "entrainement": {
+      "R": -0.2,
+      "trades": 14,
+      "sharpe": -0.016,
+      "baisse": -4.8
+     },
+     "jamais_vu": {
+      "R": -3.6,
+      "trades": 15,
+      "sharpe": -0.808,
+      "baisse": -3.6
+     }
+    },
+    {
+     "variante": "efficacité 50 bougies >= 0.35",
+     "garde_pct": 0.6,
+     "entrainement": {
+      "R": -1.5,
+      "trades": 3,
+      "sharpe": -0.488,
+      "baisse": -1.5
+     },
+     "jamais_vu": {
+      "R": 0.0,
+      "trades": 0,
+      "sharpe": 0.0,
+      "baisse": 0.0
+     }
+    },
+    {
+     "variante": "efficacité 100 bougies >= 0.15",
+     "garde_pct": 24.5,
+     "entrainement": {
+      "R": 12.4,
+      "trades": 55,
+      "sharpe": 0.506,
+      "baisse": -7.5
+     },
+     "jamais_vu": {
+      "R": -13.8,
+      "trades": 71,
+      "sharpe": -0.825,
+      "baisse": -14.8
+     }
+    },
+    {
+     "variante": "efficacité 100 bougies >= 0.25",
+     "garde_pct": 3.9,
+     "entrainement": {
+      "R": -4.8,
+      "trades": 9,
+      "sharpe": -0.786,
+      "baisse": -4.9
+     },
+     "jamais_vu": {
+      "R": -7.0,
+      "trades": 11,
+      "sharpe": -1.316,
+      "baisse": -7.0
+     }
+    },
+    {
+     "variante": "efficacité 100 bougies >= 0.35",
+     "garde_pct": 0.0,
+     "entrainement": {
+      "R": 0.0,
+      "trades": 0,
+      "sharpe": 0.0,
+      "baisse": 0.0
+     },
+     "jamais_vu": {
+      "R": 0.0,
+      "trades": 0,
+      "sharpe": 0.0,
+      "baisse": 0.0
+     }
+    }
+   ]
+  },
+  {
+   "strategie": "Supertrend ETH",
+   "famille": "calme",
+   "toutes": [
+    {
+     "variante": "ATR14/ATR100 <= 0.8",
+     "garde_pct": 23.1,
+     "entrainement": {
+      "R": 79.3,
+      "trades": 52,
+      "sharpe": 1.434,
+      "baisse": -3.8
+     },
+     "jamais_vu": {
+      "R": 27.1,
+      "trades": 67,
+      "sharpe": 0.482,
+      "baisse": -14.4
+     }
+    },
+    {
+     "variante": "ATR14/ATR100 <= 0.9",
+     "garde_pct": 38.4,
+     "entrainement": {
+      "R": 100.5,
+      "trades": 86,
+      "sharpe": 1.607,
+      "baisse": -4.8
+     },
+     "jamais_vu": {
+      "R": 28.1,
+      "trades": 112,
+      "sharpe": 0.481,
+      "baisse": -11.4
+     }
+    },
+    {
+     "variante": "ATR14/ATR100 <= 1",
+     "garde_pct": 58.8,
+     "entrainement": {
+      "R": 110.3,
+      "trades": 129,
+      "sharpe": 1.647,
+      "baisse": -6.1
+     },
+     "jamais_vu": {
+      "R": 30.3,
+      "trades": 174,
+      "sharpe": 0.506,
+      "baisse": -10.9
+     }
+    },
+    {
+     "variante": "ATR14/ATR100 <= 1.1",
+     "garde_pct": 75.0,
+     "entrainement": {
+      "R": 107.0,
+      "trades": 154,
+      "sharpe": 1.588,
+      "baisse": -7.7
+     },
+     "jamais_vu": {
+      "R": 32.4,
+      "trades": 232,
+      "sharpe": 0.536,
+      "baisse": -12.6
+     }
+    },
+    {
+     "variante": "ATR14/ATR100 <= 1.2",
+     "garde_pct": 84.5,
+     "entrainement": {
+      "R": 107.7,
+      "trades": 176,
+      "sharpe": 1.572,
+      "baisse": -8.7
+     },
+     "jamais_vu": {
+      "R": 30.0,
+      "trades": 259,
+      "sharpe": 0.491,
+      "baisse": -9.6
+     }
+    }
+   ]
+  },
+  {
+   "strategie": "Supertrend ETH",
+   "famille": "agite",
+   "toutes": [
+    {
+     "variante": "ATR14/ATR100 >= 0.8",
+     "garde_pct": 76.1,
+     "entrainement": {
+      "R": 26.4,
+      "trades": 162,
+      "sharpe": 0.524,
+      "baisse": -9.6
+     },
+     "jamais_vu": {
+      "R": -2.8,
+      "trades": 230,
+      "sharpe": -0.074,
+      "baisse": -14.8
+     }
+    },
+    {
+     "variante": "ATR14/ATR100 >= 0.9",
+     "garde_pct": 60.8,
+     "entrainement": {
+      "R": 5.2,
+      "trades": 128,
+      "sharpe": 0.165,
+      "baisse": -8.9
+     },
+     "jamais_vu": {
+      "R": -3.8,
+      "trades": 185,
+      "sharpe": -0.106,
+      "baisse": -9.5
+     }
+    },
+    {
+     "variante": "ATR14/ATR100 >= 1",
+     "garde_pct": 40.4,
+     "entrainement": {
+      "R": -4.6,
+      "trades": 85,
+      "sharpe": -0.201,
+      "baisse": -10.1
+     },
+     "jamais_vu": {
+      "R": -6.0,
+      "trades": 123,
+      "sharpe": -0.222,
+      "baisse": -10.1
+     }
+    },
+    {
+     "variante": "ATR14/ATR100 >= 1.1",
+     "garde_pct": 24.3,
+     "entrainement": {
+      "R": -1.3,
+      "trades": 60,
+      "sharpe": -0.061,
+      "baisse": -8.1
+     },
+     "jamais_vu": {
+      "R": -8.1,
+      "trades": 65,
+      "sharpe": -0.473,
+      "baisse": -10.2
+     }
+    },
+    {
+     "variante": "ATR14/ATR100 >= 1.2",
+     "garde_pct": 14.8,
+     "entrainement": {
+      "R": -2.0,
+      "trades": 38,
+      "sharpe": -0.178,
+      "baisse": -8.8
+     },
+     "jamais_vu": {
+      "R": -5.7,
+      "trades": 38,
+      "sharpe": -0.478,
+      "baisse": -7.7
+     }
+    }
+   ]
+  },
+  {
+   "strategie": "Supertrend ETH",
+   "famille": "jour_ema",
+   "toutes": [
+    {
+     "variante": "bon côté de l'EMA 20 jour",
+     "garde_pct": 55.7,
+     "entrainement": {
+      "R": 94.8,
+      "trades": 121,
+      "sharpe": 1.526,
+      "baisse": -5.0
+     },
+     "jamais_vu": {
+      "R": 24.6,
+      "trades": 166,
+      "sharpe": 0.462,
+      "baisse": -13.0
+     }
+    },
+    {
+     "variante": "bon côté de l'EMA 50 jour",
+     "garde_pct": 49.7,
+     "entrainement": {
+      "R": 102.6,
+      "trades": 109,
+      "sharpe": 1.623,
+      "baisse": -4.8
+     },
+     "jamais_vu": {
+      "R": 26.0,
+      "trades": 147,
+      "sharpe": 0.506,
+      "baisse": -14.2
+     }
+    },
+    {
+     "variante": "bon côté de l'EMA 100 jour",
+     "garde_pct": 48.9,
+     "entrainement": {
+      "R": 89.5,
+      "trades": 102,
+      "sharpe": 1.425,
+      "baisse": -4.1
+     },
+     "jamais_vu": {
+      "R": 5.7,
+      "trades": 150,
+      "sharpe": 0.129,
+      "baisse": -12.7
+     }
+    }
+   ]
+  },
+  {
+   "strategie": "Supertrend ETH",
+   "famille": "taille_volatilite",
+   "toutes": [
+    {
+     "variante": "risque x (ATR médian/ATR)^0.5",
+     "entrainement": {
+      "R": 137.3,
+      "trades": 218,
+      "sharpe": 1.535,
+      "baisse": -9.7
+     },
+     "jamais_vu": {
+      "R": 48.4,
+      "trades": 297,
+      "sharpe": 0.581,
+      "baisse": -12.0
+     }
+    },
+    {
+     "variante": "risque x (ATR médian/ATR)^1",
+     "entrainement": {
+      "R": 161.9,
+      "trades": 218,
+      "sharpe": 1.557,
+      "baisse": -10.0
+     },
+     "jamais_vu": {
+      "R": 53.5,
+      "trades": 297,
+      "sharpe": 0.589,
+      "baisse": -13.7
+     }
+    },
+    {
+     "variante": "risque x (ATR médian/ATR)^1.5",
+     "entrainement": {
+      "R": 165.2,
+      "trades": 218,
+      "sharpe": 1.591,
+      "baisse": -10.2
+     },
+     "jamais_vu": {
+      "R": 50.6,
+      "trades": 297,
+      "sharpe": 0.576,
+      "baisse": -15.2
+     }
+    }
+   ]
+  }
+ ],
+ "gagner_vite": {
+  "trades_par_an": 110.8,
+  "R_moyen": 0.181,
+  "1_an_depuis_93€": {
+   "1 %": {
+    "mediane_€": 109.0,
+    "chance_x10_%": 0.0,
+    "chance_perte_%": 20.6,
+    "chance_baisse_50%_en_route": 0.0,
+    "chance_compte_sous_10€": 0.0
+   },
+   "3 %": {
+    "mediane_€": 134.0,
+    "chance_x10_%": 0.2,
+    "chance_perte_%": 24.8,
+    "chance_baisse_50%_en_route": 7.6,
+    "chance_compte_sous_10€": 0.0
+   },
+   "5 %": {
+    "mediane_€": 147.0,
+    "chance_x10_%": 3.6,
+    "chance_perte_%": 29.0,
+    "chance_baisse_50%_en_route": 44.2,
+    "chance_compte_sous_10€": 0.0
+   },
+   "10 %": {
+    "mediane_€": 128.0,
+    "chance_x10_%": 12.3,
+    "chance_perte_%": 42.0,
+    "chance_baisse_50%_en_route": 96.8,
+    "chance_compte_sous_10€": 4.3
+   },
+   "20 %": {
+    "mediane_€": 24.0,
+    "chance_x10_%": 11.0,
+    "chance_perte_%": 67.9,
+    "chance_baisse_50%_en_route": 100.0,
+    "chance_compte_sous_10€": 37.6
+   },
+   "30 %": {
+    "mediane_€": 1.0,
+    "chance_x10_%": 5.4,
+    "chance_perte_%": 85.7,
+    "chance_baisse_50%_en_route": 100.0,
+    "chance_compte_sous_10€": 70.4
+   }
+  }
+ }
+}
