@@ -1868,7 +1868,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T15:00:31Z",
+ "derniere_execution": "2026-11-26T15:01:29Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -12477,6 +12477,10 @@
   {
    "date": "2026-11-26T15:00:31Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:01:29Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -13055,7 +13059,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3580.88,
+    "prix": 3580.24,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    },
@@ -13822,8 +13826,8 @@
    1795705200,
    3581.85,
    3581.85,
-   3580.56,
-   3580.88
+   3579.6,
+   3580.24
   ],
   "elan_4h-GOLD": [
    1795694400,
