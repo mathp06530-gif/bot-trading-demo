@@ -1792,7 +1792,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T08:03:26Z",
+ "derniere_execution": "2026-11-26T08:04:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10761,15 +10761,19 @@
   {
    "date": "2026-11-26T08:03:26Z",
    "valeur": 93.18
+  },
+  {
+   "date": "2026-11-26T08:04:26Z",
+   "valeur": 93.26
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.18,
+  "solde": 93.26,
   "depot": 93.15,
-  "resultat_latent": 0.03,
-  "disponible": 89.91
+  "resultat_latent": 0.11,
+  "disponible": 89.99
  },
  "positions": [
   {
@@ -10778,7 +10782,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3572.1,
-   "resultat": 0.04,
+   "resultat": 0.1,
    "ouverte_le": "2026-11-26T06:10:23.892",
    "id": "00000000-76c8-6a0d-049f-c46d0015549e",
    "stop": 3601.86,
@@ -11106,7 +11110,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T06:10:23Z",
    "statut": "ouvert",
-   "resultat": 0.04,
+   "resultat": 0.1,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -11131,7 +11135,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.18
+  "2026-11-26": 93.26
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -11275,7 +11279,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.423500000000004,
+   "prix": 41.439499999999995,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.38,
@@ -11305,9 +11309,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3570.12,
+    "prix": 3569.61,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 33.47 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 32.95 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -12013,7 +12017,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 41.42,
+    "prix": 41.44,
     "ema200": 50.42,
     "atr": 1.13,
     "trou_achat_atr": -0.33,
@@ -12069,16 +12073,16 @@
   "cassure_4h-SILVER": [
    1795680000,
    41.35,
-   41.45,
+   41.47,
    41.31,
-   41.42
+   41.44
   ],
   "rapide-GOLD": [
    1795680000,
    3564.91,
    3570.36,
    3563.55,
-   3570.12
+   3569.61
   ],
   "elan_4h-GOLD": [
    1795680000,
@@ -12090,9 +12094,9 @@
   "elan_4h-SILVER": [
    1795680000,
    41.35,
-   41.45,
+   41.47,
    41.31,
-   41.42
+   41.44
   ],
   "supertrend_4h-ETHUSD": [
    1795680000,
