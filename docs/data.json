@@ -1868,7 +1868,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T14:07:26Z",
+ "derniere_execution": "2026-11-26T14:08:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -12265,6 +12265,10 @@
   {
    "date": "2026-11-26T14:07:26Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T14:08:26Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -12843,7 +12847,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3575.11,
+    "prix": 3575.14,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    },
@@ -13610,8 +13614,8 @@
    1795701900,
    3574.63,
    3577.39,
-   3573.81,
-   3575.11
+   3572.99,
+   3575.14
   ],
   "elan_4h-GOLD": [
    1795694400,
@@ -13650,7 +13654,7 @@
   ]
  },
  "veille": {
-  "titres_lus_le": "2026-11-26T13:07:22.247071+00:00",
+  "titres_lus_le": "2026-11-26T14:08:21.452227+00:00",
   "titres": {
    "ETHUSD": [
     {
@@ -13694,6 +13698,24 @@
    ],
    "GOLD": [
     {
+     "titre": "I’m 40 with just $2K saved for retirement because I can’t stop spending. Is there any hope left for me?",
+     "lien": "https://finance.yahoo.com/markets/articles/m-40-just-2k-saved-135000621.html?.tsrc=rss",
+     "date": "2026-11-26T13:50Z",
+     "sujets": []
+    },
+    {
+     "titre": "Minerals 260 chooses NRW for Bullabulling gold project in Australia",
+     "lien": "https://www.mining-technology.com/news/minerals-260-chooses-nrw-bullabulling-project/?.tsrc=rss",
+     "date": "2026-11-26T13:40Z",
+     "sujets": []
+    },
+    {
+     "titre": "Mineros secures $250m in credit to fund gold mining projects",
+     "lien": "https://www.mining-technology.com/news/mineros-secures-250m-to-fund-gold-projects/?.tsrc=rss",
+     "date": "2026-11-26T13:38Z",
+     "sujets": []
+    },
+    {
      "titre": "JZR Gold Provides Update on Gold Processing and  Metallurgical Optimization on the Vila Nova Gold Project",
      "lien": "https://finance.yahoo.com/markets/commodities/articles/jzr-gold-provides-gold-processing-120200609.html?.tsrc=rss",
      "date": "2026-11-26T12:02Z",
@@ -13712,29 +13734,17 @@
      "sujets": [
       "Fed / taux"
      ]
-    },
-    {
-     "titre": "The government can reduce your Social Security without consent: Mom stunned by $60K repayment demand. Protect your check",
-     "lien": "https://finance.yahoo.com/economy/policy/articles/government-reduce-social-security-without-111500254.html?.tsrc=rss",
-     "date": "2026-11-26T11:15Z",
-     "sujets": []
-    },
-    {
-     "titre": "Holding GLD For Stock Falls? Gold Missed This One",
-     "lien": "https://www.trefis.com/stock/gld/articles/629222/holding-gld-for-stock-falls-gold-missed-this-one/2026-11-26?.tsrc=rss",
-     "date": "2026-11-26T11:02Z",
-     "sujets": []
-    },
-    {
-     "titre": "Gold Prices Mixed as Stronger US Dollar Pressures Spot Bullion While Futures Advance",
-     "lien": "https://investorshub.advfn.com/market-news/article/40751/gold-prices-mixed-as-stronger-us-dollar-pressures-spot-bullion-while-futures-advance?.tsrc=rss",
-     "date": "2026-11-26T09:58Z",
-     "sujets": [
-      "dollar"
-     ]
     }
    ],
    "NATURALGAS": [
+    {
+     "titre": "PKX Strengthens LNG Portfolio With U.S. Shale Gas Field Acquisition",
+     "lien": "https://finance.yahoo.com/energy/articles/pkx-strengthens-lng-portfolio-u-121000795.html?.tsrc=rss",
+     "date": "2026-11-26T12:10Z",
+     "sujets": [
+      "stocks / météo"
+     ]
+    },
     {
      "titre": "Turkmenistan Nears Major Milestone in $10 Billion TAPI Gas Pipeline",
      "lien": "https://finance.yahoo.com/energy/articles/turkmenistan-nears-major-milestone-10-114000289.html?.tsrc=rss",
@@ -13768,14 +13778,6 @@
      "lien": "https://www.power-technology.com/news/constellation-natural-gas-fired-power-plants/?.tsrc=rss",
      "date": "2026-11-26T07:57Z",
      "sujets": []
-    },
-    {
-     "titre": "Arrow Announces Q3 2026 Interim Results",
-     "lien": "https://finance.yahoo.com/energy/articles/arrow-announces-q3-2026-interim-070000694.html?.tsrc=rss",
-     "date": "2026-11-26T07:00Z",
-     "sujets": [
-      "résultats"
-     ]
     }
    ],
    "SILVER": [
@@ -13858,6 +13860,12 @@
    ],
    "US100": [
     {
+     "titre": "Walmart Soars 10% in a Month as Tech Sinks. Michael Burry Calls It One of the Market’s “Generals”",
+     "lien": "https://www.tikr.com/blog/walmart-soars-10-in-a-month-as-tech-sinks-michael-burry-calls-it-one-of-the-markets-generals?ref=yahoofinance&tlnk=yf-261126-h2xh8829&.tsrc=rss",
+     "date": "2026-11-26T09:09Z",
+     "sujets": []
+    },
+    {
      "titre": "Asian stocks rally as Taiwan, South Korea rebound; Nvidia risks linger",
      "lien": "https://finance.yahoo.com/markets/world-indices/articles/asian-stocks-rally-taiwan-south-053137366.html?.tsrc=rss",
      "date": "2026-11-26T05:31Z",
@@ -13885,12 +13893,6 @@
      "titre": "Anthropic Rebounds From 10% Drop as Markets Stage Dramatic Recovery | Closing Bell",
      "lien": "https://finance.yahoo.com/video/anthropic-rebounds-10-drop-markets-214201731.html?.tsrc=rss",
      "date": "2026-11-25T21:42Z",
-     "sujets": []
-    },
-    {
-     "titre": "Goldman Sachs Sinks 8% in a Week to a New 52-Week Low. Is the Selling Overdone?",
-     "lien": "https://www.tikr.com/blog/goldman-sachs-sinks-8-in-a-week-to-a-new-52-week-low-is-the-selling-overdone?ref=yahoofinance&tlnk=yf-261126-7q249p7q&.tsrc=rss",
-     "date": "2026-11-26T08:31Z",
      "sujets": []
     }
    ]
