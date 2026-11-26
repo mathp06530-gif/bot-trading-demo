@@ -82,6 +82,12 @@
       <span class="doux petit" id="sup-maj"></span>
     </div>
     <div class="defile"><table id="sup-table"></table></div>
+    <h2 style="margin-top:14px">Frais bas : petit spread, par heure (Paris)</h2>
+    <div class="doux petit" style="margin-bottom:8px" id="sup-fb-texte"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
+      <label class="doux petit" for="sup-var">Version</label><select id="sup-var"></select>
+    </div>
+    <div class="defile"><table id="sup-heures"></table></div>
     <div class="note" id="sup-equipe"></div>
     <div class="note" id="sup-changements"></div>
   </section>
@@ -336,11 +342,13 @@ function superIA() {
   const sel = $("sup-portee"), choix = sel.value || "m:GOLD";
   const fam = new Set();
   Object.values(SUP.stats).forEach(hz => Object.values(hz).forEach(v => Object.keys(v.familles || {}).forEach(f => fam.add(f))));
-  const opts = [["m:GOLD", "★ Or"], ["m:SILVER", "★ Argent"], ["or+argent", "★ Or + argent"], ["tout", "Tous les marchés"], ...[...fam].map(f => ["f:" + f, TYPES[f] || f])];
+  const opts = [["m:GOLD", "★ Or"], ["m:SILVER", "★ Argent"], ["or+argent", "★ Or + argent"], ["tout", "Tous les marchés"], ["fb", "€ Frais bas (petit spread)"], ["fbl", "€ Frais bas + heures liquides"], ...[...fam].map(f => ["f:" + f, TYPES[f] || f])];
   sel.innerHTML = opts.map(([v, l]) => `<option value="${v}">${echap(l)}</option>`).join(""); sel.value = choix;
   const portee = v => {
     if (!v) return null;
     if (choix === "tout") return v;
+    if (choix === "fb") return v.frais_bas || null;
+    if (choix === "fbl") return v.frais_bas_liquide || null;
     if (choix === "or+argent") { const a = v.marches.GOLD || {n:0,j:0,g:0}, b = v.marches.SILVER || {n:0,j:0,g:0}; return {n:a.n+b.n, j:a.j+b.j, g:a.g+b.g}; }
     if (choix.startsWith("m:")) return v.marches[choix.slice(2)] || null;
     return (v.familles || {})[choix.slice(2)] || null;
@@ -361,6 +369,27 @@ function superIA() {
     h += "</tr>";
   }
   $("sup-table").innerHTML = h;
+  const sv = $("sup-var"), var_ = sv.value || "fixe_toujours";
+  sv.innerHTML = VARIANTES.map(([k, l]) => `<option value="${k}">${l}</option>`).join(""); sv.value = var_;
+  const [a, b] = SUP.heures_liquides || [14.5, 17.5];
+  const bas = Object.entries(SUP.spreads || {}).filter(([, x]) => x.bas >= 0.5).sort((x, y) => x[1].moyen - y[1].moyen).map(([e, x]) => `${echap(nomMarche(e))} ${fmt(x.moyen, 3)} %`);
+  $("sup-fb-texte").innerHTML = `Seulement les prédictions où le vrai spread Capital.com du moment était ≤ ${fmt(SUP.spread_bas || 0.03, 2)} % du prix. Heures liquides = ${Math.floor(a)} h ${String(Math.round((a % 1) * 60)).padStart(2, "0")} - ${Math.floor(b)} h ${String(Math.round((b % 1) * 60)).padStart(2, "0")} (Londres + New York ouverts), en vert ci-dessous.` +
+    (bas.length ? `<br>Marchés concernés (spread moyen) : ${bas.slice(0, 25).join(" · ")}` : "");
+  const hzs = SUP.horizons || [2, 3, 5];
+  const heures = [...new Set(hzs.flatMap(hz => Object.keys(((SUP.stats[String(hz)] || {})[var_] || {}).heures_frais_bas || {})))].sort();
+  let t = `<tr><th>Heure (Paris)</th>${hzs.map(hz => `<th>${hz} min</th>`).join("")}</tr>`;
+  for (const hh of heures) {
+    const liq = +hh >= Math.floor(a) && +hh < Math.ceil(b);
+    t += `<tr${liq ? ' style="background:rgba(22,199,132,.06)"' : ""}><td><b>${hh} h</b></td>`;
+    for (const hz of hzs) {
+      const d = (((SUP.stats[String(hz)] || {})[var_] || {}).heures_frais_bas || {})[hh];
+      if (!d || !d.n) { t += `<td class="faible">—</td>`; continue; }
+      const g = d.g / d.n;
+      t += `<td>${fmt(100 * d.j / d.n, 1)} % <span class="faible petit">(${d.n})</span> <span class="${g >= 0 ? "v" : "r"} petit">${g >= 0 ? "+" : ""}${fmt(g, 3)} %</span></td>`;
+    }
+    t += "</tr>";
+  }
+  $("sup-heures").innerHTML = heures.length ? t : `<tr><td class="doux">Pas encore de prédiction sur un marché à petit spread.</td></tr>`;
   $("sup-maj").textContent = SUP.maj ? "mise à jour " + new Date(SUP.maj).toLocaleTimeString("fr-FR") : "";
   const eq = SUP.equipe_evolutive || {};
   $("sup-equipe").innerHTML = "<b>Équipe évolutive en ce moment :</b> " + Object.entries(eq).map(([hz, l]) => `${hz} min : ${l.map(m => echap(nomIA(m))).join(", ")}`).join(" · ");
@@ -389,6 +418,7 @@ async function charger() {
 }
 for (const id of ["cherche", "type", "ia", "tri"]) $(id).addEventListener("input", probas);
 $("sup-portee").addEventListener("input", superIA);
+$("sup-var").addEventListener("input", superIA);
 for (const id of ["cherche2", "ia2"]) $(id).addEventListener("input", marches);
 charger();
 setInterval(charger, 60000);
