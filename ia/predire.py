@@ -195,7 +195,10 @@ def entrainer_lstm(Xs, y, graine=0, genre="lstm"):
 
 
 def entrainer(X, Xs, y):
-    from catboost import CatBoostClassifier
+    try:
+        from catboost import CatBoostClassifier
+    except ImportError:
+        CatBoostClassifier = None
     from lightgbm import LGBMClassifier
     from sklearn.ensemble import RandomForestClassifier
     from sklearn.linear_model import LogisticRegression
@@ -207,15 +210,18 @@ def entrainer(X, Xs, y):
         "foret": RandomForestClassifier(n_estimators=200, max_depth=8, min_samples_leaf=100, n_jobs=-1, random_state=0),
         "lightgbm": LGBMClassifier(n_estimators=300, learning_rate=0.03, num_leaves=15, min_child_samples=200,
                                    subsample=0.8, subsample_freq=1, colsample_bytree=0.8, verbose=-1, random_state=0),
-        "catboost": CatBoostClassifier(iterations=300, depth=6, learning_rate=0.05, verbose=0, random_seed=0,
-                                       thread_count=-1, allow_writing_files=False),
+        **({} if CatBoostClassifier is None else {"catboost": CatBoostClassifier(iterations=300, depth=6, learning_rate=0.05, verbose=0, random_seed=0,
+                                       thread_count=-1, allow_writing_files=False)}),
         "neurones": make_pipeline(StandardScaler(), MLPClassifier((64, 32), alpha=1e-3, early_stopping=True,
                                                                   max_iter=50, random_state=0)),
     }
     fonctions = {}
     for nom, m in mods.items():
-        m.fit(X, y)
-        fonctions[nom] = (lambda m: lambda Xn, Xsn: m.predict_proba(Xn)[:, 1])(m)
+        try:
+            m.fit(X, y)
+            fonctions[nom] = (lambda m: lambda Xn, Xsn: m.predict_proba(Xn)[:, 1])(m)
+        except Exception as e:  # une IA qui plante est mise de côté, les autres continuent
+            print(f"{nom} ignorée : {str(e)[:200]}")
     for genre in ("lstm", "transformer"):
         try:
             f = entrainer_lstm(Xs, y, genre=genre)
