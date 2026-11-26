@@ -1843,7 +1843,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T11:50:27Z",
+ "derniere_execution": "2026-11-26T11:51:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11700,6 +11700,10 @@
   {
    "date": "2026-11-26T11:50:27Z",
    "valeur": 92.85
+  },
+  {
+   "date": "2026-11-26T11:51:26Z",
+   "valeur": 92.85
   }
  ],
  "compte": {
@@ -12294,9 +12298,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3568.45,
+    "prix": 3568.16,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 48.42 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 48.13 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -13065,9 +13069,9 @@
   "rapide-GOLD": [
    1795693800,
    3568.05,
-   3568.45,
+   3570.62,
    3567.87,
-   3568.45
+   3568.16
   ],
   "elan_4h-GOLD": [
    1795680000,
@@ -13318,13 +13322,13 @@
  "_pauses_marches_notees": {},
  "simulations": {
   "00000000-76ca-6738-049f-c46d0015549e": {
-   "p_stop": 61.3,
+   "p_stop": 60.7,
    "p_objectif": 2.2,
-   "p_aucun": 36.6,
-   "p_gain_fin": 32.0,
-   "prix_p5": 3509.82,
-   "prix_median": 3573.92,
-   "prix_p95": 3635.47,
+   "p_aucun": 37.1,
+   "p_gain_fin": 32.4,
+   "prix_p5": 3509.54,
+   "prix_median": 3573.63,
+   "prix_p95": 3635.18,
    "objectif": 3484.36,
    "objectif_type": "gain de 2 R",
    "objectif_r": 2.0,
@@ -13332,10 +13336,10 @@
    "horizon": "4 h",
    "tirages": 4000,
    "bougies_utilisees": 298,
-   "prix_depart": 3568.45,
+   "prix_depart": 3568.16,
    "calcule_sur": "2026-11-26T11:50:00",
    "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
-   "verdict": "Penche nettement vers le stop (3 % des cas tranchés, équilibre 33 %)."
+   "verdict": "Penche nettement vers le stop (4 % des cas tranchés, équilibre 33 %)."
   }
  },
  "fed": {
