@@ -1734,7 +1734,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T01:32:48Z",
+ "derniere_execution": "2026-11-26T01:33:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -9147,15 +9147,19 @@
   {
    "date": "2026-11-26T01:32:48Z",
    "valeur": 94.4
+  },
+  {
+   "date": "2026-11-26T01:33:25Z",
+   "valeur": 94.41
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 94.4,
+  "solde": 94.41,
   "depot": 96.11,
-  "resultat_latent": -1.71,
-  "disponible": 87.99
+  "resultat_latent": -1.7,
+  "disponible": 88.0
  },
  "positions": [
   {
@@ -9164,7 +9168,7 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": -1.71,
+   "resultat": -1.69,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
@@ -9726,7 +9730,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": -1.71,
+   "resultat": -1.69,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -9884,7 +9888,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 94.4
+  "2026-11-26": 94.41
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -10010,7 +10014,7 @@
     "titre": "Prelim GDP q/q"
    }
   ],
-  "lu_le": "2026-11-26T00:33:21.594935+00:00",
+  "lu_le": "2026-11-26T01:33:22.155758+00:00",
   "pause": null,
   "prochaines": []
  },
@@ -10058,7 +10062,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3562.075,
+    "prix": 3560.33,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
