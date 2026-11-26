@@ -42,3 +42,10 @@ def graphiques_ailleurs(monkeypatch, tmp_path):
     """Les tests n'écrivent jamais dans docs/graphiques/ du dépôt."""
     from bot import graphiques
     monkeypatch.setattr(graphiques, "DOSSIER", tmp_path / "graphiques")
+
+
+@pytest.fixture(autouse=True)
+def veille_hors_ligne(monkeypatch):
+    """Les tests n'appellent jamais Yahoo ni Nasdaq."""
+    from bot import veille
+    monkeypatch.setattr(veille, "_titres", lambda s: [])

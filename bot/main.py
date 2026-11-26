@@ -18,6 +18,7 @@ from bot import elan as module_elan
 from bot import supertrend as module_supertrend
 from bot import usine as module_usine
 from bot import actualites
+from bot import veille
 from bot.empilement import EMPILER_MAX, peut_empiler
 from bot.cassure import LISTE as MARCHES_CASSURE
 from bot.cassure import NOM as NOM_CASSURE
@@ -25,6 +26,7 @@ from bot.cassure import RISQUE_CASSURE_PCT, tour_cassure
 from bot.amelioration import reglages_du_moment
 from bot import cerveaux
 from bot import graphiques as module_graphiques
+from bot import simulateur as module_simulateur
 from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
 from bot.strategie import NOM as NOM_STRATEGIE
 from bot.strategie import EMA_LENTE, EMA_RAPIDE, bougies_vers_df, decider
@@ -252,6 +254,17 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     garde.pause_actualite = actualites.annonce_en_cours(donnees, instant)
     donnees["actualites"]["pause"] = garde.pause_actualite
     donnees["actualites"]["prochaines"] = actualites.prochaines(donnees, instant)
+    # 26/11/2026 (skill trader-news) : titres par marché + dates de résultats des actions, pauses par marché
+    marches_trades = sorted(set(MARCHES) | set(MARCHES_CASSURE) | set(module_rapide.LISTE) | set(module_elan.LISTE)
+                            | set(module_supertrend.LISTE) | set(module_usine.LISTE))
+    for souci_v in veille.mettre_a_jour(donnees, instant, marches_trades):
+        print(f"Veille : {souci_v}")
+    garde.pauses_marches = actualites.pauses_marches(donnees, instant)
+    donnees["actualites"]["pauses_marches"] = garde.pauses_marches
+    for m, raison_m in garde.pauses_marches.items():
+        if donnees.setdefault("_pauses_marches_notees", {}).get(m) != raison_m:
+            noter("analyse", m, f"Pause sur {m} : {raison_m}.")
+    donnees["_pauses_marches_notees"] = dict(garde.pauses_marches)
     if garde.pause_actualite and donnees.get("_derniere_pause_notee") != garde.pause_actualite:
         noter("analyse", "", f"Pause : {garde.pause_actualite}. Aucune nouvelle position de "
               f"{actualites.PAUSE_AVANT_MIN} min avant à {actualites.PAUSE_APRES_MIN} min après.")
@@ -567,6 +580,10 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         module_graphiques.publier(donnees, getattr(api, "vues", {}))
     except Exception as e:
         print(f"Graphiques non mis à jour : {e}")
+    try:  # simulateur (machine à remonter le temps) : chances stop / objectif de chaque position, pour l'appli
+        module_simulateur.publier(donnees, getattr(api, "vues", {}), module_usine.STRATEGIES)
+    except Exception as e:
+        print(f"Simulations non calculées : {e}")
     donnees["analyses"] = analyses
     historique = donnees.setdefault("historique", [])
     if solde.get("balance") is not None:

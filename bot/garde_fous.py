@@ -86,6 +86,7 @@ class GardeFous:
         self.positions = list(positions)
         self.eurusd = eurusd or 1.0
         self.pause_actualite = None
+        self.pauses_marches = {}  # 26/11/2026 : {marché: raison} (stocks de gaz, résultats Tesla…)
         self.pauses_stops = donnees.setdefault("pauses_stops", {})
         self.taux = {}  # epic -> unités de la devise du marché pour 1 € (sinon EUR/USD)  # raison de la pause si une grande annonce est proche
         jour = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -128,6 +129,8 @@ class GardeFous:
                            f"reprise le {heure_paris(pause['jusqu_a'])} (heure de Paris)")
         if self.pause_actualite:
             return False, self.pause_actualite
+        if epic and epic in self.pauses_marches:
+            return False, self.pauses_marches[epic]
         if self.etat.get("coupe_circuit"):
             return False, (f"COUPE-CIRCUIT : le compte a perdu plus de {PERTE_MAX_PCT:g} % depuis son plus haut. "
                            "Aucune nouvelle position tant que tu n'as pas appuyé sur « Reprendre ».")
