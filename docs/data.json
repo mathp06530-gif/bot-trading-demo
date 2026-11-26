@@ -1780,7 +1780,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T06:16:26Z",
+ "derniere_execution": "2026-11-26T06:17:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10325,15 +10325,19 @@
   {
    "date": "2026-11-26T06:16:26Z",
    "valeur": 93.26
+  },
+  {
+   "date": "2026-11-26T06:17:26Z",
+   "valeur": 93.32
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.26,
+  "solde": 93.32,
   "depot": 93.15,
-  "resultat_latent": 0.11,
-  "disponible": 89.99
+  "resultat_latent": 0.17,
+  "disponible": 90.05
  },
  "positions": [
   {
@@ -10342,7 +10346,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3572.1,
-   "resultat": 0.12,
+   "resultat": 0.17,
    "ouverte_le": "2026-11-26T06:10:23.892"
   }
  ],
@@ -10665,7 +10669,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T06:10:23Z",
    "statut": "ouvert",
-   "resultat": 0.12,
+   "resultat": 0.17,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -10689,7 +10693,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.26
+  "2026-11-26": 93.32
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -10833,7 +10837,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.527,
+   "prix": 41.269,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.48,
@@ -10863,9 +10867,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3566.2,
-    "action": "Stop suiveur déplacé",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 29.49 de plus dans le bon sens"
+    "prix": 3563.13,
+    "action": "Position conservée",
+    "empilement": "position 2/2 possible quand le prix aura avancé de 26.39 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -11571,7 +11575,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 41.53,
+    "prix": 41.27,
     "ema200": 50.51,
     "atr": 1.14,
     "trou_achat_atr": -0.03,
