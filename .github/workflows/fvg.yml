@@ -1,0 +1,56 @@
+name: Backtest FVG + Fibonacci (or, argent, 15 min)
+
+# Teste ~10 ans de la stratégie « FVG + Fibonacci 0,50-0,78 » (robot vu chez un ami) sur l'or et l'argent,
+# réglages choisis sur 2017-2021 puis vérifiés sur 2022-aujourd'hui (jamais vu). Ne passe AUCUN ordre.
+# Résultat : backtest/resultats_fvg.json (enregistré sur la branche lancée).
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+    paths: [backtest/fvg.py, .github/workflows/fvg.yml]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fvg-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fvg:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Historique 15 min Capital.com (démo)
+        timeout-minutes: 30
+        continue-on-error: true
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+        run: python -u backtest/fvg.py capital donnees_fvg
+      - name: Début de l'historique par Dukascopy (si Capital.com est trop court)
+        timeout-minutes: 45
+        run: python -u backtest/fvg.py completer donnees_fvg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: donnees-fvg
+          path: donnees_fvg
+          retention-days: 7
+      - name: Fouille + contrôles anti-hasard
+        run: python -u backtest/fvg.py fouiller donnees_fvg backtest/resultats_fvg.json 2>&1 | tee backtest/resultats_fvg.txt
+      - name: Enregistrer le bilan
+        run: |
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          git add backtest/resultats_fvg.json backtest/resultats_fvg.txt
+          git diff --cached --quiet && exit 0
+          git commit -qm "Backtest FVG : bilan $(date -u +%Y-%m-%d)"
+          for i in 1 2 3; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin HEAD:"${GITHUB_REF_NAME}" && exit 0; sleep 5; done
+          exit 1
