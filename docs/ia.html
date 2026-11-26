@@ -73,6 +73,19 @@
 
   <section class="grille kpis" id="kpis"></section>
 
+  <section class="carte" style="margin-bottom:12px" id="super-carte">
+    <h2>Super IA · Sundial + TiDE + TCN + N-BEATS + N-HiTS</h2>
+    <div class="doux petit" style="margin-bottom:8px">Moteur à part : il lit les résultats des IA et se corrige après chaque prédiction jugée, sans toucher au test. 4 versions bien séparées : équipe <b>fixe</b> ou <b>évolutive</b> (remplace un membre qui faiblit par une IA qui fait nettement mieux), et pari <b>à chaque fois</b> ou <b>seulement quand elle est sûre</b>. Aucun ordre.</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
+      <label class="doux petit" for="sup-portee">Marchés</label>
+      <select id="sup-portee"></select>
+      <span class="doux petit" id="sup-maj"></span>
+    </div>
+    <div class="defile"><table id="sup-table"></table></div>
+    <div class="note" id="sup-equipe"></div>
+    <div class="note" id="sup-changements"></div>
+  </section>
+
   <section class="carte" style="margin-bottom:12px">
     <h2>Comparer les horizons : réussite ET gain après spread</h2>
     <div class="defile"><table id="comparer"></table></div>
@@ -315,16 +328,56 @@ function comparer() {
   }
   $("comparer").innerHTML = h;
 }
+let SUP = null;
+const VARIANTES = [["fixe_toujours", "Équipe fixe · à chaque fois"], ["fixe_sure", "Équipe fixe · quand sûre"],
+                   ["evolutive_toujours", "Équipe évolutive · à chaque fois"], ["evolutive_sure", "Équipe évolutive · quand sûre"]];
+function superIA() {
+  if (!SUP || !SUP.stats) { $("sup-table").innerHTML = `<tr><td class="doux">La Super IA démarre : ses premiers chiffres arrivent environ 20 min après le lancement (elle attend 12 min pour être sûre de ne rien savoir du futur).</td></tr>`; return; }
+  const sel = $("sup-portee"), choix = sel.value || "m:GOLD";
+  const fam = new Set();
+  Object.values(SUP.stats).forEach(hz => Object.values(hz).forEach(v => Object.keys(v.familles || {}).forEach(f => fam.add(f))));
+  const opts = [["m:GOLD", "★ Or"], ["m:SILVER", "★ Argent"], ["or+argent", "★ Or + argent"], ["tout", "Tous les marchés"], ...[...fam].map(f => ["f:" + f, TYPES[f] || f])];
+  sel.innerHTML = opts.map(([v, l]) => `<option value="${v}">${echap(l)}</option>`).join(""); sel.value = choix;
+  const portee = v => {
+    if (!v) return null;
+    if (choix === "tout") return v;
+    if (choix === "or+argent") { const a = v.marches.GOLD || {n:0,j:0,g:0}, b = v.marches.SILVER || {n:0,j:0,g:0}; return {n:a.n+b.n, j:a.j+b.j, g:a.g+b.g}; }
+    if (choix.startsWith("m:")) return v.marches[choix.slice(2)] || null;
+    return (v.familles || {})[choix.slice(2)] || null;
+  };
+  let h = `<tr><th>Horizon</th>${VARIANTES.map(([, l]) => `<th>${l}</th>`).join("")}</tr>`;
+  for (const hz of SUP.horizons || [2, 3, 5]) {
+    const st = SUP.stats[String(hz)] || {};
+    h += `<tr><td><b>${hz} min</b></td>`;
+    for (const [k] of VARIANTES) {
+      const d = portee(st[k]);
+      if (!d || !d.n) { h += `<td class="faible">—</td>`; continue; }
+      const p = 100 * d.j / d.n, ic = 196 * Math.sqrt(Math.max(p / 100 * (1 - p / 100), 1e-9) / d.n), g = d.g / d.n;
+      let couv = "";
+      if (k.endsWith("_sure")) { const tot = portee(st[k.replace("_sure", "_toujours")]); if (tot && tot.n) couv = ` · parie ${fmt(100 * d.n / tot.n, 0)} %`; }
+      h += `<td>${d.n < 30 ? '<span class="pastille">trop tôt</span> ' : ""}<b>${fmt(p, 1)} %</b> <span class="faible petit">± ${fmt(ic, 1)} · ${d.n.toLocaleString("fr-FR")} jugées${couv}</span><br>` +
+           `<span class="${g >= 0 ? "v" : "r"} petit">gain moyen ${g >= 0 ? "+" : ""}${fmt(g, 3)} %</span></td>`;
+    }
+    h += "</tr>";
+  }
+  $("sup-table").innerHTML = h;
+  $("sup-maj").textContent = SUP.maj ? "mise à jour " + new Date(SUP.maj).toLocaleTimeString("fr-FR") : "";
+  const eq = SUP.equipe_evolutive || {};
+  $("sup-equipe").innerHTML = "<b>Équipe évolutive en ce moment :</b> " + Object.entries(eq).map(([hz, l]) => `${hz} min : ${l.map(m => echap(nomIA(m))).join(", ")}`).join(" · ");
+  const ch = (SUP.changements || []).slice(-6).reverse();
+  $("sup-changements").innerHTML = ch.length ? "<b>Derniers changements :</b> " + ch.map(c => `${new Date(c.t).toLocaleTimeString("fr-FR")} (${c.h} min) ${echap(nomIA(c.entre))} remplace ${echap(nomIA(c.sort))}, ${echap(c.raison)}`).join(" · ") : "Aucun changement d'équipe pour l'instant : le noyau tient.";
+}
 function tout() {
   if (!S || !V) return;
   const t = totaux();
   $("maj").textContent = "Mis à jour : " + new Date(V.maj).toLocaleString("fr-FR") + " · actualisation auto";
-  horizons(); comparer(); kpis(t); classement(t); chaleur(); remplirSelects(); probas(); dernieres(); etat(); marches(); exclues();
+  superIA(); horizons(); comparer(); kpis(t); classement(t); chaleur(); remplirSelects(); probas(); dernieres(); etat(); marches(); exclues();
 }
 async function charger() {
   try {
     const q = "?t=" + Math.floor(Date.now() / 60000);
     const [s, v, m] = await Promise.all(["stats.json", "vivant.json", "marches.json"].map(f => fetch(SOURCE + f + q).then(r => r.ok ? r.json() : null)));
+    fetch(SOURCE.replace("ia-journal", "ia-super") + "super.json" + q).then(r => r.ok ? r.json() : null).then(x => { SUP = x; if (V) superIA(); }).catch(() => {});
     if (!s || !v) throw new Error("vide");
     TOUT = s.horizons || {"1": s}; V = v; M = (m && m.marches) || {};
     if (!TOUT[HZ]) HZ = "1";
@@ -335,6 +388,7 @@ async function charger() {
   }
 }
 for (const id of ["cherche", "type", "ia", "tri"]) $(id).addEventListener("input", probas);
+$("sup-portee").addEventListener("input", superIA);
 for (const id of ["cherche2", "ia2"]) $(id).addEventListener("input", marches);
 charger();
 setInterval(charger, 60000);

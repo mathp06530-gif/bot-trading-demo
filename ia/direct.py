@@ -291,6 +291,7 @@ def principal():
     vivant.setdefault("vitesse", {})
     curseur = int(vivant.get("curseur", 0))
     attente = []
+    juges = lire_json("juges.json", {}).get("items", [])
     derniere_session, derniere_pub, dernier_etat = time.time(), 0.0, time.time()
     pool = ThreadPoolExecutor(6)
     fond = ThreadPoolExecutor(1)  # publication seulement
@@ -331,6 +332,12 @@ def principal():
                     sens = 1 if pr > 0.5 else -1
                     gain = (sens * (fin["mid"] - p["depart"]) - p["spread"]) / p["depart"] * 100
                     compter(ST[p["h"]], p["epic"], p["type"], jour, m, (sens > 0) == hausse, gain)
+                if p["h"] in (2, 3, 5):  # pour le moteur Super IA (à part) : aucune influence sur ce test
+                    juges.append({"id": f'{p["heure"]}|{p["epic"]}|{p["h"]}', "t": p["heure"], "ech": round(p["echeance"]),
+                                  "e": p["epic"], "ty": p["type"], "h": p["h"], "up": int(hausse),
+                                  "mv": round((fin["mid"] / p["depart"] - 1) * 100, 5), "sp": round(p["spread"] / p["depart"] * 100, 5),
+                                  "p": {m: round(v, 4) for m, v in p["probas"].items() if m not in ("vote", "arbitre")}})
+                del juges[:-2500]
                 vivant["dernieres"].append({"t": p["heure"], "epic": p["epic"], "h": p["h"], "vote": round(p["probas"]["vote"], 3),
                                             "arbitre": round(p["probas"]["arbitre"], 3),
                                             "reel": "hausse" if hausse else "baisse",
@@ -450,13 +457,13 @@ def principal():
         vivant["probas"] = {e: v for e, v in vivant["probas"].items() if v["t"] >= limite}
         if time.time() - derniere_pub > 3 * 60 and (tache_pub is None or tache_pub.done()):
             vivant["maj"] = iso()
-            copie = json.loads(json.dumps({"stats.json": {"horizons": {str(h): ST[h] for h in HS}}, "vivant.json": vivant, "marches.json": univers}))
+            copie = json.loads(json.dumps({"stats.json": {"horizons": {str(h): ST[h] for h in HS}}, "vivant.json": vivant, "marches.json": univers, "juges.json": {"maj": iso(), "items": juges}}))
             tache_pub = fond.submit(publier, copie)  # en arrière-plan : la minute suivante n'attend pas
             derniere_pub = time.time()
     if tache_pub is not None:
         tache_pub.result()
     vivant["maj"] = iso()
-    publier({"stats.json": {"horizons": {str(h): ST[h] for h in HS}}, "vivant.json": vivant, "marches.json": univers})
+    publier({"stats.json": {"horizons": {str(h): ST[h] for h in HS}}, "vivant.json": vivant, "marches.json": univers, "juges.json": {"maj": iso(), "items": juges}})
     geantes.fermer()
     api.deconnexion()
 
