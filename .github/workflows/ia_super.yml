@@ -1,0 +1,31 @@
+name: IA - Super IA (moteur à part, aucun ordre)
+
+# Lit le journal des IA (branche ia-journal, juges.json) et fait tourner la Super IA dans l'ordre du temps :
+# équipe fixe (Sundial, TiDE, TCN, N-BEATS, N-HiTS) et équipe évolutive, version « toujours » et version « sûre »,
+# horizons 2, 3 et 5 min. N'influence PAS le test des autres IA. Publication sur la branche « ia-super ».
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "5 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ia-super
+  cancel-in-progress: false
+
+jobs:
+  super:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Super IA
+        env:
+          SUPER_DUREE_S: "3300"
+        run: python -u ia/super_ia.py
