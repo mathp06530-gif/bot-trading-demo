@@ -1,0 +1,72 @@
+{
+ "journal": [
+  {
+   "date": "2026-11-26T15:49:17Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Démarrage du bot à part « Élan crypto » (expérimental, démo, 1 % par trade) sur Ethereum, Litecoin, Solana et XRP. Gagnant sur les 4 derniers mois, mais pas prouvé."
+  }
+ ],
+ "depuis": "2026-11-26T15:49:17Z",
+ "nom": "Élan crypto 4 h (bot à part, expérimental)",
+ "risque_pct": 1.0,
+ "actif": true,
+ "dernier_tour": "2026-11-26T15:49:17Z",
+ "deals": {},
+ "ordres": [],
+ "marches": {
+  "ETHUSD": {
+   "nom": "Ethereum",
+   "n": 50,
+   "sens": -1,
+   "prix": 1698.255,
+   "atr": 37.43704,
+   "sma200": 2049.4595,
+   "bougie": "2026-11-26 08:00:00+00:00",
+   "regle": "Élan 50 bougies de 4 h dans le sens de la moyenne 200, stop garanti 1.5 ATR",
+   "action": "En attente d'un signal"
+  },
+  "LTCUSD": {
+   "nom": "Litecoin",
+   "n": 50,
+   "sens": -1,
+   "prix": 43.51,
+   "atr": 1.00343,
+   "sma200": 49.76514999999999,
+   "bougie": "2026-11-26 08:00:00+00:00",
+   "regle": "Élan 50 bougies de 4 h dans le sens de la moyenne 200, stop garanti 1.5 ATR",
+   "action": "En attente d'un signal"
+  },
+  "SOLUSD": {
+   "nom": "Solana",
+   "n": 50,
+   "sens": -1,
+   "prix": 70.78005,
+   "atr": 1.72713,
+   "sma200": 84.81691475,
+   "bougie": "2026-11-26 08:00:00+00:00",
+   "regle": "Élan 50 bougies de 4 h dans le sens de la moyenne 200, stop garanti 1.5 ATR",
+   "action": "En attente d'un signal"
+  },
+  "XRPUSD": {
+   "nom": "XRP",
+   "n": 200,
+   "sens": -1,
+   "prix": 0.95117,
+   "atr": 0.02262,
+   "sma200": 1.1106687,
+   "bougie": "2026-11-26 08:00:00+00:00",
+   "regle": "Élan 200 bougies de 4 h dans le sens de la moyenne 200, stop garanti 1.5 ATR",
+   "action": "En attente d'un signal"
+  }
+ },
+ "capital_depart": 92.86,
+ "bilan": {
+  "realise": 0,
+  "latent": 0,
+  "trades": 0,
+  "gagnants": 0,
+  "blocage": null
+ },
+ "_cache_marches": {}
+}

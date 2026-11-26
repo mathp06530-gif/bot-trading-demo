@@ -4,7 +4,6 @@ import math
 from datetime import datetime, timedelta, timezone
 
 from bot import graphiques as G
-from bot import usine
 
 
 def fausses_bougies(n, pas_s, depart=3500.0, graine=1):
@@ -22,7 +21,7 @@ def fausses_bougies(n, pas_s, depart=3500.0, graine=1):
 
 def cache_complet():
     cache = {}
-    for epic in ("GOLD", "SILVER", "ETHUSD", "NATURALGAS", "TSLA"):
+    for epic in ("GOLD", "SILVER"):
         cache[(epic, "HOUR_4")] = fausses_bougies(1000, 14400)
         cache[(epic, "HOUR")] = fausses_bougies(400, 3600)
         cache[(epic, "MINUTE_5")] = fausses_bougies(300, 300)
@@ -30,9 +29,7 @@ def cache_complet():
 
 
 def test_tous_les_graphiques_sont_produits(tmp_path, monkeypatch):
-    from bot import elan, supertrend, rapide
-    monkeypatch.setattr(elan, "LISTE", ["GOLD", "SILVER"])
-    monkeypatch.setattr(supertrend, "LISTE", ["ETHUSD"])
+    from bot import rapide
     monkeypatch.setattr(rapide, "LISTE", ["GOLD"])
     cache = cache_complet()
     t_entree = cache[("GOLD", "MINUTE_5")][-20]["snapshotTimeUTC"] + "Z"
@@ -40,16 +37,12 @@ def test_tous_les_graphiques_sont_produits(tmp_path, monkeypatch):
     G.publier(donnees, cache, tmp_path)
     index = json.loads((tmp_path / "index.json").read_text())
     ids = {g["id"] for g in index["graphiques"]}
-    attendus = {"cassure_4h-GOLD", "cassure_4h-SILVER", "rapide-GOLD", "elan_4h-GOLD", "elan_4h-SILVER",
-                "supertrend_4h-ETHUSD"} | {f"usine-{s['epic']}" for s in usine.STRATEGIES}
-    assert attendus <= ids
+    assert ids == {"cassure_4h-GOLD", "cassure_4h-SILVER", "rapide-GOLD"}
     r = json.loads((tmp_path / "rapide-GOLD.json").read_text())
     assert len(r["bougies"]["t"]) == G.N_AFFICHE == len(r["lignes"][0]["v"])
     assert r["conditions"] and all("texte" in c for c in r["conditions"])
     assert "D1" in r["conditions_trades"]  # conditions au moment de l'entrée
     assert "rapide-GOLD" in donnees["graph_live"] and len(donnees["graph_live"]["rapide-GOLD"]) == 5
-    u = json.loads((tmp_path / f"usine-{usine.STRATEGIES[0]['epic']}.json").read_text())
-    assert u["oscillateur"] and u["oscillateur"]["histo"]
 
 
 def test_fichier_reecrit_seulement_si_change(tmp_path):
@@ -62,3 +55,10 @@ def test_sans_bougies_aucune_erreur(tmp_path):
     donnees = {}
     assert G.publier(donnees, {}, tmp_path) == []
     assert donnees["graph_live"] == {}
+
+
+def test_graphiques_des_strategies_retirees_effaces(tmp_path):
+    (tmp_path / "elan_4h-GOLD.json").write_text("{}")
+    (tmp_path / "usine-TSLA.json").write_text("{}")
+    G.publier({}, cache_complet(), tmp_path)
+    assert not (tmp_path / "elan_4h-GOLD.json").exists() and not (tmp_path / "usine-TSLA.json").exists()

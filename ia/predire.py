@@ -40,7 +40,10 @@ HORIZONS = {"MINUTE": (1, 5), "MINUTE_5": (1, 12), "MINUTE_15": (1, 4), "HOUR": 
 TRAIN_MAX = int(os.getenv("TRAIN_MAX", "60000"))
 BLOCS = int(os.getenv("BLOCS", "8"))
 SEQ = 32
-MODELES = ["logistique", "foret", "lightgbm", "neurones", "lstm", "vote", "empilement"]
+MODELES = ["logistique", "foret", "lightgbm", "catboost", "neurones", "lstm", "transformer", "vote", "empilement"]
+CTX = 0
+TEST_MAX = int(os.getenv("TEST_MAX", "4000"))  # bougies jugées par bloc (limite le temps de calcul des IA géantes)
+VAL_MAX = int(os.getenv("VAL_MAX", "3000"))
 SEUILS = [0.0, 0.02, 0.05, 0.08, 0.12, 0.16]  # marge autour de 50 % : 0.05 = on n'agit que si p > 55 % ou p < 45 %
 
 
@@ -139,7 +142,9 @@ def sequences(d: pd.DataFrame) -> np.ndarray:
 
 
 # --------------------------------------------------------------------------- IA
-def entrainer_lstm(Xs, y, graine=0):
+def entrainer_lstm(Xs, y, graine=0, genre="lstm"):
+    """genre "lstm" : LSTM ; genre "transformer" : petit transformer à la PatchTST (la séquence est coupée en
+    8 morceaux de 4 bougies, chaque morceau devient un « mot », puis 2 couches d'attention)."""
     import torch
     torch.manual_seed(graine)
     torch.set_num_threads(max(1, os.cpu_count() or 1))
@@ -154,7 +159,22 @@ def entrainer_lstm(Xs, y, graine=0):
             _, (hdn, _) = self.lstm(x)
             return self.sortie(hdn[-1]).squeeze(-1)
 
-    net = Reseau()
+    class Transfo(torch.nn.Module):
+        def __init__(self, morceau=4):
+            super().__init__()
+            self.morceau = morceau
+            self.entree = torch.nn.Linear(3 * morceau, 32)
+            self.position = torch.nn.Parameter(torch.zeros(1, SEQ // morceau, 32))
+            couche = torch.nn.TransformerEncoderLayer(32, 4, 64, dropout=0.1, batch_first=True)
+            self.attention = torch.nn.TransformerEncoder(couche, 2)
+            self.sortie = torch.nn.Linear(32, 1)
+
+        def forward(self, x):
+            b = x.shape[0]
+            z = self.entree(x.reshape(b, SEQ // self.morceau, 3 * self.morceau)) + self.position
+            return self.sortie(self.attention(z).mean(1)).squeeze(-1)
+
+    net = Transfo() if genre == "transformer" else Reseau()
     opt = torch.optim.Adam(net.parameters(), lr=2e-3)
     X = torch.from_numpy(Xs)
     Y = torch.from_numpy(y.astype(np.float32))
@@ -175,6 +195,7 @@ def entrainer_lstm(Xs, y, graine=0):
 
 
 def entrainer(X, Xs, y):
+    from catboost import CatBoostClassifier
     from lightgbm import LGBMClassifier
     from sklearn.ensemble import RandomForestClassifier
     from sklearn.linear_model import LogisticRegression
@@ -186,6 +207,8 @@ def entrainer(X, Xs, y):
         "foret": RandomForestClassifier(n_estimators=200, max_depth=8, min_samples_leaf=100, n_jobs=-1, random_state=0),
         "lightgbm": LGBMClassifier(n_estimators=300, learning_rate=0.03, num_leaves=15, min_child_samples=200,
                                    subsample=0.8, subsample_freq=1, colsample_bytree=0.8, verbose=-1, random_state=0),
+        "catboost": CatBoostClassifier(iterations=300, depth=6, learning_rate=0.05, verbose=0, random_seed=0,
+                                       thread_count=-1, allow_writing_files=False),
         "neurones": make_pipeline(StandardScaler(), MLPClassifier((64, 32), alpha=1e-3, early_stopping=True,
                                                                   max_iter=50, random_state=0)),
     }
@@ -193,11 +216,12 @@ def entrainer(X, Xs, y):
     for nom, m in mods.items():
         m.fit(X, y)
         fonctions[nom] = (lambda m: lambda Xn, Xsn: m.predict_proba(Xn)[:, 1])(m)
-    try:
-        f = entrainer_lstm(Xs, y)
-        fonctions["lstm"] = lambda Xn, Xsn: f(Xsn)
-    except Exception as e:  # LSTM indisponible : les autres IA continuent
-        print(f"LSTM ignoré : {str(e)[:200]}")
+    for genre in ("lstm", "transformer"):
+        try:
+            f = entrainer_lstm(Xs, y, genre=genre)
+            fonctions[genre] = (lambda f: lambda Xn, Xsn: f(Xsn))(f)
+        except Exception as e:  # réseau indisponible : les autres IA continuent
+            print(f"{genre} ignoré : {str(e)[:200]}")
     return fonctions
 
 
@@ -267,9 +291,9 @@ def tester(dossier: Path, epic: str, unite: str, sortie: Path):
             i_tr = np.arange(deb_train, fin_train)
             i_tr = i_tr[valide[i_tr] & ~np.isnan(y[i_tr])]
             coupe = int(len(i_tr) * 0.8)
-            i_fit, i_val = i_tr[:coupe - H], i_tr[coupe:]
+            i_fit, i_val = i_tr[:coupe - H], i_tr[coupe:][-VAL_MAX:]
             i_te = np.arange(a, z)
-            i_te = i_te[valide[i_te]]
+            i_te = i_te[valide[i_te] & (i_te >= CTX)][:TEST_MAX]
             if len(i_fit) < 2000 or len(i_te) < 50:
                 continue
             Xseq = lambda ii: np.stack([S[i - SEQ + 1:i + 1] for i in ii])  # noqa: E731
@@ -277,7 +301,7 @@ def tester(dossier: Path, epic: str, unite: str, sortie: Path):
             Xv, Xsv, Xt, Xst = F.values[i_val], Xseq(i_val), F.values[i_te], Xseq(i_te)
             pv = {k: f(Xv, Xsv) for k, f in fonctions.items()}
             pt = {k: f(Xt, Xst) for k, f in fonctions.items()}
-            base = list(fonctions)
+            base = [k for k in MODELES if k in pt and k in pv and k not in ("vote", "empilement")]
             pv["vote"], pt["vote"] = np.mean([pv[k] for k in base], 0), np.mean([pt[k] for k in base], 0)
             from sklearn.linear_model import LogisticRegression
             empil = LogisticRegression(C=1.0).fit(np.column_stack([pv[k] for k in base]), y[i_val])

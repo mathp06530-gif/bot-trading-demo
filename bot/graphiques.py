@@ -4,7 +4,7 @@ Ce module ne passe AUCUN ordre et ne change AUCUNE décision : il relit les boug
 tour (aucun appel en plus à Capital.com) et recalcule, avec les MÊMES fonctions que les stratégies, les
 indicateurs que chaque stratégie regarde. Il écrit un petit fichier par graphique dans docs/graphiques/ :
   - les bougies terminées (150 dernières) ;
-  - les lignes d'indicateurs (EMA, canal de cassure, Bollinger, Supertrend, MACD, ADX…) ;
+  - les lignes d'indicateurs (EMA, canal de cassure, Bollinger, ADX…) ;
   - les signaux repérés par la stratégie (flèches) ;
   - la liste des conditions de la stratégie sur la dernière bougie terminée (remplie ou pas) ;
   - pour chaque trade, les conditions telles qu'elles étaient sur la bougie du signal.
@@ -23,11 +23,7 @@ import numpy as np
 import pandas as pd
 
 from bot import cassure as module_cassure
-from bot import elan as module_elan
 from bot import rapide as module_rapide
-from bot import supertrend as module_supertrend
-from bot import usine as module_usine
-from bot import usine_regles as R
 from bot.strategie import adx, bougies_vers_df, ema, milieu
 
 DOSSIER = Path(__file__).resolve().parent.parent / "docs" / "graphiques"
@@ -148,62 +144,6 @@ def graph_cassure(epic, bougies, donnees):
     return g
 
 
-def graph_elan(epic, bougies, donnees):
-    df = bougies_vers_df(bougies[:-1])
-    if len(df) < 210:
-        return None
-    s = module_elan.signaux_elan(df)
-    d, m, g = _base(epic, "HOUR_4", df, f"elan_4h-{epic}", "elan_4h", f"Élan 4 h · {epic}", module_elan.NOM)
-    g["lignes"] = [{"nom": "EMA 200", "couleur": "#f5a524", "v": _liste(s.ema, d)}]
-    _marqueurs(g, df.index, s.sig.values, "Trou haussier (gros acheteur)", "Trou baissier (gros vendeur)")
-    k = module_elan.TROU_MIN_ATR
-
-    def conditions(i, sens=None):
-        c, e, a = float(s.cloture.iat[i]), float(s.ema.iat[i]), float(s.atr.iat[i])
-        sens = sens or (1 if c > e else -1)
-        if sens > 0:
-            trou = float(m.low.iat[i] - m.high.iat[i - 2]) if i >= 2 else float("nan")
-            return [_cond(f"Trou haussier entre 3 bougies : {_fx(trou / a, 2)} ATR (il faut > {k:g})", trou > k * a),
-                    _cond(f"Prix au-dessus de l'EMA 200 ({_fx(c, d)} > {_fx(e, d)})", c > e),
-                    _cond(f"Objectif (TP) à {module_elan.OBJECTIF_ELAN_R:g} fois le stop", True)]
-        trou = float(m.low.iat[i - 2] - m.high.iat[i]) if i >= 2 else float("nan")
-        return [_cond(f"Trou baissier entre 3 bougies : {_fx(trou / a, 2)} ATR (il faut > {k:g})", trou > k * a),
-                _cond(f"Prix sous l'EMA 200 ({_fx(c, d)} < {_fx(e, d)})", c < e),
-                _cond(f"Objectif (TP) à {module_elan.OBJECTIF_ELAN_R:g} fois le stop", True)]
-
-    g["conditions"] = conditions(len(df) - 1)
-    _trades(g, donnees, "elan_4h", epic, df.index, "HOUR_4", conditions)
-    return g
-
-
-def graph_supertrend(epic, bougies, donnees):
-    df = bougies_vers_df(bougies[:-1])
-    if len(df) < 50:
-        return None
-    s = module_supertrend.signaux_supertrend(df)
-    d, m, g = _base(epic, "HOUR_4", df, f"supertrend_4h-{epic}", "supertrend_4h", f"Supertrend 4 h · {epic}",
-                    module_supertrend.NOM)
-    haut = np.where(s.sens.values == 1, s.ligne.values, np.nan)
-    bas = np.where(s.sens.values == -1, s.ligne.values, np.nan)
-    g["lignes"] = [{"nom": "Supertrend (hausse)", "couleur": "#16c784", "v": _liste(haut, d)},
-                   {"nom": "Supertrend (baisse)", "couleur": "#ea3943", "v": _liste(bas, d)}]
-    flips = np.where(s.nouveau.values, s.sens.values, 0)
-    flips[0] = 0
-    _marqueurs(g, df.index, flips, "Retournement à la hausse", "Retournement à la baisse")
-
-    def conditions(i, sens=None):
-        c, ligne, sns = float(s.cloture.iat[i]), float(s.ligne.iat[i]), int(s.sens.iat[i])
-        sens = sens or sns
-        mot = "au-dessus" if sens > 0 else "sous"
-        return [_cond(f"Prix {mot} de la ligne Supertrend ({_fx(c, d)} / {_fx(ligne, d)})", sns == sens),
-                _cond("Retournement sur cette bougie (signal nouveau)", bool(s.nouveau.iat[i]) and sns == sens),
-                _cond(f"Stop garanti juste derrière la ligne ({_fx(float(s.dist.iat[i]), d)})", True)]
-
-    g["conditions"] = conditions(len(df) - 1)
-    _trades(g, donnees, "supertrend_4h", epic, df.index, "HOUR_4", conditions)
-    return g
-
-
 def _sens_prefixe(cache, epic, unite, rapide, lente, avant: int):
     """Sens EMA rapide/lente sur les bougies terminées avant l'instant `avant` (en secondes)."""
     bs = cache.get((epic, unite)) or []
@@ -269,64 +209,6 @@ def graph_rapide(epic, bougies, donnees, cache):
     return g
 
 
-def graph_usine(strat, bougies, donnees):
-    epic, unite, spec = strat["epic"], strat["unite"], strat["spec"]
-    df = bougies_vers_df(bougies[:-1])
-    if len(df) < 300:
-        return None
-    ind = R.Indicateurs(df)
-    voulu, ok, dstop, dobj = R.preparer(ind, spec)
-    d, m, g = _base(epic, unite, df, f"usine-{epic}", "usine", f"Usine · {epic}", strat.get("texte", R.decrire(spec)))
-    c = ind.c
-    if spec["famille"] == "macd":
-        a, b, sg = spec["p"]
-        ligne = c.ewm(span=a, adjust=False).mean() - c.ewm(span=b, adjust=False).mean()
-        signal = ligne.ewm(span=sg, adjust=False).mean()
-        g["oscillateur"] = {"nom": f"MACD {a}/{b}/{sg}", "seuil": None,
-                            "lignes": [{"nom": "MACD", "couleur": "#22d3ee", "v": _liste(ligne, d + 1)},
-                                       {"nom": "Signal", "couleur": "#f5a524", "v": _liste(signal, d + 1)}],
-                            "histo": _liste(ligne - signal, d + 1)}
-    if spec["filtre"] == "t200":
-        g["lignes"].append({"nom": "Moyenne 200", "couleur": "#f5a524", "v": _liste(ind.sma200, d)})
-    _marqueurs(g, df.index, np.where(ok, voulu, 0), "Signal d'achat (usine)", "Signal de vente (usine)")
-    nom_f = R.NOMS_FAMILLES.get(spec["famille"], spec["famille"])
-
-    def conditions(i, sens=None):
-        v = int(voulu[i])
-        sens = sens or v or 1
-        sortie = []
-        if spec["famille"] == "macd":
-            x, y = float(ligne.iat[i]), float(signal.iat[i])
-            sortie.append(_cond(f"MACD {'au-dessus' if sens > 0 else 'sous'} de sa ligne de signal "
-                                f"({_fx(x, d + 1)} / {_fx(y, d + 1)})", v == sens))
-        else:
-            sortie.append(_cond(f"{nom_f} : signal en {MOTS[sens]}", v == sens))
-        nouveau = i > 0 and int(voulu[i - 1]) != v and v != 0
-        sortie.append(_cond("Signal nouveau sur cette bougie", nouveau and v == sens))
-        f = spec["filtre"]
-        if f == "adx20m":
-            x = float(ind.adx.iat[i])
-            sortie.append(_cond(f"Marché calme : ADX {_fx(x, 0)} < 20", x < 20))
-        elif f == "adx25":
-            x = float(ind.adx.iat[i])
-            sortie.append(_cond(f"Tendance forte : ADX {_fx(x, 0)} > 25", x > 25))
-        elif f in ("volh", "volb"):
-            x = float(ind.atr.iat[i] / ind.atr100.iat[i])
-            sortie.append(_cond(f"Volatilité {'en hausse' if f == 'volh' else 'en baisse'} (ATR 14 / ATR 100 = "
-                                f"{_fx(x, 2)} {'>' if f == 'volh' else '<'} 1)", x > 1 if f == "volh" else x < 1))
-        elif f == "t200":
-            x, s200 = float(c.iat[i]), float(ind.sma200.iat[i])
-            sortie.append(_cond(f"Dans le sens de la moyenne 200 ({_fx(x, d)} / {_fx(s200, d)})",
-                                x > s200 if sens > 0 else x < s200))
-        sortie.append(_cond(f"Stop garanti à {spec['stop']:g} ATR"
-                            + (f", objectif (TP) à {spec['objectif']:g} R" if spec.get("objectif") else ", sans TP"), True))
-        return sortie
-
-    g["conditions"] = conditions(len(df) - 1)
-    _trades(g, donnees, "usine", epic, df.index, unite, conditions)
-    return g
-
-
 # --- Assemblage ------------------------------------------------------------------------------------------------
 def construire(donnees: dict, cache: dict) -> list[dict]:
     """Tous les graphiques possibles avec les bougies vues pendant ce tour (une erreur n'en bloque aucun autre)."""
@@ -335,12 +217,6 @@ def construire(donnees: dict, cache: dict) -> list[dict]:
         a_faire.append(lambda e=epic: graph_cassure(e, cache.get((e, "HOUR_4")) or [], donnees))
     for epic in module_rapide.LISTE:
         a_faire.append(lambda e=epic: graph_rapide(e, cache.get((e, "MINUTE_5")) or [], donnees, cache))
-    for epic in module_elan.LISTE:
-        a_faire.append(lambda e=epic: graph_elan(e, cache.get((e, "HOUR_4")) or [], donnees))
-    for epic in module_supertrend.LISTE:
-        a_faire.append(lambda e=epic: graph_supertrend(e, cache.get((e, "HOUR_4")) or [], donnees))
-    for strat in module_usine.STRATEGIES:
-        a_faire.append(lambda s=strat: graph_usine(s, cache.get((s["epic"], s["unite"])) or [], donnees))
     graphs = []
     for f in a_faire:
         try:
@@ -357,11 +233,6 @@ def attendus() -> list[tuple]:
     """(id, stratégie, marché, unité, titre) de chaque graphique, d'après les réglages."""
     sortie = [(f"cassure_4h-{e}", "cassure_4h", e, "HOUR_4", f"Cassure 4 h · {e}") for e in module_cassure.LISTE]
     sortie += [(f"rapide-{e}", "rapide", e, "MINUTE_5", f"Rapide 5 min · {e}") for e in module_rapide.LISTE]
-    sortie += [(f"elan_4h-{e}", "elan_4h", e, "HOUR_4", f"Élan 4 h · {e}") for e in module_elan.LISTE]
-    sortie += [(f"supertrend_4h-{e}", "supertrend_4h", e, "HOUR_4", f"Supertrend 4 h · {e}")
-               for e in module_supertrend.LISTE]
-    sortie += [(f"usine-{s['epic']}", "usine", s["epic"], s["unite"], f"Usine · {s['epic']}")
-               for s in module_usine.STRATEGIES]
     return sortie
 
 

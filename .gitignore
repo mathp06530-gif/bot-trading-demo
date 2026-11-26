@@ -4,5 +4,7 @@ __pycache__/
 backtest/donnees/
 amelioration_plan.json
 donnees_direct/
+donnees_direct/
+journal_ia/
 .venvs/
 ia/vendor/

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Élan crypto</title>
+<style>
+  :root { --fond:#0f1115; --carte:#181b22; --texte:#e8eaf0; --doux:#9aa1b2; --vert:#3ecf8e; --rouge:#ff6b6b; --bord:#2a2f3a; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--fond); color:var(--texte); font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+  main { max-width:720px; margin:0 auto; padding:16px; }
+  h1 { font-size:22px; margin:4px 0 2px; }
+  .sous { color:var(--doux); font-size:13px; margin-bottom:14px; }
+  .alerte { background:#2a2416; border:1px solid #5c4a1a; color:#f3d27a; border-radius:10px; padding:10px 12px; font-size:13px; margin-bottom:14px; }
+  .tuiles { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:14px; }
+  .tuile { background:var(--carte); border:1px solid var(--bord); border-radius:10px; padding:10px; }
+  .tuile b { display:block; font-size:20px; }
+  .tuile span { color:var(--doux); font-size:12px; }
+  .carte { background:var(--carte); border:1px solid var(--bord); border-radius:10px; padding:12px; margin-bottom:8px; }
+  .ligne { display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; }
+  .doux { color:var(--doux); font-size:13px; }
+  .vert { color:var(--vert); } .rouge { color:var(--rouge); }
+  h2 { font-size:16px; margin:18px 0 8px; }
+  .journal div { border-bottom:1px solid var(--bord); padding:6px 0; font-size:13px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Élan crypto</h1>
+  <div class="sous">Bot à part, compte démo, 1 % par trade · Ethereum, Litecoin, Solana, XRP · bougies de 4 h</div>
+  <div class="alerte">Expérience : la stratégie a gagné sur les 4 derniers mois, mais sur 2 mois le hasard fait aussi bien. Ce bot ne touche pas à la Cassure ni à la Rapide.</div>
+  <div class="tuiles">
+    <div class="tuile"><b id="realise">–</b><span>Encaissé</span></div>
+    <div class="tuile"><b id="latent">–</b><span>En cours</span></div>
+    <div class="tuile"><b id="trades">–</b><span>Trades</span></div>
+  </div>
+  <div id="blocage"></div>
+  <h2>Marchés</h2>
+  <div id="marches"></div>
+  <h2>Journal</h2>
+  <div id="journal" class="journal"></div>
+  <p class="doux" id="maj"></p>
+</main>
+<script>
+const eur = x => (x >= 0 ? "+" : "") + x.toFixed(2).replace(".", ",") + " €";
+const classe = x => x > 0 ? "vert" : x < 0 ? "rouge" : "";
+const heure = s => s ? new Date(s).toLocaleString("fr-FR", {day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit"}) : "";
+const echap = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+fetch("elan_crypto.json?t=" + Date.now()).then(r => r.json()).then(d => {
+  const b = d.bilan || {realise:0, latent:0, trades:0};
+  const r = document.getElementById("realise"); r.textContent = eur(b.realise); r.className = classe(b.realise);
+  const l = document.getElementById("latent"); l.textContent = eur(b.latent); l.className = classe(b.latent);
+  document.getElementById("trades").textContent = b.trades + (b.trades ? ` (${b.gagnants} ✓)` : "");
+  if (b.blocage) document.getElementById("blocage").innerHTML = `<div class="alerte">Pas de nouvelle position : ${echap(b.blocage)}</div>`;
+  const ouvertes = Object.values(d.deals || {});
+  document.getElementById("marches").innerHTML = Object.entries(d.marches || {}).map(([epic, m]) => {
+    const p = ouvertes.find(o => o.epic === epic);
+    const pos = p ? `<div class="ligne"><span>${p.direction === "BUY" ? "Achat" : "Vente"} à ${p.prix_entree}</span><b class="${classe(p.resultat)}">${eur(p.resultat || 0)}</b></div>` : "";
+    return `<div class="carte"><div class="ligne"><b>${echap(m.nom || epic)}</b><span class="doux">${m.sens > 0 ? "élan en hausse" : m.sens < 0 ? "élan en baisse" : "neutre"}</span></div>
+      ${pos}<div class="doux">${echap(m.action || "")} · ${echap(m.regle || "")}</div></div>`;
+  }).join("") || '<p class="doux">Premier tour pas encore fait.</p>';
+  document.getElementById("journal").innerHTML = (d.journal || []).slice(-30).reverse()
+    .map(j => `<div><span class="doux">${heure(j.date)} ${echap(j.marche)}</span> ${echap(j.texte)}</div>`).join("");
+  document.getElementById("maj").textContent = "Dernier tour : " + heure(d.dernier_tour);
+}).catch(() => { document.getElementById("marches").innerHTML = '<p class="doux">Premier tour pas encore fait (toutes les 30 min).</p>'; });
+</script>
+</body>
+</html>

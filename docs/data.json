@@ -1,14 +1,13 @@
 {
  "reglages": {
-  "marches": [],
-  "unite": "HOUR_4",
-  "risque_pct": 3.0,
-  "strategie": "Tendance 4 h : EMA 20/200 + ADX > 20, stop 2 ATR, suiveur 5 ATR",
-  "ema": [
-   20,
-   200
+  "strategies": [
+   "cassure_4h",
+   "rapide"
   ],
-  "strategie_rapide": null
+  "marches": [
+   "GOLD",
+   "SILVER"
+  ]
  },
  "journal": [
   {
@@ -1865,10 +1864,22 @@
    "type": "erreur",
    "marche": "",
    "texte": "Connexion refusée (401). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.invalid.api.key\"}"
+  },
+  {
+   "date": "2026-11-26T15:37:20Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Nettoyage (26/11/2026, demande de Mathis) : le bot repart avec seulement la Cassure 4 h (or, argent) et la Rapide 5 min (or), plus les garde-fous. Élan, Supertrend, usine, Avant la Fed, veille d'actus, simulateur et Tendance Bitcoin sont retirés. Sauvegarde : branche « sauvegarde-26-11 »."
+  },
+  {
+   "date": "2026-11-26T15:51:21Z",
+   "type": "erreur",
+   "marche": "",
+   "texte": "Connexion refusée (429). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.too-many.requests\"}"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T15:34:26Z",
+ "derniere_execution": "2026-11-26T16:06:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -12613,6 +12624,130 @@
   {
    "date": "2026-11-26T15:34:26Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:35:26Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:36:26Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:37:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:38:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:39:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:40:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:41:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:42:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:43:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:44:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:45:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:46:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:47:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:48:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:49:31Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:50:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:52:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:53:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:54:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:55:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:56:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:57:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:58:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:59:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T16:00:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T16:01:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T16:02:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T16:03:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T16:04:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T16:05:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T16:06:24Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -12624,7 +12759,6 @@
   "disponible": 92.86
  },
  "positions": [],
- "analyses": {},
  "ordres": [
   {
    "id": "00000000-750e-5d28-049f-c46d0015549e",
@@ -13044,68 +13178,14 @@
   },
   "rapide": {
    "active": true,
-   "nom": "Rapide 5 min (or et argent)",
+   "nom": "Rapide 5 min (or)",
    "unite": "MINUTE_5",
    "risque_pct": 1.0,
    "reglages": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 1 %, sortie au prix d'entrée après +0.5 R, garde 60 % du gain après +1.5 R, sortie si le croisement inverse dure 3 bougies, jusqu'à 2 position(s), risque 1 % (expérimentale)",
    "marches": [
     "GOLD"
    ],
-   "description": "Trade souvent sur des bougies de 5 min, sur l'or et l'argent, seulement dans le sens des tendances 1 h et 4 h. Expérience : perdante en backtest à cause des frais.",
-   "action": "Actif"
-  },
-  "elan_4h": {
-   "active": true,
-   "nom": "Élan des gros acteurs 4 h (expérimentale)",
-   "unite": "HOUR_4",
-   "risque_pct": 1.0,
-   "reglages": "Élan des gros acteurs 4 h : trou > 0.25 ATR entre 3 bougies, dans le sens de l'EMA 200, stop de l'autre côté du trou, objectif 2 R, sortie après 20 bougies, risque 1 % (expérimentale)",
-   "marches": [
-    "GOLD",
-    "SILVER"
-   ],
-   "description": "Expérience lancée le 25/11/2026 : repère les bougies de 4 h où un gros ordre a fait sauter le prix (un « trou » entre les bougies) sur l'or et l'argent, et suit cet élan. Backtest 2 ans : +44 R, mais preuve faible (2 ans, marché très haussier).",
-   "debut": "2026-11-25",
-   "action": "Actif"
-  },
-  "supertrend_4h": {
-   "active": true,
-   "nom": "Supertrend 4 h Ethereum (expérimentale, trouvée sur les réseaux)",
-   "unite": "HOUR_4",
-   "risque_pct": 1.0,
-   "reglages": "Supertrend 10/3 4 h : toujours dans le sens de la ligne, retournement quand elle est franchie, stop garanti sur la ligne, risque 1 % (expérimentale)",
-   "marches": [
-    "ETHUSD"
-   ],
-   "description": "Expérience lancée le 25/11/2026, trouvée sur les réseaux (Supertrend 10/3) : suit la tendance de l'Ethereum en 4 h. Seule idée sur 48 qui gagne sur des données jamais vues (2017-2025 : +138 R) ET sur les 2 dernières années (+10 R). Avantage en baisse : preuve moyenne.",
-   "debut": "2026-11-25",
-   "action": "Actif"
-  },
-  "usine": {
-   "active": true,
-   "nom": "Usine à stratégies (expérimentales)",
-   "unite": "HOUR_4 / DAY",
-   "risque_pct": 1.0,
-   "reglages": "Stratégies de l'usine, risque 1 % chacune (expérimentales)",
-   "marches": [
-    "NATURALGAS",
-    "TSLA"
-   ],
-   "description": "Expérience lancée le 26/11/2026 : stratégies fabriquées et triées par l'usine (des dizaines de milliers d'essais sur ~40 marchés), gardées seulement si elles gagnent sur 2022-2026, des années jamais vues pendant la fabrication, même avec des frais x 1,5.",
-   "debut": "2026-11-26",
-   "action": "Actif"
-  },
-  "fed": {
-   "active": true,
-   "nom": "Avant la Fed, Nasdaq 100 (expérimentale)",
-   "unite": "HOUR",
-   "risque_pct": 1.0,
-   "reglages": "Achat la veille d'une annonce de la Fed à 14 h (New York), fermeture juste avant l'annonce, stop garanti 1 ATR jour, risque 1 % (expérimentale)",
-   "marches": [
-    "US100"
-   ],
-   "description": "Expérience du 26/11/2026 : les actions américaines montent en moyenne la veille d'une annonce de la Fed. Achat du Nasdaq 100 la veille à 14 h (New York), vente juste avant l'annonce. Backtest 10 ans Capital.com : +7,5 R (2017-21), +4,4 R puis +3,2 R sur des années jamais vues. 8 trades par an, preuve faible à moyenne.",
-   "debut": "2026-11-26",
+   "description": "Trade souvent sur des bougies de 5 min, sur l'or, seulement dans le sens des tendances 1 h et 4 h, avec stop garanti et stop suiveur.",
    "action": "Actif"
   }
  },
@@ -13132,16 +13212,9 @@
    {
     "date": "2026-11-25T13:30Z",
     "titre": "Prelim GDP q/q"
-   },
-   {
-    "date": "2026-11-25T17:00Z",
-    "titre": "Natural Gas Storage",
-    "marches": [
-     "NATURALGAS"
-    ]
    }
   ],
-  "lu_le": "2026-11-26T14:41:21.843061+00:00",
+  "lu_le": "2026-11-26T15:41:21.926481+00:00",
   "pause": null,
   "prochaines": [],
   "pauses_marches": {}
@@ -13151,24 +13224,24 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3571.4,
+   "prix": 3575.46,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
-   "ema200": 3908.38,
+   "ema200": 3905.05,
    "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)",
-   "atr": 49.78,
+   "atr": 47.92,
    "empilement": "position 2/3 possible quand le prix aura avancé de 182.82 de plus dans le bon sens",
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)"
   },
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.742000000000004,
+   "prix": 41.604,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
-   "ema200": 50.3,
+   "ema200": 50.21,
    "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)",
-   "atr": 1.09,
+   "atr": 1.05,
    "empilement": "position 2/3 possible quand le prix aura avancé de 3.75 de plus dans le bon sens",
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)"
   }
@@ -13191,20 +13264,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3572.55,
+    "prix": 3575.08,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
-   },
-   "SILVER": {
-    "tendance": "SELL",
-    "filtre": {
-     "signal_5min": "SELL",
-     "tendance_1h": "SELL",
-     "tendance_4h": "SELL",
-     "bollinger": 0.62
-    },
-    "prix": 41.0675,
-    "action": "En attente : marché trop calme (bandes de Bollinger étroites)"
    }
   },
   "tendance": "BUY",
@@ -13880,377 +13942,28 @@
   }
  },
  "cassure_garde": {},
- "deux_cerveaux_depuis": "2026-11-25T17:25:21Z",
- "elan": {
-  "depuis": "2026-11-25T18:15:25Z",
-  "deals": {},
-  "marches": {
-   "GOLD": {
-    "prix": 3571.4,
-    "ema200": 3909.11,
-    "atr": 49.78,
-    "trou_achat_atr": -1.11,
-    "trou_vente_atr": -0.52,
-    "action": "En attente d'un trou (élan d'un gros ordre)"
-   },
-   "SILVER": {
-    "prix": 41.74,
-    "ema200": 50.32,
-    "atr": 1.09,
-    "trou_achat_atr": -0.84,
-    "trou_vente_atr": -0.88,
-    "action": "En attente d'un trou (élan d'un gros ordre)"
-   }
-  }
- },
- "valeur_corrigee_2511": true,
- "tour_1min_2511": true,
- "supertrend": {
-  "depuis": "2026-11-25T20:07:23Z",
-  "deals": {},
-  "marches": {
-   "ETHUSD": {
-    "prix": 1682.38,
-    "ligne": 1735.66,
-    "sens": -1,
-    "atr": 37.44,
-    "action": "En attente d'un retournement (sens actuel : baisse)"
-   }
-  }
- },
- "bitcoin_retire": "2026-11-26T05:34:20Z",
- "usine": {
-  "depuis": "2026-11-26T06:11:24Z",
-  "deals": {},
-  "marches": {
-   "NATURALGAS": {
-    "prix": 3.5368,
-    "sens": -1,
-    "atr": 0.07138,
-    "regle": "MACD 24/52/18, achat et vente, seulement si marché calme (ADX < 20), stop garanti 2.5 ATR, objectif 1 R, suiveur 3 ATR",
-    "action": "En attente d'un signal"
-   },
-   "TSLA": {
-    "prix": 383.245,
-    "sens": 1,
-    "atr": 9.40285,
-    "regle": "MACD 12/26/9, achat et vente, seulement si la volatilité baisse, stop garanti 2.5 ATR, objectif 2 R, 20 bougies max",
-    "action": "En attente d'un signal"
-   }
-  }
- },
  "graph_live": {
   "cassure_4h-GOLD": [
-   1795694400,
-   3567.22,
-   3586.59,
-   3562.82,
-   3571.4
+   1795708800,
+   3573.58,
+   3575.9,
+   3571.08,
+   3575.46
   ],
   "cassure_4h-SILVER": [
-   1795694400,
+   1795708800,
+   41.61,
+   41.62,
    41.54,
-   41.89,
-   41.28,
-   41.74
+   41.6
   ],
   "rapide-GOLD": [
-   1795707000,
-   3574.3,
-   3574.38,
-   3570.67,
-   3572.55
-  ],
-  "elan_4h-GOLD": [
-   1795694400,
-   3567.22,
-   3586.59,
-   3562.82,
-   3571.4
-  ],
-  "elan_4h-SILVER": [
-   1795694400,
-   41.54,
-   41.89,
-   41.28,
-   41.74
-  ],
-  "supertrend_4h-ETHUSD": [
-   1795694400,
-   1698.2,
-   1709.6,
-   1666.18,
-   1682.38
-  ],
-  "usine-NATURALGAS": [
-   1795694400,
-   3.5358,
-   3.5448,
-   3.4828,
-   3.5368
-  ],
-  "usine-TSLA": [
-   1795651200,
-   380.5,
-   383.25,
-   380.4,
-   383.25
+   1795709100,
+   3574.93,
+   3575.9,
+   3574.41,
+   3575.08
   ]
  },
- "veille": {
-  "titres_lus_le": "2026-11-26T15:08:21.859368+00:00",
-  "titres": {
-   "ETHUSD": [
-    {
-     "titre": "Polygon Brings Its Cross-Border Payments Stack to Coinbase’s Base",
-     "lien": "https://decrypt.co/384023/polygon-cross-border-payments-stack-coinbase-base?.tsrc=rss",
-     "date": "2026-11-26T14:01Z",
-     "sujets": []
-    },
-    {
-     "titre": "Crypto Market Faces 3 Critical Risks Heading Into December 2026",
-     "lien": "https://beincrypto.com/crypto-market-outlook-december-2026-three-risks/?.tsrc=rss",
-     "date": "2026-11-26T11:26Z",
-     "sujets": []
-    },
-    {
-     "titre": "Can Shiba Inu Reach $1 in 2027? The Answer Might Shock You.",
-     "lien": "https://www.fool.com/investing/2026/11/26/can-shiba-inu-reach-usd1-in-2027-answer-shock-you/?.tsrc=rss",
-     "date": "2026-11-26T10:27Z",
-     "sujets": []
-    },
-    {
-     "titre": "Why Is Crypto Up Today? BTC Back Above $60K – is the Bull Market Back?",
-     "lien": "https://cryptonews.com/news/why-is-crypto-up-today-btc-back-above-60k-bull-market-back/?.tsrc=rss",
-     "date": "2026-11-26T10:11Z",
-     "sujets": []
-    },
-    {
-     "titre": "Ethereum Price Reclaims $1,700: Network Activity Defies 39% Crash, $80M Shorts Liquidated",
-     "lien": "https://99bitcoins.com/news/altcoins/ethereum-price-39-percent-crash-vitalik-eth-selloff/?.tsrc=rss",
-     "date": "2026-11-26T08:47Z",
-     "sujets": [
-      "risque"
-     ]
-    },
-    {
-     "titre": "Why Is an Ethereum ICO Whale Selling Now, After a Decade?",
-     "lien": "https://beincrypto.com/ethereum-whale-2014-ico-sells-eth/?.tsrc=rss",
-     "date": "2026-11-26T08:38Z",
-     "sujets": []
-    }
-   ],
-   "GOLD": [
-    {
-     "titre": "Value per Security",
-     "lien": "https://finance.yahoo.com/markets/commodities/articles/value-per-security-145300579.html?.tsrc=rss",
-     "date": "2026-11-26T14:53Z",
-     "sujets": []
-    },
-    {
-     "titre": "Congo's cobalt ban leads Africa's turn to China-style export controls on minerals",
-     "lien": "http://www.intellinews.com/congo-s-cobalt-ban-leads-africa-s-turn-to-china-style-export-controls-on-minerals-488416/?.tsrc=rss",
-     "date": "2026-11-26T14:51Z",
-     "sujets": [
-      "géopolitique"
-     ]
-    },
-    {
-     "titre": "Pinnacle Silver and Gold reports final Pinos Cuates assays from Mexico drill program",
-     "lien": "https://www.proactiveinvestors.com/companies/news/1102528/pinnacle-silver-and-gold-reports-final-pinos-cuates-assays-from-mexico-drill-program-1102528.html?.tsrc=rss",
-     "date": "2026-11-26T14:10Z",
-     "sujets": []
-    },
-    {
-     "titre": "I’m 40 with just $2K saved for retirement because I can’t stop spending. Is there any hope left for me?",
-     "lien": "https://finance.yahoo.com/markets/articles/m-40-just-2k-saved-135000621.html?.tsrc=rss",
-     "date": "2026-11-26T13:50Z",
-     "sujets": []
-    },
-    {
-     "titre": "Minerals 260 chooses NRW for Bullabulling gold project in Australia",
-     "lien": "https://www.mining-technology.com/news/minerals-260-chooses-nrw-bullabulling-project/?.tsrc=rss",
-     "date": "2026-11-26T13:40Z",
-     "sujets": []
-    },
-    {
-     "titre": "Mineros secures $250m in credit to fund gold mining projects",
-     "lien": "https://www.mining-technology.com/news/mineros-secures-250m-to-fund-gold-projects/?.tsrc=rss",
-     "date": "2026-11-26T13:38Z",
-     "sujets": []
-    }
-   ],
-   "NATURALGAS": [
-    {
-     "titre": "PKX Strengthens LNG Portfolio With U.S. Shale Gas Field Acquisition",
-     "lien": "https://finance.yahoo.com/energy/articles/pkx-strengthens-lng-portfolio-u-121000795.html?.tsrc=rss",
-     "date": "2026-11-26T12:10Z",
-     "sujets": [
-      "stocks / météo"
-     ]
-    },
-    {
-     "titre": "Turkmenistan Nears Major Milestone in $10 Billion TAPI Gas Pipeline",
-     "lien": "https://finance.yahoo.com/energy/articles/turkmenistan-nears-major-milestone-10-114000289.html?.tsrc=rss",
-     "date": "2026-11-26T11:40Z",
-     "sujets": []
-    },
-    {
-     "titre": "LS Power Completes Acquisition of 4.4 GW Natural Gas Generation Assets from Constellation",
-     "lien": "https://finance.yahoo.com/energy/articles/ls-power-completes-acquisition-4-213800844.html?.tsrc=rss",
-     "date": "2026-11-25T21:38Z",
-     "sujets": []
-    },
-    {
-     "titre": "Nat-Gas Prices Pressured by Forecasts for Warmer US Weather",
-     "lien": "https://www.barchart.com/story/news/9009467/nat-gas-prices-pressured-by-forecasts-for-warmer-us-weather?.tsrc=rss",
-     "date": "2026-11-25T20:18Z",
-     "sujets": [
-      "stocks / météo"
-     ]
-    },
-    {
-     "titre": "Enbridge Inc (ENB) is Attracting Investor Attention: Here is What You Should Know",
-     "lien": "https://finance.yahoo.com/markets/stocks/articles/enbridge-inc-enb-attracting-investor-130005236.html?.tsrc=rss",
-     "date": "2026-11-26T13:00Z",
-     "sujets": []
-    },
-    {
-     "titre": "Investors Heavily Search Archrock, Inc. (AROC): Here is What You Need to Know",
-     "lien": "https://finance.yahoo.com/markets/stocks/articles/investors-heavily-search-archrock-inc-130004816.html?.tsrc=rss",
-     "date": "2026-11-26T13:00Z",
-     "sujets": []
-    }
-   ],
-   "SILVER": [
-    {
-     "titre": "Pinnacle Silver and Gold reports final Pinos Cuates assays from Mexico drill program",
-     "lien": "https://www.proactiveinvestors.com/companies/news/1102528/pinnacle-silver-and-gold-reports-final-pinos-cuates-assays-from-mexico-drill-program-1102528.html?.tsrc=rss",
-     "date": "2026-11-26T14:10Z",
-     "sujets": []
-    },
-    {
-     "titre": "Delayed First Production Altering The Investment Case For Vizsla Silver Stock?",
-     "lien": "https://finance.yahoo.com/markets/stocks/articles/delayed-first-production-altering-investment-231453093.html?.tsrc=rss",
-     "date": "2026-11-25T23:14Z",
-     "sujets": []
-    },
-    {
-     "titre": "Monteoro Minerals Commences High-Resolution Drone Magnetic, Radiometric and LiDAR Survey at the Nudillales Copper-Gold-Molybdenum-Silver Project in Colombia",
-     "lien": "https://finance.yahoo.com/markets/commodities/articles/monteoro-minerals-commences-high-resolution-220500902.html?.tsrc=rss",
-     "date": "2026-11-25T22:05Z",
-     "sujets": []
-    },
-    {
-     "titre": "Impact Silver Announces Q3 2026 Results with Revenue up 73% on Silver Prices and Grade",
-     "lien": "https://finance.yahoo.com/markets/commodities/articles/impact-silver-announces-q3-2026-214800265.html?.tsrc=rss",
-     "date": "2026-11-25T21:48Z",
-     "sujets": [
-      "résultats"
-     ]
-    },
-    {
-     "titre": "TTEC Takes Home Gold and Two Silver Awards at Europe's Leading Customer Service Awards",
-     "lien": "https://finance.yahoo.com/technology/ai/articles/ttec-takes-home-gold-two-214500742.html?.tsrc=rss",
-     "date": "2026-11-25T21:45Z",
-     "sujets": []
-    },
-    {
-     "titre": "Coeur to Participate in Upcoming Conferences",
-     "lien": "https://finance.yahoo.com/markets/stocks/articles/coeur-participate-upcoming-conferences-213000476.html?.tsrc=rss",
-     "date": "2026-11-25T21:30Z",
-     "sujets": []
-    }
-   ],
-   "TSLA": [
-    {
-     "titre": "Tesla's Self-Driving Expansion in Europe Faces a Crucial Test",
-     "lien": "https://finance.yahoo.com/technology/ai/articles/teslas-self-driving-expansion-europe-134400727.html?.tsrc=rss",
-     "date": "2026-11-26T13:44Z",
-     "sujets": []
-    },
-    {
-     "titre": "JPMorgan Says S&P Could Waive Its Rules for a Tesla-SpaceX Merger. That’s Good News for SpaceX Holders",
-     "lien": "https://www.tikr.com/blog/jpmorgan-says-sp-could-waive-its-rules-for-a-tesla-spacex-merger-thats-good-news-for-spacex-holders?ref=yahoofinance&tlnk=yf-261126-gpc9wr29&.tsrc=rss",
-     "date": "2026-11-26T11:45Z",
-     "sujets": []
-    },
-    {
-     "titre": "Invesco QQQ Trust (QQQ) Buys $187.4 Million More Apple on Tuesday",
-     "lien": "https://finance.yahoo.com/markets/stocks/articles/invesco-qqq-trust-qqq-buys-110402435.html?.tsrc=rss",
-     "date": "2026-11-26T11:04Z",
-     "sujets": []
-    },
-    {
-     "titre": "Cathie Wood Buys More SpaceX Amid Tesla Merger Talks — Ron Baron Says SpaceX Could Make $50B A Year From One Data Center",
-     "lien": "https://stocktwits.com/news-articles/markets/equity/cathie-wood-buys-spacex-tesla-merger-talks-ron-baron-spacex-50b-one-data-center/cNbxeDKR9Z4?.tsrc=rss",
-     "date": "2026-11-26T03:32Z",
-     "sujets": []
-    },
-    {
-     "titre": "Elon Musk tells Tesla investors there is 'only one way' to eliminate poverty",
-     "lien": "https://www.thestreet.com/investing/elon-musk-tells-tesla-investors-optimus-robots-will-eliminate-poverty?.tsrc=rss",
-     "date": "2026-11-26T00:37Z",
-     "sujets": []
-    },
-    {
-     "titre": "If SpaceX and Tesla Merge Next Year, Here's What a $5,000 Investment in the Combined Company Could Be Worth by the End of 2028",
-     "lien": "https://www.fool.com/investing/2026/11/25/if-spacex-and-tesla-merge-next-year-here-s-what-a-usd5-000-investment-in-the-combined-company-could-be-worth-by-the-end-of-2027/?.tsrc=rss",
-     "date": "2026-11-25T23:24Z",
-     "sujets": []
-    }
-   ],
-   "US100": [
-    {
-     "titre": "Walmart Soars 10% in a Month as Tech Sinks. Michael Burry Calls It One of the Market’s “Generals”",
-     "lien": "https://www.tikr.com/blog/walmart-soars-10-in-a-month-as-tech-sinks-michael-burry-calls-it-one-of-the-markets-generals?ref=yahoofinance&tlnk=yf-261126-h2xh8829&.tsrc=rss",
-     "date": "2026-11-26T09:09Z",
-     "sujets": []
-    },
-    {
-     "titre": "Asian stocks rally as Taiwan, South Korea rebound; Nvidia risks linger",
-     "lien": "https://finance.yahoo.com/markets/world-indices/articles/asian-stocks-rally-taiwan-south-053137366.html?.tsrc=rss",
-     "date": "2026-11-26T05:31Z",
-     "sujets": []
-    },
-    {
-     "titre": "S&P 500, Nasdaq End Lower But Dow Rebounds As Traders Rotate Out Of AI — NVDA, SPCX, PANW  In Focus",
-     "lien": "https://stocktwits.com/news-articles/markets/equity/s-and-p-500-nasdaq-end-lower-but-dow-rebounds-as-traders-rotate-out-of-ai-nvda-spcx-panw-in-focus/cNbx21AR9mC?.tsrc=rss",
-     "date": "2026-11-26T00:09Z",
-     "sujets": []
-    },
-    {
-     "titre": "Stocks Pare AI-Driven Losses as Dip Buyers Emerge",
-     "lien": "https://finance.yahoo.com/video/stocks-pare-ai-driven-losses-222542755.html?.tsrc=rss",
-     "date": "2026-11-25T22:25Z",
-     "sujets": []
-    },
-    {
-     "titre": "The economy is hot, but stocks are not.",
-     "lien": "https://www.axios.com/2026/11/25/nvidia-stock-jensen-huang-economy#utm_source=yahoo_finance&utm_medium=partner&utm_campaign=subs-partner-yahoo-finance-AI?.tsrc=rss",
-     "date": "2026-11-25T22:03Z",
-     "sujets": []
-    },
-    {
-     "titre": "Anthropic Rebounds From 10% Drop as Markets Stage Dramatic Recovery | Closing Bell",
-     "lien": "https://finance.yahoo.com/video/anthropic-rebounds-10-drop-markets-214201731.html?.tsrc=rss",
-     "date": "2026-11-25T21:42Z",
-     "sujets": []
-    }
-   ]
-  },
-  "resultats": {}
- },
- "_pauses_marches_notees": {},
- "simulations": {},
- "fed": {
-  "depuis": "2026-11-26T11:22:25Z",
-  "deals": {},
-  "marches": {
-   "US100": {
-    "prochaine_annonce": "2026-12-09",
-    "action": "En attente : achat la veille de l'annonce du 2026-12-09 à 14 h (New York)"
-   }
-  }
- }
+ "nettoyage": "2026-11-26"
 }

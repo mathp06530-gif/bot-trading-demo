@@ -27,7 +27,6 @@ Lancement : python -m bot.amelioration calculer   (GitHub Actions, avec les clé
             python -m bot.amelioration appliquer   (écrit reglages.env, data.json, amelioration.json)
 """
 import json
-import math
 import os
 import re
 import sys
@@ -40,7 +39,7 @@ import pandas as pd
 
 from backtest.moteur import Conditions, executer
 from bot.cassure import signaux_cassure
-from bot.strategie import adx, ema, milieu, signaux_tendance
+from bot.strategie import adx, ema, milieu
 
 RACINE = Path(__file__).resolve().parent.parent
 FICHIER_REGLAGES = RACINE / "reglages.env"
@@ -59,11 +58,6 @@ INTERDIT_SEMAINES = 4       # une valeur annulée n'est plus essayée pendant 4 
 # Réglages que l'auto-amélioration a le droit de bouger, avec leurs valeurs permises (dans l'ordre des crans).
 # Bornes choisies pour ne JAMAIS reproposer ce qui a été testé et rejeté (TP serrés, stops suiveurs serrés).
 REGLAGES = {
-    "tendance_4h": {
-        "ADX_TENDANCE_MIN": [15, 18, 20, 22, 25, 28, 30],          # force minimale de la tendance
-        "SUIVI_TENDANCE_ATR": [4, 4.5, 5, 5.5, 6, 7],              # stop suiveur (jamais plus serré que 4 ATR)
-        "TP_PARTIEL_ATR": [1, 1.5, 2, 2.5, 3, 0],                 # TP de la 1re moitié (0 = pas de TP)
-    },
     "cassure_4h": {
         "CASSURE_ENTREE": [15, 20, 25, 30, 40, 55],                # cassure des N dernières bougies
         "CASSURE_SORTIE": [10, 15, 20, 25],                         # sortie sur N bougies
@@ -76,18 +70,16 @@ REGLAGES = {
 }
 # Réglages fixes (jamais changés par l'auto-amélioration) mais notés sur chaque ordre, pour que le bilan
 # sépare « avant / après » un changement fait à la main (25/11/2026 : stops qui se resserrent).
-NOTES_SEULEMENT = {"tendance_4h": ["DEUX_CERVEAUX_TENDANCE"],
-                   "cassure_4h": ["GARDE_CASSURE_APRES_R", "GARDE_CASSURE_PCT"],
+NOTES_SEULEMENT = {"cassure_4h": ["GARDE_CASSURE_APRES_R", "GARDE_CASSURE_PCT"],
                    "rapide": ["SORTIE_ENTREE_R", "GARDE_RAPIDE_APRES_R", "GARDE_RAPIDE_PCT",
                               "SORTIE_CONFIRMEE_RAPIDE", "EMPILER_RAPIDE"]}
-DEFAUTS = {"DEUX_CERVEAUX_TENDANCE": 1, "GARDE_CASSURE_APRES_R": 1.5, "GARDE_CASSURE_PCT": 50, "SORTIE_ENTREE_R": 0.5,
+DEFAUTS = {"GARDE_CASSURE_APRES_R": 1.5, "GARDE_CASSURE_PCT": 50, "SORTIE_ENTREE_R": 0.5,
            "GARDE_RAPIDE_APRES_R": 1.5, "GARDE_RAPIDE_PCT": 60, "SORTIE_CONFIRMEE_RAPIDE": 3, "EMPILER_RAPIDE": 2,
-           "ADX_TENDANCE_MIN": 20, "SUIVI_TENDANCE_ATR": 5, "TP_PARTIEL_ATR": 1, "CASSURE_ENTREE": 20,
+           "CASSURE_ENTREE": 20,
            "CASSURE_SORTIE": 20, "ADX_RAPIDE_MIN": 20, "FILTRE_BOLLINGER": "oui", "SUIVI_RAPIDE_PCT": 1}
-NOMS = {"tendance_4h": "Tendance 4 h", "cassure_4h": "Cassure 4 h", "rapide": "Rapide 5 min"}
+NOMS = {"cassure_4h": "Cassure 4 h", "rapide": "Rapide 5 min"}
 EXPLICATIONS = {
-    "ADX_TENDANCE_MIN": "force minimale de la tendance (ADX)", "SUIVI_TENDANCE_ATR": "stop suiveur (en ATR)",
-    "TP_PARTIEL_ATR": "TP de la 1re moitié (en ATR, 0 = aucun)", "CASSURE_ENTREE": "bougies de la cassure d'entrée",
+    "CASSURE_ENTREE": "bougies de la cassure d'entrée",
     "CASSURE_SORTIE": "bougies du canal de sortie", "ADX_RAPIDE_MIN": "force minimale de la tendance 5 min (ADX)",
     "FILTRE_BOLLINGER": "filtre des bandes de Bollinger", "SUIVI_RAPIDE_PCT": "stop suiveur (en %)",
 }
@@ -178,18 +170,6 @@ def _signaux_avec_suivi(sig: pd.DataFrame, suivi) -> pd.DataFrame:
     sig = sig.copy()
     sig["suivi"] = suivi
     return sig
-
-
-def trades_tendance(df: pd.DataFrame, p: dict, cond: Conditions) -> pd.DataFrame:
-    """Tendance 4 h : deux moitiés (l'une avec TP à TP_PARTIEL_ATR × ATR, l'autre sans), comme le bot."""
-    sig = signaux_tendance(df, adx_min=p["ADX_TENDANCE_MIN"], suivi_atr=p["SUIVI_TENDANCE_ATR"])
-    tp = p["TP_PARTIEL_ATR"]
-    if tp and tp > 0:
-        avec_tp = signaux_tendance(df, adx_min=p["ADX_TENDANCE_MIN"], suivi_atr=p["SUIVI_TENDANCE_ATR"], objectif_atr=tp)
-        morceaux = [executer(df, avec_tp, CAPITAL_VIRTUEL, RISQUE_R_PCT / 2, cond).trades,
-                    executer(df, sig, CAPITAL_VIRTUEL, RISQUE_R_PCT / 2, cond).trades]
-        return pd.concat([m for m in morceaux if len(m)] or [morceaux[0]], ignore_index=True)
-    return executer(df, sig, CAPITAL_VIRTUEL, RISQUE_R_PCT, cond).trades
 
 
 def trades_cassure(df: pd.DataFrame, p: dict, cond: Conditions) -> pd.DataFrame:
@@ -404,9 +384,7 @@ def evaluer(strategie: str, donnees_marches: dict, p: dict, conds: dict, debut, 
             pause_stops: bool = False) -> dict:
     total, pauses = [], 0
     for epic, d in donnees_marches.items():
-        if strategie == "tendance_4h":
-            t = trades_tendance(d["HOUR_4"], p, conds[epic])
-        elif strategie == "cassure_4h":
+        if strategie == "cassure_4h":
             t = trades_cassure(d["HOUR_4"], p, conds[epic])
         else:
             t = trades_rapide(d, p, conds[epic])
@@ -426,7 +404,6 @@ def calculer(api, reglages: dict, etat: dict, maintenant: datetime) -> dict:
     """Fait tous les backtests et renvoie le PLAN (rien n'est encore écrit)."""
     eurusd = api.taux_eurusd()
     marches = {
-        "tendance_4h": [m.strip() for m in reglages.get("MARCHES", "").split(",") if m.strip()],
         "cassure_4h": [m.strip() for m in reglages.get("CASSURE_MARCHES", "GOLD,SILVER").split(",") if m.strip()],
         "rapide": [m.strip() for m in reglages.get("RAPIDE_MARCHES", "GOLD").split(",") if m.strip()]
         if reglages.get("RAPIDE", "non").lower() in ("oui", "1", "true", "on") else [],
@@ -521,7 +498,7 @@ def appliquer(plan: dict, reglages_texte: str, donnees: dict, etat: dict, mainte
     reel = bilan_reel(donnees.get("ordres", []), debut_sem, quand)
     avant = etat["semaines"][-1]["reel"] if etat["semaines"] else None
     morceaux = []
-    for s in ("tendance_4h", "cassure_4h", "rapide"):
+    for s in ("cassure_4h", "rapide"):
         r = reel.get(s, {"trades": 0, "total_eur": 0.0})
         texte = f"{NOMS[s]} {r['total_eur']:+.2f} € ({r['trades']} trade{'s' if r['trades'] > 1 else ''})"
         if avant is not None:
