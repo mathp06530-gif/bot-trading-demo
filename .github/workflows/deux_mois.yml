@@ -1,0 +1,106 @@
+name: Stratégies qui gagnent sur 2 mois
+
+# 26/11/2026 (demande de Mathis) : toutes les stratégies de l'usine jugées sur les 2 derniers mois, puis vérifiées
+# sur les 2 mois d'avant (jamais vus) et contre des prix mélangés. Voir backtest/deux_mois.py. Ne passe AUCUN ordre.
+# Résultat : backtest/resultats_deux_mois.json et backtest/DEUX_MOIS.md
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+    paths: [backtest/deux_mois.py, .github/workflows/deux_mois.yml]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deux-mois-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  donnees:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Historique Capital.com (bougies 4 h et jour, bid + ask)
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+        run: python backtest/deux_mois.py telecharger donnees_usine
+      - uses: actions/upload-artifact@v4
+        with:
+          name: donnees-2m
+          path: donnees_usine
+          retention-days: 7
+
+  fouille:
+    needs: donnees
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        epic: [GOLD, SILVER, PLATINUM, PALLADIUM, COPPER, OIL_CRUDE, OIL_BRENT, NATURALGAS,
+               US500, US100, US30, RTY, DE40, UK100, FR40, EU50, J225, HK50, AU200,
+               EURUSD, GBPUSD, USDJPY, AUDUSD, USDCAD, USDCHF, NZDUSD, EURGBP, EURJPY, GBPJPY,
+               BTCUSD, ETHUSD, SOLUSD, XRPUSD, LTCUSD,
+               AAPL, MSFT, NVDA, TSLA, AMZN, META, GOOGL]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: donnees-2m
+          path: donnees_usine
+      - name: Fouille ${{ matrix.epic }}
+        run: |
+          mkdir -p resultats
+          if ls donnees_usine/${{ matrix.epic }}_*.csv >/dev/null 2>&1; then
+            python backtest/deux_mois.py fouiller donnees_usine ${{ matrix.epic }} resultats/${{ matrix.epic }}.json
+          else
+            echo "${{ matrix.epic }} : pas de données (marché absent chez Capital.com)"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: res2m-${{ matrix.epic }}
+          path: resultats
+          if-no-files-found: ignore
+          retention-days: 30
+
+  bilan:
+    needs: fouille
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: res2m-*
+          path: resultats
+          merge-multiple: true
+      - name: Bilan 2 mois
+        run: python backtest/deux_mois.py bilan resultats backtest/resultats_deux_mois.json backtest/DEUX_MOIS.md
+      - name: Enregistrer le bilan
+        run: |
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          git add backtest/resultats_deux_mois.json backtest/DEUX_MOIS.md
+          git diff --cached --quiet && exit 0
+          git commit -qm "Stratégies 2 mois : bilan $(date -u +%Y-%m-%d)"
+          for i in 1 2 3; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin HEAD:"${GITHUB_REF_NAME}" && exit 0; sleep 5; done
+          exit 1
