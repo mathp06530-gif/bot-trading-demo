@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt
-      - name: Historique Capital.com (10 ans 4 h : or, argent, ETH, BTC, SOL, XRP, LTC)
+      - name: "Historique Capital.com (10 ans 4 h, or, argent, ETH, BTC, SOL, XRP, LTC)"
         env:
           CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
           CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
