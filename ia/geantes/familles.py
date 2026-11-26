@@ -23,7 +23,7 @@ FAMILLES = {
                    "modeles": {"chronos_t5": "Chronos-T5 original (Amazon, États-Unis)"}},
     "timer": {"pip": ["transformers==4.40.1", "accelerate"], "lot_max": 12,
               "modeles": {"timer": "Timer (Université Tsinghua, Chine)"}},
-    "lagllama": {"py": "3.10", "pip": ["gluonts[torch]<=0.14.4", "huggingface_hub", "numpy<2", "setuptools<81"],
+    "lagllama": {"py": "3.10", "pip": ["gluonts[torch]<=0.14.4", "huggingface_hub", "numpy<2", "pandas<2.2", "setuptools<81", "torch<2.6"],
                  "git": "https://github.com/time-series-foundation-models/lag-llama", "lot_max": 8, "sans_requirements": True,
                  "modeles": {"lagllama": "Lag-Llama (ServiceNow / Mila, Canada)"}},
     # modèles de recherche connus, réentraînés à chaque heure sur les bougies 1 min de ~30 grands marchés
