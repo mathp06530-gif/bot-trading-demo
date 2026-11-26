@@ -127,7 +127,7 @@ def dukascopy(sym: str, debut: date, fin: date, ecart_rel: float) -> pd.DataFram
                 v = np.frombuffer(brut[:n * 24], dtype=">u4").reshape(n, 6)
                 t = pd.Timestamp(d) + pd.to_timedelta(v[:, 0].astype(np.int64), unit="s")
                 p = v[:, 1:5].astype(float) / 1000.0  # open, close, low, high
-                vol = np.frombuffer(brut[:n * 24], dtype=">f4").reshape(n, 6)[:, 5]
+                vol = np.frombuffer(brut[:n * 24], dtype=">f4").reshape(n, 6)[:, 5].astype(np.float64)
                 return pd.DataFrame({"open": p[:, 0], "close": p[:, 1], "low": p[:, 2], "high": p[:, 3], "vol": vol}, index=t)
             except Exception:
                 time.sleep(0.5 + essai)
@@ -181,6 +181,15 @@ def completer(dossier: Path):
         fin = (premier - pd.Timedelta(days=1)).date() if len(cap) else datetime.now(timezone.utc).date()
         _p(f"{epic} : complété par Dukascopy ({sym}) de 2016-11 à {fin}, spread Capital.com {ecart * 100:.4f} %")
         duk = dukascopy(sym, date(2016, 11, 1), fin, ecart)
+        if len(cap):  # échelle des prix Dukascopy (puissance de 10) recalée sur Capital.com au raccord
+            rapport = float(cap.close_bid.dropna().iloc[0]) / float(duk.close_bid.iloc[-1])
+            echelle = 10.0 ** round(math.log10(rapport))
+            _p(f"{epic} : raccord Dukascopy {float(duk.close_bid.iloc[-1]):.3f} -> Capital.com "
+               f"{float(cap.close_bid.dropna().iloc[0]):.3f} (échelle x{echelle:g}, écart après recalage "
+               f"{(rapport / echelle - 1) * 100:+.2f} %)")
+            for c in duk.columns:
+                if c.endswith(("_bid", "_ask")):
+                    duk[c] = duk[c] * echelle
         tout = pd.concat([duk, cap[duk.columns]]) if len(cap) else duk
         tout.to_csv(f, index=False)
         (dossier / f"{epic}_source.txt").write_text(f"Dukascopy jusqu'au {fin} (spread de Capital.com), puis Capital.com\n")
