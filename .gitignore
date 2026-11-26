@@ -3,3 +3,4 @@ __pycache__/
 .env
 backtest/donnees/
 amelioration_plan.json
+donnees_direct/

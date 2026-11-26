@@ -1,0 +1,40 @@
+name: IA - journal en direct (prédictions 1 min et 40 s, aucun ordre)
+
+# Système À PART du bot (dossier ia/). Chaque heure : réentraîne les IA sur 20 jours de bougies 1 min,
+# puis pendant ~54 min prédit chaque minute la direction et note le résultat réel dans docs/ia/journal.json
+# (page docs/ia.html de l'appli). Ne passe AUCUN ordre.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ia-direct
+  cancel-in-progress: false
+
+jobs:
+  direct:
+    runs-on: ubuntu-latest
+    timeout-minutes: 62
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: |
+          pip install -r ia/requirements.txt
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Prédictions en direct
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+          IA_DUREE_S: "3000"
+        run: |
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          python -u ia/direct.py
