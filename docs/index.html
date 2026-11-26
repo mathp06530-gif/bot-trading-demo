@@ -558,16 +558,8 @@ const emas = r => r?.ema || (r?.unite === "HOUR_4" ? [20, 200] : [9, 21]);
 const STRAT_INFO = {
   tendance_4h: { ico: "🧭", couleur: COUL.cyan, titre: "Tendance 4 h (Bitcoin, retirée le 26/11)",
     desc: "Suit les grandes tendances du Bitcoin sur des bougies de 4 heures. Peu de trades, chacun visé pour durer, avec un stop garanti et un stop suiveur." },
-  rapide: { ico: "⚡", couleur: COUL.violet, titre: "Rapide 5 min",
-    desc: "Trade souvent sur l'or et l'argent avec des bougies de 5 minutes, seulement dans le sens des tendances 1 h et 4 h." },
-  elan_4h: { ico: "🐋", couleur: "#f97316", titre: "Élan des gros acteurs 4 h (expérimentale)",
-    desc: "Expérience du 25/11/2026 : repère les bougies de 4 h où un gros ordre a fait sauter le prix (un « trou » entre les bougies) sur l'or et l'argent, et suit cet élan. Petit risque (1 %). Preuve faible." },
-  supertrend_4h: { ico: "📈", couleur: "#ec4899", titre: "Supertrend 4 h Ethereum (expérimentale)",
-    desc: "Expérience du 25/11/2026, trouvée sur les réseaux (indicateur Supertrend 10/3, très partagé sur YouTube et TikTok) : suit la tendance de l'Ethereum et se retourne quand la ligne Supertrend est franchie. Seule idée sur 48 qui gagne à la fois sur 2017-2025 (jamais vu) et sur les 2 dernières années. Petit risque (1 %)." },
-  usine: { ico: "🏭", couleur: "#14b8a6", titre: "Usine à stratégies (expérimentales)",
-    desc: "Expérience du 26/11/2026 : stratégies fabriquées par l'usine (des dizaines de milliers d'essais sur une quarantaine de marchés) et gardées seulement si elles gagnent sur 2022-2026, des années jamais vues pendant la fabrication, même avec des frais x 1,5. Une par marché, petit risque (1 %)." },
-  fed: { ico: "🏦", couleur: "#6366f1", titre: "Avant la Fed, Nasdaq 100 (expérimentale)",
-    desc: "Expérience du 26/11/2026 : les actions américaines montent en moyenne la veille d'une annonce de la Fed (8 par an). Achat du Nasdaq 100 la veille à 14 h (New York), vente juste avant l'annonce. Gagnante sur 10 ans, y compris sur des années jamais vues, mais seulement 8 trades par an. Petit risque (1 %)." },
+  rapide: { ico: "⚡", couleur: COUL.violet, titre: "Rapide 5 min (or)",
+    desc: "Trade souvent sur l'or avec des bougies de 5 minutes, seulement dans le sens des tendances 1 h et 4 h." },
   cassure_4h: { ico: "🥇", couleur: "#eab308", titre: "Cassure 4 h (or, argent)",
     desc: "Surveille l'or et l'argent sur des bougies de 4 h : elle entre quand le prix casse son plus haut ou son plus bas des 20 dernières bougies, dans le sens de la tendance." },
 };
@@ -700,7 +692,7 @@ function afficher() {
     ...strats.map(s => [s.titre, `${esc(s.reglages || s.nom || "—")}${s.active === false ? " · <span class='neg'>désactivée</span>" : ""}`]),
     ["Marchés", esc((r.marches || []).join(", ") || "—")],
     ...(r.risque_pct != null ? [["Risque par trade", `${esc(r.risque_pct)} % du compte (stratégie principale)`]] : []),
-    ["Fréquence", "toutes les 5 minutes environ, 24 h/24"],
+    ["Fréquence", "un tour toutes les minutes, 24 h/24"],
     ["Code du bot", '<a href="https://github.com/mathp06530-gif/bot-trading-demo" target="_blank" rel="noopener">dépôt GitHub</a>'],
     ["Voir les ordres", '<a href="https://capital.com/trading/platform/" target="_blank" rel="noopener">plateforme Capital.com</a> (choisis « Démo » en haut à droite)'],
   ].map(([k, v]) => `<dt>${esc(k)}</dt><dd>${v}</dd>`).join("");
@@ -727,20 +719,6 @@ function indicateurs(s) {
   if (s.id === "cassure_4h")
     html = Object.entries(D?.cassure || {}).map(([e, b]) => bloc(NOMS[e] || b.nom || e, [chip("Prix", fmt(b.prix, 2)), chip("Plus haut 20 bougies", fmt(b.plus_haut_20, 2)),
       chip("Plus bas 20 bougies", fmt(b.plus_bas_20, 2)), chip("EMA 200", fmt(b.ema200, 2)), ...(b.atr != null ? [chip("ATR", fmt(b.atr, 2))] : [])], b.action)).join("");
-  if (s.id === "elan_4h")
-    html = Object.entries(D?.elan?.marches || {}).map(([e, b]) => bloc(NOMS[e] || e, [chip("Prix", fmt(b.prix, 2)), chip("EMA 200", fmt(b.ema200, 2)),
-      chip("ATR", fmt(b.atr, 2)), chip("Trou achat", fmt(b.trou_achat_atr, 2) + " ATR"), chip("Trou vente", fmt(b.trou_vente_atr, 2) + " ATR"),
-      chip("Seuil", "0,25 ATR")], b.action)).join("");
-  if (s.id === "supertrend_4h")
-    html = Object.entries(D?.supertrend?.marches || {}).map(([e, b]) => bloc(NOMS[e] || (e === "ETHUSD" ? "Ethereum" : e), [chip("Prix", fmt(b.prix, 2)),
-      chip("Ligne Supertrend", fmt(b.ligne, 2)), chip("Sens", b.sens > 0 ? "hausse ↑" : "baisse ↓"), chip("ATR", fmt(b.atr, 2))], b.action)).join("");
-  if (s.id === "usine")
-    html = Object.entries(D?.usine?.marches || {}).map(([e, b]) => bloc(NOMS[e] || e, [chip("Prix", fmt(b.prix, b.prix < 10 ? 5 : 2)),
-      chip("Sens voulu", b.sens > 0 ? "hausse ↑" : b.sens < 0 ? "baisse ↓" : "aucun"), chip("Règle", b.regle || "")], b.action)).join("");
-  if (s.id === "fed")
-    html = Object.entries(D?.fed?.marches || {}).map(([e, b]) => bloc(NOMS[e] || (e === "US100" ? "Nasdaq 100" : e), [
-      chip("Prochaine annonce", b.prochaine_annonce || "?"), ...(b.prix != null ? [chip("Prix", fmt(b.prix, 2))] : []),
-      ...(b.atr_jour != null ? [chip("ATR jour", fmt(b.atr_jour, 2))] : [])], b.action)).join("");
   if (s.id === "rapide")
     html = Object.entries(D?.rapide?.marches || {}).map(([e, b]) => { const f = b.filtre || {};
       return bloc(NOMS[e] || e, [chip("Prix", fmt(b.prix, 2)), chip("EMA 9/50 (5 min)", fl(f.signal_5min)), chip("Tendance 1 h", fl(f.tendance_1h)),
@@ -764,14 +742,8 @@ function listeCassure(src) {
 function bandeauActus() {
   const p = D?.actualites?.pause;
   const pm = Object.entries(D?.actualites?.pauses_marches || {});
-  const t = Object.entries(D?.veille?.titres || {}).filter(([, l]) => l && l.length);
-  const res = Object.entries(D?.veille?.resultats || {});
   return (p ? `<div class="garde alerte">📰 <b>Pause annonce :</b> ${esc(p)}</div>` : "")
-    + pm.map(([m, r]) => `<div class="garde alerte">📰 <b>Pause ${esc(m)} :</b> ${esc(r)}</div>`).join("")
-    + (t.length || res.length ? `<details class="garde"><summary>📰 <b>Actus des marchés</b> (titres Yahoo Finance, pour info : le bot ne trade pas dessus)</summary>
-      ${res.map(([m, q]) => `<p class="sous" style="margin:8px 0 0">📅 Prochains résultats ${esc(m)} : <b>${quand(q)}</b> (pas de nouvelle position ${esc(String(D?.veille?.pause_resultats_h ?? 24))} h avant et après)</p>`).join("")}
-      ${t.map(([m, l]) => `<p style="margin:10px 0 4px"><b>${esc(m)}</b></p><ul style="margin:0;padding-left:18px">${l.map(x =>
-        `<li class="sous" style="margin:3px 0"><a href="${/^https?:\/\//.test(x.lien || "") ? esc(x.lien) : "#"}" target="_blank" rel="noopener" style="color:inherit">${esc(x.titre)}</a>${x.sujets?.length ? ` <span class="badge">${esc(x.sujets.join(", "))}</span>` : ""}${x.date ? ` · ${quand(x.date)}` : ""}</li>`).join("")}</ul>`).join("")}</details>` : "");
+    + pm.map(([m, r]) => `<div class="garde alerte">📰 <b>Pause ${esc(m)} :</b> ${esc(r)}</div>`).join("");
 }
 function bandeauGardeFous() {
   const g = D?.garde_fous; if (!g) return "";
@@ -806,20 +778,6 @@ function carteStrat(s) {
     <div class="etat-cmd" data-etat="${esc(s.id)}">${ETATS[s.id] || ""}</div>
   </div>`;
 }
-function simBloc(id, court) {
-  const s = (D?.simulations || {})[id]; if (!s) return "";
-  const obj = s.objectif != null ? `${esc(s.objectif_type || "objectif")} (${fmt(s.objectif, s.objectif < 10 ? 5 : 2)})` : null;
-  const titre = `Simulation : ${s.tirages} futurs possibles rejoués à partir des ${s.bougies_utilisees} dernières bougies de ce marché, horizon ${s.horizon}. Stop supposé fixe. Ce n'est pas une prédiction.`;
-  if (court) return `<div class="d num" style="grid-column:2 / -1" title="${esc(titre)}">🎲 Stop d'abord <b class="neg">${fmt(s.p_stop, 0)} %</b>${obj ? ` · ${esc(s.objectif_type)} d'abord <b class="pos">${fmt(s.p_objectif, 0)} %</b>` : ""} · ni l'un ni l'autre ${fmt(s.p_aucun, 0)} % (${esc(s.horizon)})</div>`;
-  return `<div class="sim" title="${esc(titre)}" style="margin-top:10px">
-    <div class="sous" style="margin-bottom:6px">🎲 <b>Machine à remonter le temps</b> · ${s.tirages} futurs rejoués, horizon ${esc(s.horizon)}</div>
-    <div class="niv"><div><span>Stop d'abord</span><b class="num neg">${fmt(s.p_stop, 1)} %</b></div>
-    <div><span>${obj ? esc(s.objectif_type) + " d'abord" : "Objectif"}</span><b class="num pos">${obj ? fmt(s.p_objectif, 1) + " %" : "—"}</b></div>
-    <div><span>Ni l'un ni l'autre</span><b class="num">${fmt(s.p_aucun, 1)} %</b></div>
-    <div><span>Prix dans ${esc(s.horizon)} (90 %)</span><b class="num">${fmt(s.prix_p5, s.prix_p5 < 10 ? 4 : 1)} – ${fmt(s.prix_p95, s.prix_p95 < 10 ? 4 : 1)}</b></div></div>
-    <p class="sous" style="margin:6px 0 0">${esc(s.verdict)} Simulation à partir des bougies récentes, pas une prédiction : le stop suiveur bouge en vrai.</p>
-    ${s.fiabilite ? `<p class="sous" style="margin:4px 0 0">⚠️ ${esc(s.fiabilite)}</p>` : ""}</div>`;
-}
 function carteOrdre(o) {
   const achat = o.sens === "BUY", st = stratDe(o);
   const live = (window.PRIX_DIRECT || {})[o.marche];  // prix en direct (s'il existe) ; sans lui, l'appli plantait avec une position ouverte
@@ -835,7 +793,6 @@ function carteOrdre(o) {
     <div class="r num ${signe(o.resultat)}">${fmtS(o.resultat)}${o.resultat_estime ? "*" : ""}</div>
     <div class="d num">${esc(o.taille)} BTC à ${fmt(o.prix_entree, 0)}${sortie} · ${detail}</div>
     <div class="dr num">${o.statut === "ouvert" ? (enDirect != null ? `<span class="${signe(enDirect)}" data-live="${esc(o.id)}">≈ ${fmtS(enDirect)} $ direct</span>` : "en cours") : o.resultat_estime ? "* estimé" : "réalisé"}</div>
-    ${o.statut === "ouvert" ? simBloc(o.id, true) : ""}
   </div>`;
 }
 
@@ -880,9 +837,7 @@ const lireFichier = async chemin => {
   if (!r.ok) throw new Error(r.status);
   return r.json();
 };
-const ACTION_STRAT = (d, g) => ({ cassure_4h: d.cassure?.[g.marche]?.action, rapide: d.rapide?.marches?.[g.marche]?.action,
-  elan_4h: d.elan?.marches?.[g.marche]?.action, supertrend_4h: d.supertrend?.marches?.[g.marche]?.action,
-  usine: d.usine?.marches?.[g.marche]?.action, fed: d.fed?.marches?.[g.marche]?.action })[g.strategie];
+const ACTION_STRAT = (d, g) => ({ cassure_4h: d.cassure?.[g.marche]?.action, rapide: d.rapide?.marches?.[g.marche]?.action })[g.strategie];
 async function chargerGraphique() {
   try { GR.index = (await lireFichier("graphiques/index.json")).graphiques || []; } catch { GR.index = GR.index || []; }
   const liste = GR.index;
@@ -980,7 +935,6 @@ function dessinerDirect() {
       <div><span>${p.stop_garanti ? "Stop garanti" : "Stop"}</span><b class="num neg">${p.stop != null ? fmt(p.stop, dec) : "—"}</b></div>
       <div><span>TP</span><b class="num pos">${p.objectif != null ? fmt(p.objectif, dec) : "aucun"}</b></div>
       <div><span>Distance du stop</span><b class="num">${risque != null ? fmt(risque, dec) : "—"}</b></div></div>
-      ${simBloc(p.id, false)}
       ${p.objectif == null ? '<p class="sous" style="margin:8px 0 0">Pas de TP fixe : c\'est voulu, la stratégie laisse courir le gain et le stop suit le prix.</p>' : ""}`;
   }).join('<div style="height:12px"></div>') : '<div class="vide">Aucune position ouverte ici en ce moment.</div>';
   const tr = ordres.slice().sort((a, b) => iso(b.ouvert_le) - iso(a.ouvert_le)).slice(0, 15);

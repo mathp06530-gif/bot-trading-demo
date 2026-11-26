@@ -1,25 +1,37 @@
-# Bot de trading démo (Capital.com + TradingView)
+# Bot de trading démo (Capital.com)
 
 Ce bot trade **avec de l'argent fictif uniquement**, sur un compte démo Capital.com.
 Il tourne tout seul, 24 h/24, gratuitement grâce à GitHub, et tu le suis sur ton PC, ton téléphone et ta tablette.
 
-## Comment ça marche
+## Ce qui tourne (depuis le nettoyage du 26/11/2026)
 
-| Élément | Rôle | Où le voir |
-|---|---|---|
-| Script TradingView (`tradingview/strategie_demo.pine`) | Affiche les signaux ACHAT / VENTE sur ton graphique | Appli et site TradingView |
-| Bot (`bot/`) | Toutes les 5 minutes, il analyse le Bitcoin et passe les ordres sur ton compte démo | Appli Capital.com (mode Démo) |
-| Tableau de bord (`docs/index.html`) | 6 onglets : Accueil (valeur, gains 24 h / 7 j / 30 j / 1 an, courbe), Ordres, Marché, Stats, Journal, Réglages | Un lien web, sur tous tes appareils |
+| Stratégie | Marchés | Risque par trade | Code |
+|---|---|---|---|
+| **Cassure 4 h** : achète quand le prix casse le plus haut des 20 dernières bougies de 4 h (vend sous le plus bas), dans le sens de l'EMA 200 | or, argent | 3 % | `bot/cassure.py` |
+| **Rapide 5 min** : EMA 9/50 en 5 min, seulement dans le sens des tendances 1 h et 4 h | or | 1 % | `bot/rapide.py` |
 
-La stratégie de démonstration est un **croisement de moyennes mobiles (EMA 9 / EMA 21)** en bougies de 15 minutes :
-quand la moyenne rapide passe au-dessus de la lente, le bot achète ; quand elle passe en dessous, il vend.
-C'est la même règle dans le script TradingView et dans le bot. Pour changer de stratégie plus tard,
-on remplacera `bot/strategie.py` et le script Pine.
+Avec les **garde-fous** (`bot/garde_fous.py`) : coupe-circuit à -50 % depuis le plus haut, plus d'ordre après -15 % dans la
+journée, positions et risque total plafonnés, pause autour des grandes annonces américaines, pause de 24 h après 3 stops
+d'affilée. Et l'**auto-amélioration** chaque dimanche (voir plus bas).
 
-> ⚠️ TradingView ne permet pas à un programme de passer des ordres sur ton compte TradingView.
-> Le bot passe donc ses ordres sur Capital.com, qui est un courtier partenaire de TradingView.
+Tout ce qui a été retiré le 26/11/2026 (Tendance Bitcoin, Élan, Supertrend Ethereum, usine MACD gaz/Tesla,
+Avant la Fed, veille d'actus, simulateur, deux cerveaux, études de backtest) est intact dans la branche
+**`sauvegarde-26-11`** : on peut tout remettre.
 
----
+| Élément | Rôle |
+|---|---|
+| `bot/main.py` | un tour du bot : chaque stratégie de la liste `STRATEGIES`, puis mise à jour de `docs/data.json` |
+| `reglages.env` | tous les réglages, relus à chaque tour |
+| `.github/workflows/moteur.yml` | fait tourner le bot toutes les minutes, sans arrêt |
+| `docs/` | l'application (accueil, graphique en direct, stratégies, ordres, journal, réglages) |
+| `backtest/` | le labo : moteur de backtest, téléchargement des prix, usine à stratégies |
+
+### Ajouter une stratégie
+
+1. Écrire `bot/<nom>.py` sur le modèle de `bot/cassure.py` (signaux sur bougies terminées, stop garanti,
+   passage par `garde.autoriser(...)` avant chaque ordre).
+2. Ajouter une ligne dans `STRATEGIES` en haut de `bot/main.py` et ses réglages dans `reglages.env`.
+3. Ajouter un test dans `tests/`.
 
 ## Installation pas à pas
 
@@ -60,7 +72,7 @@ Dans le dépôt : **Settings → Secrets and variables → Actions → New repos
 
 1. Onglet **Actions** du dépôt → accepte d'activer les workflows si GitHub le demande.
 2. Clique sur **Bot de trading démo** → **Run workflow** pour un premier tour tout de suite.
-3. Ensuite il se lance seul toutes les 5 minutes (GitHub a parfois quelques minutes de retard).
+3. Ensuite le workflow **Moteur du bot** le fait tourner toutes les minutes, sans arrêt.
 
 ### 5. Le tableau de bord sur tous tes appareils
 
@@ -70,17 +82,9 @@ Dans le dépôt : **Settings → Secrets and variables → Actions → New repos
 3. Sur téléphone et tablette : ouvre ce lien, puis **Partager → Sur l'écran d'accueil** (iPhone/iPad)
    ou **⋮ → Ajouter à l'écran d'accueil** (Android). Tu auras une icône comme une appli.
 
-### 6. Le script sur ton graphique TradingView
-
-1. Sur [tradingview.com](https://www.tradingview.com) (sur PC), ouvre un graphique **CAPITALCOM:BTCUSD** en **15 minutes**.
-2. En bas, ouvre **Éditeur Pine**, efface tout, colle le contenu de `tradingview/strategie_demo.pine`, puis **Enregistrer** et **Ajouter au graphique**.
-3. Les flèches ACHAT / VENTE apparaissent, et l'onglet **Testeur de stratégie** montre les résultats passés.
-   Le script est enregistré sur ton compte : tu le retrouves aussi dans l'appli TradingView sur téléphone et tablette.
-4. (Facultatif) Panneau **Trading** en bas du graphique → **Capital.com** pour relier ton compte.
-
 ---
 
-### 7. L'application (PC, téléphone, tablette) et les commandes
+### 6. L'application (PC, téléphone, tablette) et les commandes
 
 1. Ouvre `https://mathp06530-gif.github.io/bot-trading-demo/`.
 2. **Installer** : sur PC (Chrome/Edge), clique sur **⬇ Installer** en haut ou sur l'icône d'installation dans la barre d'adresse.
@@ -91,14 +95,7 @@ Dans le dépôt : **Settings → Secrets and variables → Actions → New repos
 
 ## Réglages
 
-Dans `.github/workflows/bot.yml` :
-
-| Réglage | Par défaut | Signification |
-|---|---|---|
-| `MARCHES` | vide (Bitcoin retiré le 26/11/2026) | marchés de la Tendance 4 h, séparés par des virgules (ex. `BTCUSD`) ; vide = stratégie arrêtée |
-| `TAILLE` | `0.01` | taille de chaque position |
-| `UNITE` | `MINUTE_15` | durée d'une bougie |
-| `STOP_PCT` | `3` | stop de sécurité en % du prix |
+Tout est dans `reglages.env` (relu à chaque tour, une modification s'applique à la minute suivante).
 
 ## Auto-amélioration chaque semaine
 
@@ -109,17 +106,11 @@ Chaque dimanche à 19 h (Paris), le workflow « Auto-amélioration (chaque semai
 
 Il ne touche jamais au risque par trade ni aux garde-fous. Tout est écrit dans le Journal (filtre « Améliorations ») et dans l'onglet Stratégies. Le mode se règle dans `reglages.env` (`AUTO_AMELIORATION` : `auto`, `suggestions` ou `non`). Détails : `bot/amelioration.py`.
 
-## Usine à stratégies (26/11/2026)
+## Usine à stratégies (labo)
 
-`backtest/usine.py` fabrique et teste automatiquement des millions de stratégies (10 familles de signaux × filtres ×
-sens × stops × objectifs × suiveurs × durées, en 4 h et en jour) sur 41 marchés Capital.com. Choix sur 2017-2021
-seulement, puis contrôle sur 2022-2026 (jamais vu) : validation, test final, années gagnantes, réglages voisins,
-frais × 1,5 et pénalité du nombre d'essais (Deflated Sharpe). Workflow « Usine à stratégies » (lancement manuel ou
-le 1er de chaque mois), résultat dans `backtest/resultats_usine.json`. Une stratégie « solide » se met dans
-`bot/usine_strategies.json` : le bot la joue alors en démo à 1 % (`bot/usine.py`, désactivable avec `USINE="non"`).
-
-1re fouille (26/11/2026) : 3 663 360 stratégies essayées, 8 417 envoyées au jamais vu, **0 solide**.
-Aucune ne fait mieux que ce que le hasard donne avec autant d'essais : rien n'a été ajouté au bot.
+`backtest/usine.py` fabrique et teste des millions de stratégies sur ~40 marchés Capital.com, et ne garde que
+celles qui gagnent aussi sur des années jamais vues. Lancement à la main seulement (onglet Actions >
+« Usine à stratégies »). Elle ne passe aucun ordre. 1re fouille (26/11/2026) : 3,66 millions d'essais, 0 solide.
 
 ## Si quelque chose ne va pas
 

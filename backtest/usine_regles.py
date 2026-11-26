@@ -1,5 +1,5 @@
-"""Règles de l'USINE À STRATÉGIES (26/11/2026) : les briques que l'usine assemble, utilisées À L'IDENTIQUE par
-le backtest (backtest/usine.py) et par le bot en démo (bot/usine.py). Une stratégie = une combinaison :
+"""Règles de l'USINE À STRATÉGIES (26/11/2026) : les briques que l'usine (backtest/usine.py) assemble.
+Si une stratégie de l'usine passe un jour en démo, son module dans bot/ doit réutiliser CES fonctions. Une stratégie = une combinaison :
 
   déclencheur (famille + réglages) × filtre × sens × stop (en ATR) × objectif (en R) × suiveur × durée max.
 

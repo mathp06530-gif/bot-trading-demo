@@ -10,8 +10,6 @@ from bot import amelioration as am
 MAINTENANT = datetime(2026, 12, 13, 18, 0, tzinfo=timezone.utc)
 
 REGLAGES = '''# commentaire
-MARCHES="BTCUSD"
-TP_PARTIEL_ATR="1"        # moitié avec TP
 CASSURE_MARCHES="GOLD"
 RAPIDE="oui"
 RAPIDE_MARCHES="GOLD"
@@ -67,8 +65,7 @@ def test_ecrire_reglage_garde_le_commentaire_et_refuse_les_garde_fous():
 
 
 def test_bornes_respectent_les_tests_rejetes():
-    assert min(am.REGLAGES["tendance_4h"]["SUIVI_TENDANCE_ATR"]) >= 4      # pas de suiveur serré
-    assert min(v for v in am.REGLAGES["tendance_4h"]["TP_PARTIEL_ATR"] if v) >= 1  # pas de TP serré
+    assert set(am.REGLAGES) == {"cassure_4h", "rapide"}  # 26/11 : seulement les stratégies qui tournent
     assert min(am.REGLAGES["rapide"]["SUIVI_RAPIDE_PCT"]) >= 1  # 25/11 : 1 % (= stop de départ), testé avec la sortie confirmée
     assert not any("RSI" in c or "ATR_MIN" in c for r in am.REGLAGES.values() for c in r)
 
@@ -122,7 +119,7 @@ def test_semaine_complete_en_mode_auto(prix_synthetiques):
     etat = {}
     reglages = am.lire_reglages(REGLAGES)
     plan = am.calculer(FausseApi(), reglages, etat, MAINTENANT)
-    assert set(plan["strategies"]) == {"tendance_4h", "cassure_4h", "rapide"}
+    assert set(plan["strategies"]) == {"cassure_4h", "rapide"}
     for res in plan["strategies"].values():
         assert res["base"] is not None, res.get("note")
         assert res["essais"]
