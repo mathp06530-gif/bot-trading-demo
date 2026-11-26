@@ -1811,7 +1811,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T10:05:27Z",
+ "derniere_execution": "2026-11-26T10:06:28Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11260,6 +11260,10 @@
   {
    "date": "2026-11-26T10:05:27Z",
    "valeur": 93.09
+  },
+  {
+   "date": "2026-11-26T10:06:28Z",
+   "valeur": 93.09
   }
  ],
  "compte": {
@@ -11796,7 +11800,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3573.12,
+    "prix": 3573.42,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 39.35 de plus dans le bon sens"
    },
@@ -12562,9 +12566,9 @@
   "rapide-GOLD": [
    1795687500,
    3572.74,
-   3573.24,
+   3574.01,
    3572.7,
-   3573.12
+   3573.42
   ],
   "elan_4h-GOLD": [
    1795680000,
@@ -12603,7 +12607,7 @@
   ]
  },
  "veille": {
-  "titres_lus_le": "2026-11-26T09:06:21.738530+00:00",
+  "titres_lus_le": "2026-11-26T10:06:22.654014+00:00",
   "titres": {
    "ETHUSD": [
     {
