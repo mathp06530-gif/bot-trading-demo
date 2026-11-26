@@ -1792,7 +1792,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T08:04:26Z",
+ "derniere_execution": "2026-11-26T08:05:27Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10765,15 +10765,19 @@
   {
    "date": "2026-11-26T08:04:26Z",
    "valeur": 93.26
+  },
+  {
+   "date": "2026-11-26T08:05:27Z",
+   "valeur": 93.19
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.26,
+  "solde": 93.19,
   "depot": 93.15,
-  "resultat_latent": 0.11,
-  "disponible": 89.99
+  "resultat_latent": 0.04,
+  "disponible": 89.92
  },
  "positions": [
   {
@@ -10782,7 +10786,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3572.1,
-   "resultat": 0.1,
+   "resultat": 0.04,
    "ouverte_le": "2026-11-26T06:10:23.892",
    "id": "00000000-76c8-6a0d-049f-c46d0015549e",
    "stop": 3601.86,
@@ -11110,7 +11114,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T06:10:23Z",
    "statut": "ouvert",
-   "resultat": 0.1,
+   "resultat": 0.04,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -11135,7 +11139,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.26
+  "2026-11-26": 93.19
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -11260,7 +11264,8 @@
   ],
   "lu_le": "2026-11-26T07:36:22.501499+00:00",
   "pause": null,
-  "prochaines": []
+  "prochaines": [],
+  "pauses_marches": {}
  },
  "_derniere_pause_notee": null,
  "cassure": {
@@ -11309,9 +11314,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3569.61,
+    "prix": 3569.395,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 32.95 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 32.73 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -12078,11 +12083,11 @@
    41.44
   ],
   "rapide-GOLD": [
-   1795680000,
-   3564.91,
-   3570.36,
-   3563.55,
-   3569.61
+   1795680300,
+   3569.95,
+   3570.12,
+   3569.34,
+   3569.39
   ],
   "elan_4h-GOLD": [
    1795680000,
@@ -12119,5 +12124,238 @@
    380.4,
    383.25
   ]
+ },
+ "veille": {
+  "titres_lus_le": "2026-11-26T08:05:22.022678+00:00",
+  "titres": {
+   "ETHUSD": [
+    {
+     "titre": "How Low Can Bitcoin, Ethereum and XRP Fall? 4 Price Levels to Watch",
+     "lien": "https://beincrypto.com/critical-price-levels-for-bitcoin-ethereum-xrp/?.tsrc=rss",
+     "date": "2026-11-26T01:37Z",
+     "sujets": []
+    },
+    {
+     "titre": "Shiba Inu Developer Teases a Major Privacy Boost for Its Blockchain",
+     "lien": "https://beincrypto.com/shiba-inu-shibarium-privacy-upgrade/?.tsrc=rss",
+     "date": "2026-11-25T22:30Z",
+     "sujets": []
+    },
+    {
+     "titre": "Crypto Market Today, Nov. 25: Bitcoin, Ethereum, and Solana as Short Liquidations Fuel Fragile Rebound",
+     "lien": "https://www.fool.com/coverage/stock-market-today/2026/11/25/crypto-market-today-nov-25-bitcoin-ethereum-and-solana-as-short-liquidations-fuel-fragile-rebound/?.tsrc=rss",
+     "date": "2026-11-25T22:26Z",
+     "sujets": []
+    },
+    {
+     "titre": "Analyst explains why Bitcoin’s next move depends on Nasdaq",
+     "lien": "https://www.thestreet.com/crypto/markets/analyst-explains-why-bitcoins-next-move-depends-on-nasdaq?.tsrc=rss",
+     "date": "2026-11-25T22:00Z",
+     "sujets": []
+    },
+    {
+     "titre": "Fidelity Files for a Spot Chainlink ETF",
+     "lien": "https://www.bankless.com/read/news/fidelity-files-for-a-spot-chainlink-etf?.tsrc=rss",
+     "date": "2026-11-25T20:09Z",
+     "sujets": [
+      "régulation"
+     ]
+    },
+    {
+     "titre": "Franklin Templeton Adds Hyperliquid's HYPE to Its Crypto Index ETF",
+     "lien": "https://www.cryptoprowl.com/releases/franklin-templeton-adds-hyperliquids-hype-to-its-crypto-index-etf-8076?.tsrc=rss",
+     "date": "2026-11-25T18:15Z",
+     "sujets": [
+      "régulation"
+     ]
+    }
+   ],
+   "GOLD": [
+    {
+     "titre": "Gold spot prices slip as dollar firms, while U.S. futures gain",
+     "lien": "https://finance.yahoo.com/markets/commodities/articles/gold-eases-u-inflation-data-035043521.html?.tsrc=rss",
+     "date": "2026-11-26T03:50Z",
+     "sujets": [
+      "dollar"
+     ]
+    },
+    {
+     "titre": "Horizon Gold marks 10 years on ASX with strong results",
+     "lien": "https://finance.yahoo.com/video/horizon-gold-marks-10-years-015021434.html?.tsrc=rss",
+     "date": "2026-11-26T01:50Z",
+     "sujets": [
+      "résultats"
+     ]
+    },
+    {
+     "titre": "If you invested $1,000 in gold, Bitcoin or silver last Thanksgiving, here’s what you’d have today",
+     "lien": "https://www.thestreet.com/crypto/markets/if-you-invested-1000-in-gold-bitcoin-or-silver-last-thanksgiving-heres-what-youd-have-today?.tsrc=rss",
+     "date": "2026-11-26T00:15Z",
+     "sujets": []
+    },
+    {
+     "titre": "Ora Banda Mining expands Davyhurst gold pipeline with new Bluey trend and high-grade regional hits",
+     "lien": "https://www.proactiveinvestors.com/companies/news/1102473/ora-banda-mining-expands-davyhurst-gold-pipeline-with-new-bluey-trend-and-high-grade-regional-hits-1102473.html?.tsrc=rss",
+     "date": "2026-11-25T23:21Z",
+     "sujets": []
+    },
+    {
+     "titre": "Gold vs. Bitcoin: Analyst reveals why the tide is turning",
+     "lien": "https://www.thestreet.com/crypto/markets/gold-vs-bitcoin-analyst-reveals-why-the-tide-is-turning?.tsrc=rss",
+     "date": "2026-11-25T23:15Z",
+     "sujets": []
+    },
+    {
+     "titre": "Horizon Gold hits 10.79 g/t gold at Kingfisher as Gum Creek resource growth potential builds",
+     "lien": "https://www.proactiveinvestors.com/companies/news/1102470/horizon-gold-hits-10-79-g-t-gold-at-kingfisher-as-gum-creek-resource-growth-potential-builds-1102470.html?.tsrc=rss",
+     "date": "2026-11-25T22:50Z",
+     "sujets": []
+    }
+   ],
+   "NATURALGAS": [
+    {
+     "titre": "LS Power Completes Acquisition of 4.4 GW Natural Gas Generation Assets from Constellation",
+     "lien": "https://finance.yahoo.com/energy/articles/ls-power-completes-acquisition-4-213800844.html?.tsrc=rss",
+     "date": "2026-11-25T21:38Z",
+     "sujets": []
+    },
+    {
+     "titre": "Nat-Gas Prices Pressured by Forecasts for Warmer US Weather",
+     "lien": "https://www.barchart.com/story/news/9009467/nat-gas-prices-pressured-by-forecasts-for-warmer-us-weather?.tsrc=rss",
+     "date": "2026-11-25T20:18Z",
+     "sujets": [
+      "stocks / météo"
+     ]
+    },
+    {
+     "titre": "Equinor (OB:EQNR) Lands Its Longest Gas Supply Deal Since 1986",
+     "lien": "https://finance.yahoo.com/energy/articles/equinor-ob-eqnr-lands-longest-131459675.html?.tsrc=rss",
+     "date": "2026-11-25T13:14Z",
+     "sujets": []
+    },
+    {
+     "titre": "Arrow Announces Q3 2026 Interim Results",
+     "lien": "https://finance.yahoo.com/energy/articles/arrow-announces-q3-2026-interim-070000694.html?.tsrc=rss",
+     "date": "2026-11-26T07:00Z",
+     "sujets": [
+      "résultats"
+     ]
+    },
+    {
+     "titre": "3 Oil Stocks With Direct Exposure To Higher Crude Prices",
+     "lien": "https://finance.yahoo.com/energy/articles/3-oil-stocks-direct-exposure-061445059.html?.tsrc=rss",
+     "date": "2026-11-26T06:14Z",
+     "sujets": []
+    },
+    {
+     "titre": "Eni and Repsol Commit $2 Billion to Venezuela Oil and Gas Expansion",
+     "lien": "https://finance.yahoo.com/energy/articles/eni-repsol-commit-2-billion-180500763.html?.tsrc=rss",
+     "date": "2026-11-25T18:05Z",
+     "sujets": []
+    }
+   ],
+   "SILVER": [
+    {
+     "titre": "Delayed First Production Altering The Investment Case For Vizsla Silver Stock?",
+     "lien": "https://finance.yahoo.com/markets/stocks/articles/delayed-first-production-altering-investment-231453093.html?.tsrc=rss",
+     "date": "2026-11-25T23:14Z",
+     "sujets": []
+    },
+    {
+     "titre": "Monteoro Minerals Commences High-Resolution Drone Magnetic, Radiometric and LiDAR Survey at the Nudillales Copper-Gold-Molybdenum-Silver Project in Colombia",
+     "lien": "https://finance.yahoo.com/markets/commodities/articles/monteoro-minerals-commences-high-resolution-220500902.html?.tsrc=rss",
+     "date": "2026-11-25T22:05Z",
+     "sujets": []
+    },
+    {
+     "titre": "Impact Silver Announces Q3 2026 Results with Revenue up 73% on Silver Prices and Grade",
+     "lien": "https://finance.yahoo.com/markets/commodities/articles/impact-silver-announces-q3-2026-214800265.html?.tsrc=rss",
+     "date": "2026-11-25T21:48Z",
+     "sujets": [
+      "résultats"
+     ]
+    },
+    {
+     "titre": "TTEC Takes Home Gold and Two Silver Awards at Europe's Leading Customer Service Awards",
+     "lien": "https://finance.yahoo.com/technology/ai/articles/ttec-takes-home-gold-two-214500742.html?.tsrc=rss",
+     "date": "2026-11-25T21:45Z",
+     "sujets": []
+    },
+    {
+     "titre": "Coeur to Participate in Upcoming Conferences",
+     "lien": "https://finance.yahoo.com/markets/stocks/articles/coeur-participate-upcoming-conferences-213000476.html?.tsrc=rss",
+     "date": "2026-11-25T21:30Z",
+     "sujets": []
+    },
+    {
+     "titre": "BC-Gold-Silver",
+     "lien": "https://finance.yahoo.com/markets/commodities/articles/bc-gold-silver-200014077.html?.tsrc=rss",
+     "date": "2026-11-25T20:00Z",
+     "sujets": []
+    }
+   ],
+   "TSLA": [
+    {
+     "titre": "Cathie Wood Buys More SpaceX Amid Tesla Merger Talks — Ron Baron Says SpaceX Could Make $50B A Year From One Data Center",
+     "lien": "https://stocktwits.com/news-articles/markets/equity/cathie-wood-buys-spacex-tesla-merger-talks-ron-baron-spacex-50b-one-data-center/cNbxeDKR9Z4?.tsrc=rss",
+     "date": "2026-11-26T03:32Z",
+     "sujets": []
+    },
+    {
+     "titre": "Elon Musk tells Tesla investors there is 'only one way' to eliminate poverty",
+     "lien": "https://www.thestreet.com/investing/elon-musk-tells-tesla-investors-optimus-robots-will-eliminate-poverty?.tsrc=rss",
+     "date": "2026-11-26T00:37Z",
+     "sujets": []
+    },
+    {
+     "titre": "If SpaceX and Tesla Merge Next Year, Here's What a $5,000 Investment in the Combined Company Could Be Worth by the End of 2028",
+     "lien": "https://www.fool.com/investing/2026/11/25/if-spacex-and-tesla-merge-next-year-here-s-what-a-usd5-000-investment-in-the-combined-company-could-be-worth-by-the-end-of-2027/?.tsrc=rss",
+     "date": "2026-11-25T23:24Z",
+     "sujets": []
+    },
+    {
+     "titre": "Billionaire Brad Gerstner’s Altimeter Opened a $680 Million Tesla Stake and Exited Qualcomm and Applied Materials",
+     "lien": "https://247wallst.com/investing/2026/11/25/billionaire-brad-gerstners-altimeter-opened-a-680-million-tesla-stake-and-exited-qualcomm-and-applied-materials/?.tsrc=rss",
+     "date": "2026-11-25T20:22Z",
+     "sujets": []
+    },
+    {
+     "titre": "Is Space Exploration Technologies (SPCX) Cheap As Tesla Merger Talks Raise Valuation Questions?",
+     "lien": "https://finance.yahoo.com/markets/stocks/articles/space-exploration-technologies-spcx-cheap-201121157.html?.tsrc=rss",
+     "date": "2026-11-25T20:11Z",
+     "sujets": []
+    },
+    {
+     "titre": "Ford Motor vs. Tesla: Which Automaker Stock Is a Better Buy for 2027?",
+     "lien": "https://www.fool.com/coverage/better-buy/2026/11/25/ford-motor-vs-tesla-which-automaker-stock-is-a-better-buy-for-2027/?.tsrc=rss",
+     "date": "2026-11-25T18:13Z",
+     "sujets": []
+    }
+   ]
+  },
+  "resultats": {}
+ },
+ "_pauses_marches_notees": {},
+ "simulations": {
+  "00000000-76c8-6a0d-049f-c46d0015549e": {
+   "p_stop": 46.2,
+   "p_objectif": 10.0,
+   "p_aucun": 43.8,
+   "p_gain_fin": 38.3,
+   "prix_p5": 3513.4,
+   "prix_median": 3577.16,
+   "prix_p95": 3640.6,
+   "objectif": 3512.58,
+   "objectif_type": "gain de 2 R",
+   "objectif_r": 2.0,
+   "stop_en_gain": false,
+   "horizon": "4 h",
+   "tirages": 4000,
+   "bougies_utilisees": 298,
+   "prix_depart": 3569.39,
+   "calcule_sur": "2026-11-26T08:05:00",
+   "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
+   "verdict": "Penche nettement vers le stop (18 % des cas tranchés, équilibre 33 %)."
+  }
  }
 }
