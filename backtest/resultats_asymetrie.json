@@ -1,0 +1,1359 @@
+{
+ "donnees_1h": {
+  "US500": "05/2017 -> 11/2026",
+  "US100": "05/2017 -> 11/2026",
+  "US30": "05/2017 -> 11/2026",
+  "RTY": "11/2016 -> 11/2026",
+  "DE40": "05/2017 -> 11/2026",
+  "GOLD": "05/2017 -> 11/2026",
+  "EURUSD": "05/2017 -> 11/2026"
+ },
+ "A_evenements": [
+  {
+   "piste": "Avant la Fed",
+   "marche": "US500",
+   "reglage": "veille_14h, stop 1 ATR",
+   "entrainement": 0.8,
+   "validation": 3.9,
+   "test": 1.5,
+   "trades": [
+    41,
+    22,
+    20
+   ],
+   "R_par_trade": 0.074,
+   "pire_baisse": -3.3
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "US500",
+   "reglage": "veille_14h, stop 2 ATR",
+   "entrainement": 0.6,
+   "validation": 2.0,
+   "test": 0.8,
+   "trades": [
+    38,
+    20,
+    19
+   ],
+   "R_par_trade": 0.044,
+   "pire_baisse": -1.6
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "US500",
+   "reglage": "jour_9h, stop 1 ATR",
+   "entrainement": -3.9,
+   "validation": 0.1,
+   "test": -1.0,
+   "trades": [
+    38,
+    20,
+    20
+   ],
+   "R_par_trade": -0.061,
+   "pire_baisse": -5.0
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "US500",
+   "reglage": "jour_9h, stop 2 ATR",
+   "entrainement": -1.7,
+   "validation": 0.1,
+   "test": -0.3,
+   "trades": [
+    37,
+    20,
+    19
+   ],
+   "R_par_trade": -0.026,
+   "pire_baisse": -2.0
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "US500",
+   "reglage": "sans week-end, stop 1 ATR",
+   "entrainement": 4.1,
+   "validation": -12.2,
+   "test": 2.1,
+   "trades": [
+    1065,
+    529,
+    526
+   ],
+   "R_par_trade": -0.003,
+   "pire_baisse": -42.4
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "US500",
+   "reglage": "sans week-end, stop 2 ATR",
+   "entrainement": 11.9,
+   "validation": -6.0,
+   "test": 2.3,
+   "trades": [
+    985,
+    520,
+    500
+   ],
+   "R_par_trade": 0.004,
+   "pire_baisse": -15.6
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "US500",
+   "reglage": "avec week-end, stop 1 ATR",
+   "entrainement": -8.2,
+   "validation": -21.8,
+   "test": 5.8,
+   "trades": [
+    1331,
+    655,
+    665
+   ],
+   "R_par_trade": -0.009,
+   "pire_baisse": -55.7
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "US500",
+   "reglage": "avec week-end, stop 2 ATR",
+   "entrainement": 4.3,
+   "validation": -10.8,
+   "test": 4.3,
+   "trades": [
+    1233,
+    644,
+    627
+   ],
+   "R_par_trade": -0.001,
+   "pire_baisse": -25.0
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "US100",
+   "reglage": "veille_14h, stop 1 ATR",
+   "entrainement": 7.5,
+   "validation": 4.4,
+   "test": 3.2,
+   "trades": [
+    38,
+    23,
+    19
+   ],
+   "R_par_trade": 0.189,
+   "pire_baisse": -2.3
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "US100",
+   "reglage": "veille_14h, stop 2 ATR",
+   "entrainement": 3.7,
+   "validation": 2.4,
+   "test": 1.6,
+   "trades": [
+    37,
+    20,
+    19
+   ],
+   "R_par_trade": 0.101,
+   "pire_baisse": -1.2
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "US100",
+   "reglage": "jour_9h, stop 1 ATR",
+   "entrainement": 0.4,
+   "validation": 1.4,
+   "test": -0.3,
+   "trades": [
+    38,
+    20,
+    19
+   ],
+   "R_par_trade": 0.019,
+   "pire_baisse": -2.9
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "US100",
+   "reglage": "jour_9h, stop 2 ATR",
+   "entrainement": 0.4,
+   "validation": 0.7,
+   "test": -0.2,
+   "trades": [
+    37,
+    20,
+    19
+   ],
+   "R_par_trade": 0.012,
+   "pire_baisse": -1.2
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "US100",
+   "reglage": "sans week-end, stop 1 ATR",
+   "entrainement": 37.5,
+   "validation": -4.4,
+   "test": 3.0,
+   "trades": [
+    1050,
+    529,
+    527
+   ],
+   "R_par_trade": 0.017,
+   "pire_baisse": -44.9
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "US100",
+   "reglage": "sans week-end, stop 2 ATR",
+   "entrainement": 24.4,
+   "validation": -1.6,
+   "test": 3.2,
+   "trades": [
+    983,
+    520,
+    499
+   ],
+   "R_par_trade": 0.013,
+   "pire_baisse": -20.7
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "US100",
+   "reglage": "avec week-end, stop 1 ATR",
+   "entrainement": 30.0,
+   "validation": -10.5,
+   "test": 9.6,
+   "trades": [
+    1316,
+    655,
+    667
+   ],
+   "R_par_trade": 0.011,
+   "pire_baisse": -60.0
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "US100",
+   "reglage": "avec week-end, stop 2 ATR",
+   "entrainement": 16.3,
+   "validation": -4.5,
+   "test": 6.6,
+   "trades": [
+    1233,
+    644,
+    626
+   ],
+   "R_par_trade": 0.007,
+   "pire_baisse": -31.8
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "US30",
+   "reglage": "veille_14h, stop 1 ATR",
+   "entrainement": 1.4,
+   "validation": 3.7,
+   "test": 0.7,
+   "trades": [
+    41,
+    20,
+    20
+   ],
+   "R_par_trade": 0.072,
+   "pire_baisse": -3.7
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "US30",
+   "reglage": "veille_14h, stop 2 ATR",
+   "entrainement": 1.1,
+   "validation": 1.8,
+   "test": 0.3,
+   "trades": [
+    38,
+    20,
+    19
+   ],
+   "R_par_trade": 0.041,
+   "pire_baisse": -1.8
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "US30",
+   "reglage": "jour_9h, stop 1 ATR",
+   "entrainement": -0.1,
+   "validation": -0.5,
+   "test": 0.3,
+   "trades": [
+    37,
+    21,
+    20
+   ],
+   "R_par_trade": -0.004,
+   "pire_baisse": -4.0
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "US30",
+   "reglage": "jour_9h, stop 2 ATR",
+   "entrainement": -0.1,
+   "validation": -0.2,
+   "test": 0.2,
+   "trades": [
+    37,
+    20,
+    19
+   ],
+   "R_par_trade": 0.0,
+   "pire_baisse": -2.0
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "US30",
+   "reglage": "sans week-end, stop 1 ATR",
+   "entrainement": 115.9,
+   "validation": -20.8,
+   "test": -4.4,
+   "trades": [
+    1026,
+    527,
+    513
+   ],
+   "R_par_trade": 0.044,
+   "pire_baisse": -46.3
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "US30",
+   "reglage": "sans week-end, stop 2 ATR",
+   "entrainement": 64.1,
+   "validation": -9.8,
+   "test": -1.3,
+   "trades": [
+    973,
+    520,
+    500
+   ],
+   "R_par_trade": 0.027,
+   "pire_baisse": -19.0
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "US30",
+   "reglage": "avec week-end, stop 1 ATR",
+   "entrainement": 130.9,
+   "validation": -32.4,
+   "test": -3.3,
+   "trades": [
+    1281,
+    653,
+    646
+   ],
+   "R_par_trade": 0.037,
+   "pire_baisse": -69.9
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "US30",
+   "reglage": "avec week-end, stop 2 ATR",
+   "entrainement": 69.8,
+   "validation": -15.5,
+   "test": -0.7,
+   "trades": [
+    1216,
+    644,
+    625
+   ],
+   "R_par_trade": 0.022,
+   "pire_baisse": -32.5
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "RTY",
+   "reglage": "veille_14h, stop 1 ATR",
+   "entrainement": -3.5,
+   "validation": 3.0,
+   "test": 2.0,
+   "trades": [
+    43,
+    20,
+    20
+   ],
+   "R_par_trade": 0.017,
+   "pire_baisse": -7.8
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "RTY",
+   "reglage": "veille_14h, stop 2 ATR",
+   "entrainement": -1.4,
+   "validation": 1.5,
+   "test": 1.1,
+   "trades": [
+    39,
+    20,
+    19
+   ],
+   "R_par_trade": 0.015,
+   "pire_baisse": -3.4
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "RTY",
+   "reglage": "jour_9h, stop 1 ATR",
+   "entrainement": 0.3,
+   "validation": -0.6,
+   "test": 1.1,
+   "trades": [
+    24,
+    20,
+    20
+   ],
+   "R_par_trade": 0.013,
+   "pire_baisse": -2.7
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "RTY",
+   "reglage": "jour_9h, stop 2 ATR",
+   "entrainement": 0.2,
+   "validation": -0.3,
+   "test": 0.7,
+   "trades": [
+    22,
+    20,
+    19
+   ],
+   "R_par_trade": 0.01,
+   "pire_baisse": -1.1
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "RTY",
+   "reglage": "sans week-end, stop 1 ATR",
+   "entrainement": -2.8,
+   "validation": -8.2,
+   "test": 2.7,
+   "trades": [
+    797,
+    527,
+    513
+   ],
+   "R_par_trade": -0.004,
+   "pire_baisse": -20.8
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "RTY",
+   "reglage": "sans week-end, stop 2 ATR",
+   "entrainement": 2.3,
+   "validation": -4.1,
+   "test": 1.1,
+   "trades": [
+    735,
+    520,
+    500
+   ],
+   "R_par_trade": -0.0,
+   "pire_baisse": -9.1
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "RTY",
+   "reglage": "avec week-end, stop 1 ATR",
+   "entrainement": -8.7,
+   "validation": -15.1,
+   "test": 11.6,
+   "trades": [
+    819,
+    653,
+    645
+   ],
+   "R_par_trade": -0.006,
+   "pire_baisse": -29.3
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "RTY",
+   "reglage": "avec week-end, stop 2 ATR",
+   "entrainement": -3.9,
+   "validation": -7.5,
+   "test": 4.5,
+   "trades": [
+    785,
+    644,
+    627
+   ],
+   "R_par_trade": -0.003,
+   "pire_baisse": -13.8
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "DE40",
+   "reglage": "veille_14h, stop 1 ATR",
+   "entrainement": 6.0,
+   "validation": 5.2,
+   "test": 2.4,
+   "trades": [
+    38,
+    21,
+    19
+   ],
+   "R_par_trade": 0.175,
+   "pire_baisse": -3.3
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "DE40",
+   "reglage": "veille_14h, stop 2 ATR",
+   "entrainement": 2.8,
+   "validation": 2.8,
+   "test": 1.2,
+   "trades": [
+    37,
+    20,
+    19
+   ],
+   "R_par_trade": 0.089,
+   "pire_baisse": -1.6
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "DE40",
+   "reglage": "jour_9h, stop 1 ATR",
+   "entrainement": 4.7,
+   "validation": 0.9,
+   "test": 1.6,
+   "trades": [
+    35,
+    20,
+    19
+   ],
+   "R_par_trade": 0.098,
+   "pire_baisse": -1.0
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "DE40",
+   "reglage": "jour_9h, stop 2 ATR",
+   "entrainement": 2.4,
+   "validation": 0.5,
+   "test": 0.8,
+   "trades": [
+    35,
+    20,
+    19
+   ],
+   "R_par_trade": 0.049,
+   "pire_baisse": -0.5
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "DE40",
+   "reglage": "sans week-end, stop 1 ATR",
+   "entrainement": -48.8,
+   "validation": 0.1,
+   "test": 2.3,
+   "trades": [
+    1047,
+    538,
+    523
+   ],
+   "R_par_trade": -0.022,
+   "pire_baisse": -77.8
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "DE40",
+   "reglage": "sans week-end, stop 2 ATR",
+   "entrainement": -21.4,
+   "validation": 0.7,
+   "test": 2.4,
+   "trades": [
+    988,
+    522,
+    501
+   ],
+   "R_par_trade": -0.009,
+   "pire_baisse": -42.6
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "DE40",
+   "reglage": "avec week-end, stop 1 ATR",
+   "entrainement": -58.8,
+   "validation": -4.5,
+   "test": -9.0,
+   "trades": [
+    1306,
+    670,
+    663
+   ],
+   "R_par_trade": -0.027,
+   "pire_baisse": -91.3
+  },
+  {
+   "piste": "Achat de nuit",
+   "marche": "DE40",
+   "reglage": "avec week-end, stop 2 ATR",
+   "entrainement": -30.0,
+   "validation": -1.3,
+   "test": -3.2,
+   "trades": [
+    1231,
+    646,
+    631
+   ],
+   "R_par_trade": -0.014,
+   "pire_baisse": -55.4
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "GOLD",
+   "reglage": "veille_14h, stop 1 ATR",
+   "entrainement": -24.9,
+   "validation": 1.7,
+   "test": 1.4,
+   "trades": [
+    60,
+    21,
+    20
+   ],
+   "R_par_trade": -0.215,
+   "pire_baisse": -27.2
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "GOLD",
+   "reglage": "veille_14h, stop 2 ATR",
+   "entrainement": -0.2,
+   "validation": 0.9,
+   "test": 0.7,
+   "trades": [
+    37,
+    20,
+    19
+   ],
+   "R_par_trade": 0.019,
+   "pire_baisse": -2.3
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "GOLD",
+   "reglage": "jour_9h, stop 1 ATR",
+   "entrainement": -5.0,
+   "validation": -1.7,
+   "test": -0.3,
+   "trades": [
+    40,
+    21,
+    19
+   ],
+   "R_par_trade": -0.088,
+   "pire_baisse": -7.9
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "GOLD",
+   "reglage": "jour_9h, stop 2 ATR",
+   "entrainement": -1.0,
+   "validation": -0.7,
+   "test": -0.2,
+   "trades": [
+    37,
+    20,
+    19
+   ],
+   "R_par_trade": -0.024,
+   "pire_baisse": -2.3
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "EURUSD",
+   "reglage": "veille_14h, stop 1 ATR",
+   "entrainement": -26.5,
+   "validation": 3.6,
+   "test": -4.6,
+   "trades": [
+    61,
+    21,
+    22
+   ],
+   "R_par_trade": -0.264,
+   "pire_baisse": -28.4
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "EURUSD",
+   "reglage": "veille_14h, stop 2 ATR",
+   "entrainement": -24.4,
+   "validation": 1.9,
+   "test": -1.8,
+   "trades": [
+    59,
+    20,
+    19
+   ],
+   "R_par_trade": -0.248,
+   "pire_baisse": -25.7
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "EURUSD",
+   "reglage": "jour_9h, stop 1 ATR",
+   "entrainement": -6.8,
+   "validation": -0.6,
+   "test": -0.8,
+   "trades": [
+    41,
+    20,
+    19
+   ],
+   "R_par_trade": -0.102,
+   "pire_baisse": -8.6
+  },
+  {
+   "piste": "Avant la Fed",
+   "marche": "EURUSD",
+   "reglage": "jour_9h, stop 2 ATR",
+   "entrainement": -5.9,
+   "validation": -0.3,
+   "test": -0.4,
+   "trades": [
+    41,
+    20,
+    19
+   ],
+   "R_par_trade": -0.082,
+   "pire_baisse": -6.8
+  }
+ ],
+ "B_williams": {
+  "essais": 112,
+  "choisis_sur_2017_2021": [],
+  "total_des_choisis": {
+   "entrainement": 0,
+   "validation": 0,
+   "test": 0
+  },
+  "gagnants_validation_et_test": []
+ },
+ "controle_prix_au_hasard": {
+  "avant_la_fed": [
+   {
+    "entrainement": 1.6,
+    "validation": -0.6,
+    "test": 0.1,
+    "trades": [
+     43,
+     21,
+     17
+    ],
+    "R_par_trade": 0.015,
+    "pire_baisse": -4.3
+   },
+   {
+    "entrainement": 0.8,
+    "validation": -3.2,
+    "test": 9.9,
+    "trades": [
+     43,
+     23,
+     17
+    ],
+    "R_par_trade": 0.09,
+    "pire_baisse": -6.1
+   },
+   {
+    "entrainement": 3.4,
+    "validation": 1.2,
+    "test": 0.2,
+    "trades": [
+     42,
+     20,
+     17
+    ],
+    "R_par_trade": 0.06,
+    "pire_baisse": -2.9
+   },
+   {
+    "entrainement": 3.1,
+    "validation": -0.8,
+    "test": -1.2,
+    "trades": [
+     41,
+     21,
+     19
+    ],
+    "R_par_trade": 0.014,
+    "pire_baisse": -4.9
+   }
+  ],
+  "achat_de_nuit": [
+   {
+    "entrainement": 2.7,
+    "validation": -11.3,
+    "test": -16.8,
+    "trades": [
+     1083,
+     542,
+     454
+    ],
+    "R_par_trade": -0.012,
+    "pire_baisse": -40.3
+   },
+   {
+    "entrainement": -26.6,
+    "validation": -8.7,
+    "test": -12.6,
+    "trades": [
+     1078,
+     542,
+     452
+    ],
+    "R_par_trade": -0.023,
+    "pire_baisse": -55.0
+   },
+   {
+    "entrainement": 1.8,
+    "validation": -20.2,
+    "test": -2.6,
+    "trades": [
+     1074,
+     541,
+     455
+    ],
+    "R_par_trade": -0.01,
+    "pire_baisse": -30.5
+   },
+   {
+    "entrainement": -22.6,
+    "validation": -13.6,
+    "test": -28.2,
+    "trades": [
+     1089,
+     546,
+     464
+    ],
+    "R_par_trade": -0.031,
+    "pire_baisse": -68.9
+   }
+  ],
+  "williams_total_des_choisis": [
+   {
+    "entrainement": 0,
+    "validation": 0,
+    "test": 0
+   },
+   {
+    "entrainement": 0,
+    "validation": 0,
+    "test": 0
+   },
+   {
+    "entrainement": 0,
+    "validation": 0,
+    "test": 0
+   },
+   {
+    "entrainement": 0,
+    "validation": 0,
+    "test": 0
+   }
+  ]
+ },
+ "C_tailles": {
+  "Cassure or+argent": {
+   "trades_par_an": 51,
+   "R_par_trade_entrainement": 0.049,
+   "R_par_trade_2022_auj": 0.301,
+   "kelly_pct_entrainement": 1.8,
+   "kelly_pct_2022_auj": 9.5,
+   "un_an_au_hasard_sur_2022_auj": [
+    {
+     "risque_pct": 0.5,
+     "capital_median_x": 1.06,
+     "chance_perte_pct": 18.6,
+     "chance_x2_pct": 0.0,
+     "chance_x10_pct": 0.0,
+     "chance_baisse_50_pct": 0.0,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 1,
+     "capital_median_x": 1.12,
+     "chance_perte_pct": 19.3,
+     "chance_x2_pct": 0.4,
+     "chance_x10_pct": 0.0,
+     "chance_baisse_50_pct": 0.0,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 2,
+     "capital_median_x": 1.24,
+     "chance_perte_pct": 20.5,
+     "chance_x2_pct": 9.0,
+     "chance_x10_pct": 0.0,
+     "chance_baisse_50_pct": 0.0,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 3,
+     "capital_median_x": 1.35,
+     "chance_perte_pct": 21.9,
+     "chance_x2_pct": 20.6,
+     "chance_x10_pct": 0.1,
+     "chance_baisse_50_pct": 0.5,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 5,
+     "capital_median_x": 1.54,
+     "chance_perte_pct": 24.6,
+     "chance_x2_pct": 35.2,
+     "chance_x10_pct": 1.0,
+     "chance_baisse_50_pct": 11.8,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 8,
+     "capital_median_x": 1.69,
+     "chance_perte_pct": 29.1,
+     "chance_x2_pct": 43.4,
+     "chance_x10_pct": 5.5,
+     "chance_baisse_50_pct": 49.0,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 12,
+     "capital_median_x": 1.65,
+     "chance_perte_pct": 35.4,
+     "chance_x2_pct": 44.5,
+     "chance_x10_pct": 11.5,
+     "chance_baisse_50_pct": 85.5,
+     "chance_ruine_90_pct": 2.2
+    },
+    {
+     "risque_pct": 20,
+     "capital_median_x": 0.99,
+     "chance_perte_pct": 50.1,
+     "chance_x2_pct": 37.6,
+     "chance_x10_pct": 15.2,
+     "chance_baisse_50_pct": 99.7,
+     "chance_ruine_90_pct": 22.8
+    },
+    {
+     "risque_pct": 30,
+     "capital_median_x": 0.25,
+     "chance_perte_pct": 67.4,
+     "chance_x2_pct": 25.0,
+     "chance_x10_pct": 11.8,
+     "chance_baisse_50_pct": 100.0,
+     "chance_ruine_90_pct": 57.2
+    }
+   ],
+   "un_an_au_hasard_sur_2017_2021": [
+    {
+     "risque_pct": 0.5,
+     "capital_median_x": 1.01,
+     "chance_perte_pct": 44.4,
+     "chance_x2_pct": 0.0,
+     "chance_x10_pct": 0.0,
+     "chance_baisse_50_pct": 0.0,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 1,
+     "capital_median_x": 1.01,
+     "chance_perte_pct": 45.5,
+     "chance_x2_pct": 0.0,
+     "chance_x10_pct": 0.0,
+     "chance_baisse_50_pct": 0.0,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 2,
+     "capital_median_x": 1.01,
+     "chance_perte_pct": 47.8,
+     "chance_x2_pct": 0.5,
+     "chance_x10_pct": 0.0,
+     "chance_baisse_50_pct": 0.1,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 3,
+     "capital_median_x": 1.0,
+     "chance_perte_pct": 50.0,
+     "chance_x2_pct": 3.3,
+     "chance_x10_pct": 0.0,
+     "chance_baisse_50_pct": 4.0,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 5,
+     "capital_median_x": 0.94,
+     "chance_perte_pct": 54.2,
+     "chance_x2_pct": 10.4,
+     "chance_x10_pct": 0.0,
+     "chance_baisse_50_pct": 34.7,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 8,
+     "capital_median_x": 0.79,
+     "chance_perte_pct": 60.5,
+     "chance_x2_pct": 15.3,
+     "chance_x10_pct": 0.4,
+     "chance_baisse_50_pct": 76.8,
+     "chance_ruine_90_pct": 0.8
+    },
+    {
+     "risque_pct": 12,
+     "capital_median_x": 0.54,
+     "chance_perte_pct": 68.2,
+     "chance_x2_pct": 15.9,
+     "chance_x10_pct": 1.7,
+     "chance_baisse_50_pct": 96.5,
+     "chance_ruine_90_pct": 12.6
+    },
+    {
+     "risque_pct": 20,
+     "capital_median_x": 0.16,
+     "chance_perte_pct": 81.2,
+     "chance_x2_pct": 11.3,
+     "chance_x10_pct": 2.7,
+     "chance_baisse_50_pct": 100.0,
+     "chance_ruine_90_pct": 54.2
+    },
+    {
+     "risque_pct": 30,
+     "capital_median_x": 0.01,
+     "chance_perte_pct": 91.6,
+     "chance_x2_pct": 5.5,
+     "chance_x10_pct": 1.8,
+     "chance_baisse_50_pct": 100.0,
+     "chance_ruine_90_pct": 85.2
+    }
+   ],
+   "capital_x_par_annee_reelle": {
+    "1%": {
+     "2017": 1.39,
+     "2018": 0.81,
+     "2019": 1.01,
+     "2020": 0.9,
+     "2021": 1.07,
+     "2022": 1.05,
+     "2023": 1.1,
+     "2024": 1.01,
+     "2025": 1.37,
+     "2026": 1.23
+    },
+    "3%": {
+     "2017": 2.53,
+     "2018": 0.52,
+     "2019": 0.99,
+     "2020": 0.69,
+     "2021": 1.17,
+     "2022": 1.14,
+     "2023": 1.29,
+     "2024": 0.98,
+     "2025": 2.13,
+     "2026": 1.75
+    },
+    "5%": {
+     "2017": 4.28,
+     "2018": 0.32,
+     "2019": 0.93,
+     "2020": 0.51,
+     "2021": 1.24,
+     "2022": 1.2,
+     "2023": 1.46,
+     "2024": 0.9,
+     "2025": 2.81,
+     "2026": 2.36
+    },
+    "10%": {
+     "2017": 12.41,
+     "2018": 0.09,
+     "2019": 0.66,
+     "2020": 0.2,
+     "2021": 1.21,
+     "2022": 1.2,
+     "2023": 1.75,
+     "2024": 0.61,
+     "2025": 3.6,
+     "2026": 3.96
+    }
+   },
+   "challenge_prop_firm": [
+    {
+     "risque_pct": 0.5,
+     "chance_reussite_pct": 96.9,
+     "trades_medians_si_reussi": 61
+    },
+    {
+     "risque_pct": 1,
+     "chance_reussite_pct": 84.9,
+     "trades_medians_si_reussi": 26
+    },
+    {
+     "risque_pct": 2,
+     "chance_reussite_pct": 68.4,
+     "trades_medians_si_reussi": 9
+    },
+    {
+     "risque_pct": 3,
+     "chance_reussite_pct": 61.0,
+     "trades_medians_si_reussi": 5
+    }
+   ]
+  },
+  "Cassure + Supertrend": {
+   "trades_par_an": 104,
+   "R_par_trade_entrainement": 0.254,
+   "R_par_trade_2022_auj": 0.181,
+   "kelly_pct_entrainement": 8.6,
+   "kelly_pct_2022_auj": 6.3,
+   "un_an_au_hasard_sur_2022_auj": [
+    {
+     "risque_pct": 0.5,
+     "capital_median_x": 1.08,
+     "chance_perte_pct": 20.1,
+     "chance_x2_pct": 0.0,
+     "chance_x10_pct": 0.0,
+     "chance_baisse_50_pct": 0.0,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 1,
+     "capital_median_x": 1.16,
+     "chance_perte_pct": 21.0,
+     "chance_x2_pct": 1.1,
+     "chance_x10_pct": 0.0,
+     "chance_baisse_50_pct": 0.0,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 2,
+     "capital_median_x": 1.3,
+     "chance_perte_pct": 23.0,
+     "chance_x2_pct": 14.5,
+     "chance_x10_pct": 0.0,
+     "chance_baisse_50_pct": 0.4,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 3,
+     "capital_median_x": 1.42,
+     "chance_perte_pct": 25.2,
+     "chance_x2_pct": 27.2,
+     "chance_x10_pct": 0.2,
+     "chance_baisse_50_pct": 6.5,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 5,
+     "capital_median_x": 1.56,
+     "chance_perte_pct": 29.5,
+     "chance_x2_pct": 39.0,
+     "chance_x10_pct": 2.8,
+     "chance_baisse_50_pct": 41.9,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 8,
+     "capital_median_x": 1.53,
+     "chance_perte_pct": 36.6,
+     "chance_x2_pct": 42.0,
+     "chance_x10_pct": 8.3,
+     "chance_baisse_50_pct": 85.0,
+     "chance_ruine_90_pct": 1.6
+    },
+    {
+     "risque_pct": 12,
+     "capital_median_x": 1.15,
+     "chance_perte_pct": 46.9,
+     "chance_x2_pct": 38.0,
+     "chance_x10_pct": 12.1,
+     "chance_baisse_50_pct": 99.0,
+     "chance_ruine_90_pct": 13.8
+    },
+    {
+     "risque_pct": 20,
+     "capital_median_x": 0.3,
+     "chance_perte_pct": 66.8,
+     "chance_x2_pct": 24.8,
+     "chance_x10_pct": 10.5,
+     "chance_baisse_50_pct": 100.0,
+     "chance_ruine_90_pct": 52.4
+    },
+    {
+     "risque_pct": 30,
+     "capital_median_x": 0.02,
+     "chance_perte_pct": 85.8,
+     "chance_x2_pct": 10.6,
+     "chance_x10_pct": 5.2,
+     "chance_baisse_50_pct": 100.0,
+     "chance_ruine_90_pct": 84.3
+    }
+   ],
+   "un_an_au_hasard_sur_2017_2021": [
+    {
+     "risque_pct": 0.5,
+     "capital_median_x": 1.13,
+     "chance_perte_pct": 10.6,
+     "chance_x2_pct": 0.0,
+     "chance_x10_pct": 0.0,
+     "chance_baisse_50_pct": 0.0,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 1,
+     "capital_median_x": 1.26,
+     "chance_perte_pct": 11.4,
+     "chance_x2_pct": 2.3,
+     "chance_x10_pct": 0.0,
+     "chance_baisse_50_pct": 0.0,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 2,
+     "capital_median_x": 1.53,
+     "chance_perte_pct": 12.8,
+     "chance_x2_pct": 25.4,
+     "chance_x10_pct": 0.0,
+     "chance_baisse_50_pct": 0.3,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 3,
+     "capital_median_x": 1.79,
+     "chance_perte_pct": 14.5,
+     "chance_x2_pct": 42.5,
+     "chance_x10_pct": 0.4,
+     "chance_baisse_50_pct": 5.2,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 5,
+     "capital_median_x": 2.23,
+     "chance_perte_pct": 18.2,
+     "chance_x2_pct": 54.6,
+     "chance_x10_pct": 6.5,
+     "chance_baisse_50_pct": 37.7,
+     "chance_ruine_90_pct": 0.0
+    },
+    {
+     "risque_pct": 8,
+     "capital_median_x": 2.53,
+     "chance_perte_pct": 24.7,
+     "chance_x2_pct": 56.8,
+     "chance_x10_pct": 17.0,
+     "chance_baisse_50_pct": 84.0,
+     "chance_ruine_90_pct": 1.1
+    },
+    {
+     "risque_pct": 12,
+     "capital_median_x": 2.2,
+     "chance_perte_pct": 34.2,
+     "chance_x2_pct": 51.8,
+     "chance_x10_pct": 22.6,
+     "chance_baisse_50_pct": 99.1,
+     "chance_ruine_90_pct": 10.6
+    },
+    {
+     "risque_pct": 20,
+     "capital_median_x": 0.66,
+     "chance_perte_pct": 55.5,
+     "chance_x2_pct": 36.1,
+     "chance_x10_pct": 19.0,
+     "chance_baisse_50_pct": 100.0,
+     "chance_ruine_90_pct": 46.0
+    },
+    {
+     "risque_pct": 30,
+     "capital_median_x": 0.03,
+     "chance_perte_pct": 78.9,
+     "chance_x2_pct": 17.0,
+     "chance_x10_pct": 9.4,
+     "chance_baisse_50_pct": 100.0,
+     "chance_ruine_90_pct": 80.4
+    }
+   ],
+   "capital_x_par_annee_reelle": {
+    "1%": {
+     "2017": 1.55,
+     "2018": 1.09,
+     "2019": 1.24,
+     "2020": 1.21,
+     "2021": 1.12,
+     "2022": 1.05,
+     "2023": 1.18,
+     "2024": 1.09,
+     "2025": 1.36,
+     "2026": 1.3
+    },
+    "3%": {
+     "2017": 3.37,
+     "2018": 1.17,
+     "2019": 1.76,
+     "2020": 1.53,
+     "2021": 1.34,
+     "2022": 1.09,
+     "2023": 1.51,
+     "2024": 1.18,
+     "2025": 2.03,
+     "2026": 1.93
+    },
+    "5%": {
+     "2017": 6.59,
+     "2018": 1.11,
+     "2019": 2.23,
+     "2020": 1.63,
+     "2021": 1.5,
+     "2022": 1.06,
+     "2023": 1.75,
+     "2024": 1.16,
+     "2025": 2.48,
+     "2026": 2.52
+    },
+    "10%": {
+     "2017": 23.88,
+     "2018": 0.64,
+     "2019": 2.73,
+     "2020": 1.13,
+     "2021": 1.49,
+     "2022": 0.76,
+     "2023": 1.76,
+     "2024": 0.76,
+     "2025": 2.31,
+     "2026": 3.15
+    }
+   },
+   "challenge_prop_firm": [
+    {
+     "risque_pct": 0.5,
+     "chance_reussite_pct": 90.2,
+     "trades_medians_si_reussi": 82
+    },
+    {
+     "risque_pct": 1,
+     "chance_reussite_pct": 75.3,
+     "trades_medians_si_reussi": 30
+    },
+    {
+     "risque_pct": 2,
+     "chance_reussite_pct": 60.4,
+     "trades_medians_si_reussi": 10
+    },
+    {
+     "risque_pct": 3,
+     "chance_reussite_pct": 53.6,
+     "trades_medians_si_reussi": 5
+    }
+   ]
+  }
+ }
+}

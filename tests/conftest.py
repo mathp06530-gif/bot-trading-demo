@@ -49,3 +49,10 @@ def veille_hors_ligne(monkeypatch):
     """Les tests n'appellent jamais Yahoo ni Nasdaq."""
     from bot import veille
     monkeypatch.setattr(veille, "_titres", lambda s: [])
+
+
+@pytest.fixture(autouse=True)
+def sans_fed_par_defaut(monkeypatch):
+    """Les anciens tests ne voient pas la stratégie expérimentale « Avant la Fed » (testée à part)."""
+    from bot import fed
+    monkeypatch.setattr(fed, "LISTE", [])

@@ -16,6 +16,7 @@ from bot.garde_fous import GardeFous, surveiller_series_de_stops
 from bot import rapide as module_rapide
 from bot import elan as module_elan
 from bot import supertrend as module_supertrend
+from bot import fed as module_fed
 from bot import usine as module_usine
 from bot import actualites
 from bot import veille
@@ -146,6 +147,8 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                  "Backtest 2 ans : +16,2 R -> +17,4 R, pire baisse -3,7 R -> -2,7 R. À comparer au bilan du 4/12.")
 
     toutes = ["tendance_4h", "cassure_4h", "rapide", "elan_4h", "supertrend_4h"]  # 25/11/2026 : + « Élan » et « Supertrend » (expérimentales)
+    if module_fed.LISTE:  # 26/11/2026 : « Avant la Fed » (expérimentale, recherche gains rapides)
+        toutes.append("fed")
     if module_usine.STRATEGIES:  # 26/11/2026 : stratégies trouvées par l'usine (expérimentales)
         toutes.append("usine")
     if not MARCHES:  # 26/11/2026 : Bitcoin retiré, la Tendance 4 h n'a plus de marché
@@ -173,12 +176,15 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     etats.setdefault("supertrend_4h", {}).setdefault("active", module_supertrend.ACTIVE)
     if "usine" in toutes:
         etats.setdefault("usine", {}).setdefault("active", module_usine.ACTIVE)
+    if "fed" in toutes:
+        etats.setdefault("fed", {}).setdefault("active", module_fed.ACTIVE)
     if set(donnees.get("rapide", {}).get("deals", [])) and "marches" not in donnees["rapide"]:
         donnees["rapide"] = {"deals": []}  # ancienne rapide du Bitcoin : on repart de zéro
     noms = {"tendance_4h": "Tendance 4 h (Bitcoin)", "cassure_4h": "Cassure 4 h (or et argent)",
             "rapide": "Rapide 5 min (or et argent)", "elan_4h": "Élan des gros acteurs 4 h (expérimentale)",
             "supertrend_4h": "Supertrend 4 h Ethereum (expérimentale, trouvée sur les réseaux)",
-            "usine": "Usine à stratégies (expérimentales)"}
+            "usine": "Usine à stratégies (expérimentales)",
+            "fed": "Avant la Fed, Nasdaq 100 (expérimentale)"}
     lancer = set(cibles) if action == "lancer" else set()
 
     api.connexion()
@@ -187,7 +193,9 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     ids_elan = set(donnees.get("elan", {}).get("deals", {}))
     ids_supertrend = set(donnees.get("supertrend", {}).get("deals", {}))
     ids_usine = set(donnees.get("usine", {}).get("deals", {}))
+    ids_fed = set(donnees.get("fed", {}).get("deals", {}))
     strat_de = lambda p: ("rapide" if p["position"]["dealId"] in ids_rapide else
+                          "fed" if p["position"]["dealId"] in ids_fed else
                           "usine" if p["position"]["dealId"] in ids_usine else
                           "elan_4h" if p["position"]["dealId"] in ids_elan else
                           "supertrend_4h" if p["position"]["dealId"] in ids_supertrend else
@@ -256,7 +264,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     donnees["actualites"]["prochaines"] = actualites.prochaines(donnees, instant)
     # 26/11/2026 (skill trader-news) : titres par marché + dates de résultats des actions, pauses par marché
     marches_trades = sorted(set(MARCHES) | set(MARCHES_CASSURE) | set(module_rapide.LISTE) | set(module_elan.LISTE)
-                            | set(module_supertrend.LISTE) | set(module_usine.LISTE))
+                            | set(module_supertrend.LISTE) | set(module_usine.LISTE) | set(module_fed.LISTE))
     for souci_v in veille.mettre_a_jour(donnees, instant, marches_trades):
         print(f"Veille : {souci_v}")
     garde.pauses_marches = actualites.pauses_marches(donnees, instant)
@@ -519,6 +527,23 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                                "reglages": module_usine.NOM, "marches": module_usine.LISTE,
                                "description": module_usine.DESCRIPTION, "debut": module_usine.DEBUT,
                                "action": "Actif" if actif_u else ("En pause" if en_pause else "Désactivée")})
+    # --- Avant la Fed (EXPÉRIMENTALE, 26/11/2026) : achat du Nasdaq 100 la veille d'une annonce FOMC ---
+    if "fed" in toutes:
+        actif_f = ("fed" in lancer) or (not en_pause and etats["fed"]["active"])
+        noter_f = lambda t, m, x: noter(t, m, x, "fed")
+        module_fed.premiere_fois(donnees, noter_f)
+        for epic in module_fed.LISTE:
+            try:
+                res = module_fed.tour_fed(api, donnees, epic, api.positions(), capital, disponible, eurusd,
+                                          noter_f, garde, maintenant(), peut_entrer=actif_f)
+            except Exception as e:  # un marché en erreur ne bloque pas les autres
+                res = "Erreur"
+                noter_f("erreur", epic, f"[Fed] {str(e)[:300]}")
+            donnees.setdefault("fed", {}).setdefault("marches", {}).setdefault(epic, {})["action"] = res
+        etats["fed"].update({"nom": noms["fed"], "unite": module_fed.UNITE, "risque_pct": module_fed.RISQUE_FED_PCT,
+                             "reglages": module_fed.NOM, "marches": module_fed.LISTE,
+                             "description": module_fed.DESCRIPTION, "debut": module_fed.DEBUT,
+                             "action": "Actif" if actif_f else ("En pause" if en_pause else "Désactivée")})
     donnees.pop("_cache_marches", None)
 
     # État final du compte, après les ordres
@@ -532,9 +557,12 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     ids_elan = set(donnees.get("elan", {}).get("deals", {}))
     ids_supertrend = set(donnees.get("supertrend", {}).get("deals", {}))
     ids_usine = set(donnees.get("usine", {}).get("deals", {}))
+    ids_fed = set(donnees.get("fed", {}).get("deals", {}))
     for o in donnees.get("ordres", []):
         if o["id"] in ids_rapide:
             o["strategie"] = "rapide"
+        elif o["id"] in ids_fed or (o.get("motif_sortie") or "").startswith("[Fed]"):
+            o["strategie"] = "fed"
         elif o["id"] in ids_usine or (o.get("motif_sortie") or "").startswith("[Usine"):
             o["strategie"] = "usine"
         elif o["id"] in ids_elan or (o.get("motif_sortie") or "").startswith("[Élan]"):
