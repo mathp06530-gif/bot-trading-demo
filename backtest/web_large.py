@@ -31,8 +31,13 @@ from backtest.usine import MARCHES, lire  # noqa: E402
 serrage.NUITS_EXACTES = True
 COUPES = (pd.Timestamp("2022-01-01"), pd.Timestamp("2024-07-01"))
 JOUR = [m.strip() for m in MARCHES.split(",")]
+# 26/11 (demande de Mathis) : CHAQUE idée testée sur TOUS les marchés (jour et 1 h)
 HORAIRE = ("US500", "US100", "US30", "RTY", "DE40", "EU50", "FR40", "UK100", "J225", "AU200",
-           "GOLD", "SILVER", "EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "BTCUSD", "ETHUSD")
+           "GOLD", "SILVER", "EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "BTCUSD", "ETHUSD") + tuple(
+    m.strip() for m in MARCHES.split(",") if m.strip() not in ("US500", "US100", "US30", "RTY", "DE40", "EU50", "FR40",
+                                                                 "UK100", "J225", "AU200", "GOLD", "SILVER", "EURUSD",
+                                                                 "GBPUSD", "USDJPY", "AUDUSD", "BTCUSD", "ETHUSD"))
+TOUS_LES_MARCHES = True
 INDICES = ("US500", "US100", "US30", "RTY", "DE40", "UK100", "FR40", "EU50", "J225", "HK50", "AU200")
 US = ("US500", "US100", "US30", "RTY")
 NORM = NormalDist()
@@ -783,11 +788,22 @@ def evaluer_famille(nom, f, donnees, conds, marches, k_stops, extra=None):
     return lignes
 
 
+TACHES = []
+
+
+def _tache(i):
+    try:
+        return evaluer_famille(*TACHES[i])
+    except Exception as e:  # une idée qui plante sur un marché ne bloque pas les autres
+        print(f"{TACHES[i][0]} {TACHES[i][4]} : erreur {str(e)[:100]}", flush=True)
+        return []
+
+
 def p_value(t: float) -> float:
     return 1 - NORM.cdf(t)
 
 
-def principal(dossier: Path, hasard_graines=3):
+def principal(dossier: Path, hasard_graines=2):
     global DATES
     f_dates = Path(__file__).resolve().parent / "dates_annonces.json"
     DATES = json.loads(f_dates.read_text()) if f_dates.exists() else {}
@@ -804,17 +820,17 @@ def principal(dossier: Path, hasard_graines=3):
                        "exemple_heure_bougie_jour": {e: str(d.index[-1]) for e, d in list(jour.items())[:5]}}}
 
     def tout(jour, heure, cj, ch):
-        lignes = []
+        global TACHES
+        TACHES = []
         for nom, (f, m) in FAMILLES_JOUR.items():
-            for e in (m or jour.keys()):
+            for e in (jour.keys() if TOUS_LES_MARCHES or not m else m):
                 if e not in jour:
                     continue
                 if f is fam_jour_semaine:
                     g = (lambda df, c, k, cr=e in ("BTCUSD", "ETHUSD", "SOLUSD", "XRPUSD", "LTCUSD"): fam_jour_semaine(df, c, k, cr))
                 else:
                     g = f
-                lignes += evaluer_famille(nom, g, jour, cj, [e], (1.5, 3.0))
-            print(f"{nom} : fait", flush=True)
+                TACHES.append((nom, g, jour, cj, [e], (1.5, 3.0)))
         for nom, (f, m) in FAMILLES_HEURE.items():
             if f in (fam_fixing_fin_mois_usd, fam_us_vers_asie):
                 us = heure.get("US500")
@@ -823,8 +839,14 @@ def principal(dossier: Path, hasard_graines=3):
                 g = (lambda df, c, k, b=heure.get("BTCUSD"): fam_btc_meneur(df, c, k, b))
             else:
                 g = f
-            lignes += evaluer_famille(nom, g, heure, ch, m, (1.0, 2.0))
-            print(f"{nom} : fait", flush=True)
+            for e in (heure.keys() if TOUS_LES_MARCHES or not m else m):
+                if e in heure and not (f is fam_btc_meneur and e == "BTCUSD") and not (f is fam_us_vers_asie and e == "US500"):
+                    TACHES.append((nom, g, heure, ch, [e], (1.0, 2.0)))
+        import multiprocessing as mp
+        with mp.get_context("fork").Pool() as pool:
+            morceaux = pool.map(_tache, range(len(TACHES)), chunksize=4)
+        lignes = [x for m in morceaux for x in m]
+        print(f"{len(TACHES)} couples idée x marché : fait", flush=True)
         # portefeuilles momentum : un seul « marché » (le portefeuille)
         pm = portefeuille_momentum(jour, cj)
         best, ok = choisir(pm, mini=30)
