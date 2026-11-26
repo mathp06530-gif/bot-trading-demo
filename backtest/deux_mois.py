@@ -61,7 +61,35 @@ def telecharger(dossier: Path):
                 t.telecharger(api, epic, unite, minutes, jours)
             except Exception as e:
                 print(f"{epic} {unite} : échec ({str(e)[:120]})")
+    # 26/11 (demande de Mathis) : les PETITS marchés aussi (moins de concurrence) : liste de backtest/web_large.py
+    from backtest.web_large import trouver_petits
     api.deconnexion()
+    api.connexion()
+    petits = trouver_petits(api, dossier)
+    for numero, epic in enumerate(petits):
+        if numero % 6 == 0:
+            api.deconnexion()
+            api.connexion()
+        try:
+            (dossier / f"{epic}_marche.json").write_text(json.dumps(api.marche(epic), ensure_ascii=False))
+            for unite, minutes, jours in (("HOUR_4", 240, 500), ("DAY", 1440, 1000)):
+                t.telecharger(api, epic, unite, minutes, jours)
+        except Exception as e:
+            print(f"{epic} : échec ({str(e)[:120]})")
+    api.deconnexion()
+
+
+def fouiller_groupe(dossier: Path, categorie: str, sortie: Path):
+    """Fouille tous les petits marchés d'une catégorie (liste trouvée au téléchargement)."""
+    f = dossier / "petits_marches.json"
+    petits = json.loads(f.read_text()) if f.exists() else {}
+    sortie.mkdir(parents=True, exist_ok=True)
+    for epic, cat in petits.items():
+        if cat == categorie and (dossier / f"{epic}_HOUR_4.csv").exists():
+            try:
+                fouiller(dossier, epic, sortie / f"{epic}.json", categorie=cat)
+            except Exception as e:
+                print(f"{epic} : erreur ({str(e)[:200]})")
 
 
 def melanger(df: pd.DataFrame, graine: int = 7) -> pd.DataFrame:
@@ -91,8 +119,8 @@ def melanger(df: pd.DataFrame, graine: int = 7) -> pd.DataFrame:
     return d
 
 
-def fouiller(dossier: Path, epic: str, sortie: Path, garder: int = 120):
-    res = {"epic": epic, "unites": {}, "hasard": {}, "top_A": [], "tiennent": []}
+def fouiller(dossier: Path, epic: str, sortie: Path, garder: int = 120, categorie: str = "grands marchés"):
+    res = {"epic": epic, "categorie": categorie, "unites": {}, "hasard": {}, "top_A": [], "tiennent": []}
     for unite, variante in itertools.product(R.UNITES, ("vrai", "melange")):
         df = lire(dossier, epic, unite)
         if df is None or len(df) < 300:
@@ -171,7 +199,7 @@ def fouiller(dossier: Path, epic: str, sortie: Path, garder: int = 120):
             return {"epic": epic, "unite": unite, "spec": sp, "texte": R.decrire(sp),
                     "A": round(float(RA[i]), 2), "nA": int(nA[i]), "B": round(float(RB[i]), 2), "nB": int(nB[i]),
                     "C": round(float(RC[i]), 2), "nC": int(nC[i]), "A_stats": stats(vA),
-                    "A_frais_x1_5": round(float(sum(rA)), 2), "devise": cond["devise"], "nom": cond["nom"]}
+                    "A_frais_x1_5": round(float(sum(rA)), 2), "categorie": categorie, "devise": cond["devise"], "nom": cond["nom"]}
 
         res["top_A"] += [detail(i) for i in ordre[:garder] if classee[i]]
         idx = np.nonzero(gagnent_AB)[0]
@@ -252,6 +280,21 @@ def bilan(dossier: Path, sortie: Path, md: Path):
     for c in ten[:20]:
         L.append(f"| {c['epic']} | {c['unite']} | {c['texte']} | {c['A']} ({c['nA']}) | {c['B']} ({c['nB']}) | "
                  f"{c['C']} ({c['nC']}) | {c['A_frais_x1_5']} |")
+    petits = [c for c in ten if c.get("categorie", "grands marchés") != "grands marchés"]
+    L += ["", "## Petits marchés seulement (gagnent sur A ET B)", "",
+          "| Catégorie | Marché | Unité | Stratégie | R sur A (trades) | R sur B (trades) | R sur C (trades) | A frais x1,5 |",
+          "|---|---|---|---|---|---|---|---|"]
+    for c in petits[:20]:
+        L.append(f"| {c.get('categorie')} | {c['epic']} | {c['unite']} | {c['texte']} | {c['A']} ({c['nA']}) | "
+                 f"{c['B']} ({c['nB']}) | {c['C']} ({c['nC']}) | {c['A_frais_x1_5']} |")
+    L += ["", "## Avec plus de risque : gain et pire chute sur les 2 derniers mois (sans intérêts composés)", "",
+          "| Marché | Stratégie | Risque 1 % | Risque 3 % | Risque 5 % |", "|---|---|---|---|---|"]
+    for c in ten[:10]:
+        g, b = c["A"], c["A_stats"]["pire_baisse"]
+        L.append(f"| {c['epic']} {c['unite']} | {c['texte']} | " +
+                 " | ".join(f"{g * k:+.0f} % (chute {b * k:.0f} %)" for k in (1, 3, 5)) + " |")
+    out["petits_tiennent"] = petits[:30]
+    sortie.write_text(json.dumps(out, ensure_ascii=False, indent=1))
     L += ["", f"1 R ≈ {EUR_PAR_R} € avec 1 % de risque sur ~93 €."]
     md.write_text("\n".join(L) + "\n")
     print("\n".join(L))
@@ -263,5 +306,7 @@ if __name__ == "__main__":
         telecharger(Path(sys.argv[2]))
     elif action == "fouiller":
         fouiller(Path(sys.argv[2]), sys.argv[3], Path(sys.argv[4]))
+    elif action == "fouiller_groupe":
+        fouiller_groupe(Path(sys.argv[2]), sys.argv[3], Path(sys.argv[4]))
     elif action == "bilan":
         bilan(Path(sys.argv[2]), Path(sys.argv[3]), Path(sys.argv[4]))
