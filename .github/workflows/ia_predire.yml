@@ -5,6 +5,10 @@ name: IA - prédire la direction (test sur données jamais vues)
 
 on:
   workflow_dispatch:
+    inputs:
+      retelecharger:
+        description: "Retélécharger les prix (laisser vide = utiliser le cache)"
+        required: false
   push:
     branches: ["claude/**"]
     paths: [ia/predire.py, .github/workflows/ia_predire.yml]
@@ -26,6 +30,12 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r ia/requirements.txt
+      - name: Cache des prix (évite de tout retélécharger à chaque essai)
+        uses: actions/cache@v4
+        with:
+          path: donnees_ia
+          key: ia-donnees-v1-${{ github.run_id }}
+          restore-keys: ia-donnees-v1-
       - name: Historique Capital.com démo (bid + ask), un marché après l'autre
         env:
           CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
@@ -33,6 +43,7 @@ jobs:
           CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
         run: |
           for e in GOLD SILVER US100 US500 EURUSD BTCUSD ETHUSD OIL_CRUDE; do
+            if [ -f donnees_ia/${e}_HOUR_4.csv ] && [ -z "${{ github.event.inputs.retelecharger }}" ]; then echo "$e : déjà en cache"; continue; fi
             python -u ia/predire.py telecharger donnees_ia $e || echo "$e : échec"
           done
       - uses: actions/upload-artifact@v4

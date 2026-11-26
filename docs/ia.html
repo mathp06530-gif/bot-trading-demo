@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0a0e16">
+<title>IA en direct</title>
+<style>
+  :root { --fond:#0a0e16; --carte:#121927; --carte2:#182133; --bord:rgba(255,255,255,.07); --texte:#e8edf7; --doux:#8b97ad;
+          --vert:#16c784; --rouge:#ea3943; --cyan:#22d3ee; --police:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  html { color-scheme: dark; -webkit-text-size-adjust:100%; }
+  body { margin:0; background:var(--fond); color:var(--texte); font:15px/1.5 var(--police); }
+  main { max-width:980px; margin:0 auto; padding:20px 16px 60px; }
+  h1 { font-size:22px; margin:0 0 4px; } h2 { font-size:17px; margin:26px 0 10px; }
+  .doux { color:var(--doux); font-size:13px; }
+  .carte { background:var(--carte); border:1px solid var(--bord); border-radius:16px; padding:14px; overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:14px; }
+  th, td { text-align:left; padding:7px 8px; border-bottom:1px solid var(--bord); white-space:nowrap; }
+  th { color:var(--doux); font-weight:500; font-size:12px; }
+  .v { color:var(--vert); } .r { color:var(--rouge); }
+  .barre { height:6px; border-radius:3px; background:var(--carte2); width:90px; display:inline-block; vertical-align:middle; margin-left:6px; position:relative; }
+  .barre i { position:absolute; left:0; top:0; bottom:0; border-radius:3px; background:var(--cyan); }
+  .barre b { position:absolute; left:50%; top:-3px; bottom:-3px; width:1px; background:var(--doux); }
+  a { color:var(--cyan); }
+</style>
+</head>
+<body>
+<main>
+  <a href="./">← Retour à l'appli</a>
+  <h1>IA en direct</h1>
+  <div class="doux">Chaque minute, 5 IA et leur vote prédisent si le prix montera ou baissera (dans 1 min et dans 40 s). Aucun ordre n'est passé. Le trait au milieu des barres = 50 % (le hasard). Gain « si trade » = spread payé à chaque prédiction.</div>
+  <div class="doux" id="maj"></div>
+  <h2>Taux de réussite par IA</h2>
+  <div class="carte"><table id="ia"></table></div>
+  <h2>Par marché (vote des IA)</h2>
+  <div class="carte"><table id="marches"></table></div>
+  <h2>Dernières prédictions</h2>
+  <div class="carte"><table id="dernieres"></table></div>
+</main>
+<script>
+const NOMS = {logistique:"Régression logistique", foret:"Forêt aléatoire", lightgbm:"LightGBM", neurones:"Réseau de neurones", lstm:"LSTM", vote:"Vote des IA"};
+const pct = (a, b) => b ? (100 * a / b) : null;
+function cellule(s) {
+  if (!s || !s.n) return "<td class='doux'>—</td><td class='doux'>—</td>";
+  const p = pct(s.justes, s.n), c = p >= 50 ? "v" : "r";
+  return `<td><span class="${c}">${p.toFixed(1)} %</span><span class="barre"><i style="width:${Math.min(100, p)}%"></i><b></b></span><span class="doux"> ${s.n}</span></td>` +
+         `<td class="${s.gain_pct >= 0 ? "v" : "r"}">${s.gain_pct >= 0 ? "+" : ""}${s.gain_pct.toFixed(2)} %</td>`;
+}
+const echap = t => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+fetch("ia/journal.json?t=" + Date.now()).then(r => r.json()).then(j => {
+  document.getElementById("maj").textContent = "Mis à jour : " + new Date(j.maj).toLocaleString("fr-FR");
+  const mods = j.modeles || Object.keys(NOMS);
+  let h = "<tr><th>IA</th><th>Réussite 1 min</th><th>Gain si trade</th><th>Réussite 40 s</th><th>Gain si trade</th></tr>";
+  for (const m of mods) { const s = j.stats[m] || {}; h += `<tr><td>${NOMS[m] || echap(m)}</td>${cellule(s["1 min"])}${cellule(s["40 s"])}</tr>`; }
+  document.getElementById("ia").innerHTML = h;
+  h = "<tr><th>Marché</th><th>Réussite 1 min</th><th>Gain si trade</th><th>Réussite 40 s</th><th>Gain si trade</th></tr>";
+  for (const e of (j.marches || [])) { const s = j.stats["vote|" + e] || {}; h += `<tr><td>${echap(e)}</td>${cellule(s["1 min"])}${cellule(s["40 s"])}</tr>`; }
+  document.getElementById("marches").innerHTML = h;
+  h = "<tr><th>Heure</th><th>Marché</th><th>Horizon</th><th>Vote</th><th>Réel</th></tr>";
+  for (const p of (j.dernieres || []).slice(-60).reverse()) {
+    const v = p.sens.vote, ok = p.resultat === v;
+    h += `<tr><td>${new Date(p.heure).toLocaleTimeString("fr-FR")}</td><td>${echap(p.epic)}</td><td>${echap(p.horizon)}</td>` +
+         `<td>${v === "hausse" ? "▲ hausse" : "▼ baisse"} <span class="doux">${Math.round(100 * Math.max(p.probas.vote, 1 - p.probas.vote))} %</span></td>` +
+         `<td class="${p.resultat === "inchangé" ? "doux" : ok ? "v" : "r"}">${echap(p.resultat)}${p.resultat === "inchangé" ? "" : ok ? " ✓" : " ✗"}</td></tr>`;
+  }
+  document.getElementById("dernieres").innerHTML = h;
+}).catch(() => { document.getElementById("maj").textContent = "Pas encore de prédictions : le journal démarre à la prochaine heure pleine."; });
+</script>
+</body>
+</html>

@@ -101,7 +101,7 @@ def indicateurs(d: pd.DataFrame) -> pd.DataFrame:
     f["vol50"] = vol50 / r1.rolling(500, min_periods=100).std()
     g = r1.clip(lower=0).ewm(alpha=1 / 14).mean()
     p = (-r1).clip(lower=0).ewm(alpha=1 / 14).mean()
-    f["rsi"] = 100 - 100 / (1 + g / p.replace(0, np.nan))
+    f["rsi"] = (100 - 100 / (1 + g / p.replace(0, np.nan))).fillna(50)
     for n in (20, 50, 200):
         f[f"ema{n}"] = (c / c.ewm(span=n).mean() - 1) / (vol50 * math.sqrt(n))
     e12, e26 = c.ewm(span=12).mean(), c.ewm(span=26).mean()
@@ -109,14 +109,14 @@ def indicateurs(d: pd.DataFrame) -> pd.DataFrame:
     f["macd"] = (m - m.ewm(span=9).mean()) / (c * vol50)
     for n in (20, 100):
         hh, ll = h.rolling(n).max(), l.rolling(n).min()
-        f[f"pos{n}"] = (c - ll) / (hh - ll).replace(0, np.nan)
+        f[f"pos{n}"] = ((c - ll) / (hh - ll).replace(0, np.nan)).where(hh.notna(), np.nan).fillna(0.5).where(hh.notna())
     ampl = (h - l).replace(0, np.nan)
-    f["corps"] = (c - o) / ampl
-    f["meche_h"] = (h - np.maximum(o, c)) / ampl
-    f["meche_b"] = (np.minimum(o, c) - l) / ampl
+    f["corps"] = ((c - o) / ampl).fillna(0)  # bougie plate (haut = bas) : fréquent en 1 min
+    f["meche_h"] = ((h - np.maximum(o, c)) / ampl).fillna(0)
+    f["meche_b"] = ((np.minimum(o, c) - l) / ampl).fillna(0)
     f["ampl"] = (h - l) / c / vol50
     v = d["volume"].replace(0, np.nan)
-    f["volume"] = np.log(v / v.rolling(50).mean())
+    f["volume"] = np.log(v / v.rolling(50, min_periods=1).mean()).fillna(0)
     f["spread"] = (d.close_ask - d.close_bid) / c / vol50
     heure = d.index.hour + d.index.minute / 60
     f["h_sin"], f["h_cos"] = np.sin(2 * np.pi * heure / 24), np.cos(2 * np.pi * heure / 24)
