@@ -5,7 +5,7 @@
   "chronos2": "prête",
   "timesfm": "prête",
   "tirex": "prête",
-  "toto": "chargement : ModuleNotFoundError: No module named 'pkg_resources'",
+  "toto": "prête",
   "moirai2": "prête",
   "sundial": "prête",
   "timemoe": "prête",
@@ -15,15 +15,16 @@
  "tours": [
   {
    "infos": {
-    "chronos_bolt": 4.93,
-    "chronos2": 17.24,
-    "timesfm": 46.47,
-    "tirex": 25.52,
-    "moirai2": 3.99,
-    "sundial": "trop lente ce tour-ci",
-    "timemoe": "trop lente ce tour-ci",
-    "kronos": "trop lente ce tour-ci",
-    "ttm": 0.45
+    "chronos_bolt": 1.53,
+    "chronos2": 6.44,
+    "timesfm": 5.71,
+    "tirex": 11.48,
+    "toto": 39.64,
+    "moirai2": 1.24,
+    "sundial": 14.3,
+    "timemoe": 11.03,
+    "kronos": 26.62,
+    "ttm": 0.08
    },
    "exemple": {
     "chronos_bolt": [
@@ -49,10 +50,17 @@
     ],
     "tirex": [
      0.611,
-     0.516,
-     0.483,
-     0.643,
-     0.458
+     0.519,
+     0.484,
+     0.642,
+     0.452
+    ],
+    "toto": [
+     0.656,
+     0.266,
+     0.672,
+     0.484,
+     0.234
     ],
     "moirai2": [
      0.456,
@@ -60,6 +68,27 @@
      0.55,
      0.36,
      0.396
+    ],
+    "sundial": [
+     0.9,
+     0.98,
+     0.6,
+     0.02,
+     0.98
+    ],
+    "timemoe": [
+     0.413,
+     0.554,
+     0.476,
+     0.455,
+     0.841
+    ],
+    "kronos": [
+     0.325,
+     0.002,
+     0.396,
+     0.01,
+     0.023
     ],
     "ttm": [
      0.463,
@@ -72,15 +101,16 @@
   },
   {
    "infos": {
-    "sundial": "encore occupée (trop lente)",
-    "timemoe": "encore occupée (trop lente)",
-    "kronos": "encore occupée (trop lente)",
-    "chronos_bolt": 8.62,
-    "chronos2": 20.44,
-    "timesfm": 43.88,
-    "tirex": 30.64,
-    "moirai2": 7.81,
-    "ttm": 1.58
+    "chronos_bolt": 1.01,
+    "chronos2": 5.21,
+    "timesfm": 8.08,
+    "tirex": 11.62,
+    "toto": 34.49,
+    "moirai2": 1.15,
+    "sundial": 5.34,
+    "timemoe": 11.03,
+    "kronos": 28.43,
+    "ttm": 0.08
    },
    "exemple": {
     "chronos_bolt": [
@@ -106,10 +136,17 @@
     ],
     "tirex": [
      0.611,
-     0.516,
-     0.483,
-     0.643,
-     0.458
+     0.519,
+     0.484,
+     0.642,
+     0.452
+    ],
+    "toto": [
+     0.531,
+     0.266,
+     0.578,
+     0.406,
+     0.234
     ],
     "moirai2": [
      0.456,
@@ -117,6 +154,27 @@
      0.55,
      0.36,
      0.396
+    ],
+    "sundial": [
+     0.95,
+     0.98,
+     0.2,
+     0.02,
+     0.98
+    ],
+    "timemoe": [
+     0.413,
+     0.554,
+     0.476,
+     0.455,
+     0.841
+    ],
+    "kronos": [
+     0.191,
+     0.031,
+     0.078,
+     0.004,
+     0.17
     ],
     "ttm": [
      0.463,
@@ -129,15 +187,16 @@
   },
   {
    "infos": {
-    "sundial": "encore occupée (trop lente)",
-    "timemoe": "encore occupée (trop lente)",
-    "kronos": "encore occupée (trop lente)",
-    "chronos_bolt": 4.81,
-    "chronos2": 12.42,
-    "timesfm": 30.25,
-    "tirex": 21.63,
-    "moirai2": 4.54,
-    "ttm": 1.39
+    "chronos_bolt": 1.39,
+    "chronos2": 5.58,
+    "timesfm": 7.56,
+    "tirex": 11.43,
+    "toto": 35.1,
+    "moirai2": 1.18,
+    "sundial": 6.71,
+    "timemoe": 10.28,
+    "kronos": 28.01,
+    "ttm": 0.05
    },
    "exemple": {
     "chronos_bolt": [
@@ -163,10 +222,17 @@
     ],
     "tirex": [
      0.611,
-     0.516,
-     0.483,
-     0.643,
-     0.458
+     0.519,
+     0.484,
+     0.642,
+     0.452
+    ],
+    "toto": [
+     0.469,
+     0.266,
+     0.656,
+     0.5,
+     0.047
     ],
     "moirai2": [
      0.456,
@@ -174,6 +240,27 @@
      0.55,
      0.36,
      0.396
+    ],
+    "sundial": [
+     0.9,
+     0.98,
+     0.45,
+     0.05,
+     0.98
+    ],
+    "timemoe": [
+     0.413,
+     0.554,
+     0.476,
+     0.455,
+     0.841
+    ],
+    "kronos": [
+     0.467,
+     0.017,
+     0.256,
+     0.032,
+     0.095
     ],
     "ttm": [
      0.463,
