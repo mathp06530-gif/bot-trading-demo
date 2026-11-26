@@ -1890,10 +1890,16 @@
    "marche": "SILVER",
    "texte": "Cassure (VENTE) mais ordre REFUSÉ : marché fermé.",
    "strategie": "cassure_4h"
+  },
+  {
+   "date": "2026-11-26T19:59:21Z",
+   "type": "erreur",
+   "marche": "",
+   "texte": "Connexion refusée (429). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.too-many.requests\"}"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T19:54:23Z",
+ "derniere_execution": "2026-11-26T20:05:23Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -13677,6 +13683,46 @@
   },
   {
    "date": "2026-11-26T19:54:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T19:55:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T19:56:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T19:57:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T19:58:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T20:00:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T20:01:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T20:02:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T20:03:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T20:04:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T20:05:23Z",
    "valeur": 92.86
   }
  ],
