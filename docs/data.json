@@ -1847,10 +1847,16 @@
    "marche": "GOLD",
    "texte": "[Rapide] Plus d'accord avec la tendance de fond 1 h / 4 h (confirmé sur 3 bougies) : position fermée (gain/perte : -0.23). Statut : ACCEPTED",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-26T12:25:22Z",
+   "type": "erreur",
+   "marche": "",
+   "texte": "Connexion refusée (429). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.too-many.requests\"}"
   }
  ],
- "statut": "ok",
- "derniere_execution": "2026-11-26T12:24:26Z",
+ "statut": "erreur",
+ "derniere_execution": "2026-11-26T12:25:22Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
