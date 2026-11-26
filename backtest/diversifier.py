@@ -25,7 +25,7 @@ from backtest import serrage  # noqa: E402
 from backtest.audit_chiffres import cond_de, connecter  # noqa: E402
 from backtest.reseaux import supertrend  # noqa: E402
 from backtest.usine import lire  # noqa: E402
-from backtest.web_large import resume, stresser  # noqa: E402
+from backtest.web_large import petits_connus, resume, stresser, trouver_petits  # noqa: E402
 from bot.cassure import signaux_cassure  # noqa: E402
 
 serrage.NUITS_EXACTES = True
@@ -39,7 +39,7 @@ def telecharger(dossier: Path):
     dossier.mkdir(parents=True, exist_ok=True)
     t.DOSSIER = dossier
     api = connecter()
-    for n, e in enumerate(MARCHES):
+    for n, e in enumerate(MARCHES + list(trouver_petits(api, dossier))):
         if (dossier / f"{e}_HOUR_4.csv").exists():
             continue
         if n and n % 5 == 0:
@@ -77,7 +77,8 @@ def sharpe_mensuel(m):
 
 
 def principal(dossier: Path):
-    donnees = {e: lire(dossier, e, "HOUR_4") for e in MARCHES}
+    petits = petits_connus(dossier)
+    donnees = {e: lire(dossier, e, "HOUR_4") for e in MARCHES + [p for p in petits if p not in MARCHES]}
     donnees = {e: d for e, d in donnees.items() if d is not None and len(d) > 3000}
     res, mens = {"donnees": {e: f"{d.index[0]:%m/%Y}-{d.index[-1]:%m/%Y}" for e, d in donnees.items()}}, {}
     lignes = []
@@ -90,7 +91,7 @@ def principal(dossier: Path):
             s2 = resume(f(ds, cs))
             tient = s["entrainement"] > 0 and s["validation"] > 0 and s["test"] > 0 and s2["validation"] + s2["test"] > 0
             mens[(nom, e)] = mensuel(t)
-            lignes.append({"strategie": nom, "marche": e, **s, "stress_jamais_vu": round(s2["validation"] + s2["test"], 1),
+            lignes.append({"strategie": nom, "marche": e, "categorie": petits.get(e, "grands marchés"), **s, "stress_jamais_vu": round(s2["validation"] + s2["test"], 1),
                            "tient": tient, "sharpe_mensuel": sharpe_mensuel(mens[(nom, e)])})
         print(f"{e} : fait", flush=True)
     ref = (mens[("Cassure 4 h", "GOLD")].add(mens[("Cassure 4 h", "SILVER")], fill_value=0)) / 2
@@ -100,6 +101,9 @@ def principal(dossier: Path):
         m = mens[(x["strategie"], x["marche"])].reindex(ix, fill_value=0)
         x["correlation_avec_cassure_or_argent"] = round(float(m.corr(ref)), 2)
     res["marches"] = lignes
+    res["petits_marches"] = {c: {"tiennent": [f"{x['strategie']} {x['marche']}" for x in lignes if x["categorie"] == c and x["tient"]],
+                                 "testes": sum(1 for x in lignes if x["categorie"] == c)}
+                             for c in sorted(set(petits.values()))}
     # portefeuille à risque total égal : poids 1/N (même budget que or+argent à 50/50)
     elus = [x for x in lignes if x["tient"] and x["marche"] not in ("GOLD", "SILVER")
             and x["correlation_avec_cassure_or_argent"] < 0.5]
@@ -119,9 +123,9 @@ def principal(dossier: Path):
     Path(__file__).resolve().parent.joinpath("resultats_diversifier.json").write_text(
         json.dumps(res, indent=1, ensure_ascii=False, default=str))
     for x in sorted(lignes, key=lambda x: -(x["validation"] + x["test"])):
-        print(f"{'TIENT' if x['tient'] else '     '} {x['strategie']:15s} {x['marche']:10s} {x['entrainement']:7.1f} "
+        print(f"{'TIENT' if x['tient'] else '     '} {x['strategie']:15s} {x['marche']:10s} {x['categorie'][:12]:12s} {x['entrainement']:7.1f} "
               f"{x['validation']:7.1f} {x['test']:7.1f} stress={x['stress_jamais_vu']:6.1f} corr={x['correlation_avec_cassure_or_argent']:5.2f} {x['trades']}")
-    print(json.dumps(port, ensure_ascii=False, indent=1))
+    print(json.dumps({"portefeuilles": port, "petits": res["petits_marches"]}, ensure_ascii=False, indent=1))
 
 
 if __name__ == "__main__":

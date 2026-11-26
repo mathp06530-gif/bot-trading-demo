@@ -49,8 +49,9 @@ def telecharger(dossier: Path):
     from backtest import telecharger as t
     dossier.mkdir(parents=True, exist_ok=True)
     t.DOSSIER = dossier
-    a_faire = [(e, "DAY", 1440) for e in JOUR] + [(e, "HOUR", 60) for e in HORAIRE]
     api, deja = connecter(), set()
+    petits = list(trouver_petits(api, dossier))
+    a_faire = [(e, "DAY", 1440) for e in JOUR + petits] + [(e, "HOUR", 60) for e in HORAIRE]
     for n, (epic, unite, minutes) in enumerate(a_faire):
         if (dossier / f"{epic}_{unite}.csv").exists():  # déjà dans le cache GitHub
             continue
@@ -68,6 +69,58 @@ def telecharger(dossier: Path):
         except Exception as e:
             print(f"{epic} {unite} : échec ({str(e)[:120]})")
     api.deconnexion()
+
+
+# 26/11 (demande de Mathis) : les « petits marchés » délaissés par les gros fonds. Epics essayés tels quels, puis
+# recherchés par nom dans la liste des marchés Capital.com si l'epic n'existe pas. Spreads réels (bid/ask) utilisés.
+PETITS = {
+    "matières premières secondaires": ["COCOA", "COFFEEARABICA", "SUGAR", "COTTON", "OATS", "WHEAT", "CORN", "SOYBEAN",
+                                       "ORANGEJUICE", "LUMBER", "LIVECATTLE", "LEANHOGS", "RICE", "HEATINGOIL", "GASOLINE"],
+    "devises exotiques": ["USDTRY", "USDZAR", "USDMXN", "USDPLN", "USDHUF", "USDSEK", "USDNOK", "USDSGD", "USDCNH",
+                          "EURTRY", "USDTHB", "USDCZK"],
+    "petites cryptos": ["ADAUSD", "DOTUSD", "LINKUSD", "AVAXUSD", "ATOMUSD", "BCHUSD", "XLMUSD", "UNIUSD", "TRXUSD",
+                        "ALGOUSD", "EOSUSD", "ETCUSD"],
+    "petits indices": ["NL25", "ES35", "IT40", "CH20", "CN50", "SG25", "IN50", "SE30", "PL20", "SA40", "MX35", "NO25"],
+    "petites actions": ["PLUG", "RIOT", "MARA", "SOFI", "GME", "AMC", "LCID", "RIVN", "NIO", "SNAP", "PLTR", "COIN"],
+}
+RECHERCHE = {"COCOA": "Cocoa", "COFFEEARABICA": "Coffee", "SUGAR": "Sugar", "COTTON": "Cotton", "OATS": "Oats",
+             "WHEAT": "Wheat", "CORN": "Corn", "SOYBEAN": "Soybean", "ORANGEJUICE": "Orange Juice", "LUMBER": "Lumber",
+             "LIVECATTLE": "Live Cattle", "LEANHOGS": "Lean Hogs", "RICE": "Rice", "HEATINGOIL": "Heating Oil",
+             "GASOLINE": "Gasoline", "NL25": "Netherlands 25", "ES35": "Spain 35", "IT40": "Italy 40",
+             "CH20": "Switzerland 20", "CN50": "China A50", "SG25": "Singapore", "IN50": "India 50", "SE30": "Sweden 30",
+             "PL20": "Poland 20", "SA40": "South Africa 40", "MX35": "Mexico", "NO25": "Norway 25"}
+
+
+def trouver_petits(api, dossier: Path) -> dict:
+    """{epic: catégorie} des petits marchés qui existent vraiment chez Capital.com (écrit dans petits_marches.json)."""
+    f = dossier / "petits_marches.json"
+    if f.exists():
+        return json.loads(f.read_text())
+    trouves = {}
+    for cat, liste in PETITS.items():
+        for epic in liste:
+            vrai = None
+            try:
+                api.marche(epic)
+                vrai = epic
+            except Exception:
+                if epic in RECHERCHE:
+                    try:
+                        r = api._requete("GET", "/markets", params={"searchTerm": RECHERCHE[epic]}).get("markets", [])
+                        r = [m for m in r if m.get("instrumentType") in ("COMMODITIES", "INDICES")]
+                        vrai = r[0]["epic"] if r else None
+                    except Exception:
+                        vrai = None
+            if vrai and vrai not in trouves:
+                trouves[vrai] = cat
+            print(f"petit marché {epic} -> {vrai}", flush=True)
+    f.write_text(json.dumps(trouves, ensure_ascii=False))
+    return trouves
+
+
+def petits_connus(dossier: Path) -> dict:
+    f = dossier / "petits_marches.json"
+    return json.loads(f.read_text()) if f.exists() else {}
 
 
 # =========================================================================== outils
@@ -808,7 +861,8 @@ def principal(dossier: Path, hasard_graines=2):
     f_dates = Path(__file__).resolve().parent / "dates_annonces.json"
     DATES = json.loads(f_dates.read_text()) if f_dates.exists() else {}
     DATES["FOMC"] = FOMC
-    jour = {e: lire(dossier, e, "DAY") for e in JOUR}
+    petits = petits_connus(dossier)
+    jour = {e: lire(dossier, e, "DAY") for e in JOUR + [p for p in petits if p not in JOUR]}
     jour = {e: d for e, d in jour.items() if d is not None and len(d) > 500}
     heure = {e: lire(dossier, e, "HOUR") for e in HORAIRE}
     heure = {e: d for e, d in heure.items() if d is not None and len(d) > 5000}
@@ -893,6 +947,29 @@ def principal(dossier: Path, hasard_graines=2):
                      "t_minimum_bonferroni": round(t_bonf, 2)}
     res["resultats"] = lignes
     res["bilan"] = {v: sum(1 for x in lignes if x["verdict"] == v) for v in sorted({x["verdict"] for x in lignes})}
+    for x in lignes:
+        x["categorie"] = petits.get(x["marche"], "grands marchés")
+    res["petits_marches"] = {
+        cat: {"marches_trouves": [e for e, c in petits.items() if c == cat and e in jour],
+              "spread_median_pct": {e: round(float(((jour[e].close_ask - jour[e].close_bid) / jour[e].close_bid).median() * 100), 3)
+                                    for e, c in petits.items() if c == cat and e in jour},
+              "verdicts": {v: sum(1 for x in lignes if x["categorie"] == cat and x["verdict"] == v)
+                           for v in {x["verdict"] for x in lignes if x["categorie"] == cat}},
+              "meilleurs": sorted([(x["famille"], x["marche"], x["reglage"], x["validation"], x["test"], x["t_jv"], x["verdict"])
+                                   for x in lignes if x["categorie"] == cat and x.get("reglage")], key=lambda y: -y[5])[:8]}
+        for cat in PETITS}
+    # tableau demandé par Mathis : idée x meilleur marché (choisi sur 2017-2021) x résultat jamais vu
+    tab = {}
+    for x in lignes:
+        if not x.get("reglage") or x["entrainement"] <= 0:
+            continue
+        b = tab.get(x["famille"])
+        if b is None or x["entrainement"] > b["entrainement"]:
+            tab[x["famille"]] = x
+    res["tableau_idee_meilleur_marche"] = [
+        {"idee": k, "meilleur_marche_2017_2021": v["marche"], "reglage": v["reglage"], "R_2017_21": v["entrainement"],
+         "R_2022_mi24": v["validation"], "R_mi24_26": v["test"], "t": v["t_jv"], "verdict": v["verdict"],
+         "marches_testes": sum(1 for y in lignes if y["famille"] == k)} for k, v in tab.items()]
 
     # contrôle : prix mélangés (aucun effet possible) -> combien « passent » par hasard ?
     hz = []
