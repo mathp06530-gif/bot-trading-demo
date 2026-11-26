@@ -1792,7 +1792,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T08:48:26Z",
+ "derniere_execution": "2026-11-26T08:49:27Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10941,6 +10941,10 @@
   {
    "date": "2026-11-26T08:48:26Z",
    "valeur": 93.11
+  },
+  {
+   "date": "2026-11-26T08:49:27Z",
+   "valeur": 93.11
   }
  ],
  "compte": {
@@ -11451,7 +11455,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3569.13,
+   "prix": 3575.04,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3911.81,
@@ -11463,7 +11467,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.5415,
+   "prix": 41.801,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.38,
@@ -11493,9 +11497,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3574.68,
+    "prix": 3575.24,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 38.07 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 38.64 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -12193,7 +12197,7 @@
   "deals": {},
   "marches": {
    "GOLD": {
-    "prix": 3569.13,
+    "prix": 3575.04,
     "ema200": 3913.07,
     "atr": 51.69,
     "trou_achat_atr": -0.55,
@@ -12201,7 +12205,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 41.54,
+    "prix": 41.8,
     "ema200": 50.42,
     "atr": 1.13,
     "trou_achat_atr": -0.33,
@@ -12217,7 +12221,7 @@
   "deals": {},
   "marches": {
    "ETHUSD": {
-    "prix": 1688.86,
+    "prix": 1697.6,
     "ligne": 1735.66,
     "sens": -1,
     "atr": 38.88,
@@ -12231,7 +12235,7 @@
   "deals": {},
   "marches": {
    "NATURALGAS": {
-    "prix": 3.5008,
+    "prix": 3.50255,
     "sens": -1,
     "atr": 0.07279,
     "regle": "MACD 24/52/18, achat et vente, seulement si marché calme (ADX < 20), stop garanti 2.5 ATR, objectif 1 R, suiveur 3 ATR",
@@ -12250,51 +12254,51 @@
   "cassure_4h-GOLD": [
    1795680000,
    3564.91,
-   3571.44,
+   3575.58,
    3562.44,
-   3569.13
+   3575.04
   ],
   "cassure_4h-SILVER": [
    1795680000,
    41.35,
-   41.57,
+   41.8,
    41.31,
-   41.54
+   41.8
   ],
   "rapide-GOLD": [
    1795682700,
    3569.02,
    3575.58,
    3568.24,
-   3574.68
+   3575.24
   ],
   "elan_4h-GOLD": [
    1795680000,
    3564.91,
-   3571.44,
+   3575.58,
    3562.44,
-   3569.13
+   3575.04
   ],
   "elan_4h-SILVER": [
    1795680000,
    41.35,
-   41.57,
+   41.8,
    41.31,
-   41.54
+   41.8
   ],
   "supertrend_4h-ETHUSD": [
    1795680000,
    1687.69,
-   1690.69,
+   1697.86,
    1685.31,
-   1688.86
+   1697.6
   ],
   "usine-NATURALGAS": [
    1795680000,
    3.5273,
    3.5348,
-   3.4998,
-   3.5008
+   3.4993,
+   3.50255
   ],
   "usine-TSLA": [
    1795651200,
@@ -12517,13 +12521,13 @@
  "_pauses_marches_notees": {},
  "simulations": {
   "00000000-76c8-6a0d-049f-c46d0015549e": {
-   "p_stop": 54.8,
-   "p_objectif": 7.5,
-   "p_aucun": 37.7,
-   "p_gain_fin": 34.6,
-   "prix_p5": 3517.24,
-   "prix_median": 3582.36,
-   "prix_p95": 3644.02,
+   "p_stop": 56.0,
+   "p_objectif": 7.2,
+   "p_aucun": 36.8,
+   "p_gain_fin": 34.1,
+   "prix_p5": 3517.79,
+   "prix_median": 3582.93,
+   "prix_p95": 3644.6,
    "objectif": 3512.58,
    "objectif_type": "gain de 2 R",
    "objectif_r": 2.0,
@@ -12531,10 +12535,10 @@
    "horizon": "4 h",
    "tirages": 4000,
    "bougies_utilisees": 298,
-   "prix_depart": 3574.68,
+   "prix_depart": 3575.24,
    "calcule_sur": "2026-11-26T08:45:00",
    "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
-   "verdict": "Penche nettement vers le stop (12 % des cas tranchés, équilibre 33 %)."
+   "verdict": "Penche nettement vers le stop (11 % des cas tranchés, équilibre 33 %)."
   }
  }
 }
