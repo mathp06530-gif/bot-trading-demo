@@ -6,65 +6,293 @@
 <meta name="theme-color" content="#0a0e16">
 <title>IA en direct</title>
 <style>
-  :root { --fond:#0a0e16; --carte:#121927; --carte2:#182133; --bord:rgba(255,255,255,.07); --texte:#e8edf7; --doux:#8b97ad;
-          --vert:#16c784; --rouge:#ea3943; --cyan:#22d3ee; --police:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
-  html { color-scheme: dark; -webkit-text-size-adjust:100%; }
-  body { margin:0; background:var(--fond); color:var(--texte); font:15px/1.5 var(--police); }
-  main { max-width:980px; margin:0 auto; padding:20px 16px 60px; }
-  h1 { font-size:22px; margin:0 0 4px; } h2 { font-size:17px; margin:26px 0 10px; }
-  .doux { color:var(--doux); font-size:13px; }
-  .carte { background:var(--carte); border:1px solid var(--bord); border-radius:16px; padding:14px; overflow-x:auto; }
-  table { border-collapse:collapse; width:100%; font-size:14px; }
+  :root {
+    --fond:#0a0e16; --fond2:#0e131d; --carte:#121927; --carte2:#182133; --bord:rgba(255,255,255,.07); --bord2:rgba(255,255,255,.12);
+    --texte:#e8edf7; --doux:#8b97ad; --faible:#5d6980;
+    --vert:#16c784; --rouge:#ea3943; --bleu:#4f8cff; --cyan:#22d3ee; --orange:#f5a524; --violet:#8b5cf6;
+    --grad:linear-gradient(135deg,#6366f1 0%,#22d3ee 100%);
+    --police:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  }
+  * { box-sizing:border-box; }
+  html { color-scheme:dark; -webkit-text-size-adjust:100%; }
+  body { margin:0; background:var(--fond); color:var(--texte); font:14px/1.5 var(--police); -webkit-font-smoothing:antialiased; }
+  a { color:var(--cyan); text-decoration:none; }
+  main { max-width:1200px; margin:0 auto; padding:18px 16px 70px; }
+  header { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; justify-content:space-between; margin-bottom:14px; }
+  h1 { font-size:24px; margin:4px 0 2px; letter-spacing:-.01em; }
+  h1 span { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  h2 { font-size:15px; margin:0 0 10px; font-weight:600; }
+  .doux { color:var(--doux); } .petit { font-size:12px; } .faible { color:var(--faible); }
+  .grille { display:grid; gap:12px; }
+  .kpis { grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); margin-bottom:12px; }
+  .deux { grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); }
+  @media (max-width:860px) { .deux { grid-template-columns:minmax(0,1fr); } }
+  .carte { background:var(--carte); border:1px solid var(--bord); border-radius:16px; padding:14px; min-width:0; }
+  .kpi .val { font-size:24px; font-weight:650; letter-spacing:-.02em; margin-top:2px; font-variant-numeric:tabular-nums; }
+  .kpi .l { color:var(--doux); font-size:12px; }
+  .defile { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; font-size:13px; font-variant-numeric:tabular-nums; }
   th, td { text-align:left; padding:7px 8px; border-bottom:1px solid var(--bord); white-space:nowrap; }
-  th { color:var(--doux); font-weight:500; font-size:12px; }
-  .v { color:var(--vert); } .r { color:var(--rouge); }
-  .barre { height:6px; border-radius:3px; background:var(--carte2); width:90px; display:inline-block; vertical-align:middle; margin-left:6px; position:relative; }
-  .barre i { position:absolute; left:0; top:0; bottom:0; border-radius:3px; background:var(--cyan); }
-  .barre b { position:absolute; left:50%; top:-3px; bottom:-3px; width:1px; background:var(--doux); }
-  a { color:var(--cyan); }
+  th { color:var(--doux); font-weight:500; font-size:11.5px; position:sticky; top:0; background:var(--carte); cursor:pointer; user-select:none; }
+  tr:last-child td { border-bottom:0; }
+  .v { color:var(--vert); } .r { color:var(--rouge); } .o { color:var(--orange); }
+  .barre { position:relative; display:inline-block; width:110px; height:8px; border-radius:4px; background:var(--carte2); vertical-align:middle; margin-left:8px; }
+  .barre i { position:absolute; top:0; bottom:0; border-radius:4px; }
+  .barre b { position:absolute; left:50%; top:-3px; bottom:-3px; width:2px; background:var(--doux); border-radius:1px; }
+  .pastille { display:inline-block; padding:1px 8px; border-radius:999px; font-size:11.5px; background:var(--carte2); color:var(--doux); }
+  .pastille.ok { color:var(--vert); background:rgba(22,199,132,.12); } .pastille.ko { color:var(--rouge); background:rgba(234,57,67,.12); }
+  .pastille.att { color:var(--orange); background:rgba(245,165,36,.12); }
+  .filtres { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+  input, select { background:var(--carte2); color:var(--texte); border:1px solid var(--bord2); border-radius:10px; padding:7px 10px; font:inherit; min-width:0; }
+  input { flex:1 1 180px; }
+  .chaleur td.c { text-align:center; font-size:12px; border:2px solid var(--carte); border-radius:6px; min-width:58px; }
+  .proba { display:inline-flex; align-items:center; gap:6px; }
+  .proba .j { width:64px; height:8px; border-radius:4px; background:var(--carte2); position:relative; overflow:hidden; }
+  .proba .j i { position:absolute; top:0; bottom:0; }
+  .proba .j b { position:absolute; left:50%; top:0; bottom:0; width:1px; background:var(--doux); }
+  .note { font-size:12px; color:var(--doux); margin-top:8px; }
+  .haut { max-height:520px; overflow:auto; }
+  svg text { fill:var(--doux); font-size:10px; }
+  #infobulle { position:fixed; pointer-events:none; background:#0b1220; border:1px solid var(--bord2); border-radius:8px; padding:6px 9px; font-size:12px; display:none; z-index:9; max-width:260px; }
 </style>
 </head>
 <body>
 <main>
-  <a href="./">← Retour à l'appli</a>
-  <h1>IA en direct</h1>
-  <div class="doux">Chaque minute, 5 IA et leur vote prédisent si le prix montera ou baissera (dans 1 min et dans 40 s). Aucun ordre n'est passé. Le trait au milieu des barres = 50 % (le hasard). Gain « si trade » = spread payé à chaque prédiction.</div>
-  <div class="doux" id="maj"></div>
-  <h2>Taux de réussite par IA</h2>
-  <div class="carte"><table id="ia"></table></div>
-  <h2>Par marché (vote des IA)</h2>
-  <div class="carte"><table id="marches"></table></div>
-  <h2>Dernières prédictions</h2>
-  <div class="carte"><table id="dernieres"></table></div>
+  <header>
+    <div>
+      <a href="./">← Retour à l'appli</a>
+      <h1><span>IA en direct</span> · direction à 1 minute</h1>
+      <div class="doux petit">Toutes les IA reçoivent les mêmes bougies 1 min en temps réel et disent : plus haut ou plus bas dans 60 s. Aucun ordre n'est passé. 50 % = le hasard.</div>
+    </div>
+    <div class="doux petit" id="maj">Chargement…</div>
+  </header>
+
+  <section class="grille kpis" id="kpis"></section>
+
+  <section class="grille deux">
+    <div class="carte">
+      <h2>Classement des IA</h2>
+      <div class="defile"><table id="classement"></table></div>
+      <div class="note">Barre : réussite, le trait = 50 %. « Gain si trade » = somme des mouvements dans le sens prédit moins le spread payé à chaque fois (en % du prix). « Sûre » = significativement au-dessus du hasard.</div>
+    </div>
+    <div class="carte">
+      <h2>Réussite par famille de marchés</h2>
+      <div class="defile"><table id="chaleur" class="chaleur"></table></div>
+      <div class="note">Vert = mieux que le hasard, rouge = moins bien, gris = 50 % ou trop peu de prédictions. Survole une case pour le détail.</div>
+    </div>
+  </section>
+
+  <section class="carte" style="margin-top:12px">
+    <h2>Probabilités en ce moment (dernière heure)</h2>
+    <div class="filtres">
+      <input id="cherche" placeholder="Chercher un marché (or, BTC, Tesla…)">
+      <select id="type"><option value="">Tous les types</option></select>
+      <select id="ia"></select>
+      <select id="tri"><option value="conf">Plus sûres d'abord</option><option value="hausse">Hausse d'abord</option><option value="baisse">Baisse d'abord</option><option value="nom">Nom</option></select>
+    </div>
+    <div class="defile haut"><table id="probas"></table></div>
+  </section>
+
+  <section class="grille deux" style="margin-top:12px">
+    <div class="carte">
+      <h2>Dernières prédictions jugées</h2>
+      <div class="defile haut"><table id="dernieres"></table></div>
+    </div>
+    <div class="carte">
+      <h2>État des IA et temps réel</h2>
+      <div id="delais"></div>
+      <div class="defile"><table id="etat"></table></div>
+    </div>
+  </section>
+
+  <section class="carte" style="margin-top:12px">
+    <h2>Par marché</h2>
+    <div class="filtres"><input id="cherche2" placeholder="Chercher un marché"><select id="ia2"></select></div>
+    <div class="defile haut"><table id="marches"></table></div>
+  </section>
 </main>
+<div id="infobulle"></div>
 <script>
-const NOMS = {logistique:"Régression logistique", foret:"Forêt aléatoire", lightgbm:"LightGBM", neurones:"Réseau de neurones", lstm:"LSTM", vote:"Vote des IA"};
-const pct = (a, b) => b ? (100 * a / b) : null;
-function cellule(s) {
-  if (!s || !s.n) return "<td class='doux'>—</td><td class='doux'>—</td>";
-  const p = pct(s.justes, s.n), c = p >= 50 ? "v" : "r";
-  return `<td><span class="${c}">${p.toFixed(1)} %</span><span class="barre"><i style="width:${Math.min(100, p)}%"></i><b></b></span><span class="doux"> ${s.n}</span></td>` +
-         `<td class="${s.gain_pct >= 0 ? "v" : "r"}">${s.gain_pct >= 0 ? "+" : ""}${s.gain_pct.toFixed(2)} %</td>`;
+const SOURCE = "https://raw.githubusercontent.com/mathp06530-gif/bot-trading-demo/ia-journal/";
+const TYPES = {SHARES:"Actions", CURRENCIES:"Devises", INDICES:"Indices", COMMODITIES:"Matières premières", CRYPTOCURRENCIES:"Cryptos"};
+let S = null, V = null, M = {};
+const $ = id => document.getElementById(id);
+const echap = t => String(t ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nomIA = m => (V && V.noms && V.noms[m]) || m;
+const nomMarche = e => (M[e] && M[e].nom) || e;
+const typeMarche = e => (M[e] && M[e].type) || "?";
+const fmt = (x, d=1) => x == null || isNaN(x) ? "—" : x.toLocaleString("fr-FR", {minimumFractionDigits:d, maximumFractionDigits:d});
+
+function sur(n, j) { // au-dessus du hasard au seuil ~95 % ?
+  if (n < 100) return null;
+  const z = (j / n - 0.5) / Math.sqrt(0.25 / n);
+  return z >= 1.96 ? "ok" : z <= -1.96 ? "ko" : "att";
 }
-const echap = t => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-fetch("ia/journal.json?t=" + Date.now()).then(r => r.json()).then(j => {
-  document.getElementById("maj").textContent = "Mis à jour : " + new Date(j.maj).toLocaleString("fr-FR");
-  const mods = j.modeles || Object.keys(NOMS);
-  let h = "<tr><th>IA</th><th>Réussite 1 min</th><th>Gain si trade</th><th>Réussite 40 s</th><th>Gain si trade</th></tr>";
-  for (const m of mods) { const s = j.stats[m] || {}; h += `<tr><td>${NOMS[m] || echap(m)}</td>${cellule(s["1 min"])}${cellule(s["40 s"])}</tr>`; }
-  document.getElementById("ia").innerHTML = h;
-  h = "<tr><th>Marché</th><th>Réussite 1 min</th><th>Gain si trade</th><th>Réussite 40 s</th><th>Gain si trade</th></tr>";
-  for (const e of (j.marches || [])) { const s = j.stats["vote|" + e] || {}; h += `<tr><td>${echap(e)}</td>${cellule(s["1 min"])}${cellule(s["40 s"])}</tr>`; }
-  document.getElementById("marches").innerHTML = h;
-  h = "<tr><th>Heure</th><th>Marché</th><th>Horizon</th><th>Vote</th><th>Réel</th></tr>";
-  for (const p of (j.dernieres || []).slice(-60).reverse()) {
-    const v = p.sens.vote, ok = p.resultat === v;
-    h += `<tr><td>${new Date(p.heure).toLocaleTimeString("fr-FR")}</td><td>${echap(p.epic)}</td><td>${echap(p.horizon)}</td>` +
-         `<td>${v === "hausse" ? "▲ hausse" : "▼ baisse"} <span class="doux">${Math.round(100 * Math.max(p.probas.vote, 1 - p.probas.vote))} %</span></td>` +
-         `<td class="${p.resultat === "inchangé" ? "doux" : ok ? "v" : "r"}">${echap(p.resultat)}${p.resultat === "inchangé" ? "" : ok ? " ✓" : " ✗"}</td></tr>`;
+function barre(p) {
+  const x = Math.max(0, Math.min(100, p));
+  const g = x >= 50 ? `left:50%;width:${x - 50}%;background:var(--vert)` : `left:${x}%;width:${50 - x}%;background:var(--rouge)`;
+  return `<span class="barre"><i style="${g}"></i><b></b></span>`;
+}
+function totaux() {
+  const t = {};
+  S.modeles.forEach((m, k) => { let n = 0, j = 0, g = 0; S.n.forEach((r, i) => { n += r[k]; j += S.justes[i][k]; g += S.gain[i][k]; }); t[m] = {n, j, g}; });
+  return t;
+}
+function couleurChaleur(p, n) { // divergent : rouge <- gris (50 %) -> vert
+  if (n < 50) return "background:var(--carte2);color:var(--faible)";
+  const d = Math.max(-1, Math.min(1, (p - 50) / 6));
+  const a = Math.abs(d) * 0.55 + 0.08;
+  return d >= 0 ? `background:rgba(22,199,132,${a})` : `background:rgba(234,57,67,${a})`;
+}
+function infobulle(ev, html) {
+  const b = $("infobulle");
+  if (!html) { b.style.display = "none"; return; }
+  b.innerHTML = html; b.style.display = "block";
+  b.style.left = Math.min(ev.clientX + 12, innerWidth - 270) + "px"; b.style.top = (ev.clientY + 12) + "px";
+}
+
+function kpis(t) {
+  const total = Object.entries(t).filter(([m]) => !["vote","arbitre"].includes(m));
+  const nTot = (t.vote || {n:0}).n;
+  const meilleure = total.filter(([, v]) => v.n >= 300).sort((a, b) => b[1].j / b[1].n - a[1].j / a[1].n)[0];
+  const actives = Object.values(V.etat_ia || {}).filter(e => e === "prête").length;
+  const vote = t.vote && t.vote.n ? 100 * t.vote.j / t.vote.n : null;
+  const arb = t.arbitre && t.arbitre.n ? 100 * t.arbitre.j / t.arbitre.n : null;
+  const tiles = [
+    ["Prédictions jugées", nTot.toLocaleString("fr-FR"), "par IA, depuis le début"],
+    ["Vote de toutes les IA", vote == null ? "—" : fmt(vote) + " %", "de bonnes directions"],
+    ["Vote arbitré", arb == null ? "—" : fmt(arb) + " %", "pondéré par les résultats réels"],
+    ["Meilleure IA", meilleure ? fmt(100 * meilleure[1].j / meilleure[1].n) + " %" : "—", meilleure ? nomIA(meilleure[0]) : "300 prédictions minimum"],
+    ["IA actives", `${actives} / ${Object.keys(V.etat_ia || {}).length}`, "chargées et qui répondent"],
+    ["Marchés", `${(V.marches_ouverts || 0).toLocaleString("fr-FR")} ouverts`, `${(V.marches_connus || 0).toLocaleString("fr-FR")} connus chez Capital.com`],
+  ];
+  $("kpis").innerHTML = tiles.map(([l, v, s]) => `<div class="carte kpi"><div class="l">${l}</div><div class="val">${echap(v)}</div><div class="doux petit">${echap(s)}</div></div>`).join("");
+}
+
+let triClassement = "reussite";
+function classement(t) {
+  const lignes = Object.entries(t).map(([m, v]) => ({m, n:v.n, p: v.n ? 100 * v.j / v.n : null, g:v.g, s: sur(v.n, v.j)}));
+  lignes.sort((a, b) => triClassement === "gain" ? b.g - a.g : triClassement === "n" ? b.n - a.n : (b.p ?? -1) - (a.p ?? -1));
+  let h = `<tr><th>#</th><th>IA</th><th data-t="reussite">Réussite ▾</th><th data-t="n">Jugées</th><th data-t="gain">Gain si trade</th><th>Verdict</th><th>Poids arbitre</th></tr>`;
+  lignes.forEach((x, i) => {
+    const etiq = x.s === "ok" ? `<span class="pastille ok">✓ mieux que le hasard</span>` : x.s === "ko" ? `<span class="pastille ko">✗ moins bien</span>` : x.s === "att" ? `<span class="pastille att">≈ hasard</span>` : `<span class="pastille">trop tôt</span>`;
+    const w = (V.poids_arbitre || {})[x.m];
+    h += `<tr><td class="faible">${i + 1}</td><td>${echap(nomIA(x.m))}</td><td>${x.p == null ? "—" : fmt(x.p, 2) + " %"}${x.p == null ? "" : barre(x.p)}</td>` +
+         `<td>${x.n.toLocaleString("fr-FR")}</td><td class="${x.g >= 0 ? "v" : "r"}">${x.g >= 0 ? "+" : ""}${fmt(x.g, 2)} %</td><td>${etiq}</td><td>${w == null ? "—" : fmt(w * 100, 2)}</td></tr>`;
+  });
+  $("classement").innerHTML = h;
+  $("classement").querySelectorAll("th[data-t]").forEach(th => th.onclick = () => { triClassement = th.dataset.t; classement(t); });
+}
+
+function chaleur() {
+  const types = Object.keys(S.types || {});
+  const mods = S.modeles;
+  let h = `<tr><th>IA</th>${types.map(ty => `<th>${echap(TYPES[ty] || ty)}</th>`).join("")}</tr>`;
+  for (const m of mods) {
+    h += `<tr><td>${echap(nomIA(m))}</td>`;
+    for (const ty of types) {
+      const [n, j] = (S.types[ty] || {})[m] || [0, 0];
+      const p = n ? 100 * j / n : 50;
+      h += `<td class="c" style="${couleurChaleur(p, n)}" data-i="${echap(nomIA(m))} · ${echap(TYPES[ty] || ty)}<br>${n ? fmt(p, 2) + " % sur " + n.toLocaleString("fr-FR") : "pas encore jugée"}">${n >= 50 ? fmt(p, 1) : "·"}</td>`;
+    }
+    h += "</tr>";
   }
-  document.getElementById("dernieres").innerHTML = h;
-}).catch(() => { document.getElementById("maj").textContent = "Pas encore de prédictions : le journal démarre à la prochaine heure pleine."; });
+  $("chaleur").innerHTML = types.length ? h : `<tr><td class="doux">Pas encore de prédictions jugées : les cases se remplissent après les premières minutes.</td></tr>`;
+  $("chaleur").querySelectorAll("td.c").forEach(td => { td.onmousemove = e => infobulle(e, td.dataset.i); td.onmouseleave = e => infobulle(e, null); });
+}
+
+function remplirSelects() {
+  const opts = ["arbitre", "vote", ...S.modeles.filter(m => !["vote","arbitre"].includes(m))];
+  for (const id of ["ia", "ia2"]) { const s = $(id); const v = s.value; s.innerHTML = opts.map(m => `<option value="${m}">${echap(nomIA(m))}</option>`).join(""); if (v) s.value = v; }
+  const ty = [...new Set(Object.keys(V.probas || {}).map(typeMarche))];
+  const s = $("type"), v = s.value;
+  s.innerHTML = `<option value="">Tous les types</option>` + ty.map(x => `<option value="${x}">${echap(TYPES[x] || x)}</option>`).join(""); s.value = v;
+}
+
+function probas() {
+  const q = $("cherche").value.trim().toLowerCase(), ty = $("type").value, ia = $("ia").value || "arbitre", tri = $("tri").value;
+  let l = Object.entries(V.probas || {}).map(([e, v]) => ({e, t:v.t, p:v.p[ia], tout:v.p}))
+    .filter(x => x.p != null && (!q || nomMarche(x.e).toLowerCase().includes(q) || x.e.toLowerCase().includes(q)) && (!ty || typeMarche(x.e) === ty));
+  l.sort((a, b) => tri === "hausse" ? b.p - a.p : tri === "baisse" ? a.p - b.p : tri === "nom" ? nomMarche(a.e).localeCompare(nomMarche(b.e)) : Math.abs(b.p - .5) - Math.abs(a.p - .5));
+  let h = `<tr><th>Marché</th><th>Type</th><th>${echap(nomIA(ia))}</th><th>IA d'accord</th><th>Heure</th></tr>`;
+  for (const x of l.slice(0, 400)) {
+    const hausse = x.p > .5, pc = Math.round(100 * Math.max(x.p, 1 - x.p));
+    const autres = Object.entries(x.tout).filter(([m]) => !["vote","arbitre"].includes(m));
+    const accord = autres.filter(([, p]) => (p > .5) === hausse).length;
+    const w = Math.abs(x.p - .5) * 100;
+    const g = hausse ? `left:50%;width:${w}%;background:var(--vert)` : `left:${50 - w}%;width:${w}%;background:var(--rouge)`;
+    h += `<tr><td>${echap(nomMarche(x.e))} <span class="faible petit">${echap(x.e)}</span></td><td class="doux">${echap(TYPES[typeMarche(x.e)] || typeMarche(x.e))}</td>` +
+         `<td><span class="proba"><span class="${hausse ? "v" : "r"}">${hausse ? "▲ hausse" : "▼ baisse"} ${pc} %</span><span class="j"><i style="${g}"></i><b></b></span></span></td>` +
+         `<td>${accord} / ${autres.length}</td><td class="doux">${new Date(x.t).toLocaleTimeString("fr-FR")}</td></tr>`;
+  }
+  $("probas").innerHTML = l.length ? h : `<tr><td class="doux">Aucune probabilité pour ce filtre (marchés fermés ou pas encore passés dans la rotation).</td></tr>`;
+}
+
+function dernieres() {
+  let h = `<tr><th>Heure</th><th>Marché</th><th>Arbitre</th><th>Vote</th><th>Réel</th></tr>`;
+  for (const p of (V.dernieres || []).slice(-120).reverse()) {
+    const cel = pr => { const ok = (pr > .5) === (p.reel === "hausse"); return `<td class="${ok ? "v" : "r"}">${pr > .5 ? "▲" : "▼"} ${Math.round(100 * Math.max(pr, 1 - pr))} % ${ok ? "✓" : "✗"}</td>`; };
+    h += `<tr><td class="doux">${new Date(p.t).toLocaleTimeString("fr-FR")}</td><td>${echap(nomMarche(p.epic))}</td>${cel(p.arbitre)}${cel(p.vote)}` +
+         `<td>${p.reel === "hausse" ? "▲" : "▼"} ${p.variation_pct >= 0 ? "+" : ""}${fmt(p.variation_pct, 3)} %</td></tr>`;
+  }
+  $("dernieres").innerHTML = (V.dernieres || []).length ? h : `<tr><td class="doux">Les premières prédictions sont jugées 60 s après avoir été faites.</td></tr>`;
+}
+
+function etat() {
+  const d = V.delais || {};
+  const hist = (V.historique_delais || []).map(x => x[1]);
+  let svg = "";
+  if (hist.length > 1) {
+    const W = 320, H = 46, mx = Math.max(...hist, 1);
+    const pts = hist.map((v, i) => `${(i / (hist.length - 1) * W).toFixed(1)},${(H - 4 - v / mx * (H - 10)).toFixed(1)}`).join(" ");
+    svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img" aria-label="Délai prix → prédiction"><polyline points="${pts}" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linejoin="round"/><text x="0" y="10">max ${fmt(mx, 0)} s</text></svg>`;
+  }
+  $("delais").innerHTML = `<div class="grille kpis" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">` +
+    `<div class="carte kpi"><div class="l">Prix frais → prédiction</div><div class="val">${fmt(d.prix_frais_vers_prediction_s)} s</div><div class="doux petit">temps de calcul de toutes les IA</div></div>` +
+    `<div class="carte kpi"><div class="l">Marchés par minute</div><div class="val">${d.marches_predits ?? "—"}</div><div class="doux petit">rotation sur les marchés ouverts</div></div></div>` + svg;
+  let h = `<tr><th>IA</th><th>État</th><th>Calcul</th></tr>`;
+  for (const [m, e] of Object.entries(V.etat_ia || {})) {
+    const ok = e === "prête";
+    h += `<tr><td>${echap(nomIA(m))}</td><td><span class="pastille ${ok ? "ok" : /lente|occup/.test(e) ? "att" : "ko"}" title="${echap(e)}">${ok ? "prête" : echap(String(e).slice(0, 40))}</span></td><td class="doux">${(V.vitesse || {})[m] != null ? fmt(V.vitesse[m], 2) + " s" : "—"}</td></tr>`;
+  }
+  $("etat").innerHTML = h;
+}
+
+function marches() {
+  const q = $("cherche2").value.trim().toLowerCase(), ia = $("ia2").value || "arbitre";
+  const k = S.modeles.indexOf(ia);
+  let l = S.marches.map((e, i) => ({e, n:S.n[i][k] || 0, j:S.justes[i][k] || 0, g:S.gain[i][k] || 0}))
+    .filter(x => x.n && (!q || nomMarche(x.e).toLowerCase().includes(q) || x.e.toLowerCase().includes(q)));
+  l.sort((a, b) => b.n - a.n);
+  let h = `<tr><th>Marché</th><th>Type</th><th>Réussite (${echap(nomIA(ia))})</th><th>Jugées</th><th>Gain si trade</th></tr>`;
+  for (const x of l.slice(0, 500)) {
+    const p = 100 * x.j / x.n;
+    h += `<tr><td>${echap(nomMarche(x.e))} <span class="faible petit">${echap(x.e)}</span></td><td class="doux">${echap(TYPES[typeMarche(x.e)] || typeMarche(x.e))}</td><td>${fmt(p, 1)} %${barre(p)}</td><td>${x.n}</td><td class="${x.g >= 0 ? "v" : "r"}">${x.g >= 0 ? "+" : ""}${fmt(x.g, 3)} %</td></tr>`;
+  }
+  $("marches").innerHTML = l.length ? h : `<tr><td class="doux">Pas encore de prédictions jugées.</td></tr>`;
+}
+
+function tout() {
+  if (!S || !V) return;
+  const t = totaux();
+  $("maj").textContent = "Mis à jour : " + new Date(V.maj).toLocaleString("fr-FR") + " · actualisation auto";
+  kpis(t); classement(t); chaleur(); remplirSelects(); probas(); dernieres(); etat(); marches();
+}
+async function charger() {
+  try {
+    const q = "?t=" + Math.floor(Date.now() / 60000);
+    const [s, v, m] = await Promise.all(["stats.json", "vivant.json", "marches.json"].map(f => fetch(SOURCE + f + q).then(r => r.ok ? r.json() : null)));
+    if (!s || !v) throw new Error("vide");
+    S = s; V = v; M = (m && m.marches) || {};
+    tout();
+  } catch (e) {
+    $("maj").textContent = "Pas encore de données : le journal se remplit dès que les IA ont fait leurs premières prédictions.";
+  }
+}
+for (const id of ["cherche", "type", "ia", "tri"]) $(id).addEventListener("input", probas);
+for (const id of ["cherche2", "ia2"]) $(id).addEventListener("input", marches);
+charger();
+setInterval(charger, 60000);
 </script>
 </body>
 </html>

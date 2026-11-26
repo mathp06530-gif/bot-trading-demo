@@ -1,8 +1,9 @@
-name: IA - journal en direct (prédictions 1 min et 40 s, aucun ordre)
+name: IA - journal en direct (toutes les IA, tous les marchés, 1 min, aucun ordre)
 
-# Système À PART du bot (dossier ia/). Chaque heure : réentraîne les IA sur 20 jours de bougies 1 min,
-# puis pendant ~54 min prédit chaque minute la direction et note le résultat réel dans docs/ia/journal.json
-# (page docs/ia.html de l'appli). Ne passe AUCUN ordre.
+# Système À PART du bot (dossier ia/). Chaque heure : liste les marchés Capital.com, entraîne les IA maison,
+# démarre les IA géantes (Chronos, TimesFM, Kronos, Sundial…), puis pendant ~45 min prédit chaque minute la
+# direction à 60 s d'un lot de marchés ouverts (rotation) et note le résultat réel. Publication sur la branche
+# « ia-journal » (lue par docs/ia.html). Ne passe AUCUN ordre.
 
 on:
   workflow_dispatch:
@@ -19,22 +20,30 @@ concurrency:
 jobs:
   direct:
     runs-on: ubuntu-latest
-    timeout-minutes: 62
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      - run: |
-          pip install -r ia/requirements.txt
-          pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Cache (bibliothèques + poids des IA géantes)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/uv
+            ~/.cache/huggingface
+          key: ia-geantes-v1-${{ hashFiles('ia/geantes/familles.py') }}-${{ github.run_id }}
+          restore-keys: ia-geantes-v1-
+      - name: IA maison
+        run: |
+          pip install -q -r ia/requirements.txt
+          pip install -q torch --index-url https://download.pytorch.org/whl/cpu
+      - name: IA géantes (un environnement par famille)
+        run: bash ia/geantes/installer.sh 2>&1 | tail -30
       - name: Prédictions en direct
         env:
           CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
           CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
           CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
-          IA_DUREE_S: "3000"
-        run: |
-          git config user.name "bot-trading-demo"
-          git config user.email "bot-trading-demo@users.noreply.github.com"
-          python -u ia/direct.py
+          IA_DUREE_S: "2700"
+        run: python -u ia/direct.py

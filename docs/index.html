@@ -480,6 +480,12 @@ $("menu").innerHTML = ["accueil", "graphique", "strategies", "ordres", "journal"
 $("nav-bas").innerHTML = [["accueil", "Accueil"], ["graphique", "Graphique"], ["strategies", "Stratégies"], ["ordres", "Ordres"], ["plus", "Plus"]]
   .map(([p, n]) => `<button data-p="${p}">${svg(p)}${n}</button>`).join("");
 $("plus-liens").innerHTML = ["journal", "reglages"].map(p => `<button data-p="${p}">${svg(p)}${PAGES[p]}</button>`).join("");
+// Systèmes à part du bot : pages séparées, bien visibles dans le menu et dans « Plus »
+const AUTRES = [["ia.html", "IA en direct", '<path d="M12 2a4 4 0 0 1 4 4v1a3 3 0 0 1 3 3v1a3 3 0 0 1-1 5.2V18a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4v-1.8A3 3 0 0 1 5 11v-1a3 3 0 0 1 3-3V6a4 4 0 0 1 4-4z"/><path d="M9 12h.01M15 12h.01M10 16h4"/>'],
+                ["elan.html", "Bot Élan crypto", '<path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/>']];
+const lienAutre = ([h, n, ic]) => `<button onclick="location.href='${h}'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ic}</svg>${n}<span style="margin-left:auto;opacity:.6">↗</span></button>`;
+$("menu").insertAdjacentHTML("beforeend", `<div style="height:1px;background:var(--bord);margin:10px 6px"></div>` + AUTRES.map(lienAutre).join(""));
+$("plus-liens").insertAdjacentHTML("beforeend", AUTRES.map(lienAutre).join(""));
 let pageActive = "accueil";
 function ouvrir(id) {
   if (!PAGES[id]) id = "accueil";

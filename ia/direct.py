@@ -1,18 +1,23 @@
-"""Journal EN DIRECT des IA (système à part du bot, AUCUN ordre passé).
+"""Journal EN DIRECT de toutes les IA sur tous les marchés Capital.com (système à part du bot, AUCUN ordre).
 
-Chaque heure, GitHub Actions lance ce script pour ~55 minutes :
-  1. il réentraîne les IA de ia/predire.py sur les ~20 derniers jours de bougies 1 min de chaque marché ;
-  2. chaque minute, chaque IA prédit si le prix sera plus haut ou plus bas :
-       - à la fin de la minute en cours (« 1 min ») ;
-       - 40 secondes plus tard (« 40 s », jugé avec le prix affiché par Capital.com) ;
-  3. il note le résultat réel, le taux de réussite par IA et par marché, et ce qu'aurait donné un trade
-     (spread payé) ; tout est écrit dans docs/ia/journal.json, affiché par docs/ia.html.
+Chaque heure, GitHub Actions lance ce script pour ~50 minutes :
+  1. liste tous les marchés Capital.com (une fois par jour) et repère ceux qui sont ouverts ;
+  2. entraîne les IA « maison » (ia/predire.py) sur des bougies 1 min de ~30 grands marchés mélangés ;
+  3. démarre les IA géantes (ia/geantes : Chronos, TimesFM, Kronos, Sundial…), chacune dans son processus ;
+  4. chaque minute, prend le lot suivant de marchés ouverts (rotation), et TOUTES les IA reçoivent les mêmes
+     512 dernières bougies 1 min et rendent la probabilité que le prix soit plus haut 60 s plus tard ;
+  5. 60 s après, le vrai prix est relevé : réussite par IA, par marché, par famille de marchés, et ce qu'aurait
+     donné un trade (spread payé). Un « arbitre » pondère le vote par les résultats réels.
+Tout est publié sur la branche « ia-journal » (fichier journal.json), lu par la page docs/ia.html.
 """
 import json
+import math
 import os
+import random
 import subprocess
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -21,15 +26,110 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from ia import predire  # noqa: E402
+from ia.geantes.familles import FAMILLES, MAISON, NOMS  # noqa: E402
 
-MARCHES = [e.strip() for e in os.getenv("IA_MARCHES", "GOLD,US100,BTCUSD,EURUSD").split(",") if e.strip()]
-DUREE = int(os.getenv("IA_DUREE_S", str(54 * 60)))
-JOURNAL = Path(__file__).resolve().parent.parent / "docs" / "ia" / "journal.json"
-GARDER = 400  # dernières prédictions affichées
+DUREE = int(os.getenv("IA_DUREE_S", str(50 * 60)))
+LOT = int(os.getenv("IA_LOT", "24"))  # marchés prédits par minute (rotation sur tous les marchés ouverts)
+L = 512  # bougies données à chaque IA
+DOSSIER = Path(os.getenv("IA_JOURNAL_DIR", "journal_ia"))  # copie locale de la branche ia-journal
+BRANCHE = "ia-journal"
+GRANDS = ["GOLD", "SILVER", "OIL_CRUDE", "NATURALGAS", "COPPER", "US500", "US100", "US30", "DE40", "UK100", "FR40",
+          "J225", "HK50", "EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "USDCAD", "EURJPY", "BTCUSD", "ETHUSD", "SOLUSD",
+          "XRPUSD", "AAPL", "MSFT", "NVDA", "TSLA", "AMZN", "META", "GOOGL"]
 
 
 def maintenant():
     return datetime.now(timezone.utc)
+
+
+def iso(t=None):
+    return (t or maintenant()).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+# --------------------------------------------------------------------------- publication (branche sans historique)
+def git(*args, check=False):
+    return subprocess.run(["git", *args], cwd=DOSSIER, capture_output=True, text=True, check=check)
+
+
+def preparer_branche():
+    depot = subprocess.run(["git", "config", "--get", "remote.origin.url"], capture_output=True, text=True).stdout.strip()
+    if not (DOSSIER / ".git").exists():
+        DOSSIER.mkdir(parents=True, exist_ok=True)
+        subprocess.run(["git", "init", "-q", str(DOSSIER)])
+        # l'en-tête d'authentification de actions/checkout est recopié pour pouvoir pousser
+        auth = subprocess.run(["git", "config", "--get-regexp", r"http\..*\.extraheader"], capture_output=True, text=True).stdout
+        for ligne in auth.splitlines():
+            k, v = ligne.split(" ", 1)
+            git("config", k, v)
+        git("remote", "add", "origin", depot)
+        git("config", "user.name", "bot-trading-demo")
+        git("config", "user.email", "bot-trading-demo@users.noreply.github.com")
+    if git("fetch", "-q", "--depth", "1", "origin", BRANCHE).returncode == 0:
+        git("checkout", "-q", "-f", "-B", BRANCHE, "FETCH_HEAD")
+
+
+def lire_json(nom, defaut):
+    try:
+        return json.loads((DOSSIER / nom).read_text())
+    except Exception:
+        return defaut
+
+
+def publier(fichiers: dict):
+    for nom, contenu in fichiers.items():
+        (DOSSIER / nom).write_text(json.dumps(contenu, ensure_ascii=False, separators=(",", ":")))
+    if os.getenv("IA_GIT", "oui") != "oui":
+        return
+    git("checkout", "-q", "--orphan", "tmp")  # un seul commit, pas d'historique : le dépôt ne grossit pas
+    git("add", "-A")
+    git("commit", "-qm", f"Journal des IA {iso()}")
+    git("branch", "-q", "-D", BRANCHE)
+    git("branch", "-q", "-m", BRANCHE)
+    r = git("push", "-q", "-f", "origin", BRANCHE)
+    if r.returncode:
+        print("publication impossible :", r.stderr[:300], flush=True)
+
+
+# --------------------------------------------------------------------------- marchés
+def lister_marches(api):
+    """Tous les marchés de Capital.com, en parcourant l'arbre de navigation (une fois par jour)."""
+    vus, marches, a_voir = set(), {}, [n["id"] for n in api._requete("GET", "/marketnavigation").get("nodes", [])]
+    while a_voir and len(vus) < 3000:
+        nid = a_voir.pop()
+        if nid in vus:
+            continue
+        vus.add(nid)
+        try:
+            r = api._requete("GET", f"/marketnavigation/{nid}", params={"limit": 500})
+        except Exception as e:
+            print(f"navigation {nid} : {str(e)[:100]}")
+            time.sleep(1)
+            continue
+        a_voir += [n["id"] for n in r.get("nodes", [])]
+        for m in r.get("markets", []):
+            if m.get("epic"):
+                marches[m["epic"]] = {"nom": m.get("instrumentName", m["epic"]), "type": m.get("instrumentType", "?")}
+        time.sleep(0.12)
+    return marches
+
+
+def instantanes(api, epics):
+    """Prix affichés (milieu, spread, ouvert ?) de nombreux marchés, 50 par appel."""
+    out = {}
+    for i in range(0, len(epics), 50):
+        try:
+            r = api._requete("GET", "/markets", params={"epics": ",".join(epics[i:i + 50])})
+        except Exception as e:
+            print(f"instantanés : {str(e)[:120]}")
+            continue
+        for m in r.get("marketDetails", r.get("markets", [])):
+            ins, s = m.get("instrument", m), m.get("snapshot", m)
+            epic = ins.get("epic") or m.get("epic")
+            bid, ask = s.get("bid"), s.get("offer")
+            if epic and bid is not None and ask is not None:
+                out[epic] = {"mid": (float(bid) + float(ask)) / 2, "spread": float(ask) - float(bid),
+                             "ouvert": s.get("marketStatus") == "TRADEABLE"}
+    return out
 
 
 def vers_df(bougies):
@@ -41,172 +141,269 @@ def vers_df(bougies):
     return d.set_index("date").sort_index().astype(float)
 
 
-def prix_affiche(api, epic):
-    s = api.marche(epic).get("snapshot", {})
-    if s.get("marketStatus") != "TRADEABLE" or s.get("bid") is None:
-        return None
-    return (float(s["bid"]) + float(s["offer"])) / 2, float(s["offer"]) - float(s["bid"])
+# --------------------------------------------------------------------------- IA maison (un seul jeu pour tous les marchés)
+def entrainer_maison(api, ouverts):
+    choix = [e for e in GRANDS if e in ouverts] or list(ouverts)[:30]
+    X, Xs, Y = [], [], []
+    for epic in choix[:30]:
+        try:
+            d = vers_df(api.bougies(epic, "MINUTE", 1000))
+        except Exception:
+            continue
+        if len(d) < 600:
+            continue
+        F, S = predire.indicateurs(d), predire.sequences(d)
+        mid = ((d.close_bid + d.close_ask) / 2).values
+        fut = np.r_[mid[1:] - mid[:-1], np.nan]
+        y = np.where(fut > 0, 1.0, np.where(fut < 0, 0.0, np.nan))
+        ok = F.notna().all(axis=1).values & ~np.isnan(y) & (np.arange(len(d)) >= predire.SEQ + 200)
+        ii = np.where(ok)[0]
+        X.append(F.values[ii]); Xs.append(np.stack([S[i - predire.SEQ + 1:i + 1] for i in ii])); Y.append(y[ii])
+        time.sleep(0.1)
+    if not X:
+        return {}
+    X, Xs, Y = np.concatenate(X), np.concatenate(Xs), np.concatenate(Y)
+    print(f"IA maison : {len(Y)} bougies d'entraînement sur {len(choix[:30])} marchés", flush=True)
+    return predire.entrainer(X, Xs, Y)
 
 
-def charger_journal():
-    try:
-        j = json.loads(JOURNAL.read_text())
-    except Exception:
-        j = {}
-    j.setdefault("stats", {})
-    j.setdefault("dernieres", [])
-    return j
+# --------------------------------------------------------------------------- statistiques
+def stats_vides(modeles):
+    return {"modeles": modeles, "marches": [], "n": [], "justes": [], "gain": [], "jour": {}, "types": {}}
 
 
-def compter(j, epic, modele, horizon, juste, gain):
-    for cle in (modele, f"{modele}|{epic}"):
-        s = j["stats"].setdefault(cle, {}).setdefault(horizon, {"n": 0, "justes": 0, "gain_pct": 0.0})
-        s["n"] += 1
-        s["justes"] += int(juste)
-        s["gain_pct"] = round(s["gain_pct"] + gain * 100, 5)
+def index_marche(st, epic):
+    if epic not in st["marches"]:
+        st["marches"].append(epic)
+        for k in ("n", "justes", "gain"):
+            st[k].append([0] * len(st["modeles"]) if k != "gain" else [0.0] * len(st["modeles"]))
+    return st["marches"].index(epic)
 
 
-def enregistrer(j, message):
-    j["maj"] = maintenant().strftime("%Y-%m-%dT%H:%M:%SZ")
-    j["dernieres"] = j["dernieres"][-GARDER:]
-    JOURNAL.parent.mkdir(parents=True, exist_ok=True)
-    JOURNAL.write_text(json.dumps(j, ensure_ascii=False, separators=(",", ":")))
-    if os.getenv("IA_GIT", "oui") != "oui":
-        return
-    br = os.getenv("GITHUB_REF_NAME", "main")
-    cmd = (f'git add docs/ia/journal.json && (git diff --cached --quiet || git commit -qm "{message}") && '
-           f'for i in 1 2 3 4 5; do git pull -q --rebase origin {br} && git push -q origin HEAD:{br} && exit 0; sleep 3; done')
-    subprocess.run(["bash", "-c", cmd], check=False)
+def index_modele(st, m):
+    if m not in st["modeles"]:
+        st["modeles"].append(m)
+        for k in ("n", "justes", "gain"):
+            for ligne in st[k]:
+                ligne.append(0 if k != "gain" else 0.0)
+    return st["modeles"].index(m)
 
 
+def compter(st, epic, typ, jour, m, juste, gain):
+    i, j = index_marche(st, epic), index_modele(st, m)
+    st["n"][i][j] += 1
+    st["justes"][i][j] += int(juste)
+    st["gain"][i][j] = round(st["gain"][i][j] + gain, 6)
+    for cle, groupe in ((jour, "jour"), (typ, "types")):
+        d = st[groupe].setdefault(cle, {}).setdefault(m, [0, 0])
+        d[0] += 1
+        d[1] += int(juste)
+
+
+def totaux(st):
+    n = np.array(st["n"]).sum(0) if st["n"] else np.zeros(len(st["modeles"]))
+    j = np.array(st["justes"]).sum(0) if st["n"] else np.zeros(len(st["modeles"]))
+    return {m: (int(n[k]), int(j[k])) for k, m in enumerate(st["modeles"])}
+
+
+def poids_arbitre(st):
+    """Poids de chaque IA = avance sur 50 % qui reste APRÈS avoir retiré l'erreur possible due au hasard
+    (borne basse à ~84 %). Une IA qui ne fait pas mieux que le hasard, ou trop peu jugée, a un poids 0."""
+    w = {}
+    for m, (n, j) in totaux(st).items():
+        if m in ("vote", "arbitre") or n < 500:
+            continue
+        acc = j / n
+        w[m] = max(0.0, acc - 0.5 - math.sqrt(0.25 / n))
+    return w
+
+
+# --------------------------------------------------------------------------- boucle principale
 def principal():
-    from backtest import telecharger as t
     from bot.capital import CapitalDemo
     cle, ident, mdp = (os.getenv(n, "").strip() for n in ("CAPITAL_API_KEY", "CAPITAL_IDENTIFIER", "CAPITAL_PASSWORD"))
     api = CapitalDemo(cle, ident, mdp)
     api.connexion()
     debut = time.time()
-    tmp = Path("donnees_direct")
-    tmp.mkdir(exist_ok=True)
-    t.DOSSIER = tmp
-    ia = {}
-    for epic in MARCHES:  # 1. entraînement sur les 20 derniers jours
+    preparer_branche()
+    univers = lire_json("marches.json", {})
+    if not univers.get("marches") or time.time() - univers.get("t", 0) > 86400:
         try:
-            t.telecharger(api, epic, "MINUTE", 1, 20)
-            d = predire.lire(tmp, epic, "MINUTE")
-            F, S = predire.indicateurs(d), predire.sequences(d)
-            mid = ((d.close_bid + d.close_ask) / 2).values
-            fut = np.r_[mid[1:] - mid[:-1], np.nan]
-            y = np.where(fut > 0, 1.0, np.where(fut < 0, 0.0, np.nan))
-            ok = F.notna().all(axis=1).values & ~np.isnan(y) & (np.arange(len(d)) >= predire.SEQ + 200)
-            ii = np.where(ok)[0][-predire.TRAIN_MAX:]
-            Xs = np.stack([S[i - predire.SEQ + 1:i + 1] for i in ii])
-            ia[epic] = predire.entrainer(F.values[ii], Xs, y[ii])
-            print(f"{epic} : {len(ii)} bougies d'entraînement, IA : {', '.join(ia[epic])}", flush=True)
+            m = lister_marches(api)
         except Exception as e:
-            print(f"{epic} : entraînement impossible ({str(e)[:200]})", flush=True)
-    j = charger_journal()
-    j["marches"], j["modeles"] = MARCHES, predire.MODELES[:6]
-    attente = []  # prédictions à juger
-    derniere_session, dernier_commit = time.time(), time.time()
+            print(f"liste des marchés impossible : {str(e)[:200]}", flush=True)
+            m = {}
+        if m:
+            univers = {"t": time.time(), "maj": iso(), "marches": m}
+    if not univers.get("marches"):  # navigation indisponible : au moins les grands marchés
+        univers = {"t": 0, "maj": iso(), "marches": {e: {"nom": e, "type": "?"} for e in GRANDS}}
+    tous = list(univers.get("marches", {}))
+    print(f"{len(tous)} marchés Capital.com connus", flush=True)
+    etat = instantanes(api, tous)
+    ouverts = [e for e in tous if etat.get(e, {}).get("ouvert")]
+    print(f"{len(ouverts)} ouverts maintenant", flush=True)
+
+    maison = entrainer_maison(api, set(ouverts))
+    from ia.geantes import Geantes
+    geantes = Geantes(attente_chargement=600, familles=[f for f in os.getenv("IA_FAMILLES", " ".join(FAMILLES)).split() if f])
+    modeles = list(maison) + geantes.modeles() + ["vote", "arbitre"]
+    st = lire_json("stats.json", None) or stats_vides(modeles)
+    for m in modeles:
+        index_modele(st, m)
+    vivant = lire_json("vivant.json", {})
+    vivant.update({"debut_tour": iso(), "marches_connus": len(tous), "marches_ouverts": len(ouverts), "lot": LOT,
+                   "etat_ia": {**{m: "prête" for m in maison}, **geantes.etat}, "noms": NOMS,
+                   "familles_maison": list(MAISON), "familles": {f: list(v["modeles"]) for f, v in FAMILLES.items()}})
+    vivant.setdefault("probas", {})
+    vivant.setdefault("dernieres", [])
+    vivant.setdefault("vitesse", {})
+    curseur = int(vivant.get("curseur", 0))
+    attente = []
+    derniere_session, derniere_pub, dernier_etat = time.time(), 0.0, time.time()
+    pool = ThreadPoolExecutor(3)
     while time.time() - debut < DUREE:
-        # attendre la 2e seconde de la minute suivante
-        time.sleep(max(0.0, 62 - maintenant().second - maintenant().microsecond / 1e6) % 60)
-        if time.time() - derniere_session > 8 * 60:  # la session Capital.com expire après 10 min
+        time.sleep(max(0.0, 60.5 - (maintenant().second + maintenant().microsecond / 1e6)) % 60)
+        t_tour = time.time()
+        if t_tour - derniere_session > 8 * 60:  # la session Capital.com expire après 10 min
             try:
                 api.deconnexion()
             except Exception:
                 pass
             api.connexion()
             derniere_session = time.time()
-        heure = maintenant()
-        # juger les prédictions dont l'échéance est passée
-        reste = []
-        for p in attente:
+        if t_tour - dernier_etat > 15 * 60:  # marchés qui ouvrent / ferment
+            etat = instantanes(api, tous)
+            ouverts = [e for e in tous if etat.get(e, {}).get("ouvert")]
+            dernier_etat = time.time()
+        # 1. juger les prédictions arrivées à échéance (60 s)
+        dues = [p for p in attente if p["echeance"] <= time.time()]
+        if dues:
+            prix = instantanes(api, sorted({p["epic"] for p in dues}))
+            for p in dues:
+                attente.remove(p)
+                fin = prix.get(p["epic"])
+                if not fin or fin["mid"] == p["depart"]:
+                    continue  # prix inchangé ou indisponible : non jugé
+                hausse = fin["mid"] > p["depart"]
+                jour = p["heure"][:10]
+                for m, pr in p["probas"].items():
+                    sens = 1 if pr > 0.5 else -1
+                    gain = (sens * (fin["mid"] - p["depart"]) - p["spread"]) / p["depart"] * 100
+                    compter(st, p["epic"], p["type"], jour, m, (sens > 0) == hausse, gain)
+                vivant["dernieres"].append({"t": p["heure"], "epic": p["epic"], "vote": round(p["probas"]["vote"], 3),
+                                            "arbitre": round(p["probas"]["arbitre"], 3),
+                                            "reel": "hausse" if hausse else "baisse",
+                                            "variation_pct": round((fin["mid"] / p["depart"] - 1) * 100, 4)})
+            vivant["dernieres"] = vivant["dernieres"][-300:]
+        # 2. nouveau lot de marchés (rotation)
+        if not ouverts:
+            continue
+        lot = [ouverts[(curseur + k) % len(ouverts)] for k in range(min(LOT, len(ouverts)))]
+        curseur = (curseur + len(lot)) % max(1, len(ouverts))
+
+        def bougies(e):
             try:
-                if p["horizon"] == "1 min" and heure.timestamp() >= p["echeance"]:
-                    d = vers_df(api.bougies(p["epic"], "MINUTE", 3))
-                    if pd.Timestamp(p["bougie"]) not in d.index:
-                        continue
-                    b = d.loc[pd.Timestamp(p["bougie"])]
-                    fin = (b.close_bid + b.close_ask) / 2
-                elif p["horizon"] == "40 s" and heure.timestamp() >= p["echeance"] - 1:
-                    pa = prix_affiche(api, p["epic"])
-                    if pa is None:
-                        continue
-                    fin = pa[0]
-                else:
-                    reste.append(p)
-                    continue
-            except Exception as e:
-                print(f"jugement impossible : {str(e)[:120]}")
-                continue
-            if fin == p["depart"]:
-                p["resultat"] = "inchangé"
-                j["dernieres"].append(p)
-                continue
-            hausse = fin > p["depart"]
-            for m, sens in p["sens"].items():
-                gain = (fin - p["depart"]) / p["depart"] * (1 if sens == "hausse" else -1) - p["spread"] / p["depart"]
-                compter(j, p["epic"], m, p["horizon"], (sens == "hausse") == hausse, gain)
-            p["resultat"] = "hausse" if hausse else "baisse"
-            p["fin"] = fin
-            j["dernieres"].append(p)
-        attente = reste
-        # nouvelles prédictions
-        for epic, fonctions in ia.items():
-            try:
-                d = vers_df(api.bougies(epic, "MINUTE", 400))
-                if len(d) < 300:
-                    continue
-                d_fini = d.iloc[:-1]  # la dernière bougie est celle qui se forme
-                if (heure.replace(tzinfo=None) - d_fini.index[-1]).total_seconds() > 150:
-                    continue  # marché fermé
-                F, S = predire.indicateurs(d_fini), predire.sequences(d_fini)
-                x = F.values[-1:]
-                if np.isnan(x).any():
-                    continue
-                xs = S[-predire.SEQ:][None]
-                probas = {m: float(f(x, xs)[0]) for m, f in fonctions.items()}
-                probas["vote"] = float(np.mean(list(probas.values())))
-                sens = {m: "hausse" if p > 0.5 else "baisse" for m, p in probas.items()}
-                b = d_fini.iloc[-1]
-                depart = (b.close_bid + b.close_ask) / 2
-                attente.append({"epic": epic, "horizon": "1 min", "heure": heure.strftime("%Y-%m-%dT%H:%M:%SZ"),
-                                "bougie": str(d.index[-1]), "echeance": (d.index[-1] + pd.Timedelta(minutes=1))
-                                .tz_localize("UTC").timestamp() + 2, "depart": depart,
-                                "spread": float(b.close_ask - b.close_bid), "sens": sens,
-                                "probas": {m: round(p, 3) for m, p in probas.items()}})
-                pa = prix_affiche(api, epic)
-                if pa:
-                    attente.append({"epic": epic, "horizon": "40 s", "heure": heure.strftime("%Y-%m-%dT%H:%M:%SZ"),
-                                    "echeance": time.time() + 40, "depart": pa[0], "spread": pa[1], "sens": sens,
-                                    "probas": {m: round(p, 3) for m, p in probas.items()}})
-            except Exception as e:
-                print(f"{epic} : prédiction impossible ({str(e)[:150]})", flush=True)
-        # le jugement à 40 s tombe pendant la minute : petite boucle d'attente
-        while any(p["horizon"] == "40 s" for p in attente) and time.time() < min(p["echeance"] for p in attente if p["horizon"] == "40 s") + 1:
-            time.sleep(0.5)
-        for p in [p for p in attente if p["horizon"] == "40 s"]:
-            try:
-                pa = prix_affiche(api, p["epic"])
+                return e, vers_df(api.bougies(e, "MINUTE", L + 8))
             except Exception:
-                pa = None
-            attente.remove(p)
-            if pa is None or pa[0] == p["depart"]:
+                return e, None
+        donnees = {e: d for e, d in pool.map(bougies, lot) if d is not None and len(d) >= 320}
+        donnees = {e: d.iloc[-L:] for e, d in donnees.items()
+                   if (maintenant().replace(tzinfo=None) - d.index[-1]).total_seconds() < 180}
+        if not donnees:
+            continue
+        # prix EN TEMPS RÉEL juste avant le calcul : la bougie 1 min en cours est mise à jour avec le dernier prix
+        frais = instantanes(api, list(donnees))
+        t_frais = time.time()
+        for e, d in list(donnees.items()):
+            if e not in frais:
                 continue
-            hausse = pa[0] > p["depart"]
-            for m, sens in p["sens"].items():
-                gain = (pa[0] - p["depart"]) / p["depart"] * (1 if sens == "hausse" else -1) - p["spread"] / p["depart"]
-                compter(j, p["epic"], m, "40 s", (sens == "hausse") == hausse, gain)
-            p["resultat"], p["fin"] = ("hausse" if hausse else "baisse"), pa[0]
-            j["dernieres"].append(p)
-        if time.time() - dernier_commit > 5 * 60:
-            enregistrer(j, "IA en direct : journal des prédictions")
-            dernier_commit = time.time()
-    enregistrer(j, "IA en direct : journal des prédictions")
+            d = d.copy()
+            m, sp = frais[e]["mid"], frais[e]["spread"]
+            d.iloc[-1, d.columns.get_loc("close_bid")] = m - sp / 2
+            d.iloc[-1, d.columns.get_loc("close_ask")] = m + sp / 2
+            for c, f in (("high_bid", max), ("high_ask", max), ("low_bid", min), ("low_ask", min)):
+                d.iloc[-1, d.columns.get_loc(c)] = f(d[c].iloc[-1], d[c.replace("high", "close").replace("low", "close")].iloc[-1])
+            donnees[e] = d
+        epics = list(donnees)
+        probas = {e: {} for e in epics}
+        # IA maison
+        Xf, Xsq, ok = [], [], []
+        for e in epics:
+            d = donnees[e]
+            F, S = predire.indicateurs(d), predire.sequences(d)
+            x = F.values[-1]
+            if np.isnan(x).any():
+                continue
+            Xf.append(x); Xsq.append(S[-predire.SEQ:]); ok.append(e)
+        if ok:
+            Xf, Xsq = np.array(Xf), np.array(Xsq, dtype=np.float32)
+            for m, f in maison.items():
+                t0 = time.time()
+                try:
+                    pr = f(Xf, Xsq)
+                    for e, p in zip(ok, pr):
+                        probas[e][m] = float(p)
+                    vivant["vitesse"][m] = round(time.time() - t0, 2)
+                except Exception as ex:
+                    vivant["etat_ia"][m] = f"erreur : {str(ex)[:150]}"
+        # IA géantes : même entrée pour toutes
+        n_max = max(len(donnees[e]) for e in epics)
+        prix_mat, ohlcv = [], []
+        for e in epics:
+            d = donnees[e]
+            mid = {k: ((d[f"{k}_bid"] + d[f"{k}_ask"]) / 2).values for k in ("open", "high", "low", "close")}
+            arr = np.stack([mid["open"], mid["high"], mid["low"], mid["close"], d.volume.values], 1)
+            arr = np.vstack([np.repeat(arr[:1], n_max - len(arr), 0), arr])  # complété au début si moins de 512 bougies
+            ohlcv.append(arr)
+            prix_mat.append(arr[:, 3])
+        reste = max(5.0, 40 - (time.time() - t_tour))
+        pg, infos = geantes.prevoir(np.array(prix_mat), np.array(ohlcv), 1, delai=reste)
+        for m, pr in pg.items():
+            for e, p in zip(epics, pr):
+                probas[e][m] = float(p)
+        for m, v in infos.items():
+            if isinstance(v, (int, float)):
+                vivant["vitesse"][m] = v
+                vivant["etat_ia"][m] = "prête"
+            else:
+                vivant["etat_ia"][m] = v
+        # vote + arbitre, puis prix de départ
+        w = poids_arbitre(st)
+        depart = instantanes(api, epics)
+        heure = iso()
+        for e in epics:
+            pe = probas[e]
+            if not pe or e not in depart:
+                continue
+            ps = list(pe.values())
+            pe["vote"] = float(np.mean(ps))
+            tw = sum(w.get(m, 0) for m in pe if m != "vote")
+            pe["arbitre"] = float(sum(w.get(m, 0) * p for m, p in pe.items() if m != "vote") / tw) if tw > 0 else pe["vote"]
+            attente.append({"epic": e, "type": univers["marches"].get(e, {}).get("type", "?"), "heure": heure,
+                            "echeance": time.time() + 60, "depart": depart[e]["mid"], "spread": depart[e]["spread"],
+                            "probas": pe})
+            vivant["probas"][e] = {"t": heure, "p": {m: round(p, 3) for m, p in pe.items()}}
+        vivant["delais"] = {"prix_frais_vers_prediction_s": round(time.time() - t_frais, 1),
+                            "debut_minute_vers_prediction_s": round(time.time() - t_tour, 1),
+                            "marches_predits": len(epics)}
+        vivant.setdefault("historique_delais", []).append([heure, vivant["delais"]["prix_frais_vers_prediction_s"]])
+        vivant["historique_delais"] = vivant["historique_delais"][-120:]
+        vivant["poids_arbitre"] = {m: round(v, 4) for m, v in w.items()}
+        vivant["curseur"] = curseur
+        vivant["duree_tour_s"] = round(time.time() - t_tour, 1)
+        # on ne garde que les probabilités de la dernière heure
+        limite = iso(datetime.fromtimestamp(time.time() - 3600, timezone.utc))
+        vivant["probas"] = {e: v for e, v in vivant["probas"].items() if v["t"] >= limite}
+        if time.time() - derniere_pub > 5 * 60:
+            vivant["maj"] = iso()
+            publier({"stats.json": st, "vivant.json": vivant, "marches.json": univers})
+            derniere_pub = time.time()
+    vivant["maj"] = iso()
+    publier({"stats.json": st, "vivant.json": vivant, "marches.json": univers})
+    geantes.fermer()
     api.deconnexion()
 
 
 if __name__ == "__main__":
+    random.seed(0)
     principal()
