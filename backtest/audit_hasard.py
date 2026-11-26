@@ -234,7 +234,10 @@ def principal():
     for nom, v in res.items():
         s, a = resume(np.concatenate(v["sans"])), resume(np.concatenate(v["avec"]))
         par_graine = [round(float(np.sum(x)), 1) for x in v["sans"]]
-        triche = s["t"] > 3
+        # Suspect = gagne sur du hasard MÊME APRÈS FRAIS. (Le « t » sans frais de l'usine est gonflé : ses 1,7 million
+        # de trades viennent des mêmes 8 séries de prix ; son petit +0,007 R/trade vient du stop GARANTI exécuté
+        # exactement à son niveau quand le prix saute au-delà : vrai chez Capital.com, payé par la prime.)
+        triche = a["R_par_trade"] > 0 and a["t"] > 2
         sortie[nom] = {"sans_frais": s, "avec_frais": a, "R_sans_frais_par_graine": par_graine, "suspect": triche}
         print(f"{nom:42s} {s['R_par_trade']:+21.4f} {s['t']:6.2f} {s['trades']:7d} | {a['R_par_trade']:+21.4f} {a['t']:6.2f}"
               f"{'   <- SUSPECT (gagne sur du hasard)' if triche else ''}")
