@@ -1,0 +1,59 @@
+/* Thème commun à toutes les pages de l'appli (style terminal de trading, fond noir, accent vert). */
+:root {
+  --fond: #0b0c0e; --fond2: #0f1013; --panneau: #131417; --panneau2: #1a1c20; --survol: #1f2226;
+  --bord: #23262b; --bord2: #2e3137;
+  --texte: #d7d9dd; --clair: #f2f3f5; --doux: #8b9099; --faible: #5d626b;
+  --vert: #22ab94; --vert-fond: rgba(34,171,148,.12); --rouge: #f23645; --rouge-fond: rgba(242,54,69,.12);
+  --orange: #d9a23c; --bleu: #5b8def; --violet: #9179d6;
+  --accent: var(--vert);
+  --rayon: 4px;
+  --police: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --haut-entete: 44px;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; color-scheme: dark; background: var(--fond); }
+body { margin: 0; background: var(--fond); color: var(--texte); font: 13.5px/1.45 var(--police); -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+::selection { background: rgba(34,171,148,.3); }
+::-webkit-scrollbar { width: 8px; height: 8px; } ::-webkit-scrollbar-thumb { background: var(--bord2); border-radius: 4px; } ::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------- Barre du haut ---------- */
+.entete { position: sticky; top: 0; z-index: 20; display: flex; align-items: stretch; gap: 0; height: calc(var(--haut-entete) + env(safe-area-inset-top));
+          padding: env(safe-area-inset-top) 12px 0; background: var(--fond2); border-bottom: 1px solid var(--bord); }
+.entete .marque { display: flex; align-items: center; gap: 9px; padding-right: 16px; margin-right: 6px; border-right: 1px solid var(--bord);
+                  color: var(--clair); font-weight: 600; font-size: 13.5px; white-space: nowrap; text-decoration: none; }
+.entete .marque:hover { text-decoration: none; }
+.entete .marque svg { width: 22px; height: 22px; flex: none; }
+.entete .marque small { color: var(--faible); font-weight: 500; font-size: 11px; margin-left: 2px; }
+.onglets { display: flex; align-items: stretch; overflow-x: auto; scrollbar-width: none; flex: 1; min-width: 0; }
+.onglets::-webkit-scrollbar { display: none; }
+.onglets a { display: flex; align-items: center; padding: 0 12px; color: var(--doux); font-weight: 500; font-size: 13px; white-space: nowrap;
+             border-bottom: 2px solid transparent; margin-bottom: -1px; text-decoration: none; }
+.onglets a:hover { color: var(--clair); background: var(--panneau); text-decoration: none; }
+.onglets a[aria-current="page"] { color: var(--clair); border-bottom-color: var(--accent); }
+.onglets .sep { width: 1px; background: var(--bord); margin: 10px 6px; flex: none; }
+.entete .droite { display: flex; align-items: center; gap: 8px; padding-left: 10px; white-space: nowrap; }
+.etiquette-demo { font-size: 10.5px; font-weight: 600; letter-spacing: .08em; color: var(--orange); border: 1px solid rgba(217,162,60,.45); border-radius: 3px; padding: 1px 6px; }
+
+/* ---------- Barre du bas (téléphone) ---------- */
+.onglets-bas { display: none; }
+@media (max-width: 760px) {
+  .entete { padding-left: 14px; padding-right: 14px; }
+  .entete .onglets { display: none; }
+  .entete .marque { border-right: 0; flex: 1; }
+  .onglets-bas { display: flex; position: fixed; z-index: 20; left: 0; right: 0; bottom: 0; background: var(--fond2); border-top: 1px solid var(--bord);
+                 padding: 0 4px env(safe-area-inset-bottom); }
+  .onglets-bas a { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 8px 0 7px; color: var(--faible);
+                   font-size: 10.5px; font-weight: 500; text-decoration: none; border-top: 2px solid transparent; margin-top: -1px; }
+  .onglets-bas a[aria-current="page"] { color: var(--clair); border-top-color: var(--accent); }
+  .onglets-bas a[aria-current="page"] svg { color: var(--accent); }
+  .onglets-bas svg { width: 20px; height: 20px; }
+  body { padding-bottom: calc(60px + env(safe-area-inset-bottom)); }
+}
+
+/* ---------- Éléments communs ---------- */
+.titre-page { display: flex; align-items: center; justify-content: space-between; gap: 10px 16px; flex-wrap: wrap; margin: 0 0 12px; }
+.titre-page h1 { margin: 0; font-size: 17px; font-weight: 600; color: var(--clair); letter-spacing: -.005em; }
+.titre-page .sous-titre { color: var(--doux); font-size: 12.5px; margin-top: 2px; }
+.panneau { background: var(--panneau); border: 1px solid var(--bord); border-radius: var(--rayon); min-width: 0; }
