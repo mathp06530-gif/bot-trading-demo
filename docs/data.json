@@ -1770,10 +1770,17 @@
    "marche": "",
    "texte": "Nouveau (26/11/2026) : 2 stratégie(s) EXPÉRIMENTALE(S) de l'usine à stratégies, risque 1 % chacune, sur NATURALGAS, TSLA. Trouvées parmi des dizaines de milliers d'essais et gardées seulement si elles gagnent sur des années jamais vues (2022-2026).",
    "strategie": "usine"
+  },
+  {
+   "date": "2026-11-26T06:16:24Z",
+   "type": "stop",
+   "marche": "GOLD",
+   "texte": "[Rapide] Stop suiveur déplacé de 3607.82 à 3601.86 pour garder le gain.",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T06:15:25Z",
+ "derniere_execution": "2026-11-26T06:16:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10314,15 +10321,19 @@
   {
    "date": "2026-11-26T06:15:25Z",
    "valeur": 93.16
+  },
+  {
+   "date": "2026-11-26T06:16:26Z",
+   "valeur": 93.26
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.16,
+  "solde": 93.26,
   "depot": 93.15,
-  "resultat_latent": 0.01,
-  "disponible": 89.88
+  "resultat_latent": 0.11,
+  "disponible": 89.99
  },
  "positions": [
   {
@@ -10331,7 +10342,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3572.1,
-   "resultat": 0,
+   "resultat": 0.12,
    "ouverte_le": "2026-11-26T06:10:23.892"
   }
  ],
@@ -10650,11 +10661,11 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3572.1,
-   "stop": 3607.82,
+   "stop": 3601.86,
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T06:10:23Z",
    "statut": "ouvert",
-   "resultat": 0,
+   "resultat": 0.12,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -10678,7 +10689,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.16
+  "2026-11-26": 93.26
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -10852,9 +10863,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3569.625,
-    "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 32.97 de plus dans le bon sens"
+    "prix": 3566.2,
+    "action": "Stop suiveur déplacé",
+    "empilement": "position 2/2 possible quand le prix aura avancé de 29.49 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
