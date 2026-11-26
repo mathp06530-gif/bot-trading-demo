@@ -1868,7 +1868,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T15:07:27Z",
+ "derniere_execution": "2026-11-26T15:08:27Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -12505,6 +12505,10 @@
   {
    "date": "2026-11-26T15:07:27Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T15:08:27Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -13083,7 +13087,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3577.5150000000003,
+    "prix": 3579.18,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    },
@@ -13849,9 +13853,9 @@
   "rapide-GOLD": [
    1795705500,
    3578.25,
-   3578.65,
-   3576.13,
-   3577.52
+   3579.51,
+   3575.45,
+   3579.18
   ],
   "elan_4h-GOLD": [
    1795694400,
@@ -13890,9 +13894,15 @@
   ]
  },
  "veille": {
-  "titres_lus_le": "2026-11-26T14:08:21.452227+00:00",
+  "titres_lus_le": "2026-11-26T15:08:21.859368+00:00",
   "titres": {
    "ETHUSD": [
+    {
+     "titre": "Polygon Brings Its Cross-Border Payments Stack to Coinbase’s Base",
+     "lien": "https://decrypt.co/384023/polygon-cross-border-payments-stack-coinbase-base?.tsrc=rss",
+     "date": "2026-11-26T14:01Z",
+     "sujets": []
+    },
     {
      "titre": "Crypto Market Faces 3 Critical Risks Heading Into December 2026",
      "lien": "https://beincrypto.com/crypto-market-outlook-december-2026-three-risks/?.tsrc=rss",
@@ -13924,15 +13934,29 @@
      "lien": "https://beincrypto.com/ethereum-whale-2014-ico-sells-eth/?.tsrc=rss",
      "date": "2026-11-26T08:38Z",
      "sujets": []
-    },
-    {
-     "titre": "How Low Can Bitcoin, Ethereum and XRP Fall? 4 Price Levels to Watch",
-     "lien": "https://beincrypto.com/critical-price-levels-for-bitcoin-ethereum-xrp/?.tsrc=rss",
-     "date": "2026-11-26T01:37Z",
-     "sujets": []
     }
    ],
    "GOLD": [
+    {
+     "titre": "Value per Security",
+     "lien": "https://finance.yahoo.com/markets/commodities/articles/value-per-security-145300579.html?.tsrc=rss",
+     "date": "2026-11-26T14:53Z",
+     "sujets": []
+    },
+    {
+     "titre": "Congo's cobalt ban leads Africa's turn to China-style export controls on minerals",
+     "lien": "http://www.intellinews.com/congo-s-cobalt-ban-leads-africa-s-turn-to-china-style-export-controls-on-minerals-488416/?.tsrc=rss",
+     "date": "2026-11-26T14:51Z",
+     "sujets": [
+      "géopolitique"
+     ]
+    },
+    {
+     "titre": "Pinnacle Silver and Gold reports final Pinos Cuates assays from Mexico drill program",
+     "lien": "https://www.proactiveinvestors.com/companies/news/1102528/pinnacle-silver-and-gold-reports-final-pinos-cuates-assays-from-mexico-drill-program-1102528.html?.tsrc=rss",
+     "date": "2026-11-26T14:10Z",
+     "sujets": []
+    },
     {
      "titre": "I’m 40 with just $2K saved for retirement because I can’t stop spending. Is there any hope left for me?",
      "lien": "https://finance.yahoo.com/markets/articles/m-40-just-2k-saved-135000621.html?.tsrc=rss",
@@ -13950,26 +13974,6 @@
      "lien": "https://www.mining-technology.com/news/mineros-secures-250m-to-fund-gold-projects/?.tsrc=rss",
      "date": "2026-11-26T13:38Z",
      "sujets": []
-    },
-    {
-     "titre": "JZR Gold Provides Update on Gold Processing and  Metallurgical Optimization on the Vila Nova Gold Project",
-     "lien": "https://finance.yahoo.com/markets/commodities/articles/jzr-gold-provides-gold-processing-120200609.html?.tsrc=rss",
-     "date": "2026-11-26T12:02Z",
-     "sujets": []
-    },
-    {
-     "titre": "Elizabeth Warren is ‘ready to go’ on Trump’s 10% credit card cap. With rates averaging 22%, are you overpaying?",
-     "lien": "https://finance.yahoo.com/economy/policy/articles/elizabeth-warren-ready-trump-10-114500907.html?.tsrc=rss",
-     "date": "2026-11-26T11:45Z",
-     "sujets": []
-    },
-    {
-     "titre": "Fed official issues new warning for US savers after ‘distressing’ report — nest eggs now in danger from disturbing data",
-     "lien": "https://finance.yahoo.com/economy/policy/articles/fed-official-issues-warning-us-113000686.html?.tsrc=rss",
-     "date": "2026-11-26T11:30Z",
-     "sujets": [
-      "Fed / taux"
-     ]
     }
    ],
    "NATURALGAS": [
@@ -14002,21 +14006,25 @@
      ]
     },
     {
-     "titre": "Europe gas prices rangebound as markets weigh Middle East tensions",
-     "lien": "https://finance.yahoo.com/energy/articles/europe-gas-prices-rangebound-markets-114458393.html?.tsrc=rss",
-     "date": "2026-11-26T11:44Z",
-     "sujets": [
-      "géopolitique"
-     ]
+     "titre": "Enbridge Inc (ENB) is Attracting Investor Attention: Here is What You Should Know",
+     "lien": "https://finance.yahoo.com/markets/stocks/articles/enbridge-inc-enb-attracting-investor-130005236.html?.tsrc=rss",
+     "date": "2026-11-26T13:00Z",
+     "sujets": []
     },
     {
-     "titre": "Constellation concludes 4.4GW natural gas-fired power plants sale",
-     "lien": "https://www.power-technology.com/news/constellation-natural-gas-fired-power-plants/?.tsrc=rss",
-     "date": "2026-11-26T07:57Z",
+     "titre": "Investors Heavily Search Archrock, Inc. (AROC): Here is What You Need to Know",
+     "lien": "https://finance.yahoo.com/markets/stocks/articles/investors-heavily-search-archrock-inc-130004816.html?.tsrc=rss",
+     "date": "2026-11-26T13:00Z",
      "sujets": []
     }
    ],
    "SILVER": [
+    {
+     "titre": "Pinnacle Silver and Gold reports final Pinos Cuates assays from Mexico drill program",
+     "lien": "https://www.proactiveinvestors.com/companies/news/1102528/pinnacle-silver-and-gold-reports-final-pinos-cuates-assays-from-mexico-drill-program-1102528.html?.tsrc=rss",
+     "date": "2026-11-26T14:10Z",
+     "sujets": []
+    },
     {
      "titre": "Delayed First Production Altering The Investment Case For Vizsla Silver Stock?",
      "lien": "https://finance.yahoo.com/markets/stocks/articles/delayed-first-production-altering-investment-231453093.html?.tsrc=rss",
@@ -14048,15 +14056,15 @@
      "lien": "https://finance.yahoo.com/markets/stocks/articles/coeur-participate-upcoming-conferences-213000476.html?.tsrc=rss",
      "date": "2026-11-25T21:30Z",
      "sujets": []
-    },
-    {
-     "titre": "BC-Gold-Silver",
-     "lien": "https://finance.yahoo.com/markets/commodities/articles/bc-gold-silver-200014077.html?.tsrc=rss",
-     "date": "2026-11-25T20:00Z",
-     "sujets": []
     }
    ],
    "TSLA": [
+    {
+     "titre": "Tesla's Self-Driving Expansion in Europe Faces a Crucial Test",
+     "lien": "https://finance.yahoo.com/technology/ai/articles/teslas-self-driving-expansion-europe-134400727.html?.tsrc=rss",
+     "date": "2026-11-26T13:44Z",
+     "sujets": []
+    },
     {
      "titre": "JPMorgan Says S&P Could Waive Its Rules for a Tesla-SpaceX Merger. That’s Good News for SpaceX Holders",
      "lien": "https://www.tikr.com/blog/jpmorgan-says-sp-could-waive-its-rules-for-a-tesla-spacex-merger-thats-good-news-for-spacex-holders?ref=yahoofinance&tlnk=yf-261126-gpc9wr29&.tsrc=rss",
@@ -14085,12 +14093,6 @@
      "titre": "If SpaceX and Tesla Merge Next Year, Here's What a $5,000 Investment in the Combined Company Could Be Worth by the End of 2028",
      "lien": "https://www.fool.com/investing/2026/11/25/if-spacex-and-tesla-merge-next-year-here-s-what-a-usd5-000-investment-in-the-combined-company-could-be-worth-by-the-end-of-2027/?.tsrc=rss",
      "date": "2026-11-25T23:24Z",
-     "sujets": []
-    },
-    {
-     "titre": "SpaceX and Elon Musk Will Each Give a Share to Every Active Trump Account",
-     "lien": "https://247wallst.com/investing/2026/11/26/spacex-and-elon-musk-will-each-give-a-share-to-every-active-trump-account/?.tsrc=rss",
-     "date": "2026-11-26T12:38Z",
      "sujets": []
     }
    ],
