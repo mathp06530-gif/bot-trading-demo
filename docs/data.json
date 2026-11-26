@@ -1834,10 +1834,16 @@
    "marche": "",
    "texte": "Nouveau (26/11/2026) : stratégie EXPÉRIMENTALE « Avant la Fed » sur le Nasdaq 100, risque 1 %. Achat la veille d'une annonce de la Fed, vente juste avant l'annonce. Backtest 10 ans : gagnante sur 2017-21 et sur les années jamais vues (+4,4 R puis +3,2 R), mais seulement 8 trades par an. Prochaine annonce : 9/12/2026.",
    "strategie": "fed"
+  },
+  {
+   "date": "2026-11-26T11:38:50Z",
+   "type": "erreur",
+   "marche": "",
+   "texte": "Connexion refusée (401). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.invalid.api.key\"}"
   }
  ],
- "statut": "ok",
- "derniere_execution": "2026-11-26T11:37:27Z",
+ "statut": "erreur",
+ "derniere_execution": "2026-11-26T11:38:50Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
