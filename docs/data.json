@@ -1842,8 +1842,8 @@
    "texte": "Connexion refusée (401). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.invalid.api.key\"}"
   }
  ],
- "statut": "erreur",
- "derniere_execution": "2026-11-26T11:38:50Z",
+ "statut": "ok",
+ "derniere_execution": "2026-11-26T11:39:34Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11652,15 +11652,19 @@
   {
    "date": "2026-11-26T11:37:27Z",
    "valeur": 92.91
+  },
+  {
+   "date": "2026-11-26T11:39:34Z",
+   "valeur": 92.9
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 92.91,
+  "solde": 92.9,
   "depot": 93.09,
-  "resultat_latent": -0.18,
-  "disponible": 89.64
+  "resultat_latent": -0.19,
+  "disponible": 89.63
  },
  "positions": [
   {
@@ -12051,7 +12055,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 92.91
+  "2026-11-26": 92.9
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -12194,7 +12198,7 @@
     ]
    }
   ],
-  "lu_le": "2026-11-26T10:39:22.357148+00:00",
+  "lu_le": "2026-11-26T11:39:23.198364+00:00",
   "pause": null,
   "prochaines": [],
   "pauses_marches": {}
@@ -12204,7 +12208,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3567.44,
+   "prix": 3565.91,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3911.81,
@@ -12216,7 +12220,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.567499999999995,
+   "prix": 41.53,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.38,
@@ -12246,9 +12250,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3565.5,
+    "prix": 3565.59,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 45.44 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 45.48 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -12946,7 +12950,7 @@
   "deals": {},
   "marches": {
    "GOLD": {
-    "prix": 3567.44,
+    "prix": 3565.91,
     "ema200": 3913.07,
     "atr": 51.69,
     "trou_achat_atr": -0.55,
@@ -12954,7 +12958,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 41.57,
+    "prix": 41.53,
     "ema200": 50.42,
     "atr": 1.13,
     "trou_achat_atr": -0.33,
@@ -12970,7 +12974,7 @@
   "deals": {},
   "marches": {
    "ETHUSD": {
-    "prix": 1698.8,
+    "prix": 1698.48,
     "ligne": 1735.66,
     "sens": -1,
     "atr": 38.88,
@@ -13005,42 +13009,42 @@
    3564.91,
    3577.17,
    3552.16,
-   3567.44
+   3565.91
   ],
   "cassure_4h-SILVER": [
    1795680000,
    41.35,
    41.8,
    41.29,
-   41.57
+   41.53
   ],
   "rapide-GOLD": [
    1795692900,
    3566.52,
    3566.52,
-   3565.18,
-   3565.5
+   3564.84,
+   3565.59
   ],
   "elan_4h-GOLD": [
    1795680000,
    3564.91,
    3577.17,
    3552.16,
-   3567.44
+   3565.91
   ],
   "elan_4h-SILVER": [
    1795680000,
    41.35,
    41.8,
    41.29,
-   41.57
+   41.53
   ],
   "supertrend_4h-ETHUSD": [
    1795680000,
    1687.69,
    1704.01,
    1685.31,
-   1698.8
+   1698.48
   ],
   "usine-NATURALGAS": [
    1795680000,
@@ -13272,11 +13276,11 @@
   "00000000-76ca-6738-049f-c46d0015549e": {
    "p_stop": 57.6,
    "p_objectif": 2.6,
-   "p_aucun": 39.8,
+   "p_aucun": 39.7,
    "p_gain_fin": 33.6,
-   "prix_p5": 3509.56,
-   "prix_median": 3572.84,
-   "prix_p95": 3634.02,
+   "prix_p5": 3509.64,
+   "prix_median": 3572.93,
+   "prix_p95": 3634.12,
    "objectif": 3484.36,
    "objectif_type": "gain de 2 R",
    "objectif_r": 2.0,
@@ -13284,7 +13288,7 @@
    "horizon": "4 h",
    "tirages": 4000,
    "bougies_utilisees": 298,
-   "prix_depart": 3565.5,
+   "prix_depart": 3565.59,
    "calcule_sur": "2026-11-26T11:35:00",
    "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
    "verdict": "Penche nettement vers le stop (4 % des cas tranchés, équilibre 33 %)."
