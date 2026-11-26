@@ -132,6 +132,12 @@ def instantanes(api, epics):
     return out
 
 
+def trier_ouverts(etat, tous):
+    """Marchés ouverts, du spread le plus faible au plus fort : la rotation passe sur tous, les plus liquides d'abord."""
+    o = [e for e in tous if etat.get(e, {}).get("ouvert") and etat[e]["mid"] > 0]
+    return sorted(o, key=lambda e: etat[e]["spread"] / etat[e]["mid"])
+
+
 def vers_df(bougies):
     lignes = [[b["snapshotTimeUTC"]] + [b[f"{k}Price"][c] for k in ("open", "high", "low", "close") for c in ("bid", "ask")]
               + [b.get("lastTradedVolume", 0)] for b in bougies]
@@ -240,7 +246,7 @@ def principal():
     tous = list(univers.get("marches", {}))
     print(f"{len(tous)} marchés Capital.com connus", flush=True)
     etat = instantanes(api, tous)
-    ouverts = [e for e in tous if etat.get(e, {}).get("ouvert")]
+    ouverts = trier_ouverts(etat, tous)
     print(f"{len(ouverts)} ouverts maintenant", flush=True)
 
     maison = entrainer_maison(api, set(ouverts))
@@ -260,7 +266,9 @@ def principal():
     curseur = int(vivant.get("curseur", 0))
     attente = []
     derniere_session, derniere_pub, dernier_etat = time.time(), 0.0, time.time()
-    pool = ThreadPoolExecutor(3)
+    pool = ThreadPoolExecutor(6)
+    fond = ThreadPoolExecutor(1)
+    tache_etat = tache_pub = None
     while time.time() - debut < DUREE:
         time.sleep(max(0.0, 60.5 - (maintenant().second + maintenant().microsecond / 1e6)) % 60)
         t_tour = time.time()
@@ -271,10 +279,17 @@ def principal():
                 pass
             api.connexion()
             derniere_session = time.time()
-        if t_tour - dernier_etat > 15 * 60:  # marchés qui ouvrent / ferment
-            etat = instantanes(api, tous)
-            ouverts = [e for e in tous if etat.get(e, {}).get("ouvert")]
+        if tache_etat is not None and tache_etat.done():
+            try:
+                ouverts = trier_ouverts(tache_etat.result(), tous)
+                curseur = 0
+            except Exception:
+                pass
+            tache_etat = None
+        if t_tour - dernier_etat > 15 * 60 and tache_etat is None:  # marchés qui ouvrent / ferment (en arrière-plan)
+            tache_etat = fond.submit(instantanes, api, tous)
             dernier_etat = time.time()
+        etapes = {}
         # 1. juger les prédictions arrivées à échéance (60 s)
         dues = [p for p in attente if p["echeance"] <= time.time()]
         if dues:
@@ -306,7 +321,9 @@ def principal():
                 return e, vers_df(api.bougies(e, "MINUTE", L + 8))
             except Exception:
                 return e, None
+        t0 = time.time()
         donnees = {e: d for e, d in pool.map(bougies, lot) if d is not None and len(d) >= 320}
+        etapes["bougies_s"] = round(time.time() - t0, 1)
         donnees = {e: d.iloc[-L:] for e, d in donnees.items()
                    if (maintenant().replace(tzinfo=None) - d.index[-1]).total_seconds() < 180}
         if not donnees:
@@ -356,6 +373,8 @@ def principal():
             arr = np.vstack([np.repeat(arr[:1], n_max - len(arr), 0), arr])  # complété au début si moins de 512 bougies
             ohlcv.append(arr)
             prix_mat.append(arr[:, 3])
+        etapes["ia_maison_s"] = round(time.time() - t_frais, 1)
+        t0 = time.time()
         reste = max(5.0, 40 - (time.time() - t_tour))
         pg, infos = geantes.prevoir(np.array(prix_mat), np.array(ohlcv), 1, delai=reste)
         for m, pr in pg.items():
@@ -369,6 +388,7 @@ def principal():
                 vivant["etat_ia"][m] = v
         # vote + arbitre, puis prix de départ
         w = poids_arbitre(st)
+        etapes["ia_geantes_s"] = round(time.time() - t0, 1)
         depart = instantanes(api, epics)
         heure = iso()
         for e in epics:
@@ -391,13 +411,17 @@ def principal():
         vivant["poids_arbitre"] = {m: round(v, 4) for m, v in w.items()}
         vivant["curseur"] = curseur
         vivant["duree_tour_s"] = round(time.time() - t_tour, 1)
+        vivant["etapes"] = etapes
         # on ne garde que les probabilités de la dernière heure
         limite = iso(datetime.fromtimestamp(time.time() - 3600, timezone.utc))
         vivant["probas"] = {e: v for e, v in vivant["probas"].items() if v["t"] >= limite}
-        if time.time() - derniere_pub > 5 * 60:
+        if time.time() - derniere_pub > 3 * 60 and (tache_pub is None or tache_pub.done()):
             vivant["maj"] = iso()
-            publier({"stats.json": st, "vivant.json": vivant, "marches.json": univers})
+            copie = json.loads(json.dumps({"stats.json": st, "vivant.json": vivant, "marches.json": univers}))
+            tache_pub = fond.submit(publier, copie)  # en arrière-plan : la minute suivante n'attend pas
             derniere_pub = time.time()
+    if tache_pub is not None:
+        tache_pub.result()
     vivant["maj"] = iso()
     publier({"stats.json": st, "vivant.json": vivant, "marches.json": univers})
     geantes.fermer()

@@ -249,7 +249,8 @@ function etat() {
   }
   $("delais").innerHTML = `<div class="grille kpis" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">` +
     `<div class="carte kpi"><div class="l">Prix frais → prédiction</div><div class="val">${fmt(d.prix_frais_vers_prediction_s)} s</div><div class="doux petit">temps de calcul de toutes les IA</div></div>` +
-    `<div class="carte kpi"><div class="l">Marchés par minute</div><div class="val">${d.marches_predits ?? "—"}</div><div class="doux petit">rotation sur les marchés ouverts</div></div></div>` + svg;
+    `<div class="carte kpi"><div class="l">Marchés par minute</div><div class="val">${d.marches_predits ?? "—"}</div><div class="doux petit">rotation sur les marchés ouverts</div></div></div>` + svg +
+    (V.etapes ? `<div class="note">Dernière minute : bougies ${fmt(V.etapes.bougies_s)} s · IA maison ${fmt(V.etapes.ia_maison_s)} s · IA géantes ${fmt(V.etapes.ia_geantes_s)} s</div>` : "");
   let h = `<tr><th>IA</th><th>État</th><th>Calcul</th></tr>`;
   for (const [m, e] of Object.entries(V.etat_ia || {})) {
     const ok = e === "prête";
