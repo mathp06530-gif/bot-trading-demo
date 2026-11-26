@@ -1753,7 +1753,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T05:35:25Z",
+ "derniere_execution": "2026-11-26T05:36:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10138,6 +10138,10 @@
   {
    "date": "2026-11-26T05:35:25Z",
    "valeur": 93.15
+  },
+  {
+   "date": "2026-11-26T05:36:24Z",
+   "valeur": 93.15
   }
  ],
  "compte": {
@@ -10574,7 +10578,7 @@
     "titre": "Prelim GDP q/q"
    }
   ],
-  "lu_le": "2026-11-26T04:35:22.373468+00:00",
+  "lu_le": "2026-11-26T05:36:21.826663+00:00",
   "pause": null,
   "prochaines": []
  },
@@ -10623,7 +10627,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3602.01,
+    "prix": 3600.1800000000003,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
