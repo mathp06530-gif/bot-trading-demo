@@ -30,6 +30,10 @@ POOL_MAX = 1000          # bougies récentes utilisées au maximum
 POOL_MIN = 60            # en dessous : pas de simulation (trop peu d'historique)
 PAR_CRENEAU_MIN = 30     # tirage « même heure » seulement si chaque heure a au moins 30 bougies
 OBJECTIF_R = 2.0
+# Test sur 10 ans (backtest/time_machine.py, 26/11/2026) : PAS plus fiable qu'une moyenne fixe (~56 % de stop d'abord
+# sur la Cassure), et inutile comme filtre d'entrée. Affiché pour se faire une idée des risques, rien de plus.
+FIABILITE = ("Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop "
+             "arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.")
 
 
 def paquet(o, h, l, c, heures=None):
@@ -120,7 +124,7 @@ def pour_position(p: dict, bougies: list, unite: str) -> dict | None:
     ratios, hr = paquet(o, h, l, c, heures)
     if len(ratios) < POOL_MIN:
         return None
-    prix = _mid(bougies[-1], "closePrice")
+    prix = float(_mid(bougies[-1], "closePrice"))
     entree, stop = float(p["prix_entree"]), float(p["stop"])
     if (prix - stop) * sens <= 0:  # déjà au-delà du stop (le courtier va fermer)
         return None
@@ -146,7 +150,7 @@ def pour_position(p: dict, bougies: list, unite: str) -> dict | None:
                    "objectif_r": round(r_obj, 2) if r_obj is not None else None,
                    "stop_en_gain": risque <= 0, "horizon": TEXTE_HORIZON.get(unite, f"{horizon} bougies"),
                    "tirages": TIRAGES, "bougies_utilisees": int(len(ratios)), "prix_depart": round(prix, d),
-                   "calcule_sur": bougies[-1]["snapshotTimeUTC"],
+                   "calcule_sur": bougies[-1]["snapshotTimeUTC"], "fiabilite": FIABILITE,
                    "verdict": (verdict(res["p_objectif"], res["p_stop"], r_obj) if objectif is not None else
                                "Le stop protège déjà un gain : seule compte la chance qu'il soit touché d'ici là.")})
     return sortie

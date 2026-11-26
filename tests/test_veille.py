@@ -15,18 +15,16 @@ def test_titres_classes_par_sujet():
     assert "résultats" in t[1]["sujets"]
 
 
-def test_resultats_nasdaq():
-    page = {"data": {"rows": [{"symbol": "AAPL", "time": "time-pre-market"}, {"symbol": "TSLA", "time": "time-after-hours"}]}}
-    assert veille.lire_nasdaq(page, "TSLA", "2027-01-27") == "2027-01-27T21:05Z"
-    assert veille.lire_nasdaq(page, "AAPL", "2027-01-27") == "2027-01-27T13:00Z"
-    assert veille.lire_nasdaq({"data": None}, "TSLA", "2027-01-27") is None
+def test_dates_de_resultats_dans_les_reglages():
+    assert veille.resultats_reglages("TSLA=2027-01-27, AAPL=2027-01-28T13:00, n'importe quoi") == \
+        {"TSLA": "2027-01-27T21:05Z", "AAPL": "2027-01-28T13:00Z"}
 
 
 def test_pause_tesla_autour_des_resultats_seulement_sur_tesla():
     d = {}
     t = datetime(2027, 1, 27, 12, tzinfo=timezone.utc)
     veille.mettre_a_jour(d, t, ["GOLD", "TSLA"], lire_titres=lambda s: veille.lire_rss(RSS),
-                         lire_resultats=lambda a, m: {"TSLA": "2027-01-27T21:05Z"})
+                         dates_resultats={"TSLA": "2027-01-27T21:05Z", "AAPL": "2027-01-01T21:05Z"})
     assert len(d["veille"]["titres"]["GOLD"]) == 2
     p = actualites.pauses_marches(d, t)
     assert list(p) == ["TSLA"] and "résultats" in p["TSLA"]
@@ -49,5 +47,5 @@ def test_source_en_panne_le_bot_continue():
         raise OSError("hors ligne")
     d = {}
     soucis = veille.mettre_a_jour(d, datetime(2027, 1, 1, tzinfo=timezone.utc), ["GOLD", "TSLA"],
-                                  lire_titres=panne, lire_resultats=panne)
-    assert len(soucis) == 3 and d["veille"]["titres"]["GOLD"] == []
+                                  lire_titres=panne)
+    assert len(soucis) == 2 and d["veille"]["titres"]["GOLD"] == []

@@ -763,7 +763,7 @@ function bandeauActus() {
   return (p ? `<div class="garde alerte">📰 <b>Pause annonce :</b> ${esc(p)}</div>` : "")
     + pm.map(([m, r]) => `<div class="garde alerte">📰 <b>Pause ${esc(m)} :</b> ${esc(r)}</div>`).join("")
     + (t.length || res.length ? `<details class="garde"><summary>📰 <b>Actus des marchés</b> (titres Yahoo Finance, pour info : le bot ne trade pas dessus)</summary>
-      ${res.map(([m, q]) => `<p class="sous" style="margin:8px 0 0">📅 Prochains résultats ${esc(m)} : <b>${quand(q)}</b> (pas de nouvelle position 24 h avant et après)</p>`).join("")}
+      ${res.map(([m, q]) => `<p class="sous" style="margin:8px 0 0">📅 Prochains résultats ${esc(m)} : <b>${quand(q)}</b> (pas de nouvelle position ${esc(String(D?.veille?.pause_resultats_h ?? 24))} h avant et après)</p>`).join("")}
       ${t.map(([m, l]) => `<p style="margin:10px 0 4px"><b>${esc(m)}</b></p><ul style="margin:0;padding-left:18px">${l.map(x =>
         `<li class="sous" style="margin:3px 0"><a href="${/^https?:\/\//.test(x.lien || "") ? esc(x.lien) : "#"}" target="_blank" rel="noopener" style="color:inherit">${esc(x.titre)}</a>${x.sujets?.length ? ` <span class="badge">${esc(x.sujets.join(", "))}</span>` : ""}${x.date ? ` · ${quand(x.date)}` : ""}</li>`).join("")}</ul>`).join("")}</details>` : "");
 }
@@ -811,7 +811,8 @@ function simBloc(id, court) {
     <div><span>${obj ? esc(s.objectif_type) + " d'abord" : "Objectif"}</span><b class="num pos">${obj ? fmt(s.p_objectif, 1) + " %" : "—"}</b></div>
     <div><span>Ni l'un ni l'autre</span><b class="num">${fmt(s.p_aucun, 1)} %</b></div>
     <div><span>Prix dans ${esc(s.horizon)} (90 %)</span><b class="num">${fmt(s.prix_p5, s.prix_p5 < 10 ? 4 : 1)} – ${fmt(s.prix_p95, s.prix_p95 < 10 ? 4 : 1)}</b></div></div>
-    <p class="sous" style="margin:6px 0 0">${esc(s.verdict)} Simulation à partir des bougies récentes, pas une prédiction : le stop suiveur bouge en vrai.</p></div>`;
+    <p class="sous" style="margin:6px 0 0">${esc(s.verdict)} Simulation à partir des bougies récentes, pas une prédiction : le stop suiveur bouge en vrai.</p>
+    ${s.fiabilite ? `<p class="sous" style="margin:4px 0 0">⚠️ ${esc(s.fiabilite)}</p>` : ""}</div>`;
 }
 function carteOrdre(o) {
   const achat = o.sens === "BUY", st = stratDe(o);
