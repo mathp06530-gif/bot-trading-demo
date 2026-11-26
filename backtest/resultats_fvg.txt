@@ -1,0 +1,60 @@
+GOLD : 215684 bougies 15 min, 2017-02-21 00:00:00 -> 2026-11-26 08:30:00, spread médian 0.207
+  GOLD : 0 réglages d'entrée testés (0 s)
+  GOLD : 500 réglages d'entrée testés (79 s)
+  GOLD : 1000 réglages d'entrée testés (136 s)
+  GOLD : 1500 réglages d'entrée testés (183 s)
+  GOLD : 2000 réglages d'entrée testés (222 s)
+  GOLD : 2500 réglages d'entrée testés (252 s)
+  GOLD : 3000 réglages d'entrée testés (274 s)
+GOLD : 27648 combinaisons en 277 s
+SILVER : 250821 bougies 15 min, 2016-11-30 00:00:00 -> 2026-11-26 08:30:00, spread médian 0.020
+  SILVER : 0 réglages d'entrée testés (278 s)
+  SILVER : 500 réglages d'entrée testés (355 s)
+  SILVER : 1000 réglages d'entrée testés (413 s)
+  SILVER : 1500 réglages d'entrée testés (462 s)
+  SILVER : 2000 réglages d'entrée testés (500 s)
+  SILVER : 2500 réglages d'entrée testés (529 s)
+  SILVER : 3000 réglages d'entrée testés (552 s)
+SILVER : 27648 combinaisons en 554 s
+
+55296 essais, 4 candidates, 0 passent les contrôles, 0 solides. Sharpe mensuel du hasard 1.747
+         GOLD    DSR 0.00 entr   +39.9 R (136)  valid  -37.0  test  +12.5  stress  -28.7  FVG >= 0.5 ATR, départ 16 bougies, entrée Fibo 0.705, stop +10 %, ordre 48 bougies, dans le trou, 7h-20h UTC ; sortie unique 2 R
+         GOLD    DSR 0.00 entr   +37.4 R (136)  valid  -40.4  test  +12.9  stress  -31.3  FVG >= 0.5 ATR, départ 16 bougies, entrée Fibo 0.705, stop +10 %, ordre 48 bougies, dans le trou, 7h-20h UTC ; sortie unique sommet B
+         GOLD    DSR 0.00 entr   +38.5 R (136)  valid  -39.2  test  +10.8  stress  -34.7  FVG >= 0.5 ATR, départ 16 bougies, entrée Fibo 0.705, stop +10 %, ordre 48 bougies, dans le trou, 7h-20h UTC ; sortie 3 tiers B / 1,27 / 1,618 + stop à l'entrée
+         GOLD    DSR 0.00 entr   +38.7 R (136)  valid  -42.1  test  +12.7  stress  -36.7  FVG >= 0.5 ATR, départ 16 bougies, entrée Fibo 0.705, stop +10 %, ordre 48 bougies, dans le trou, 7h-20h UTC ; sortie 3 tiers B / 1,27 / 1,618
+
+GOLD — sorties (moyenne de toutes les entrées, R jamais vu) :
+   unique 1 R                                    entr   -72.6  jamais vu   -81.6  gagnantes 2 %
+   unique 1,5 R                                  entr   -76.1  jamais vu   -71.5  gagnantes 5 %
+   unique 2 R                                    entr   -80.6  jamais vu   -61.6  gagnantes 9 %
+   unique 3 R                                    entr   -85.9  jamais vu   -46.9  gagnantes 16 %
+   unique sommet B                               entr   -78.8  jamais vu   -81.8  gagnantes 2 %
+   3 tiers 1-2-3 R                               entr   -76.9  jamais vu   -61.2  gagnantes 6 %
+   3 tiers 1-2-3 R + stop à l'entrée             entr   -76.0  jamais vu   -67.0  gagnantes 3 %
+   3 tiers B / 1,27 / 1,618                      entr   -80.3  jamais vu   -60.1  gagnantes 6 %
+   3 tiers B / 1,27 / 1,618 + stop à l'entrée    entr   -79.8  jamais vu   -67.3  gagnantes 5 %
+GOLD — version Anthony (25 pips) :
+   Fibo 0.5, 3 tiers 1-2-3 R + stop à l'entrée             entr   -20.2 (383)  valid    -1.4  test   -14.6 (1060)
+   Fibo 0.5, unique 2 R                                    entr   -18.2 (379)  valid   -44.7  test   +25.7 (1069)
+   Fibo 0.618, 3 tiers 1-2-3 R + stop à l'entrée           entr   -26.3 (343)  valid    +4.4  test   +38.8 (1171)
+   Fibo 0.618, unique 2 R                                  entr   -20.8 (342)  valid    -9.3  test   +19.8 (1176)
+   Fibo 0.78, 3 tiers 1-2-3 R + stop à l'entrée            entr   +14.9 (314)  valid   -37.7  test   -25.9 (1367)
+   Fibo 0.78, unique 2 R                                   entr   +31.8 (315)  valid   -14.1  test   -44.8 (1417)
+
+SILVER — sorties (moyenne de toutes les entrées, R jamais vu) :
+   unique 1 R                                    entr  -318.3  jamais vu  -215.3  gagnantes 0 %
+   unique 1,5 R                                  entr  -309.2  jamais vu  -207.7  gagnantes 0 %
+   unique 2 R                                    entr  -304.6  jamais vu  -198.1  gagnantes 0 %
+   unique 3 R                                    entr  -294.5  jamais vu  -186.5  gagnantes 1 %
+   unique sommet B                               entr  -312.4  jamais vu  -201.8  gagnantes 1 %
+   3 tiers 1-2-3 R                               entr  -293.6  jamais vu  -189.6  gagnantes 0 %
+   3 tiers 1-2-3 R + stop à l'entrée             entr  -311.0  jamais vu  -199.6  gagnantes 0 %
+   3 tiers B / 1,27 / 1,618                      entr  -294.6  jamais vu  -188.1  gagnantes 1 %
+   3 tiers B / 1,27 / 1,618 + stop à l'entrée    entr  -306.4  jamais vu  -193.2  gagnantes 1 %
+SILVER — version Anthony (25 pips) :
+   Fibo 0.5, 3 tiers 1-2-3 R + stop à l'entrée             entr    +5.7 (34)  valid    -1.1  test   -22.6 (282)
+   Fibo 0.5, unique 2 R                                    entr    +8.0 (36)  valid    -1.7  test   -27.9 (288)
+   Fibo 0.618, 3 tiers 1-2-3 R + stop à l'entrée           entr    -0.1 (29)  valid    +2.7  test   -21.5 (287)
+   Fibo 0.618, unique 2 R                                  entr    -0.8 (30)  valid    +4.2  test   -16.7 (286)
+   Fibo 0.78, 3 tiers 1-2-3 R + stop à l'entrée            entr    -2.7 (19)  valid    +1.1  test   -21.9 (294)
+   Fibo 0.78, unique 2 R                                   entr    -5.6 (20)  valid    -0.2  test    +0.9 (302)
