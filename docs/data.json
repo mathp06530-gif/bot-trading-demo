@@ -1803,8 +1803,8 @@
    "texte": "Connexion refusée (401). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.invalid.api.key\"}"
   }
  ],
- "statut": "erreur",
- "derniere_execution": "2026-11-26T09:41:49Z",
+ "statut": "ok",
+ "derniere_execution": "2026-11-26T09:42:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11157,15 +11157,19 @@
   {
    "date": "2026-11-26T09:40:27Z",
    "valeur": 93.1
+  },
+  {
+   "date": "2026-11-26T09:42:26Z",
+   "valeur": 93.07
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.1,
+  "solde": 93.07,
   "depot": 93.15,
-  "resultat_latent": -0.05,
-  "disponible": 89.82
+  "resultat_latent": -0.08,
+  "disponible": 89.79
  },
  "positions": [
   {
@@ -11174,7 +11178,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3572.1,
-   "resultat": -0.06,
+   "resultat": -0.08,
    "ouverte_le": "2026-11-26T06:10:23.892",
    "id": "00000000-76c8-6a0d-049f-c46d0015549e",
    "stop": 3601.86,
@@ -11502,7 +11506,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T06:10:23Z",
    "statut": "ouvert",
-   "resultat": -0.06,
+   "resultat": -0.08,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -11527,7 +11531,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.1
+  "2026-11-26": 93.07
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -11709,9 +11713,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3574.59,
+    "prix": 3575.25,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 37.98 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 38.65 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -12447,7 +12451,7 @@
   "deals": {},
   "marches": {
    "NATURALGAS": {
-    "prix": 3.5328,
+    "prix": 3.5358,
     "sens": -1,
     "atr": 0.07279,
     "regle": "MACD 24/52/18, achat et vente, seulement si marché calme (ADX < 20), stop garanti 2.5 ATR, objectif 1 R, suiveur 3 ATR",
@@ -12480,9 +12484,9 @@
   "rapide-GOLD": [
    1795686000,
    3575.03,
-   3575.12,
+   3576.07,
    3574.38,
-   3574.59
+   3575.25
   ],
   "elan_4h-GOLD": [
    1795680000,
@@ -12510,7 +12514,7 @@
    3.5273,
    3.5368,
    3.4988,
-   3.5328
+   3.5358
   ],
   "usine-TSLA": [
    1795651200,
@@ -12731,13 +12735,13 @@
  "_pauses_marches_notees": {},
  "simulations": {
   "00000000-76c8-6a0d-049f-c46d0015549e": {
-   "p_stop": 55.5,
-   "p_objectif": 7.0,
-   "p_aucun": 37.5,
-   "p_gain_fin": 34.1,
-   "prix_p5": 3519.39,
-   "prix_median": 3582.76,
-   "prix_p95": 3643.84,
+   "p_stop": 56.6,
+   "p_objectif": 6.8,
+   "p_aucun": 36.6,
+   "p_gain_fin": 33.6,
+   "prix_p5": 3520.04,
+   "prix_median": 3583.42,
+   "prix_p95": 3644.51,
    "objectif": 3512.58,
    "objectif_type": "gain de 2 R",
    "objectif_r": 2.0,
@@ -12745,7 +12749,7 @@
    "horizon": "4 h",
    "tirages": 4000,
    "bougies_utilisees": 298,
-   "prix_depart": 3574.59,
+   "prix_depart": 3575.25,
    "calcule_sur": "2026-11-26T09:40:00",
    "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
    "verdict": "Penche nettement vers le stop (11 % des cas tranchés, équilibre 33 %)."
