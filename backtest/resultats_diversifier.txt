@@ -1,0 +1,116 @@
+GOLD : fait
+SILVER : fait
+EURUSD : fait
+USDJPY : fait
+GBPUSD : fait
+AUDUSD : fait
+USDCAD : fait
+USDCHF : fait
+NZDUSD : fait
+EURJPY : fait
+GBPJPY : fait
+EURGBP : fait
+DXY : fait
+US500 : fait
+US100 : fait
+US30 : fait
+RTY : fait
+DE40 : fait
+UK100 : fait
+FR40 : fait
+EU50 : fait
+J225 : fait
+HK50 : fait
+AU200 : fait
+OIL_CRUDE : fait
+OIL_BRENT : fait
+COPPER : fait
+PLATINUM : fait
+PALLADIUM : fait
+NATURALGAS : fait
+      Cassure 4 h     GOLD          -8.1    -2.0    41.6 stress=  36.5 corr= 0.85 [119, 60, 61]
+TIENT Cassure 4 h     SILVER        19.6    16.6    17.8 stress=  20.6 corr= 0.66 [115, 61, 64]
+TIENT Supertrend 4 h  SILVER         4.1     8.1    22.2 stress=  27.0 corr= 0.53 [195, 109, 91]
+TIENT Supertrend 4 h  GOLD           8.1    13.6    14.9 stress=  24.6 corr= 0.53 [209, 106, 96]
+      Supertrend 4 h  NATURALGAS   -51.9    30.3   -14.2 stress=  11.9 corr=-0.04 [262, 118, 126]
+      Supertrend 4 h  J225         -18.0     5.1     9.4 stress=   9.3 corr= 0.03 [217, 116, 97]
+      Cassure 4 h     NATURALGAS   -21.9    11.6    -1.7 stress=   5.9 corr=-0.11 [136, 65, 66]
+      Supertrend 4 h  USDJPY       -12.7     5.9    -0.5 stress=   1.8 corr=-0.18 [199, 120, 102]
+      Cassure 4 h     HK50          18.8    -3.2     8.5 stress=   1.1 corr= 0.02 [100, 75, 65]
+      Cassure 4 h     EURJPY       -10.8    -3.6     7.4 stress=  -0.8 corr= 0.19 [132, 75, 66]
+      Supertrend 4 h  HK50          20.8     3.6    -1.5 stress=  -4.1 corr= 0.17 [163, 119, 122]
+      Cassure 4 h     US100          6.3     3.3    -1.7 stress=  -3.2 corr= 0.01 [120, 76, 70]
+      Supertrend 4 h  USDCAD       -38.8   -14.0    11.6 stress=  -7.0 corr= 0.08 [206, 117, 88]
+      Cassure 4 h     US500        -12.1     8.6   -11.1 stress=  -9.4 corr= 0.00 [121, 74, 70]
+      Supertrend 4 h  US30          16.3    18.2   -21.1 stress=  -9.5 corr= 0.06 [199, 109, 126]
+      Supertrend 4 h  OIL_BRENT      5.9    -7.0     0.9 stress= -10.0 corr= 0.04 [205, 122, 119]
+      Cassure 4 h     DE40         -25.8     1.6    -8.5 stress= -12.6 corr=-0.05 [115, 72, 74]
+      Supertrend 4 h  DE40         -27.3     3.7   -11.3 stress= -13.9 corr=-0.01 [183, 114, 120]
+      Cassure 4 h     USDJPY       -32.1    11.1   -20.0 stress= -10.0 corr=-0.11 [146, 59, 70]
+      Cassure 4 h     J225          20.3   -10.4    -0.2 stress= -14.7 corr= 0.00 [134, 77, 65]
+      Supertrend 4 h  OIL_CRUDE     24.1   -11.0     0.3 stress= -14.1 corr= 0.02 [195, 124, 117]
+      Cassure 4 h     US30          28.7     9.4   -21.0 stress= -18.8 corr= 0.33 [117, 64, 64]
+      Supertrend 4 h  US100        -19.3    -3.9    -8.1 stress= -16.5 corr= 0.12 [242, 141, 116]
+      Cassure 4 h     UK100        -59.6    -0.9   -12.6 stress= -20.9 corr= 0.13 [140, 65, 64]
+      Supertrend 4 h  RTY           -2.6    -3.9   -10.0 stress= -18.4 corr= 0.06 [167, 130, 117]
+      Supertrend 4 h  FR40          18.4    -4.0   -12.8 stress= -22.9 corr=-0.06 [181, 109, 98]
+      Supertrend 4 h  EURJPY        -9.9     5.0   -22.1 stress= -22.0 corr= 0.06 [209, 116, 106]
+      Cassure 4 h     EU50           4.1    -1.9   -15.8 stress= -23.5 corr=-0.02 [129, 76, 74]
+      Cassure 4 h     COPPER       -40.6     6.2   -24.0 stress= -21.4 corr=-0.08 [125, 76, 74]
+      Supertrend 4 h  COPPER       -30.9    -2.4   -15.9 stress= -24.0 corr=-0.04 [197, 117, 111]
+      Cassure 4 h     FR40          18.2   -10.8    -7.9 stress= -22.8 corr= 0.04 [128, 73, 51]
+      Supertrend 4 h  UK100        -29.7     9.5   -29.5 stress= -28.3 corr=-0.03 [205, 91, 120]
+      Supertrend 4 h  PALLADIUM      1.8   -17.5    -3.6 stress= -36.1 corr= 0.09 [184, 97, 82]
+      Cassure 4 h     OIL_CRUDE     18.3    -1.5   -19.9 stress= -23.4 corr= 0.14 [114, 74, 84]
+      Supertrend 4 h  PLATINUM      -9.2    -6.6   -18.3 stress= -35.4 corr= 0.23 [196, 101, 98]
+      Supertrend 4 h  USDCHF       -29.1    -4.0   -21.3 stress= -30.3 corr= 0.17 [208, 107, 108]
+      Cassure 4 h     EURUSD       -36.7   -19.2    -6.3 stress= -29.6 corr= 0.21 [138, 73, 59]
+      Cassure 4 h     PLATINUM     -16.9   -23.7    -3.3 stress= -59.0 corr= 0.28 [120, 72, 58]
+      Supertrend 4 h  AU200        -32.4    -4.1   -23.5 stress= -36.1 corr= 0.04 [185, 104, 105]
+      Cassure 4 h     OIL_BRENT     14.6    -1.9   -25.8 stress= -29.9 corr= 0.29 [109, 73, 77]
+      Cassure 4 h     NZDUSD       -27.0   -25.8    -2.6 stress= -32.4 corr= 0.09 [129, 75, 69]
+      Cassure 4 h     RTY          -21.4   -18.1   -10.4 stress= -32.0 corr= 0.08 [100, 80, 54]
+      Supertrend 4 h  AUDUSD        16.1   -26.9    -2.4 stress= -32.7 corr= 0.21 [181, 119, 97]
+      Cassure 4 h     GBPJPY       -14.6    -8.2   -21.4 stress= -33.8 corr= 0.00 [130, 69, 66]
+      Supertrend 4 h  US500         -8.1    -7.1   -23.0 stress= -36.6 corr= 0.16 [203, 126, 131]
+      Supertrend 4 h  NZDUSD        11.0   -22.3    -7.9 stress= -36.5 corr= 0.08 [185, 111, 103]
+      Cassure 4 h     USDCHF       -36.8   -18.9   -11.8 stress= -33.7 corr= 0.04 [129, 68, 73]
+      Supertrend 4 h  EURUSD         0.6   -33.5     0.9 stress= -36.9 corr= 0.14 [207, 127, 97]
+      Supertrend 4 h  GBPJPY        17.6   -19.5   -13.8 stress= -37.9 corr=-0.03 [191, 128, 98]
+      Cassure 4 h     AUDUSD        21.7   -27.9    -7.4 stress= -37.2 corr= 0.33 [121, 87, 67]
+      Cassure 4 h     USDCAD       -53.6   -43.3     7.5 stress= -41.9 corr= 0.07 [129, 79, 60]
+      Cassure 4 h     GBPUSD       -24.6   -31.9    -6.6 stress= -40.9 corr= 0.11 [129, 71, 68]
+      Supertrend 4 h  GBPUSD       -15.7   -31.6    -8.0 stress= -44.9 corr= 0.19 [217, 125, 106]
+      Supertrend 4 h  EU50           6.7    -8.2   -33.4 stress= -49.7 corr=-0.05 [193, 115, 129]
+      Cassure 4 h     AU200         -9.5   -19.3   -24.3 stress= -50.5 corr= 0.06 [124, 75, 68]
+      Cassure 4 h     DXY          -49.8   -32.5   -12.1 stress= -57.8 corr= 0.10 [93, 75, 60]
+      Cassure 4 h     PALLADIUM     12.7   -23.7   -23.5 stress= -62.5 corr= 0.01 [90, 60, 64]
+      Supertrend 4 h  EURGBP       -34.2   -33.8   -17.9 stress= -61.8 corr= 0.04 [202, 111, 85]
+      Supertrend 4 h  DXY           -8.0   -40.8   -26.4 stress= -85.0 corr= 0.08 [150, 133, 118]
+      Cassure 4 h     EURGBP       -27.3   -35.4   -34.1 stress= -82.1 corr= 0.11 [130, 78, 69]
+{
+ "or+argent seuls (actuel)": {
+  "marches": [
+   "Cassure 4 h GOLD",
+   "Cassure 4 h SILVER"
+  ],
+  "R_total_par_unite_de_risque": 43.3,
+  "R_2022_auj": 37.5,
+  "sharpe_mensuel": 0.53,
+  "sharpe_2022_auj": 0.91,
+  "pire_baisse": -15.82,
+  "mois_gagnants_pct": 52.0
+ },
+ "or+argent + marchés qui tiennent": {
+  "marches": [
+   "Cassure 4 h GOLD",
+   "Cassure 4 h SILVER"
+  ],
+  "R_total_par_unite_de_risque": 43.3,
+  "R_2022_auj": 37.5,
+  "sharpe_mensuel": 0.53,
+  "sharpe_2022_auj": 0.91,
+  "pire_baisse": -15.82,
+  "mois_gagnants_pct": 52.0
+ }
+}

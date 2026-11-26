@@ -1,0 +1,1202 @@
+{
+ "donnees": {
+  "GOLD": "05/2017-11/2026",
+  "SILVER": "05/2017-11/2026",
+  "EURUSD": "05/2017-11/2026",
+  "USDJPY": "05/2017-11/2026",
+  "GBPUSD": "05/2017-11/2026",
+  "AUDUSD": "05/2017-11/2026",
+  "USDCAD": "05/2017-11/2026",
+  "USDCHF": "05/2017-11/2026",
+  "NZDUSD": "05/2017-11/2026",
+  "EURJPY": "05/2017-11/2026",
+  "GBPJPY": "05/2017-11/2026",
+  "EURGBP": "05/2017-11/2026",
+  "DXY": "11/2016-11/2026",
+  "US500": "05/2017-11/2026",
+  "US100": "05/2017-11/2026",
+  "US30": "05/2017-11/2026",
+  "RTY": "11/2016-11/2026",
+  "DE40": "05/2017-11/2026",
+  "UK100": "05/2017-11/2026",
+  "FR40": "05/2017-11/2026",
+  "EU50": "05/2017-11/2026",
+  "J225": "05/2017-11/2026",
+  "HK50": "05/2017-11/2026",
+  "AU200": "05/2017-11/2026",
+  "OIL_CRUDE": "05/2017-11/2026",
+  "OIL_BRENT": "05/2017-11/2026",
+  "COPPER": "11/2016-11/2026",
+  "PLATINUM": "05/2017-11/2026",
+  "PALLADIUM": "05/2017-11/2026",
+  "NATURALGAS": "05/2017-11/2026"
+ },
+ "marches": [
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "GOLD",
+   "entrainement": -8.1,
+   "validation": -2.0,
+   "test": 41.6,
+   "trades": [
+    119,
+    60,
+    61
+   ],
+   "R_trade": 0.131,
+   "t_jv": 1.23,
+   "pire_baisse": -37.5,
+   "stress_jamais_vu": 36.5,
+   "tient": false,
+   "sharpe_mensuel": 0.25,
+   "correlation_avec_cassure_or_argent": 0.85
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "GOLD",
+   "entrainement": 8.1,
+   "validation": 13.6,
+   "test": 14.9,
+   "trades": [
+    209,
+    106,
+    96
+   ],
+   "R_trade": 0.089,
+   "t_jv": 1.49,
+   "pire_baisse": -24.9,
+   "stress_jamais_vu": 24.6,
+   "tient": true,
+   "sharpe_mensuel": 0.44,
+   "correlation_avec_cassure_or_argent": 0.53
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "SILVER",
+   "entrainement": 19.6,
+   "validation": 16.6,
+   "test": 17.8,
+   "trades": [
+    115,
+    61,
+    64
+   ],
+   "R_trade": 0.225,
+   "t_jv": 1.57,
+   "pire_baisse": -12.6,
+   "stress_jamais_vu": 20.6,
+   "tient": true,
+   "sharpe_mensuel": 0.63,
+   "correlation_avec_cassure_or_argent": 0.66
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "SILVER",
+   "entrainement": 4.1,
+   "validation": 8.1,
+   "test": 22.2,
+   "trades": [
+    195,
+    109,
+    91
+   ],
+   "R_trade": 0.087,
+   "t_jv": 1.48,
+   "pire_baisse": -19.7,
+   "stress_jamais_vu": 27.0,
+   "tient": true,
+   "sharpe_mensuel": 0.44,
+   "correlation_avec_cassure_or_argent": 0.53
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "EURUSD",
+   "entrainement": -36.7,
+   "validation": -19.2,
+   "test": -6.3,
+   "trades": [
+    138,
+    73,
+    59
+   ],
+   "R_trade": -0.23,
+   "t_jv": -1.51,
+   "pire_baisse": -86.4,
+   "stress_jamais_vu": -29.6,
+   "tient": false,
+   "sharpe_mensuel": -0.74,
+   "correlation_avec_cassure_or_argent": 0.21
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "EURUSD",
+   "entrainement": 0.6,
+   "validation": -33.5,
+   "test": 0.9,
+   "trades": [
+    207,
+    127,
+    97
+   ],
+   "R_trade": -0.074,
+   "t_jv": -1.98,
+   "pire_baisse": -44.5,
+   "stress_jamais_vu": -36.9,
+   "tient": false,
+   "sharpe_mensuel": -0.41,
+   "correlation_avec_cassure_or_argent": 0.14
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "USDJPY",
+   "entrainement": -32.1,
+   "validation": 11.1,
+   "test": -20.0,
+   "trades": [
+    146,
+    59,
+    70
+   ],
+   "R_trade": -0.149,
+   "t_jv": -0.52,
+   "pire_baisse": -46.9,
+   "stress_jamais_vu": -10.0,
+   "tient": false,
+   "sharpe_mensuel": -0.54,
+   "correlation_avec_cassure_or_argent": -0.11
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "USDJPY",
+   "entrainement": -12.7,
+   "validation": 5.9,
+   "test": -0.5,
+   "trades": [
+    199,
+    120,
+    102
+   ],
+   "R_trade": -0.017,
+   "t_jv": 0.27,
+   "pire_baisse": -19.4,
+   "stress_jamais_vu": 1.8,
+   "tient": false,
+   "sharpe_mensuel": -0.1,
+   "correlation_avec_cassure_or_argent": -0.18
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "GBPUSD",
+   "entrainement": -24.6,
+   "validation": -31.9,
+   "test": -6.6,
+   "trades": [
+    129,
+    71,
+    68
+   ],
+   "R_trade": -0.235,
+   "t_jv": -2.54,
+   "pire_baisse": -67.6,
+   "stress_jamais_vu": -40.9,
+   "tient": false,
+   "sharpe_mensuel": -0.79,
+   "correlation_avec_cassure_or_argent": 0.11
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "GBPUSD",
+   "entrainement": -15.7,
+   "validation": -31.6,
+   "test": -8.0,
+   "trades": [
+    217,
+    125,
+    106
+   ],
+   "R_trade": -0.123,
+   "t_jv": -2.56,
+   "pire_baisse": -65.9,
+   "stress_jamais_vu": -44.9,
+   "tient": false,
+   "sharpe_mensuel": -0.75,
+   "correlation_avec_cassure_or_argent": 0.19
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "AUDUSD",
+   "entrainement": 21.7,
+   "validation": -27.9,
+   "test": -7.4,
+   "trades": [
+    121,
+    87,
+    67
+   ],
+   "R_trade": -0.049,
+   "t_jv": -2.22,
+   "pire_baisse": -49.2,
+   "stress_jamais_vu": -37.2,
+   "tient": false,
+   "sharpe_mensuel": -0.15,
+   "correlation_avec_cassure_or_argent": 0.33
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "AUDUSD",
+   "entrainement": 16.1,
+   "validation": -26.9,
+   "test": -2.4,
+   "trades": [
+    181,
+    119,
+    97
+   ],
+   "R_trade": -0.033,
+   "t_jv": -2.21,
+   "pire_baisse": -33.3,
+   "stress_jamais_vu": -32.7,
+   "tient": false,
+   "sharpe_mensuel": -0.18,
+   "correlation_avec_cassure_or_argent": 0.21
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "USDCAD",
+   "entrainement": -53.6,
+   "validation": -43.3,
+   "test": 7.5,
+   "trades": [
+    129,
+    79,
+    60
+   ],
+   "R_trade": -0.334,
+   "t_jv": -1.94,
+   "pire_baisse": -106.0,
+   "stress_jamais_vu": -41.9,
+   "tient": false,
+   "sharpe_mensuel": -1.14,
+   "correlation_avec_cassure_or_argent": 0.07
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "USDCAD",
+   "entrainement": -38.8,
+   "validation": -14.0,
+   "test": 11.6,
+   "trades": [
+    206,
+    117,
+    88
+   ],
+   "R_trade": -0.1,
+   "t_jv": -0.14,
+   "pire_baisse": -63.8,
+   "stress_jamais_vu": -7.0,
+   "tient": false,
+   "sharpe_mensuel": -0.5,
+   "correlation_avec_cassure_or_argent": 0.08
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "USDCHF",
+   "entrainement": -36.8,
+   "validation": -18.9,
+   "test": -11.8,
+   "trades": [
+    129,
+    68,
+    73
+   ],
+   "R_trade": -0.25,
+   "t_jv": -2.18,
+   "pire_baisse": -72.3,
+   "stress_jamais_vu": -33.7,
+   "tient": false,
+   "sharpe_mensuel": -1.06,
+   "correlation_avec_cassure_or_argent": 0.04
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "USDCHF",
+   "entrainement": -29.1,
+   "validation": -4.0,
+   "test": -21.3,
+   "trades": [
+    208,
+    107,
+    108
+   ],
+   "R_trade": -0.128,
+   "t_jv": -1.75,
+   "pire_baisse": -55.9,
+   "stress_jamais_vu": -30.3,
+   "tient": false,
+   "sharpe_mensuel": -0.75,
+   "correlation_avec_cassure_or_argent": 0.17
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "NZDUSD",
+   "entrainement": -27.0,
+   "validation": -25.8,
+   "test": -2.6,
+   "trades": [
+    129,
+    75,
+    69
+   ],
+   "R_trade": -0.203,
+   "t_jv": -1.76,
+   "pire_baisse": -61.5,
+   "stress_jamais_vu": -32.4,
+   "tient": false,
+   "sharpe_mensuel": -0.75,
+   "correlation_avec_cassure_or_argent": 0.09
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "NZDUSD",
+   "entrainement": 11.0,
+   "validation": -22.3,
+   "test": -7.9,
+   "trades": [
+    185,
+    111,
+    103
+   ],
+   "R_trade": -0.048,
+   "t_jv": -2.09,
+   "pire_baisse": -44.5,
+   "stress_jamais_vu": -36.5,
+   "tient": false,
+   "sharpe_mensuel": -0.25,
+   "correlation_avec_cassure_or_argent": 0.08
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "EURJPY",
+   "entrainement": -10.8,
+   "validation": -3.6,
+   "test": 7.4,
+   "trades": [
+    132,
+    75,
+    66
+   ],
+   "R_trade": -0.026,
+   "t_jv": 0.17,
+   "pire_baisse": -40.5,
+   "stress_jamais_vu": -0.8,
+   "tient": false,
+   "sharpe_mensuel": -0.08,
+   "correlation_avec_cassure_or_argent": 0.19
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "EURJPY",
+   "entrainement": -9.9,
+   "validation": 5.0,
+   "test": -22.1,
+   "trades": [
+    209,
+    116,
+    106
+   ],
+   "R_trade": -0.063,
+   "t_jv": -1.0,
+   "pire_baisse": -41.7,
+   "stress_jamais_vu": -22.0,
+   "tient": false,
+   "sharpe_mensuel": -0.38,
+   "correlation_avec_cassure_or_argent": 0.06
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "GBPJPY",
+   "entrainement": -14.6,
+   "validation": -8.2,
+   "test": -21.4,
+   "trades": [
+    130,
+    69,
+    66
+   ],
+   "R_trade": -0.167,
+   "t_jv": -1.79,
+   "pire_baisse": -54.8,
+   "stress_jamais_vu": -33.8,
+   "tient": false,
+   "sharpe_mensuel": -0.6,
+   "correlation_avec_cassure_or_argent": 0.0
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "GBPJPY",
+   "entrainement": 17.6,
+   "validation": -19.5,
+   "test": -13.8,
+   "trades": [
+    191,
+    128,
+    98
+   ],
+   "R_trade": -0.037,
+   "t_jv": -2.02,
+   "pire_baisse": -44.6,
+   "stress_jamais_vu": -37.9,
+   "tient": false,
+   "sharpe_mensuel": -0.22,
+   "correlation_avec_cassure_or_argent": -0.03
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "EURGBP",
+   "entrainement": -27.3,
+   "validation": -35.4,
+   "test": -34.1,
+   "trades": [
+    130,
+    78,
+    69
+   ],
+   "R_trade": -0.349,
+   "t_jv": -5.03,
+   "pire_baisse": -109.3,
+   "stress_jamais_vu": -82.1,
+   "tient": false,
+   "sharpe_mensuel": -1.23,
+   "correlation_avec_cassure_or_argent": 0.11
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "EURGBP",
+   "entrainement": -34.2,
+   "validation": -33.8,
+   "test": -17.9,
+   "trades": [
+    202,
+    111,
+    85
+   ],
+   "R_trade": -0.216,
+   "t_jv": -4.39,
+   "pire_baisse": -92.7,
+   "stress_jamais_vu": -61.8,
+   "tient": false,
+   "sharpe_mensuel": -1.03,
+   "correlation_avec_cassure_or_argent": 0.04
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "DXY",
+   "entrainement": -49.8,
+   "validation": -32.5,
+   "test": -12.1,
+   "trades": [
+    93,
+    75,
+    60
+   ],
+   "R_trade": -0.414,
+   "t_jv": -3.03,
+   "pire_baisse": -95.5,
+   "stress_jamais_vu": -57.8,
+   "tient": false,
+   "sharpe_mensuel": -1.56,
+   "correlation_avec_cassure_or_argent": 0.1
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "DXY",
+   "entrainement": -8.0,
+   "validation": -40.8,
+   "test": -26.4,
+   "trades": [
+    150,
+    133,
+    118
+   ],
+   "R_trade": -0.188,
+   "t_jv": -4.33,
+   "pire_baisse": -80.5,
+   "stress_jamais_vu": -85.0,
+   "tient": false,
+   "sharpe_mensuel": -0.96,
+   "correlation_avec_cassure_or_argent": 0.08
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "US500",
+   "entrainement": -12.1,
+   "validation": 8.6,
+   "test": -11.1,
+   "trades": [
+    121,
+    74,
+    70
+   ],
+   "R_trade": -0.055,
+   "t_jv": -0.14,
+   "pire_baisse": -31.5,
+   "stress_jamais_vu": -9.4,
+   "tient": false,
+   "sharpe_mensuel": -0.21,
+   "correlation_avec_cassure_or_argent": 0.0
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "US500",
+   "entrainement": -8.1,
+   "validation": -7.1,
+   "test": -23.0,
+   "trades": [
+    203,
+    126,
+    131
+   ],
+   "R_trade": -0.083,
+   "t_jv": -1.96,
+   "pire_baisse": -45.0,
+   "stress_jamais_vu": -36.6,
+   "tient": false,
+   "sharpe_mensuel": -0.52,
+   "correlation_avec_cassure_or_argent": 0.16
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "US100",
+   "entrainement": 6.3,
+   "validation": 3.3,
+   "test": -1.7,
+   "trades": [
+    120,
+    76,
+    70
+   ],
+   "R_trade": 0.03,
+   "t_jv": 0.09,
+   "pire_baisse": -22.6,
+   "stress_jamais_vu": -3.2,
+   "tient": false,
+   "sharpe_mensuel": 0.1,
+   "correlation_avec_cassure_or_argent": 0.01
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "US100",
+   "entrainement": -19.3,
+   "validation": -3.9,
+   "test": -8.1,
+   "trades": [
+    242,
+    141,
+    116
+   ],
+   "R_trade": -0.063,
+   "t_jv": -0.78,
+   "pire_baisse": -43.1,
+   "stress_jamais_vu": -16.5,
+   "tient": false,
+   "sharpe_mensuel": -0.47,
+   "correlation_avec_cassure_or_argent": 0.12
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "US30",
+   "entrainement": 28.7,
+   "validation": 9.4,
+   "test": -21.0,
+   "trades": [
+    117,
+    64,
+    64
+   ],
+   "R_trade": 0.07,
+   "t_jv": -0.72,
+   "pire_baisse": -31.4,
+   "stress_jamais_vu": -18.8,
+   "tient": false,
+   "sharpe_mensuel": 0.14,
+   "correlation_avec_cassure_or_argent": 0.33
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "US30",
+   "entrainement": 16.3,
+   "validation": 18.2,
+   "test": -21.1,
+   "trades": [
+    199,
+    109,
+    126
+   ],
+   "R_trade": 0.031,
+   "t_jv": -0.16,
+   "pire_baisse": -36.8,
+   "stress_jamais_vu": -9.5,
+   "tient": false,
+   "sharpe_mensuel": 0.16,
+   "correlation_avec_cassure_or_argent": 0.06
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "RTY",
+   "entrainement": -21.4,
+   "validation": -18.1,
+   "test": -10.4,
+   "trades": [
+    100,
+    80,
+    54
+   ],
+   "R_trade": -0.213,
+   "t_jv": -2.07,
+   "pire_baisse": -52.1,
+   "stress_jamais_vu": -32.0,
+   "tient": false,
+   "sharpe_mensuel": -0.93,
+   "correlation_avec_cassure_or_argent": 0.08
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "RTY",
+   "entrainement": -2.6,
+   "validation": -3.9,
+   "test": -10.0,
+   "trades": [
+    167,
+    130,
+    117
+   ],
+   "R_trade": -0.04,
+   "t_jv": -0.81,
+   "pire_baisse": -23.1,
+   "stress_jamais_vu": -18.4,
+   "tient": false,
+   "sharpe_mensuel": -0.22,
+   "correlation_avec_cassure_or_argent": 0.06
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "DE40",
+   "entrainement": -25.8,
+   "validation": 1.6,
+   "test": -8.5,
+   "trades": [
+    115,
+    72,
+    74
+   ],
+   "R_trade": -0.125,
+   "t_jv": -0.35,
+   "pire_baisse": -44.3,
+   "stress_jamais_vu": -12.6,
+   "tient": false,
+   "sharpe_mensuel": -0.39,
+   "correlation_avec_cassure_or_argent": -0.05
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "DE40",
+   "entrainement": -27.3,
+   "validation": 3.7,
+   "test": -11.3,
+   "trades": [
+    183,
+    114,
+    120
+   ],
+   "R_trade": -0.084,
+   "t_jv": -0.42,
+   "pire_baisse": -39.9,
+   "stress_jamais_vu": -13.9,
+   "tient": false,
+   "sharpe_mensuel": -0.48,
+   "correlation_avec_cassure_or_argent": -0.01
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "UK100",
+   "entrainement": -59.6,
+   "validation": -0.9,
+   "test": -12.6,
+   "trades": [
+    140,
+    65,
+    64
+   ],
+   "R_trade": -0.272,
+   "t_jv": -0.98,
+   "pire_baisse": -76.0,
+   "stress_jamais_vu": -20.9,
+   "tient": false,
+   "sharpe_mensuel": -1.13,
+   "correlation_avec_cassure_or_argent": 0.13
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "UK100",
+   "entrainement": -29.7,
+   "validation": 9.5,
+   "test": -29.5,
+   "trades": [
+    205,
+    91,
+    120
+   ],
+   "R_trade": -0.119,
+   "t_jv": -1.42,
+   "pire_baisse": -54.4,
+   "stress_jamais_vu": -28.3,
+   "tient": false,
+   "sharpe_mensuel": -0.64,
+   "correlation_avec_cassure_or_argent": -0.03
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "FR40",
+   "entrainement": 18.2,
+   "validation": -10.8,
+   "test": -7.9,
+   "trades": [
+    128,
+    73,
+    51
+   ],
+   "R_trade": -0.002,
+   "t_jv": -1.4,
+   "pire_baisse": -36.8,
+   "stress_jamais_vu": -22.8,
+   "tient": false,
+   "sharpe_mensuel": -0.0,
+   "correlation_avec_cassure_or_argent": 0.04
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "FR40",
+   "entrainement": 18.4,
+   "validation": -4.0,
+   "test": -12.8,
+   "trades": [
+    181,
+    109,
+    98
+   ],
+   "R_trade": 0.004,
+   "t_jv": -1.03,
+   "pire_baisse": -35.2,
+   "stress_jamais_vu": -22.9,
+   "tient": false,
+   "sharpe_mensuel": 0.02,
+   "correlation_avec_cassure_or_argent": -0.06
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "EU50",
+   "entrainement": 4.1,
+   "validation": -1.9,
+   "test": -15.8,
+   "trades": [
+    129,
+    76,
+    74
+   ],
+   "R_trade": -0.049,
+   "t_jv": -1.06,
+   "pire_baisse": -36.7,
+   "stress_jamais_vu": -23.5,
+   "tient": false,
+   "sharpe_mensuel": -0.12,
+   "correlation_avec_cassure_or_argent": -0.02
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "EU50",
+   "entrainement": 6.7,
+   "validation": -8.2,
+   "test": -33.4,
+   "trades": [
+    193,
+    115,
+    129
+   ],
+   "R_trade": -0.08,
+   "t_jv": -2.73,
+   "pire_baisse": -49.2,
+   "stress_jamais_vu": -49.7,
+   "tient": false,
+   "sharpe_mensuel": -0.39,
+   "correlation_avec_cassure_or_argent": -0.05
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "J225",
+   "entrainement": 20.3,
+   "validation": -10.4,
+   "test": -0.2,
+   "trades": [
+    134,
+    77,
+    65
+   ],
+   "R_trade": 0.035,
+   "t_jv": -0.66,
+   "pire_baisse": -22.8,
+   "stress_jamais_vu": -14.7,
+   "tient": false,
+   "sharpe_mensuel": 0.11,
+   "correlation_avec_cassure_or_argent": 0.0
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "J225",
+   "entrainement": -18.0,
+   "validation": 5.1,
+   "test": 9.4,
+   "trades": [
+    217,
+    116,
+    97
+   ],
+   "R_trade": -0.008,
+   "t_jv": 0.87,
+   "pire_baisse": -22.9,
+   "stress_jamais_vu": 9.3,
+   "tient": false,
+   "sharpe_mensuel": -0.05,
+   "correlation_avec_cassure_or_argent": 0.03
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "HK50",
+   "entrainement": 18.8,
+   "validation": -3.2,
+   "test": 8.5,
+   "trades": [
+    100,
+    75,
+    65
+   ],
+   "R_trade": 0.101,
+   "t_jv": 0.27,
+   "pire_baisse": -17.4,
+   "stress_jamais_vu": 1.1,
+   "tient": false,
+   "sharpe_mensuel": 0.29,
+   "correlation_avec_cassure_or_argent": 0.02
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "HK50",
+   "entrainement": 20.8,
+   "validation": 3.6,
+   "test": -1.5,
+   "trades": [
+    163,
+    119,
+    122
+   ],
+   "R_trade": 0.057,
+   "t_jv": 0.1,
+   "pire_baisse": -17.8,
+   "stress_jamais_vu": -4.1,
+   "tient": false,
+   "sharpe_mensuel": 0.25,
+   "correlation_avec_cassure_or_argent": 0.17
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "AU200",
+   "entrainement": -9.5,
+   "validation": -19.3,
+   "test": -24.3,
+   "trades": [
+    124,
+    75,
+    68
+   ],
+   "R_trade": -0.199,
+   "t_jv": -3.25,
+   "pire_baisse": -69.8,
+   "stress_jamais_vu": -50.5,
+   "tient": false,
+   "sharpe_mensuel": -0.5,
+   "correlation_avec_cassure_or_argent": 0.06
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "AU200",
+   "entrainement": -32.4,
+   "validation": -4.1,
+   "test": -23.5,
+   "trades": [
+    185,
+    104,
+    105
+   ],
+   "R_trade": -0.152,
+   "t_jv": -1.83,
+   "pire_baisse": -63.6,
+   "stress_jamais_vu": -36.1,
+   "tient": false,
+   "sharpe_mensuel": -0.83,
+   "correlation_avec_cassure_or_argent": 0.04
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "OIL_CRUDE",
+   "entrainement": 18.3,
+   "validation": -1.5,
+   "test": -19.9,
+   "trades": [
+    114,
+    74,
+    84
+   ],
+   "R_trade": -0.011,
+   "t_jv": -1.43,
+   "pire_baisse": -26.2,
+   "stress_jamais_vu": -23.4,
+   "tient": false,
+   "sharpe_mensuel": -0.05,
+   "correlation_avec_cassure_or_argent": 0.14
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "OIL_CRUDE",
+   "entrainement": 24.1,
+   "validation": -11.0,
+   "test": 0.3,
+   "trades": [
+    195,
+    124,
+    117
+   ],
+   "R_trade": 0.031,
+   "t_jv": -0.65,
+   "pire_baisse": -32.1,
+   "stress_jamais_vu": -14.1,
+   "tient": false,
+   "sharpe_mensuel": 0.17,
+   "correlation_avec_cassure_or_argent": 0.02
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "OIL_BRENT",
+   "entrainement": 14.6,
+   "validation": -1.9,
+   "test": -25.8,
+   "trades": [
+    109,
+    73,
+    77
+   ],
+   "R_trade": -0.051,
+   "t_jv": -1.92,
+   "pire_baisse": -45.6,
+   "stress_jamais_vu": -29.9,
+   "tient": false,
+   "sharpe_mensuel": -0.18,
+   "correlation_avec_cassure_or_argent": 0.29
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "OIL_BRENT",
+   "entrainement": 5.9,
+   "validation": -7.0,
+   "test": 0.9,
+   "trades": [
+    205,
+    122,
+    119
+   ],
+   "R_trade": -0.0,
+   "t_jv": -0.34,
+   "pire_baisse": -33.6,
+   "stress_jamais_vu": -10.0,
+   "tient": false,
+   "sharpe_mensuel": -0.0,
+   "correlation_avec_cassure_or_argent": 0.04
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "COPPER",
+   "entrainement": -40.6,
+   "validation": 6.2,
+   "test": -24.0,
+   "trades": [
+    125,
+    76,
+    74
+   ],
+   "R_trade": -0.212,
+   "t_jv": -0.83,
+   "pire_baisse": -61.5,
+   "stress_jamais_vu": -21.4,
+   "tient": false,
+   "sharpe_mensuel": -0.65,
+   "correlation_avec_cassure_or_argent": -0.08
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "COPPER",
+   "entrainement": -30.9,
+   "validation": -2.4,
+   "test": -15.9,
+   "trades": [
+    197,
+    117,
+    111
+   ],
+   "R_trade": -0.116,
+   "t_jv": -1.1,
+   "pire_baisse": -49.9,
+   "stress_jamais_vu": -24.0,
+   "tient": false,
+   "sharpe_mensuel": -0.58,
+   "correlation_avec_cassure_or_argent": -0.04
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "PLATINUM",
+   "entrainement": -16.9,
+   "validation": -23.7,
+   "test": -3.3,
+   "trades": [
+    120,
+    72,
+    58
+   ],
+   "R_trade": -0.175,
+   "t_jv": -1.39,
+   "pire_baisse": -72.5,
+   "stress_jamais_vu": -59.0,
+   "tient": false,
+   "sharpe_mensuel": -0.52,
+   "correlation_avec_cassure_or_argent": 0.28
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "PLATINUM",
+   "entrainement": -9.2,
+   "validation": -6.6,
+   "test": -18.3,
+   "trades": [
+    196,
+    101,
+    98
+   ],
+   "R_trade": -0.086,
+   "t_jv": -1.59,
+   "pire_baisse": -42.6,
+   "stress_jamais_vu": -35.4,
+   "tient": false,
+   "sharpe_mensuel": -0.51,
+   "correlation_avec_cassure_or_argent": 0.23
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "PALLADIUM",
+   "entrainement": 12.7,
+   "validation": -23.7,
+   "test": -23.5,
+   "trades": [
+    90,
+    60,
+    64
+   ],
+   "R_trade": -0.161,
+   "t_jv": -4.11,
+   "pire_baisse": -52.5,
+   "stress_jamais_vu": -62.5,
+   "tient": false,
+   "sharpe_mensuel": -0.49,
+   "correlation_avec_cassure_or_argent": 0.01
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "PALLADIUM",
+   "entrainement": 1.8,
+   "validation": -17.5,
+   "test": -3.6,
+   "trades": [
+    184,
+    97,
+    82
+   ],
+   "R_trade": -0.053,
+   "t_jv": -1.58,
+   "pire_baisse": -31.4,
+   "stress_jamais_vu": -36.1,
+   "tient": false,
+   "sharpe_mensuel": -0.27,
+   "correlation_avec_cassure_or_argent": 0.09
+  },
+  {
+   "strategie": "Cassure 4 h",
+   "marche": "NATURALGAS",
+   "entrainement": -21.9,
+   "validation": 11.6,
+   "test": -1.7,
+   "trades": [
+    136,
+    65,
+    66
+   ],
+   "R_trade": -0.045,
+   "t_jv": 0.59,
+   "pire_baisse": -28.8,
+   "stress_jamais_vu": 5.9,
+   "tient": false,
+   "sharpe_mensuel": -0.18,
+   "correlation_avec_cassure_or_argent": -0.11
+  },
+  {
+   "strategie": "Supertrend 4 h",
+   "marche": "NATURALGAS",
+   "entrainement": -51.9,
+   "validation": 30.3,
+   "test": -14.2,
+   "trades": [
+    262,
+    118,
+    126
+   ],
+   "R_trade": -0.071,
+   "t_jv": 0.93,
+   "pire_baisse": -51.9,
+   "stress_jamais_vu": 11.9,
+   "tient": false,
+   "sharpe_mensuel": -0.54,
+   "correlation_avec_cassure_or_argent": -0.04
+  }
+ ],
+ "portefeuilles_risque_egal": {
+  "or+argent seuls (actuel)": {
+   "marches": [
+    "Cassure 4 h GOLD",
+    "Cassure 4 h SILVER"
+   ],
+   "R_total_par_unite_de_risque": 43.3,
+   "R_2022_auj": 37.5,
+   "sharpe_mensuel": 0.53,
+   "sharpe_2022_auj": 0.91,
+   "pire_baisse": -15.82,
+   "mois_gagnants_pct": 52.0
+  },
+  "or+argent + marchés qui tiennent": {
+   "marches": [
+    "Cassure 4 h GOLD",
+    "Cassure 4 h SILVER"
+   ],
+   "R_total_par_unite_de_risque": 43.3,
+   "R_2022_auj": 37.5,
+   "sharpe_mensuel": 0.53,
+   "sharpe_2022_auj": 0.91,
+   "pire_baisse": -15.82,
+   "mois_gagnants_pct": 52.0
+  }
+ }
+}
