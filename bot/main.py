@@ -31,7 +31,9 @@ RACINE = Path(__file__).resolve().parent.parent
 FICHIER_DONNEES = RACINE / "docs" / "data.json"
 
 # Réglages (modifiables dans .github/workflows/bot.yml sans toucher au code)
-MARCHES = [m.strip() for m in os.getenv("MARCHES", "BTCUSD").split(",") if m.strip()]
+# 26/11/2026 : Bitcoin retiré à la demande de Mathis (MARCHES="" dans reglages.env). Liste vide = Tendance 4 h arrêtée
+# et cachée dans l'appli ; remettre MARCHES="BTCUSD" pour la relancer.
+MARCHES = [m.strip() for m in os.getenv("MARCHES", "").split(",") if m.strip()]
 UNITE = os.getenv("UNITE", "HOUR_4")  # bougies de 4 h : c'est l'unité testée en backtest
 RISQUE_PCT = float(os.getenv("RISQUE_PCT", "1"))  # % du capital perdu au maximum si le stop est touché
 NB_BOUGIES = 1000  # ~5 mois de bougies 4 h, pour que l'EMA 200 soit fiable
@@ -140,6 +142,12 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
                  "Backtest 2 ans : +16,2 R -> +17,4 R, pire baisse -3,7 R -> -2,7 R. À comparer au bilan du 4/12.")
 
     toutes = ["tendance_4h", "cassure_4h", "rapide", "elan_4h", "supertrend_4h"]  # 25/11/2026 : + « Élan » et « Supertrend » (expérimentales)
+    if not MARCHES:  # 26/11/2026 : Bitcoin retiré, la Tendance 4 h n'a plus de marché
+        toutes.remove("tendance_4h")
+        if not donnees.get("bitcoin_retire"):
+            donnees["bitcoin_retire"] = maintenant()  # une seule fois : changement daté pour les bilans
+            noter("commande", "BTCUSD", "Bitcoin retiré (26/11/2026, demande de Mathis) : la Tendance 4 h ne trade plus. "
+                  "Les autres stratégies (Cassure, Rapide, Élan, Supertrend) ne changent pas.", "tendance_4h")
     strategie = strategie if strategie in toutes else "toutes"
     cibles = toutes if strategie == "toutes" else [strategie]
     etats = donnees.setdefault("strategies", {})
@@ -151,7 +159,8 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     dps = donnees.get("deals_par_strategie", {})
     for k in [k for k in dps if k != "cassure"]:
         del dps[k]
-    etats.setdefault("tendance_4h", {}).setdefault("active", True)
+    if "tendance_4h" in toutes:
+        etats.setdefault("tendance_4h", {}).setdefault("active", True)
     etats.setdefault("cassure_4h", {}).setdefault("active", True)
     etats.setdefault("rapide", {}).setdefault("active", module_rapide.ACTIVE)
     etats.setdefault("elan_4h", {}).setdefault("active", module_elan.ACTIVE)
@@ -239,7 +248,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
               f"{actualites.PAUSE_AVANT_MIN} min avant à {actualites.PAUSE_APRES_MIN} min après.")
     donnees["_derniere_pause_notee"] = garde.pause_actualite
     # Qui a le droit de trader à ce tour ? (la pause globale passe avant tout, sauf « lancer »)
-    complet_4h = ("tendance_4h" in lancer) or (not en_pause and etats["tendance_4h"]["active"])
+    complet_4h = ("tendance_4h" in lancer) or (not en_pause and etats.get("tendance_4h", {}).get("active", False))
     suivi_4h = complet_4h or not en_pause  # désactivée : plus d'entrées ni de sorties, mais le stop suiveur continue
     api.sans_couverture()  # le stop garanti est interdit en mode couverture (hedging)
     entrees = donnees.setdefault("entrees", {})  # bougie du dernier signal utilisé, par marché

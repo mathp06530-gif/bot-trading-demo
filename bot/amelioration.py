@@ -426,7 +426,7 @@ def calculer(api, reglages: dict, etat: dict, maintenant: datetime) -> dict:
     """Fait tous les backtests et renvoie le PLAN (rien n'est encore écrit)."""
     eurusd = api.taux_eurusd()
     marches = {
-        "tendance_4h": [m.strip() for m in reglages.get("MARCHES", "BTCUSD").split(",") if m.strip()],
+        "tendance_4h": [m.strip() for m in reglages.get("MARCHES", "").split(",") if m.strip()],
         "cassure_4h": [m.strip() for m in reglages.get("CASSURE_MARCHES", "GOLD,SILVER").split(",") if m.strip()],
         "rapide": [m.strip() for m in reglages.get("RAPIDE_MARCHES", "GOLD").split(",") if m.strip()]
         if reglages.get("RAPIDE", "non").lower() in ("oui", "1", "true", "on") else [],
