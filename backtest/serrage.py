@@ -31,6 +31,25 @@ from bot.strategie import signaux_tendance  # noqa: E402
 
 DOSSIER = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent / "donnees"
 PRIME_PCT = 0.1
+NUITS_EXACTES = True  # False = ancien calcul (audit 26/11 : frais de nuit jamais comptés, voir nuits_par_bougie)
+
+
+def nuits_par_bougie(dates) -> np.ndarray:
+    """Nombre de passages de 22 h UTC (heure des frais de nuit Capital.com) entre le début d'une bougie et le début
+    de la suivante (week-end compris, 4 nuits au plus).
+    Audit du 26/11/2026 : l'ancien test « bougie qui commence à 22 h 00 » ne comptait JAMAIS de frais de nuit,
+    car il n'existe pas de bougie à 22 h 00 en 4 h (0, 4, 8, 12, 16, 20 h) ni en 5 min sur l'or (pause 22-23 h)."""
+    idx = pd.DatetimeIndex(dates)
+    if not NUITS_EXACTES:
+        return ((idx.hour == 22) & (idx.minute == 0)).astype(float)
+    t = idx.values.astype("datetime64[s]").astype(np.int64)
+    if len(t) < 2:
+        return np.zeros(len(t))
+    pas = np.median(np.diff(t))
+    t2 = np.r_[t[1:], t[-1] + pas]
+    jour = np.floor((t - 22 * 3600) / 86400)
+    jour2 = np.floor((t2 - 22 * 3600) / 86400)
+    return (jour2 - jour).clip(0, 4)
 
 
 def lire(epic, unite):
@@ -62,7 +81,7 @@ def simuler(df, voulu, ok, dstop, dsuivi, cond, regle=None, be=None, dobj=None):
     ob, oa, hb, ha, lb, la, cb, ca = (df[c].values for c in
                                       ("open_bid", "open_ask", "high_bid", "high_ask", "low_bid", "low_ask", "close_bid", "close_ask"))
     dates = df.index
-    heures, minutes = dates.hour.values, dates.minute.values
+    nuits = nuits_par_bougie(dates)
     trades, pos, sortir = [], 0, None
     for i in range(1, len(df)):
         if pos and (voulu[i - 1] != pos or sortir):
@@ -89,8 +108,8 @@ def simuler(df, voulu, ok, dstop, dsuivi, cond, regle=None, be=None, dobj=None):
             pos = 0
             continue
         mid = (cb[i] + ca[i]) / 2
-        if heures[i] == 22 and minutes[i] == 0:
-            frais += mid * (cond["nuit_achat"] if pos > 0 else cond["nuit_vente"]) / 100
+        if nuits[i]:
+            frais += nuits[i] * mid * (cond["nuit_achat"] if pos > 0 else cond["nuit_vente"]) / 100
         if dsuivi is not None and dsuivi[i] == dsuivi[i]:
             stop = max(stop, mid - dsuivi[i]) if pos > 0 else min(stop, mid + dsuivi[i])
         haut = (hb[i] + ha[i]) / 2 if pos > 0 else (lb[i] + la[i]) / 2

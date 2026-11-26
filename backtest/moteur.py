@@ -71,6 +71,8 @@ def executer(df: pd.DataFrame, signaux: pd.DataFrame, capital: float, risque_pct
     lb, la = df.low_bid.values, df.low_ask.values
     cb, ca = df.close_bid.values, df.close_ask.values
     dates = df.index
+    from backtest.serrage import nuits_par_bougie
+    nuits = nuits_par_bougie(dates)
     cible = signaux.cible.values
     dstop = signaux.stop.values
     dobj = signaux.objectif.values if "objectif" in signaux else np.full(len(df), np.nan)
@@ -140,9 +142,9 @@ def executer(df: pd.DataFrame, signaux: pd.DataFrame, capital: float, risque_pct
                 fermer(i, min(obj, oa[i]), "objectif")
         # 3) Clôture : frais de nuit à 22 h UTC, stop suiveur
         if pos != 0:
-            if dates[i].hour == 22 and dates[i].minute == 0:
+            if nuits[i]:
                 taux = cond.frais_nuit_achat_pct if pos > 0 else cond.frais_nuit_vente_pct
-                f = taille * (cb[i] + ca[i]) / 2 * taux / 100 / cond.eurusd
+                f = nuits[i] * taille * (cb[i] + ca[i]) / 2 * taux / 100 / cond.eurusd
                 eq -= f
                 frais_trade += f
             if dsuivi[i] == dsuivi[i]:

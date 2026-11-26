@@ -40,6 +40,11 @@ UNITE = "HOUR_4"
 # pire baisse -14,5 R -> -7,8 R. "0" = désactivé.
 GARDE_CASSURE_APRES_R = float(os.getenv("GARDE_CASSURE_APRES_R", "1.5"))
 GARDE_CASSURE_PCT = float(os.getenv("GARDE_CASSURE_PCT", "50"))
+# Audit du 26/11/2026 : rentrer sur une NOUVELLE cassure pendant une tendance déjà en cours n'avait jamais été
+# testé (le backtest ne prend que le 1er signal). Testé sur 10 ans (backtest/audit_chiffres.py, frais de nuit
+# comptés) : 1er signal seulement +6,6 / +14,6 / +59,4 R (2017-21 / 2022-mi-24 / mi-24-auj.), avec re-entrées
+# +1,3 / +1,6 / +52,0 R. Les re-entrées font perdre l'avantage hors de la grande hausse de l'or : "non" par défaut.
+REENTREES_CASSURE = os.getenv("CASSURE_REENTREES", "non").strip().lower() == "oui"
 NOM = (f"Cassure {ENTREE} bougies 4 h dans le sens de l'EMA {FILTRE_EMA}, stop garanti {STOP_ATR:g} ATR"
        + (f", garde {GARDE_CASSURE_PCT:g} % du gain après +{GARDE_CASSURE_APRES_R:g} R"
           if GARDE_CASSURE_APRES_R > 0 and GARDE_CASSURE_PCT > 0 else ""))
@@ -182,10 +187,10 @@ def tour_cassure(api, donnees: dict, epic: str, positions: list, capital: float,
         j -= 1
     debut = str(sig.index[j])
     # Nouvelle cassure pendant une tendance déjà en cours (clôture au-delà du canal des 20 bougies) :
-    # le backtest la compte comme une entrée, le bot aussi (demande de Mathis, 20/11/2026).
+    # seulement si CASSURE_REENTREES="oui" (audit du 26/11/2026 : non validé par le backtest, voir plus haut).
     der0 = sig.iloc[-1]
     frais = (c[-1] == 1 and der0.cloture > der0.haut) or (c[-1] == -1 and der0.cloture < der0.bas)
-    if frais and signaux is None:
+    if frais and signaux is None and REENTREES_CASSURE:
         debut = str(sig.index[-1])
         j = len(c) - 1
     prix_achat, prix_vente = bougies[-1]["closePrice"]["ask"], bougies[-1]["closePrice"]["bid"]

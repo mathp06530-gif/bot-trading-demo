@@ -466,7 +466,9 @@ def test_rapide_empile_quand_le_prix_avance(tmp_path, monkeypatch):
 
 
 def test_cassure_entre_sur_un_nouveau_plus_haut_pendant_une_tendance_en_cours(tmp_path, monkeypatch):
+    from bot import cassure
     from bot.cassure import signaux_cassure
+    monkeypatch.setattr(cassure, "REENTREES_CASSURE", True)  # option CASSURE_REENTREES="oui"
     monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
     monkeypatch.setattr(main, "MARCHES_CASSURE", ["GOLD"])
     prix = [2000 + 25 * ((i % 8) - 4) for i in range(250)] + [2000 + 45 * i for i in range(40)]
@@ -482,6 +484,11 @@ def test_cassure_entre_sur_un_nouveau_plus_haut_pendant_une_tendance_en_cours(tm
     d2 = {}
     main.un_tour(d2, faux2)
     assert not faux2.ouvertes
+    # Par défaut (audit 26/11) : pas de re-entrée, comme le backtest validé
+    monkeypatch.setattr(cassure, "REENTREES_CASSURE", False)
+    faux3 = FauxCapitalActions(prix[:n + 10])
+    main.un_tour({}, faux3)
+    assert not faux3.ouvertes
 
 
 def test_rapide_sort_au_prix_d_entree_apres_un_gain(tmp_path, monkeypatch):

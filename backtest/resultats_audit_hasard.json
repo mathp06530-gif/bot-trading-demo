@@ -1,0 +1,355 @@
+{
+ "graines": 8,
+ "resultats": {
+  "Cassure 4 h (garde 50 % après +1,5 R)": {
+   "sans_frais": {
+    "trades": 3422,
+    "R": 131.2,
+    "R_par_trade": 0.0383,
+    "t": 1.5
+   },
+   "avec_frais": {
+    "trades": 3422,
+    "R": -268.4,
+    "R_par_trade": -0.0784,
+    "t": -3.18
+   },
+   "R_sans_frais_par_graine": [
+    -1.8,
+    -1.3,
+    17.5,
+    14.4,
+    19.0,
+    2.3,
+    71.1,
+    10.0
+   ],
+   "suspect": false
+  },
+  "Cassure 4 h sans garde": {
+   "sans_frais": {
+    "trades": 3420,
+    "R": 101.3,
+    "R_par_trade": 0.0296,
+    "t": 0.93
+   },
+   "avec_frais": {
+    "trades": 3420,
+    "R": -288.2,
+    "R_par_trade": -0.0843,
+    "t": -2.71
+   },
+   "R_sans_frais_par_graine": [
+    -35.4,
+    -10.8,
+    50.4,
+    -14.4,
+    -3.0,
+    20.9,
+    86.4,
+    7.2
+   ],
+   "suspect": false
+  },
+  "Supertrend 10/3 4 h": {
+   "sans_frais": {
+    "trades": 5510,
+    "R": -50.7,
+    "R_par_trade": -0.0092,
+    "t": -0.62
+   },
+   "avec_frais": {
+    "trades": 5510,
+    "R": -335.4,
+    "R_par_trade": -0.0609,
+    "t": -4.16
+   },
+   "R_sans_frais_par_graine": [
+    -38.6,
+    -5.8,
+    -3.9,
+    -11.7,
+    -13.7,
+    -36.5,
+    61.0,
+    -1.5
+   ],
+   "suspect": false
+  },
+  "Élan 4 h": {
+   "sans_frais": {
+    "trades": 5556,
+    "R": 51.8,
+    "R_par_trade": 0.0093,
+    "t": 0.52
+   },
+   "avec_frais": {
+    "trades": 5555,
+    "R": -595.6,
+    "R_par_trade": -0.1072,
+    "t": -5.74
+   },
+   "R_sans_frais_par_graine": [
+    -69.3,
+    34.6,
+    29.8,
+    17.8,
+    -6.5,
+    14.8,
+    70.8,
+    -40.2
+   ],
+   "suspect": false
+  },
+  "MACD gaz naturel (usine)": {
+   "sans_frais": {
+    "trades": 3820,
+    "R": 3.4,
+    "R_par_trade": 0.0009,
+    "t": 0.07
+   },
+   "avec_frais": {
+    "trades": 3820,
+    "R": -155.7,
+    "R_par_trade": -0.0408,
+    "t": -3.09
+   },
+   "R_sans_frais_par_graine": [
+    20.1,
+    -1.6,
+    7.1,
+    -18.4,
+    29.9,
+    1.6,
+    -18.6,
+    -16.7
+   ],
+   "suspect": false
+  },
+  "MACD Tesla (usine)": {
+   "sans_frais": {
+    "trades": 6896,
+    "R": 59.2,
+    "R_par_trade": 0.0086,
+    "t": 0.8
+   },
+   "avec_frais": {
+    "trades": 6896,
+    "R": -158.4,
+    "R_par_trade": -0.023,
+    "t": -2.14
+   },
+   "R_sans_frais_par_graine": [
+    -9.0,
+    28.2,
+    9.7,
+    38.0,
+    34.9,
+    -24.1,
+    -43.8,
+    25.2
+   ],
+   "suspect": false
+  },
+  "Usine : 400 combinaisons au hasard": {
+   "sans_frais": {
+    "trades": 1710175,
+    "R": 12338.7,
+    "R_par_trade": 0.0072,
+    "t": 13.13
+   },
+   "avec_frais": {
+    "trades": 1710175,
+    "R": -46431.8,
+    "R_par_trade": -0.0272,
+    "t": -48.52
+   },
+   "R_sans_frais_par_graine": [
+    546.9,
+    1444.5,
+    903.5,
+    1239.8,
+    1956.3,
+    1212.1,
+    2588.4,
+    2447.3
+   ],
+   "suspect": false
+  },
+  "Moteur général : Tendance 4 h": {
+   "sans_frais": {
+    "trades": 1479,
+    "R": 44.2,
+    "R_par_trade": 0.0299,
+    "t": 0.56
+   },
+   "avec_frais": {
+    "trades": 1479,
+    "R": -101.0,
+    "R_par_trade": -0.0683,
+    "t": -1.48
+   },
+   "R_sans_frais_par_graine": [
+    -30.4,
+    -7.4,
+    68.1,
+    -8.5,
+    10.8,
+    23.1,
+    2.7,
+    -14.1
+   ],
+   "suspect": false
+  },
+  "Moteur général : Cassure 4 h": {
+   "sans_frais": {
+    "trades": 3427,
+    "R": 123.1,
+    "R_par_trade": 0.0359,
+    "t": 1.3
+   },
+   "avec_frais": {
+    "trades": 3427,
+    "R": -68.3,
+    "R_par_trade": -0.0199,
+    "t": -0.84
+   },
+   "R_sans_frais_par_graine": [
+    -5.9,
+    -6.2,
+    13.8,
+    9.2,
+    15.6,
+    -1.9,
+    92.5,
+    6.0
+   ],
+   "suspect": false
+  },
+  "Rapide 5 min (réglages actuels, PR 36)": {
+   "sans_frais": {
+    "trades": 2571,
+    "R": 9.8,
+    "R_par_trade": 0.0038,
+    "t": 0.38
+   },
+   "avec_frais": {
+    "trades": 2580,
+    "R": -30.3,
+    "R_par_trade": -0.0117,
+    "t": -1.18
+   },
+   "R_sans_frais_par_graine": [
+    -11.6,
+    15.4,
+    -7.6,
+    5.7,
+    1.5,
+    3.0,
+    -3.1,
+    6.5
+   ],
+   "suspect": false
+  },
+  "Rapide 5 min (anciens réglages)": {
+   "sans_frais": {
+    "trades": 2692,
+    "R": -0.1,
+    "R_par_trade": -0.0,
+    "t": -0.0
+   },
+   "avec_frais": {
+    "trades": 2702,
+    "R": -41.4,
+    "R_par_trade": -0.0153,
+    "t": -1.65
+   },
+   "R_sans_frais_par_graine": [
+    -8.0,
+    18.1,
+    -7.2,
+    4.6,
+    -2.7,
+    -0.8,
+    -6.2,
+    2.2
+   ],
+   "suspect": false
+  },
+  "Sortie au prix d'entrée +0,5 R (PR 32)": {
+   "sans_frais": {
+    "trades": 2395,
+    "R": -5.3,
+    "R_par_trade": -0.0022,
+    "t": -0.23
+   },
+   "avec_frais": {
+    "trades": 2404,
+    "R": -41.5,
+    "R_par_trade": -0.0173,
+    "t": -1.8
+   },
+   "R_sans_frais_par_graine": [
+    -5.2,
+    11.2,
+    -3.5,
+    1.0,
+    -4.4,
+    2.3,
+    -8.4,
+    1.7
+   ],
+   "suspect": false
+  },
+  "Stop garanti en paliers": {
+   "sans_frais": {
+    "trades": 2372,
+    "R": -6.0,
+    "R_par_trade": -0.0025,
+    "t": -0.26
+   },
+   "avec_frais": {
+    "trades": 2372,
+    "R": -41.4,
+    "R_par_trade": -0.0175,
+    "t": -1.79
+   },
+   "R_sans_frais_par_graine": [
+    -5.1,
+    11.2,
+    -3.7,
+    0.6,
+    -4.4,
+    2.1,
+    -8.4,
+    1.7
+   ],
+   "suspect": false
+  },
+  "Garde 60 % après +1,5 R (PR 34)": {
+   "sans_frais": {
+    "trades": 2398,
+    "R": -5.3,
+    "R_par_trade": -0.0022,
+    "t": -0.23
+   },
+   "avec_frais": {
+    "trades": 2407,
+    "R": -42.2,
+    "R_par_trade": -0.0175,
+    "t": -1.83
+   },
+   "R_sans_frais_par_graine": [
+    -5.2,
+    11.2,
+    -3.5,
+    1.0,
+    -4.5,
+    2.3,
+    -8.4,
+    1.8
+   ],
+   "suspect": false
+  }
+ }
+}

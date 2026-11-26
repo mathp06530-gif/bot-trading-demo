@@ -1,0 +1,48 @@
+name: Audit anti-triche des backtests
+
+# Rejoue les backtests des stratégies actives (1) sur des prix tirés au hasard et (2) sur la période réelle
+# de la démo, comparée aux vrais ordres. Ne passe AUCUN ordre. Résultats dans backtest/resultats_audit_*.json.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+    paths: [backtest/audit_hasard.py, backtest/audit_chiffres.py, backtest/serrage.py, .github/workflows/audit.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  reel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Backtest contre trades réels (bougies Capital.com démo)
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+        run: python backtest/comparer_reel.py donnees_reel
+
+  chiffres:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Historique Capital.com (10 ans 4 h or, argent, ETH ; 200 jours 5 min or)
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+        run: python backtest/audit_chiffres.py telecharger donnees_audit
+      - name: Chiffres refaits (frais de nuit, re-entrées Cassure)
+        run: python backtest/audit_chiffres.py donnees_audit
