@@ -24,6 +24,7 @@ from bot.cassure import NOM as NOM_CASSURE
 from bot.cassure import RISQUE_CASSURE_PCT, tour_cassure
 from bot.amelioration import reglages_du_moment
 from bot import cerveaux
+from bot import graphiques as module_graphiques
 from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
 from bot.strategie import NOM as NOM_STRATEGIE
 from bot.strategie import EMA_LENTE, EMA_RAPIDE, bougies_vers_df, decider
@@ -553,9 +554,19 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
             "prix_entree": p["position"]["level"],
             "resultat": p["position"].get("upl"),
             "ouverte_le": p["position"].get("createdDateUTC"),
+            # 26/11/2026 : vrais niveaux chez Capital.com, pour les lignes du graphique de l'appli
+            "id": p["position"]["dealId"],
+            "stop": p["position"].get("stopLevel"),
+            "stop_garanti": bool(p["position"].get("guaranteedStop")),
+            "objectif": p["position"].get("profitLevel"),
+            "strategie": strat_de(p),
         }
         for p in positions
     ]
+    try:  # graphiques de l'appli (indicateurs, signaux, conditions) : n'influence aucune décision
+        module_graphiques.publier(donnees, getattr(api, "vues", {}))
+    except Exception as e:
+        print(f"Graphiques non mis à jour : {e}")
     donnees["analyses"] = analyses
     historique = donnees.setdefault("historique", [])
     if solde.get("balance") is not None:

@@ -79,6 +79,7 @@ def synchroniser(donnees: dict, positions: list, quand: str, activites: list | N
             ordre["resultat"] = p["position"].get("upl")  # résultat en cours, mis à jour à chaque tour
             if p["position"].get("stopLevel") is not None:
                 ordre["stop"] = p["position"]["stopLevel"]  # le stop a pu être remonté (suiveur) : on suit le vrai
+            ordre["objectif"] = p["position"].get("profitLevel")  # TP chez Capital.com (None = pas de TP)
 
     for o in ordres:
         if o["statut"] == "ouvert" and o["id"] not in ids_ouverts:
@@ -118,6 +119,7 @@ def _depuis_position(p: dict) -> dict:
         "taille": pos["size"],
         "prix_entree": pos["level"],
         "stop": pos.get("stopLevel"),
+        "objectif": pos.get("profitLevel"),
         "stop_garanti": bool(pos.get("guaranteedStop")),
         "ouvert_le": (pos.get("createdDateUTC") or "")[:19] + "Z" if pos.get("createdDateUTC") else None,
         "statut": "ouvert",

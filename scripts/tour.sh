@@ -13,7 +13,7 @@ for essai in 1 2 3; do
   set -a; [ -f reglages.env ] && . ./reglages.env; set +a
   ACTION="$action_appli"; STRATEGIE="$strategie_appli"; export ACTION STRATEGIE
   python -m bot.main || echo "Le tour a signalé une erreur (voir le journal de l'appli)."
-  git add docs/data.json
+  git add docs/data.json docs/graphiques
   git diff --cached --quiet && exit 0
   git commit -qm "Tour du bot $(date -u +%Y-%m-%dT%H:%MZ)"
   git push -q origin HEAD:main && exit 0

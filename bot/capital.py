@@ -27,6 +27,9 @@ class CapitalDemo:
         self.mot_de_passe = mot_de_passe
         self.http = requests.Session()
         self.http.headers.update({"Content-Type": "application/json"})
+        # Bougies déjà téléchargées pendant ce tour (la plus longue liste par marché et unité) : relues par
+        # bot/graphiques.py pour dessiner les graphiques de l'appli sans aucun appel en plus.
+        self.vues = {}
 
     # --- Outils internes ---------------------------------------------------
     def _requete(self, methode: str, chemin: str, **kwargs):
@@ -83,9 +86,12 @@ class CapitalDemo:
         donnees = self._requete("GET", f"/prices/{epic}", params={"resolution": resolution, "max": nombre})
         # Capital.com renvoie parfois une bougie sans prix d'achat ou de vente (marché qui ouvre ou ferme) :
         # on l'ignore plutôt que de planter.
-        return [b for b in donnees.get("prices", [])
-                if all(isinstance(b.get(k), dict) and b[k].get("bid") is not None and b[k].get("ask") is not None
-                       for k in ("openPrice", "highPrice", "lowPrice", "closePrice"))]
+        liste = [b for b in donnees.get("prices", [])
+                 if all(isinstance(b.get(k), dict) and b[k].get("bid") is not None and b[k].get("ask") is not None
+                        for k in ("openPrice", "highPrice", "lowPrice", "closePrice"))]
+        if len(liste) >= len(self.vues.get((epic, resolution), [])):
+            self.vues[(epic, resolution)] = liste
+        return liste
 
     # --- Positions ---------------------------------------------------------
     def positions(self):
