@@ -3,7 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0a0e16">
+<meta name="theme-color" content="#0b0c0e">
+<script>
+// Ouverture de l'appli : le tableau de bord IA s'affiche en premier (le compte du bot reste dans le menu).
+if (!location.hash || (location.hash === "#accueil" && !document.referrer.startsWith(location.origin))) location.replace("ia.html");
+</script>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Bot trading">
@@ -13,264 +17,225 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="lib/lightweight-charts.js"></script>
+<link rel="stylesheet" href="theme.css">
 <style>
-  :root {
-    --fond: #0a0e16; --fond2: #0e131d; --carte: #121927; --carte2: #182133; --bord: rgba(255,255,255,.07); --bord2: rgba(255,255,255,.12);
-    --texte: #e8edf7; --doux: #8b97ad; --faible: #5d6980;
-    --vert: #16c784; --rouge: #ea3943; --bleu: #4f8cff; --violet: #8b5cf6; --cyan: #22d3ee; --orange: #f5a524;
-    --grad: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%);
-    --ombre: 0 1px 0 rgba(255,255,255,.04) inset, 0 10px 30px -12px rgba(0,0,0,.6);
-    --rayon: 18px;
-    --police: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  }
-  * { box-sizing: border-box; }
-  [hidden] { display: none !important; }
-  html { -webkit-text-size-adjust: 100%; color-scheme: dark; }
-  body { margin: 0; background: var(--fond); color: var(--texte); font: 15px/1.5 var(--police); -webkit-font-smoothing: antialiased; }
-  body::before { content: ""; position: fixed; inset: -20% -10% auto auto; width: 70vw; height: 70vh; pointer-events: none; z-index: 0;
-                 background: radial-gradient(closest-side, rgba(99,102,241,.14), transparent 70%); }
+  :root { --carte: var(--panneau); --carte2: var(--panneau2); --cyan: var(--accent); --grad: var(--vert); }
   .num { font-variant-numeric: tabular-nums; }
-  a { color: var(--cyan); text-decoration: none; } a:hover { text-decoration: underline; }
-  code { background: var(--carte2); padding: 1px 6px; border-radius: 6px; font-size: .9em; }
+  code { background: var(--panneau2); padding: 1px 5px; border-radius: 3px; font-size: .9em; }
 
   /* ---------- Structure ---------- */
-  .app { position: relative; z-index: 1; display: grid; grid-template-columns: 240px minmax(0, 1fr); min-height: 100vh; }
-  aside.cote { position: sticky; top: 0; height: 100vh; padding: 22px 14px; border-right: 1px solid var(--bord); background: rgba(10,14,22,.6);
-               backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); display: flex; flex-direction: column; gap: 4px; }
-  .logo { display: flex; align-items: center; gap: 10px; padding: 0 8px 18px; font-weight: 800; font-size: 16px; letter-spacing: -.01em; }
-  .logo img { width: 34px; height: 34px; border-radius: 10px; }
-  .logo small { display: block; font-weight: 500; font-size: 12px; color: var(--doux); }
-  nav.menu button { all: unset; box-sizing: border-box; width: 100%; display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px;
-                    color: var(--doux); font-weight: 600; cursor: pointer; transition: background .15s, color .15s; }
-  nav.menu button:hover { background: var(--carte); color: var(--texte); }
-  nav.menu button[aria-current="page"] { background: var(--carte2); color: var(--texte); box-shadow: inset 3px 0 0 var(--cyan); }
-  nav.menu svg { width: 20px; height: 20px; flex: none; }
-  .cote-bas { margin-top: auto; padding: 12px; border-radius: 14px; background: var(--carte); border: 1px solid var(--bord); font-size: 13px; color: var(--doux); }
-
-  header.barre { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
-                 padding: 14px 28px; background: rgba(10,14,22,.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--bord); }
-  header.barre h1 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: -.02em; }
-  .pastilles { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-  .pastille { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 999px; font-size: 12.5px; font-weight: 600;
-              background: var(--carte); border: 1px solid var(--bord); color: var(--texte); white-space: nowrap; }
+  .app { min-height: calc(100vh - var(--haut-entete)); }
+  .sous-entete { display: flex; align-items: center; justify-content: space-between; gap: 8px 14px; flex-wrap: wrap;
+                 padding: 10px 20px; border-bottom: 1px solid var(--bord); background: var(--fond); }
+  .sous-entete h1 { margin: 0; font-size: 15px; font-weight: 600; color: var(--clair); }
+  .pastilles { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .pastille { display: inline-flex; align-items: center; gap: 7px; padding: 3px 9px; border-radius: 3px; font-size: 12px; font-weight: 500;
+              background: var(--panneau); border: 1px solid var(--bord); color: var(--texte); white-space: nowrap; }
   button.pastille { cursor: pointer; font-family: inherit; }
-  .pastille.demo { background: rgba(245,165,36,.14); border-color: rgba(245,165,36,.35); color: var(--orange); }
-  .pastille.pause { background: rgba(234,57,67,.14); border-color: rgba(234,57,67,.35); color: var(--rouge); }
+  .pastille.pause { background: var(--rouge-fond); border-color: rgba(242,54,69,.4); color: var(--rouge); font-weight: 600; letter-spacing: .04em; }
   .pastille.pos { color: var(--vert); } .pastille.neg { color: var(--rouge); }
-  .point { width: 8px; height: 8px; border-radius: 50%; background: var(--faible); flex: none; }
-  .point.ok { background: var(--vert); box-shadow: 0 0 0 4px rgba(22,199,132,.18); animation: pouls 2s infinite; }
-  .point.ko { background: var(--rouge); }
+  .point { width: 7px; height: 7px; border-radius: 50%; background: var(--faible); flex: none; }
+  .point.ok { background: var(--vert); } .point.ko { background: var(--rouge); }
   .point.live { background: var(--rouge); animation: clig 1.4s infinite; }
-  @keyframes pouls { 50% { box-shadow: 0 0 0 7px rgba(22,199,132,0); } }
   @keyframes clig { 50% { opacity: .3; } }
-  main { padding: 24px 28px 40px; max-width: 1280px; width: 100%; }
-  section.page { display: none; animation: entree .25s ease; }
+  main { padding: 14px 20px 32px; max-width: 1440px; width: 100%; margin: 0 auto; }
+  section.page { display: none; }
   section.page.active { display: block; }
-  @keyframes entree { from { opacity: 0; transform: translateY(6px); } }
 
-  /* ---------- Cartes ---------- */
-  .carte { background: linear-gradient(180deg, var(--carte) 0%, var(--fond2) 100%); border: 1px solid var(--bord); border-radius: var(--rayon);
-           padding: 20px; box-shadow: var(--ombre); min-width: 0; }
-  .pile { display: grid; gap: 16px; min-width: 0; }
-  .g2 { display: grid; gap: 16px; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
-  .g2e { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-  .kpis { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
-  .titre-carte { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
-  h2 { margin: 0; font-size: 15px; font-weight: 700; letter-spacing: -.01em; }
-  h2 small { display: block; font-weight: 500; font-size: 12.5px; color: var(--doux); margin-top: 2px; }
-  .lab { color: var(--doux); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
-  .gros { font-size: 26px; font-weight: 800; letter-spacing: -.02em; margin-top: 6px; }
-  .sous { color: var(--doux); font-size: 13px; }
-  .pos { color: var(--vert); } .neg { color: var(--rouge); }
-  .chip { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; }
-  .chip.pos { background: rgba(22,199,132,.13); } .chip.neg { background: rgba(234,57,67,.13); } .chip.neutre { background: var(--carte2); color: var(--doux); }
-  .vide { color: var(--doux); padding: 14px 0; text-align: center; font-size: 14px; }
+  /* ---------- Panneaux ---------- */
+  .carte { background: var(--panneau); border: 1px solid var(--bord); border-radius: var(--rayon); padding: 14px 16px; min-width: 0; }
+  .pile { display: grid; gap: 10px; min-width: 0; }
+  .g2 { display: grid; gap: 10px; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); align-items: start; }
+  .g2e { display: grid; gap: 10px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .kpis { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+  .titre-carte { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+  h2 { margin: 0; font-size: 13.5px; font-weight: 600; color: var(--clair); }
+  h2 small { display: block; font-weight: 400; font-size: 12px; color: var(--doux); margin-top: 1px; }
+  .lab { color: var(--doux); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; }
+  .gros { font-size: 20px; font-weight: 600; margin-top: 4px; color: var(--clair); }
+  .sous { color: var(--doux); font-size: 12.5px; }
+  .pos { color: var(--vert) !important; } .neg { color: var(--rouge) !important; }
+  .chip { display: inline-flex; align-items: center; gap: 4px; padding: 1px 6px; border-radius: 3px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .chip.pos { background: var(--vert-fond); } .chip.neg { background: var(--rouge-fond); } .chip.neutre { background: var(--panneau2); color: var(--doux); }
+  .vide { color: var(--doux); padding: 12px 0; text-align: center; font-size: 13px; }
 
-  .hero { position: relative; overflow: hidden; }
-  .hero::after { content: ""; position: absolute; inset: auto -20% -60% 30%; height: 220px; background: radial-gradient(closest-side, rgba(34,211,238,.12), transparent); pointer-events: none; }
-  .hero .valeur { font-size: 44px; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; margin: 8px 0 8px; }
-  .hero .ligne { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .graph { height: 300px; margin-top: 12px; position: relative; }
+  .hero .valeur { font-size: 30px; font-weight: 600; color: var(--clair); line-height: 1.15; margin: 6px 0; letter-spacing: -.01em; }
+  .hero .ligne { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .graph { height: 300px; margin-top: 10px; position: relative; }
   .graph.petit { height: 220px; }
   .graph.grand { height: 420px; }
 
-  .segments { display: inline-flex; padding: 3px; background: var(--fond); border: 1px solid var(--bord); border-radius: 12px; gap: 2px; flex-wrap: wrap; }
-  .segments button { all: unset; cursor: pointer; padding: 5px 11px; border-radius: 9px; font-size: 12.5px; font-weight: 700; color: var(--doux); }
-  .segments button[aria-pressed="true"] { background: var(--carte2); color: var(--texte); box-shadow: 0 1px 2px rgba(0,0,0,.4); }
-  .kpi { padding: 16px 18px; }
-  .kpi .gros { font-size: 22px; }
+  .segments { display: inline-flex; padding: 2px; background: var(--fond); border: 1px solid var(--bord); border-radius: var(--rayon); gap: 1px; flex-wrap: wrap; }
+  .segments button { all: unset; cursor: pointer; padding: 3px 9px; border-radius: 3px; font-size: 12px; font-weight: 500; color: var(--doux); }
+  .segments button:hover { color: var(--clair); }
+  .segments button[aria-pressed="true"] { background: var(--panneau2); color: var(--clair); }
+  .kpi { padding: 12px 14px; }
+  .kpi .gros { font-size: 18px; }
 
   /* ---------- Boutons ---------- */
-  .bouton { appearance: none; font: inherit; font-weight: 700; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            padding: 11px 16px; border-radius: 12px; border: 1px solid var(--bord2); background: var(--carte2); color: var(--texte); cursor: pointer;
-            transition: transform .1s, background .15s, border-color .15s; }
-  .bouton:hover { border-color: rgba(255,255,255,.25); }
-  .bouton:active { transform: scale(.97); }
-  .bouton:disabled { opacity: .45; cursor: default; transform: none; }
-  .bouton.primaire { background: var(--grad); border: 0; color: #fff; }
-  .bouton.vert { background: rgba(22,199,132,.15); border-color: rgba(22,199,132,.4); color: var(--vert); }
-  .bouton.rouge { background: rgba(234,57,67,.12); border-color: rgba(234,57,67,.35); color: var(--rouge); }
-  .actions { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
-  .etat-cmd { margin-top: 12px; font-size: 13.5px; color: var(--doux); }
+  .bouton { appearance: none; font: inherit; font-weight: 500; font-size: 13px; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            padding: 8px 12px; border-radius: var(--rayon); border: 1px solid var(--bord2); background: var(--panneau2); color: var(--clair); cursor: pointer; }
+  .bouton:hover { background: var(--survol); }
+  .bouton:disabled { opacity: .4; cursor: default; }
+  .bouton.primaire { background: var(--vert); border-color: var(--vert); color: #fff; }
+  .bouton.primaire:hover { background: #1e9a85; }
+  .bouton.vert { background: var(--vert-fond); border-color: rgba(34,171,148,.45); color: var(--vert); }
+  .bouton.rouge { background: transparent; border-color: rgba(242,54,69,.45); color: var(--rouge); }
+  .actions { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
+  .etat-cmd { margin-top: 10px; font-size: 12.5px; color: var(--doux); }
   .etat-cmd:empty { display: none; }
 
   /* Interrupteur */
-  .inter { position: relative; width: 48px; height: 28px; flex: none; }
+  .inter { position: relative; width: 36px; height: 20px; flex: none; }
   .inter input { opacity: 0; width: 0; height: 0; position: absolute; }
-  .inter span { position: absolute; inset: 0; border-radius: 999px; background: var(--carte2); border: 1px solid var(--bord2); cursor: pointer; transition: .2s; }
-  .inter span::before { content: ""; position: absolute; width: 20px; height: 20px; left: 3px; top: 3px; border-radius: 50%; background: #c8d0de; transition: .2s; }
+  .inter span { position: absolute; inset: 0; border-radius: 10px; background: var(--panneau2); border: 1px solid var(--bord2); cursor: pointer; transition: .15s; }
+  .inter span::before { content: ""; position: absolute; width: 14px; height: 14px; left: 2px; top: 2px; border-radius: 50%; background: var(--doux); transition: .15s; }
   .inter input:checked + span { background: var(--vert); border-color: var(--vert); }
-  .inter input:checked + span::before { transform: translateX(20px); background: #fff; }
+  .inter input:checked + span::before { transform: translateX(16px); background: #fff; }
   .inter input:disabled + span { opacity: .5; cursor: default; }
 
   /* ---------- Stratégies ---------- */
-  .strats { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
-  .strat { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 14px; }
-  .strat::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--c, var(--cyan)); }
+  .strats { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
+  .strat { position: relative; display: flex; flex-direction: column; gap: 12px; border-top: 2px solid var(--c, var(--accent)); }
   .strat-tete { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
-  .strat-nom { font-size: 18px; font-weight: 800; letter-spacing: -.01em; display: flex; align-items: center; gap: 12px; }
-  .strat-ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; font-size: 19px; background: var(--carte2); flex: none; }
-  .strat .desc { color: var(--doux); font-size: 13.5px; margin: 0; }
-  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
-  .tag { font-size: 11.5px; font-weight: 700; padding: 3px 9px; border-radius: 8px; background: var(--carte2); color: var(--doux); border: 1px solid var(--bord); }
-  .mini-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .mini-stats div { background: var(--fond); border: 1px solid var(--bord); border-radius: 12px; padding: 9px 10px; min-width: 0; }
-  .mini-stats b { display: block; font-size: 15px; font-weight: 800; }
-  .mini-stats span { font-size: 10.5px; color: var(--doux); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
-  .etat-strat { display: flex; gap: 12px; align-items: center; background: var(--fond); border: 1px solid var(--bord); border-radius: 12px; padding: 10px 12px; font-size: 13.5px; }
-  .etat-strat .fleche { font-size: 18px; font-weight: 800; }
-  .sous-bots { display: grid; gap: 6px; max-height: 260px; overflow-y: auto; }
-  .sous-bots.vide { color: var(--doux); font-size: 13px; padding: 10px; border: 1px dashed var(--bord); border-radius: 12px; text-align: center; }
-  .sb { display: grid; grid-template-columns: minmax(0, 1.3fr) 1fr minmax(0, 1.2fr); gap: 10px; align-items: center; background: var(--fond); border: 1px solid var(--bord); border-radius: 10px; padding: 7px 10px; font-size: 12.5px; }
-  .sb-nom { min-width: 0; } .sb-nom b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .sb-nom small { color: var(--doux); }
-  .sb-note { position: relative; height: 6px; border-radius: 3px; background: rgba(255,255,255,.07); }
+  .strat-nom { font-size: 15px; font-weight: 600; color: var(--clair); display: flex; align-items: center; gap: 10px; }
+  .strat-ico { display: none; }
+  .strat .desc { color: var(--doux); font-size: 12.5px; margin: 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 4px; }
+  .tag { font-size: 11.5px; font-weight: 500; padding: 2px 7px; border-radius: 3px; background: var(--fond); color: var(--doux); border: 1px solid var(--bord); }
+  .tag b { color: var(--texte); font-weight: 600; }
+  .mini-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--bord); border-radius: var(--rayon); }
+  .mini-stats div { padding: 8px 10px; min-width: 0; border-left: 1px solid var(--bord); }
+  .mini-stats div:first-child { border-left: 0; }
+  .mini-stats b { display: block; font-size: 14px; font-weight: 600; color: var(--clair); }
+  .mini-stats span { font-size: 10.5px; color: var(--doux); font-weight: 500; text-transform: uppercase; letter-spacing: .05em; }
+  .etat-strat { display: flex; gap: 10px; align-items: center; background: var(--fond); border: 1px solid var(--bord); border-radius: var(--rayon); padding: 8px 10px; font-size: 12.5px; }
+  .etat-strat b { color: var(--clair); font-weight: 600; }
+  .etat-strat .fleche { font-size: 14px; font-weight: 600; }
+  .sous-bots { display: grid; gap: 4px; max-height: 260px; overflow-y: auto; }
+  .sous-bots.vide { color: var(--doux); font-size: 12.5px; padding: 10px; border: 1px dashed var(--bord); border-radius: var(--rayon); text-align: center; }
+  .sb { display: grid; grid-template-columns: minmax(0, 1.3fr) 1fr minmax(0, 1.2fr); gap: 10px; align-items: center; background: var(--fond); border: 1px solid var(--bord); border-radius: var(--rayon); padding: 7px 10px; font-size: 12px; }
+  .sb-nom { min-width: 0; } .sb-nom b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--clair); font-weight: 600; } .sb-nom small { color: var(--doux); }
+  .sb-note { position: relative; height: 4px; border-radius: 2px; background: var(--panneau2); }
   .sb-note::after { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--doux); }
-  .sb-note.plage { background: linear-gradient(90deg, rgba(234,57,67,.35), rgba(255,255,255,.06) 30% 70%, rgba(22,199,132,.35)); }
-  .capital-virtuel { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; background: linear-gradient(90deg, rgba(236,72,153,.12), transparent); border: 1px solid rgba(236,72,153,.35); border-radius: 12px; padding: 10px 12px; }
-  .capital-virtuel .num { font-size: 18px; display: flex; gap: 8px; align-items: center; }
+  .sb-note.plage { background: linear-gradient(90deg, rgba(242,54,69,.4), var(--panneau2) 30% 70%, rgba(34,171,148,.4)); }
+  .capital-virtuel { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; border: 1px solid var(--bord2); border-radius: var(--rayon); padding: 8px 10px; }
+  .capital-virtuel .num { font-size: 16px; display: flex; gap: 8px; align-items: center; }
   .sb-note.plage::after { display: none; }
-  .sb-note i { position: absolute; top: 0; bottom: 0; border-radius: 3px; }
+  .sb-note i { position: absolute; top: -2px; bottom: -2px; border-radius: 1px; }
   .sb-act { color: var(--doux); text-align: right; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .actu { display: flex; gap: 12px; padding: 8px 0; border-top: 1px solid var(--bord); font-size: 13.5px; }
-  .actu-date { color: var(--cyan); font-weight: 700; min-width: 150px; text-transform: capitalize; }
-  .garde { margin-top: 12px; font-size: 13px; color: var(--doux); background: var(--fond); border: 1px solid var(--bord); border-radius: 12px; padding: 9px 12px; }
-  .garde.alerte { color: #ffd1d4; background: rgba(234,57,67,.12); border-color: rgba(234,57,67,.5); }
-  .spark { height: 54px; display: block; width: 100%; }
+  .actu { display: flex; gap: 12px; padding: 7px 0; border-top: 1px solid var(--bord); font-size: 12.5px; }
+  .actu-date { color: var(--accent); font-weight: 500; min-width: 150px; text-transform: capitalize; }
+  .garde { margin-top: 10px; font-size: 12.5px; color: var(--doux); border-left: 2px solid var(--bord2); padding: 4px 10px; }
+  .garde b { color: var(--clair); font-weight: 600; }
+  .garde.alerte { color: #f6c4c8; border-left-color: var(--rouge); background: var(--rouge-fond); }
+  .spark { height: 48px; display: block; width: 100%; }
 
   /* ---------- Listes ---------- */
-  .ordre { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 2px 14px; align-items: center; padding: 14px 4px; border-bottom: 1px solid var(--bord); }
+  .ordre { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 1px 12px; align-items: center; padding: 10px 2px; border-bottom: 1px solid var(--bord); }
   .ordre:last-child { border-bottom: 0; }
-  .ordre .ico { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; font-weight: 800; font-size: 18px; grid-row: span 2; }
-  .ico.achat { background: rgba(22,199,132,.13); color: var(--vert); } .ico.vente { background: rgba(234,57,67,.12); color: var(--rouge); }
-  .ordre .t { font-weight: 700; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-  .ordre .r { text-align: right; font-weight: 800; font-size: 16px; }
-  .ordre .d { color: var(--doux); font-size: 12.5px; }
-  .ordre .dr { text-align: right; color: var(--doux); font-size: 12px; white-space: nowrap; }
-  .badge { font-size: 10.5px; font-weight: 800; padding: 2px 7px; border-radius: 6px; text-transform: uppercase; letter-spacing: .04em; }
-  .b-ouvert { background: rgba(79,140,255,.15); color: var(--bleu); } .b-ferme { background: var(--carte2); color: var(--doux); }
-  .b-rapide { background: rgba(139,92,246,.16); color: var(--violet); } .b-elan_4h { background: rgba(249,115,22,.15); color: #f97316; } .b-supertrend_4h { background: rgba(236,72,153,.15); color: #ec4899; } .b-usine { background: rgba(20,184,166,.15); color: #14b8a6; } .b-fed { background: rgba(99,102,241,.15); color: #6366f1; } .b-tendance_4h { background: rgba(34,211,238,.13); color: var(--cyan); }
+  .ordre .ico { width: 30px; height: 30px; border-radius: 3px; display: grid; place-items: center; font-weight: 600; font-size: 14px; grid-row: span 2; }
+  .ico.achat { background: var(--vert-fond); color: var(--vert); } .ico.vente { background: var(--rouge-fond); color: var(--rouge); }
+  .ordre .t { font-weight: 600; color: var(--clair); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .ordre .r { text-align: right; font-weight: 600; font-size: 14px; }
+  .ordre .d { color: var(--doux); font-size: 12px; }
+  .ordre .dr { text-align: right; color: var(--doux); font-size: 11.5px; white-space: nowrap; }
+  .badge { font-size: 10.5px; font-weight: 500; padding: 1px 6px; border-radius: 3px; letter-spacing: .02em; background: var(--panneau2); color: var(--doux); }
+  .b-ouvert { background: rgba(91,141,239,.14); color: var(--bleu); } .b-ferme { background: var(--panneau2); color: var(--doux); }
+  .b-rapide { background: rgba(145,121,214,.15); color: var(--violet); } .b-cassure_4h { background: rgba(217,162,60,.14); color: var(--orange); }
+  .b-tendance_4h { background: var(--vert-fond); color: var(--vert); }
 
   .journal { list-style: none; margin: 0; padding: 0; }
-  .journal li { position: relative; padding: 0 0 18px 26px; }
-  .journal li::before { content: ""; position: absolute; left: 6px; top: 10px; bottom: -6px; width: 2px; background: var(--bord); }
-  .journal li:last-child::before { display: none; }
-  .journal li i { position: absolute; left: 0; top: 4px; width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--fond2); background: var(--faible); }
+  .journal li { position: relative; padding: 7px 0 7px 16px; border-bottom: 1px solid var(--bord); font-size: 13px; }
+  .journal li:last-child { border-bottom: 0; }
+  .journal li i { position: absolute; left: 0; top: 13px; width: 6px; height: 6px; border-radius: 50%; background: var(--faible); }
   .journal .j-ordre i { background: var(--bleu); } .journal .j-fermeture i { background: var(--orange); } .journal .j-erreur i { background: var(--rouge); }
-  .journal .j-commande i { background: var(--violet); } .journal .j-stop i { background: var(--cyan); }
+  .journal .j-commande i { background: var(--violet); } .journal .j-stop i { background: var(--doux); }
   .journal .j-amelioration i { background: var(--vert); }
-  .amelio { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; font-size: 14px; }
-  .amelio li { padding: 10px 12px; border: 1px solid var(--bord); border-radius: 12px; }
-  .amelio time { display: block; font-size: 12px; color: var(--doux); }
-  .journal time { display: block; font-size: 12px; color: var(--doux); }
+  .amelio { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; font-size: 13px; }
+  .amelio li { padding: 8px 0; border-bottom: 1px solid var(--bord); }
+  .amelio time, .journal time { display: block; font-size: 11.5px; color: var(--doux); }
 
-  dl.reglages { display: grid; grid-template-columns: minmax(140px, 220px) 1fr; gap: 12px 18px; margin: 0; }
-  dl.reglages dt { color: var(--doux); } dl.reglages dd { margin: 0; font-weight: 600; }
-  input.champ { width: 100%; font: inherit; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--bord2); background: var(--fond); color: var(--texte); }
-  ol.etapes { padding-left: 20px; margin: 10px 0; } ol.etapes li { margin-bottom: 7px; }
-  details summary { cursor: pointer; font-weight: 600; color: var(--cyan); }
-  #tv { height: 520px; border-radius: 14px; overflow: hidden; }
+  dl.reglages { display: grid; grid-template-columns: minmax(140px, 220px) 1fr; gap: 0; margin: 0; font-size: 13px; }
+  dl.reglages dt, dl.reglages dd { padding: 7px 0; border-bottom: 1px solid var(--bord); }
+  dl.reglages dt { color: var(--doux); } dl.reglages dd { margin: 0; font-weight: 500; }
+  input.champ { width: 100%; font: inherit; padding: 9px 11px; border-radius: var(--rayon); border: 1px solid var(--bord2); background: var(--fond); color: var(--texte); }
+  input.champ:focus { outline: none; border-color: var(--accent); }
+  ol.etapes { padding-left: 20px; margin: 10px 0; } ol.etapes li { margin-bottom: 6px; }
+  details summary { cursor: pointer; font-weight: 500; color: var(--accent); }
+  #tv { height: 520px; border-radius: var(--rayon); overflow: hidden; }
   .donut { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
-  .legende { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 12.5px; color: var(--doux); margin-top: 12px; }
-  .legende i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .legende { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--doux); margin-top: 10px; }
+  .legende i { display: inline-block; width: 10px; height: 2px; margin-right: 6px; vertical-align: 3px; }
   .flash-h { animation: fh .9s; } .flash-b { animation: fb .9s; }
   @keyframes fh { from { color: var(--vert); } } @keyframes fb { from { color: var(--rouge); } }
-  .plus-liens { display: grid; gap: 12px; }
-  .plus-liens button { all: unset; cursor: pointer; display: flex; align-items: center; gap: 14px; padding: 18px; border-radius: 16px; background: var(--carte); border: 1px solid var(--bord); font-weight: 700; }
-  .plus-liens svg { width: 22px; height: 22px; color: var(--cyan); }
-  .graph-vide { position: absolute; inset: 0; display: grid; place-items: center; color: var(--doux); font-size: 14px; text-align: center; padding: 20px; }
-  footer { color: var(--faible); font-size: 12px; text-align: center; padding: 26px 0 0; }
-  nav.bas { display: none; }
+  .plus-liens { display: grid; gap: 0; background: var(--panneau); border: 1px solid var(--bord); border-radius: var(--rayon); }
+  .plus-liens a { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; color: var(--clair); font-weight: 500; border-bottom: 1px solid var(--bord); text-decoration: none; }
+  .plus-liens a:last-child { border-bottom: 0; }
+  .plus-liens a::after { content: "›"; color: var(--faible); font-size: 18px; line-height: 1; }
+  .graph-vide { position: absolute; inset: 0; display: grid; place-items: center; color: var(--doux); font-size: 13px; text-align: center; padding: 20px; }
+  footer { color: var(--faible); font-size: 11.5px; text-align: center; padding: 20px 0 0; }
 
   /* ---------- Graphique en direct ---------- */
-  .gr-choix { display: flex; gap: 6px; flex-wrap: wrap; }
-  .gr-choix button { all: unset; cursor: pointer; padding: 6px 11px; border-radius: 10px; font-size: 12.5px; font-weight: 700; color: var(--doux); background: var(--fond); border: 1px solid var(--bord); }
-  .gr-choix button[aria-pressed="true"] { color: var(--texte); background: var(--carte2); border-color: var(--c, var(--cyan)); box-shadow: inset 0 -2px 0 var(--c, var(--cyan)); }
-  .graph.direct { height: 480px; }
-  .conds { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-  .conds li { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; padding: 8px 10px; border-radius: 10px; background: var(--fond); border: 1px solid var(--bord); }
-  .conds li b { flex: none; width: 20px; text-align: center; }
+  .gr-choix { display: flex; gap: 0; flex-wrap: wrap; border: 1px solid var(--bord); border-radius: var(--rayon); width: fit-content; max-width: 100%; }
+  .gr-choix button { all: unset; cursor: pointer; padding: 5px 11px; font-size: 12px; font-weight: 500; color: var(--doux); border-left: 1px solid var(--bord); }
+  .gr-choix button:first-child { border-left: 0; }
+  .gr-choix button:hover { color: var(--clair); }
+  .gr-choix button[aria-pressed="true"] { color: var(--clair); background: var(--panneau2); box-shadow: inset 0 -2px 0 var(--accent); }
+  .graph.direct { height: 520px; }
+  .conds { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+  .conds li { display: flex; gap: 10px; align-items: flex-start; font-size: 12.5px; padding: 6px 2px; border-bottom: 1px solid var(--bord); }
+  .conds li:last-child { border-bottom: 0; }
+  .conds li b { flex: none; width: 16px; text-align: center; }
   .conds li.ok b { color: var(--vert); } .conds li.ko b { color: var(--rouge); } .conds li.nsp b { color: var(--doux); }
-  .niv { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 8px; }
-  .niv div { background: var(--fond); border: 1px solid var(--bord); border-radius: 10px; padding: 8px 10px; }
-  .niv span { display: block; font-size: 10.5px; color: var(--doux); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
-  .niv b { font-size: 15px; }
-  .trade-gr { border-top: 1px solid var(--bord); padding: 10px 0; }
+  .niv { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0; margin-top: 8px; border: 1px solid var(--bord); border-radius: var(--rayon); }
+  .niv div { padding: 7px 10px; border-left: 1px solid var(--bord); }
+  .niv div:first-child { border-left: 0; }
+  .niv span { display: block; font-size: 10.5px; color: var(--doux); font-weight: 500; text-transform: uppercase; letter-spacing: .05em; }
+  .niv b { font-size: 14px; font-weight: 600; color: var(--clair); }
+  .trade-gr { border-top: 1px solid var(--bord); padding: 8px 0; }
   .trade-gr summary { color: var(--texte); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; list-style: none; }
   .trade-gr summary::-webkit-details-marker { display: none; }
-  .trade-gr .conds { margin-top: 8px; }
-  .note-cap { font-size: 13.5px; color: var(--doux); background: rgba(79,140,255,.08); border: 1px solid rgba(79,140,255,.3); border-radius: 12px; padding: 10px 12px; }
-  .note-cap b { color: var(--texte); }
+  .trade-gr .conds { margin-top: 6px; }
+  .note-cap { font-size: 12.5px; color: var(--doux); border-left: 2px solid var(--bord2); padding: 4px 12px; }
+  .note-cap b { color: var(--clair); font-weight: 600; }
 
-  /* ---------- Mobile / tablette ---------- */
-  @media (max-width: 900px) {
-    .graph.direct { height: 400px; }
-    .gr-choix { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
-    .gr-choix button { flex: none; }
-    .app { grid-template-columns: minmax(0, 1fr); }
-    aside.cote { display: none; }
-    header.barre { padding: 12px 16px; padding-top: max(12px, env(safe-area-inset-top)); }
-    header.barre h1 { font-size: 18px; }
-    main { padding: 16px 16px 110px; }
+  /* ---------- Tablette / téléphone ---------- */
+  @media (max-width: 1000px) {
     .g2, .g2e { grid-template-columns: minmax(0, 1fr); }
     .strats { grid-template-columns: minmax(0, 1fr); }
-    .hero .valeur { font-size: 36px; }
-    .graph { height: 240px; } .graph.grand { height: 330px; }
+  }
+  @media (max-width: 760px) {
+    .sous-entete { padding: 9px 14px; }
+    main { padding: 10px 10px 20px; }
+    .carte { padding: 12px; }
+    .graph.direct { height: 420px; }
+    .gr-choix { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+    .gr-choix button { flex: none; }
+    .hero .valeur { font-size: 26px; }
+    .graph { height: 230px; } .graph.grand { height: 330px; }
     #tv { height: 430px; }
-    .kpis { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .kpi { padding: 14px; } .kpi .gros { font-size: 18px; }
+    .kpis { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .kpi { padding: 10px 12px; } .kpi .gros { font-size: 16px; }
     .mini-stats { grid-template-columns: 1fr 1fr; }
-    dl.reglages { grid-template-columns: 1fr; gap: 2px; } dl.reglages dd { margin-bottom: 12px; }
-    nav.bas { display: flex; position: fixed; z-index: 8; left: 10px; right: 10px; bottom: max(10px, env(safe-area-inset-bottom));
-              background: rgba(18,25,39,.94); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--bord2);
-              border-radius: 20px; padding: 6px; justify-content: space-around; box-shadow: 0 10px 30px rgba(0,0,0,.5); }
-    nav.bas button { all: unset; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 7px 0 5px; border-radius: 14px;
-                     font-size: 10.5px; font-weight: 700; color: var(--doux); cursor: pointer; }
-    nav.bas button[aria-current="page"] { color: var(--texte); background: var(--carte2); }
-    nav.bas button[aria-current="page"] svg { color: var(--cyan); }
-    nav.bas svg { width: 22px; height: 22px; }
+    .mini-stats div:nth-child(3) { border-left: 0; } .mini-stats div:nth-child(n+3) { border-top: 1px solid var(--bord); }
+    dl.reglages { grid-template-columns: 1fr; } dl.reglages dt { border-bottom: 0; padding-bottom: 0; }
   }
 </style>
 </head>
 <body>
+<script src="nav.js"></script>
 <div class="app">
-  <aside class="cote">
-    <div class="logo"><img src="icone-192.png" alt=""><div>Bot de trading<small>Capital.com · démo</small></div></div>
-    <nav class="menu" id="menu"></nav>
-    <div class="cote-bas" id="cote-bas">Chargement…</div>
-  </aside>
-
-  <div style="min-width:0">
-    <header class="barre">
-      <h1 id="titre-page">Accueil</h1>
+    <div class="sous-entete">
+      <h1 id="titre-page">Compte</h1>
       <div class="pastilles">
-        <button class="pastille" id="installer" hidden>⬇ Installer</button>
-        <span class="pastille pause" id="badge-pause" hidden>⏸ EN PAUSE</span>
-        <span class="pastille demo">DÉMO</span>
+        <button class="pastille" id="installer" hidden>Installer</button>
+        <span class="pastille pause" id="badge-pause" hidden>EN PAUSE</span>
         <span class="pastille"><span id="point" class="point"></span><span id="statut">Chargement…</span></span>
       </div>
-    </header>
+    </div>
 
     <main>
       <!-- ============ ACCUEIL ============ -->
@@ -290,14 +255,14 @@
               <div class="carte">
                 <div class="titre-carte"><h2>Commande rapide<small>Pour tout le bot</small></h2></div>
                 <div class="actions">
-                  <button class="bouton" data-cmd="analyser">🔄 Analyser</button>
-                  <button class="bouton" data-cmd="pause">⏸ Pause</button>
-                  <button class="bouton vert" data-cmd="reprendre">▶ Reprendre</button>
+                  <button class="bouton" data-cmd="analyser">Analyser</button>
+                  <button class="bouton" data-cmd="pause">Pause</button>
+                  <button class="bouton vert" data-cmd="reprendre">Reprendre</button>
                 </div>
                 <div class="etat-cmd" data-etat=""></div>
               </div>
               <div class="carte">
-                <div class="titre-carte"><h2>Stratégies<small>Ce que fait chacune en ce moment</small></h2><a href="#strategies">Gérer →</a></div>
+                <div class="titre-carte"><h2>Stratégies<small>Ce que fait chacune en ce moment</small></h2><a href="#strategies">Gérer</a></div>
                 <div id="resume-strats" class="pile" style="gap:10px;min-width:0"></div>
               </div>
             </div>
@@ -317,9 +282,9 @@
             <div class="titre-carte">
               <h2>Pilotage global<small>La pause arrête toutes les stratégies d'un coup. Les stops de sécurité restent en place.</small></h2>
               <div class="actions" style="min-width:min(100%,460px)">
-                <button class="bouton" data-cmd="analyser">🔄 Analyser tout</button>
-                <button class="bouton" data-cmd="pause">⏸ Tout mettre en pause</button>
-                <button class="bouton vert" data-cmd="reprendre">▶ Tout reprendre</button>
+                <button class="bouton" data-cmd="analyser">Analyser tout</button>
+                <button class="bouton" data-cmd="pause">Tout mettre en pause</button>
+                <button class="bouton vert" data-cmd="reprendre">Tout reprendre</button>
               </div>
             </div>
             <div id="garde"></div>
@@ -364,7 +329,7 @@
             <div class="titre-carte"><h2>Trades ici<small>Touche un trade pour voir les conditions remplies au moment de l'entrée</small></h2></div>
             <div id="gr-trades"></div>
           </div>
-          <div class="note-cap">ℹ️ <b>Et sur le graphique de Capital.com ?</b> Le stop (garanti) et le TP de chaque position sont de vrais ordres
+          <div class="note-cap"><b>Et sur le graphique de Capital.com ?</b> Le stop (garanti) et le TP de chaque position sont de vrais ordres
             chez Capital.com : tu les vois sur leur graphique (lignes de la position), et le bot y déplace le stop quand il suit le gain.
             Par contre, Capital.com ne permet pas à un bot de dessiner sur son graphique : les indicateurs, les flèches de signaux et les
             conditions ne sont visibles qu'ici.</div>
@@ -426,9 +391,7 @@
 
       <footer id="pied"></footer>
     </main>
-  </div>
 </div>
-<nav class="bas" id="nav-bas"></nav>
 
 <script>
 "use strict";
@@ -460,7 +423,7 @@ function duree(ms) {
   const h = Math.floor(min / 60);
   return h < 48 ? `${h} h ${min % 60} min` : `${Math.floor(h / 24)} j ${h % 24} h`;
 }
-const COUL = { vert: "#16c784", rouge: "#ea3943", bleu: "#4f8cff", violet: "#8b5cf6", cyan: "#22d3ee", orange: "#f5a524", texte: "#e8edf7", doux: "#8b97ad", grille: "rgba(255,255,255,.05)" };
+const COUL = { vert: "#22ab94", rouge: "#f23645", bleu: "#5b8def", violet: "#9179d6", cyan: "#4fb8c9", orange: "#d9a23c", texte: "#d7d9dd", doux: "#8b9099", grille: "rgba(255,255,255,.04)" };
 
 // =====================================================================
 // Navigation
@@ -475,23 +438,14 @@ const IC = {
   plus: '<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',
 };
 const svg = id => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IC[id]}</svg>`;
-const PAGES = { accueil: "Accueil", graphique: "Graphique en direct", strategies: "Stratégies", ordres: "Ordres", journal: "Journal", reglages: "Réglages", plus: "Plus" };
-$("menu").innerHTML = ["accueil", "graphique", "strategies", "ordres", "journal", "reglages"].map(p => `<button data-p="${p}">${svg(p)}${PAGES[p]}</button>`).join("");
-$("nav-bas").innerHTML = [["accueil", "Accueil"], ["graphique", "Graphique"], ["strategies", "Stratégies"], ["ordres", "Ordres"], ["plus", "Plus"]]
-  .map(([p, n]) => `<button data-p="${p}">${svg(p)}${n}</button>`).join("");
-$("plus-liens").innerHTML = ["journal", "reglages"].map(p => `<button data-p="${p}">${svg(p)}${PAGES[p]}</button>`).join("");
-// Systèmes à part du bot : pages séparées, bien visibles dans le menu et dans « Plus »
-const AUTRES = [["ia.html", "IA en direct", '<path d="M12 2a4 4 0 0 1 4 4v1a3 3 0 0 1 3 3v1a3 3 0 0 1-1 5.2V18a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4v-1.8A3 3 0 0 1 5 11v-1a3 3 0 0 1 3-3V6a4 4 0 0 1 4-4z"/><path d="M9 12h.01M15 12h.01M10 16h4"/>'],
-                ["elan.html", "Bot Élan crypto", '<path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/>']];
-const lienAutre = ([h, n, ic]) => `<button onclick="location.href='${h}'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ic}</svg>${n}<span style="margin-left:auto;opacity:.6">↗</span></button>`;
-$("menu").insertAdjacentHTML("beforeend", `<div style="height:1px;background:var(--bord);margin:10px 6px"></div>` + AUTRES.map(lienAutre).join(""));
-$("plus-liens").insertAdjacentHTML("beforeend", AUTRES.map(lienAutre).join(""));
+const PAGES = { accueil: "Compte", graphique: "Graphique en direct", strategies: "Stratégies", ordres: "Ordres", journal: "Journal", reglages: "Réglages", plus: "Plus" };
+$("plus-liens").innerHTML = [["index.html#strategies", "Stratégies"], ["index.html#journal", "Journal"], ["elan.html", "Élan crypto"], ["index.html#reglages", "Réglages"]]
+  .map(([h, n]) => `<a href="${h}">${n}</a>`).join("");
 let pageActive = "accueil";
 function ouvrir(id) {
   if (!PAGES[id]) id = "accueil";
   pageActive = id;
-  const actif = id === "journal" || id === "reglages" ? [id, "plus"] : [id];
-  document.querySelectorAll("[data-p]").forEach(b => actif.includes(b.dataset.p) && !b.closest(".plus-liens") ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current"));
+  if (window.navActif) navActif(id);
   document.querySelectorAll("section.page").forEach(s => s.classList.toggle("active", s.id === "p-" + id));
   $("titre-page").textContent = PAGES[id];
   if (location.hash !== "#" + id) history.replaceState(null, "", "#" + id);
@@ -519,10 +473,10 @@ function graphique(id, options = {}) {
   const c = LightweightCharts.createChart(el, {
     autoSize: true,
     layout: { background: { type: "solid", color: "transparent" }, textColor: COUL.doux, fontFamily: "Inter, sans-serif", fontSize: 11 },
-    grid: { vertLines: { visible: false }, horzLines: { color: COUL.grille } },
+    grid: { vertLines: { color: COUL.grille }, horzLines: { color: COUL.grille } },
     rightPriceScale: { borderVisible: false, scaleMargins: { top: .12, bottom: .08 } },
     timeScale: { borderVisible: false, timeVisible: true, secondsVisible: false, fixLeftEdge: true, fixRightEdge: true },
-    crosshair: { mode: 1, vertLine: { color: "rgba(255,255,255,.25)", labelBackgroundColor: "#182133" }, horzLine: { color: "rgba(255,255,255,.25)", labelBackgroundColor: "#182133" } },
+    crosshair: { mode: 1, vertLine: { color: "rgba(255,255,255,.2)", labelBackgroundColor: "#2e3137" }, horzLine: { color: "rgba(255,255,255,.2)", labelBackgroundColor: "#2e3137" } },
     localization: { locale: "fr-FR", priceFormatter: p => fmt(p, Math.abs(p) >= 1000 ? 0 : 2),
       timeFormatter: t => new Date(t * 1000).toLocaleString("fr-FR", { timeZone: "UTC", day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) },
     handleScroll: { vertTouchDrag: false }, ...options,
@@ -562,11 +516,11 @@ const emas = r => r?.ema || (r?.unite === "HOUR_4" ? [20, 200] : [9, 21]);
 
 // Les stratégies : celles décrites par le bot (donnees.strategies), sinon déduites des réglages.
 const STRAT_INFO = {
-  tendance_4h: { ico: "🧭", couleur: COUL.cyan, titre: "Tendance 4 h (Bitcoin, retirée le 26/11)",
+  tendance_4h: { ico: "", couleur: COUL.cyan, titre: "Tendance 4 h (Bitcoin, retirée le 26/11)",
     desc: "Suit les grandes tendances du Bitcoin sur des bougies de 4 heures. Peu de trades, chacun visé pour durer, avec un stop garanti et un stop suiveur." },
-  rapide: { ico: "⚡", couleur: COUL.violet, titre: "Rapide 5 min (or)",
+  rapide: { ico: "", couleur: COUL.violet, titre: "Rapide 5 min (or)",
     desc: "Trade souvent sur l'or avec des bougies de 5 minutes, seulement dans le sens des tendances 1 h et 4 h." },
-  cassure_4h: { ico: "🥇", couleur: "#eab308", titre: "Cassure 4 h (or, argent)",
+  cassure_4h: { ico: "", couleur: COUL.orange, titre: "Cassure 4 h (or, argent)",
     desc: "Surveille l'or et l'argent sur des bougies de 4 h : elle entre quand le prix casse son plus haut ou son plus bas des 20 dernières bougies, dans le sens de la tendance." },
 };
 const nomStrat = id => (STRAT_INFO[id] || {}).titre || id;
@@ -578,7 +532,7 @@ function strategies(d) {
   const an = Object.values(d.analyses || {})[0] || {};
   return ids.map(id => {
     const s = src[id] || {};
-    const info = STRAT_INFO[id] || { ico: "🤖", couleur: COUL.bleu, titre: s.nom || id, desc: "" };
+    const info = STRAT_INFO[id] || { ico: "", couleur: COUL.bleu, titre: s.nom || id, desc: "" };
     const derive = id === "tendance_4h"
       ? { nom: d.reglages?.strategie, active: true, unite: d.reglages?.unite, risque_pct: d.reglages?.risque_pct, tendance: an.tendance, action: an.action }
       : id === "rapide" ? { nom: d.rapide?.nom || d.reglages?.strategie_rapide, active: !!d.reglages?.strategie_rapide, unite: "MINUTE_5", risque_pct: 0.1, tendance: d.rapide?.tendance, action: d.rapide?.action } : {};
@@ -643,7 +597,7 @@ function afficher() {
       <div class="sous num">${g ? `<span class="chip ${signe(g.pct) || "neutre"}">${fmtS(g.pct)} %</span>${g.partiel ? " depuis le lancement" : ""}` : ""}</div></div>`;
   }).join("");
   $("resume-strats").innerHTML = strats.map(s => `<a href="#strategies" style="color:inherit;text-decoration:none;display:block;min-width:0" title="${esc(s.action || "")}">
-    <div class="etat-strat"><span class="strat-ico" style="width:34px;height:34px;font-size:16px">${s.ico}</span>
+    <div class="etat-strat">
       <div style="flex:1;min-width:0"><b>${esc(s.titre)}</b><div class="sous" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(s.action || "En attente du prochain tour")}</div></div>
       ${etatChip(s)}</div></a>`).join("");
   $("positions").innerHTML = ouverts.length ? ouverts.map(carteOrdre).join("") : '<p class="vide">Aucune position ouverte pour le moment. Le bot attend un signal.</p>';
@@ -681,7 +635,7 @@ function afficher() {
 
   // ---- Auto-amélioration (bot/amelioration.py, chaque dimanche)
   const am = d.amelioration;
-  const STATUTS = { "adopté": "✅ Adopté", "confirmé": "👍 Confirmé", "annulé": "↩️ Annulé", "suggestion": "💡 Suggestion" };
+  const STATUTS = { "adopté": "Adopté", "confirmé": "Confirmé", "annulé": "Annulé", "suggestion": "Suggestion" };
   const modeTxt = !am ? "Premier passage dimanche soir (19 h)." : am.mode === "auto" ? "Mode automatique : les changements sont appliqués, puis vérifiés la semaine suivante."
     : am.mode === "non" ? "Arrêtée." : `Suggestions seulement${am.debut_auto ? ` jusqu'au ${esc(am.debut_auto.split("-").reverse().join("/"))}` : ""} : rien n'est changé pour ne pas fausser le test.`;
   const obs = Object.entries(am?.en_observation || {}).map(([s, o]) => `${esc(nomStrat(s))} : ${esc(o.reglage)} ${esc(o.avant)} → ${esc(o.apres)}`);
@@ -703,15 +657,13 @@ function afficher() {
     ["Voir les ordres", '<a href="https://capital.com/trading/platform/" target="_blank" rel="noopener">plateforme Capital.com</a> (choisis « Démo » en haut à droite)'],
   ].map(([k, v]) => `<dt>${esc(k)}</dt><dd>${v}</dd>`).join("");
 
-  // ---- Barre latérale + pied
-  $("cote-bas").innerHTML = `<div class="lab" style="margin-bottom:4px">Portefeuille</div><b class="num" style="font-size:18px;color:var(--texte)">${fmt(actuelle)}${dev}</b>
-    <div style="margin-top:6px">${d.pause ? "⏸ Bot en pause" : "🟢 Bot actif"} · ${ouverts.length} position(s)</div>`;
+  // ---- Pied
   $("pied").textContent = `Argent fictif uniquement · données du ${quand(d.derniere_execution)} · actualisé à ${new Date().toLocaleTimeString("fr-FR")}`;
   dessinerGraphiques();
 }
 
 function etatChip(s) {
-  return D.pause ? `<span class="chip neutre">⏸ Pause</span>` : s.active === false ? `<span class="chip neutre">○ Désactivée</span>` : `<span class="chip pos">● Active</span>`;
+  return D.pause ? `<span class="chip neutre">Pause</span>` : s.active === false ? `<span class="chip neutre">Désactivée</span>` : `<span class="chip pos">Active</span>`;
 }
 function indicateurs(s) {
   const fl = v => v === "BUY" ? "▲ hausse" : v === "SELL" ? "▼ baisse" : "—";
@@ -748,14 +700,14 @@ function listeCassure(src) {
 function bandeauActus() {
   const p = D?.actualites?.pause;
   const pm = Object.entries(D?.actualites?.pauses_marches || {});
-  return (p ? `<div class="garde alerte">📰 <b>Pause annonce :</b> ${esc(p)}</div>` : "")
-    + pm.map(([m, r]) => `<div class="garde alerte">📰 <b>Pause ${esc(m)} :</b> ${esc(r)}</div>`).join("");
+  return (p ? `<div class="garde alerte"><b>Pause annonce :</b> ${esc(p)}</div>` : "")
+    + pm.map(([m, r]) => `<div class="garde alerte"><b>Pause ${esc(m)} :</b> ${esc(r)}</div>`).join("");
 }
 function bandeauGardeFous() {
   const g = D?.garde_fous; if (!g) return "";
   const r = g.regles || {};
-  if (g.coupe_circuit) return `<div class="garde alerte">🛑 <b>Coupe-circuit déclenché :</b> le compte a perdu plus de ${esc(r.perte_max_pct ?? "?")} % depuis son plus haut. Aucune nouvelle position tant que tu n'appuies pas sur « Tout reprendre ».</div>`;
-  return `<div class="garde">🛡️ Garde-fous actifs : perte max ${esc(r.perte_max_pct ?? "—")} % depuis le plus haut, ${esc(r.perte_jour_pct ?? "—")} % par jour, ${esc(r.positions_max ?? "—")} positions au maximum, risque total ${esc(r.risque_total_pct ?? "—")} % du compte.</div>`;
+  if (g.coupe_circuit) return `<div class="garde alerte"><b>Coupe-circuit déclenché :</b> le compte a perdu plus de ${esc(r.perte_max_pct ?? "?")} % depuis son plus haut. Aucune nouvelle position tant que tu n'appuies pas sur « Tout reprendre ».</div>`;
+  return `<div class="garde">Garde-fous actifs : perte max ${esc(r.perte_max_pct ?? "—")} % depuis le plus haut, ${esc(r.perte_jour_pct ?? "—")} % par jour, ${esc(r.positions_max ?? "—")} positions au maximum, risque total ${esc(r.risque_total_pct ?? "—")} % du compte.</div>`;
 }
 function carteStrat(s) {
   const active = s.active !== false;
@@ -763,7 +715,7 @@ function carteStrat(s) {
   const unite = (UNITES[s.unite] || [s.unite || "—"])[0];
   return `<div class="carte strat" style="--c:${s.couleur}">
     <div class="strat-tete">
-      <div class="strat-nom"><span class="strat-ico">${s.ico}</span><div>${esc(s.titre)}<div style="margin-top:3px">${etatChip(s)}</div></div></div>
+      <div class="strat-nom"><div>${esc(s.titre)}<div style="margin-top:3px">${etatChip(s)}</div></div></div>
       <label class="inter" title="${active ? "Désactiver" : "Activer"} cette stratégie"><input type="checkbox" data-bascule="${esc(s.id)}" ${active ? "checked" : ""}><span></span></label>
     </div>
     <p class="desc">${esc(s.desc)}</p>
@@ -778,8 +730,8 @@ function carteStrat(s) {
     ${indicateurs(s)}
     ${sparkline(s.courbe, s.couleur)}
     <div class="actions">
-      <button class="bouton primaire" data-cmd="lancer" data-strat="${esc(s.id)}">▶ Lancer maintenant</button>
-      <button class="bouton rouge" data-cmd="fermer" data-strat="${esc(s.id)}" ${s.ouverts.length ? "" : "disabled"}>✕ Fermer ses positions</button>
+      <button class="bouton primaire" data-cmd="lancer" data-strat="${esc(s.id)}">Lancer maintenant</button>
+      <button class="bouton rouge" data-cmd="fermer" data-strat="${esc(s.id)}" ${s.ouverts.length ? "" : "disabled"}>Fermer ses positions</button>
     </div>
     <div class="etat-cmd" data-etat="${esc(s.id)}">${ETATS[s.id] || ""}</div>
   </div>`;
@@ -813,7 +765,7 @@ function dessinerGraphiques() {
     if (data.length < 2) return graphVide("g-valeur", "La courbe se dessine au fil des tours du bot.");
     const c = graphique("g-valeur"); if (!c) return;
     const coul = data.at(-1).value < data[0].value ? COUL.rouge : COUL.vert;
-    c.addAreaSeries({ lineColor: coul, topColor: coul + "55", bottomColor: coul + "00", lineWidth: 2, priceLineVisible: false, crosshairMarkerRadius: 4 }).setData(data);
+    c.addAreaSeries({ lineColor: coul, topColor: coul + "30", bottomColor: coul + "00", lineWidth: 2, priceLineVisible: false, crosshairMarkerRadius: 4 }).setData(data);
     c.timeScale().fitContent();
   }
   if (pageActive === "strategies") {
@@ -826,7 +778,7 @@ function dessinerGraphiques() {
       let cumul = 0;
       const data = serieUnique([{ time: tLoc(iso(s.fermes[0].ouvert_le || s.fermes[0].ferme_le)) - 1, value: 0 },
         ...s.fermes.map(o => ({ time: tLoc(iso(o.ferme_le)), value: (cumul += o.resultat) }))]);
-      c.addAreaSeries({ lineColor: s.couleur, topColor: s.couleur + "33", bottomColor: s.couleur + "00", lineWidth: 2.5, priceLineVisible: false, crosshairMarkerRadius: 4, lineType: 1 }).setData(data);
+      c.addAreaSeries({ lineColor: s.couleur, topColor: s.couleur + "33", bottomColor: s.couleur + "00", lineWidth: 2, priceLineVisible: false, crosshairMarkerRadius: 4, lineType: 1 }).setData(data);
     }
     c.timeScale().fitContent();
   }
@@ -919,7 +871,7 @@ function dessinerDirect() {
     if (p.objectif != null) sb.createPriceLine({ price: p.objectif, color: COUL.vert, lineStyle: 0, lineWidth: 2, axisLabelVisible: true, title: "TP" });
   }
   if (pos.length) leg.push(`<span><i style="background:${COUL.bleu}"></i>Entrée</span><span><i style="background:${COUL.rouge}"></i>Stop</span>` + (pos.some(p => p.objectif != null) ? `<span><i style="background:${COUL.vert}"></i>TP</span>` : ""));
-  leg.push(`<span>⬆⬇ trade du bot · ● signal de la stratégie</span>`);
+  leg.push(`<span>▲▼ trade du bot · ● signal de la stratégie</span>`);
   $("gr-legende").innerHTML = leg.join("");
   if (vue) c.timeScale().setVisibleLogicalRange(vue);
   else c.timeScale().setVisibleLogicalRange({ from: Math.max(0, bougies.length - (dur === 300 ? 110 : 90)), to: bougies.length + 3 });
@@ -932,7 +884,7 @@ function dessinerDirect() {
   const fin = new Date((B.t.at(-1) + dur) * 1000).toLocaleString("fr-FR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
   $("gr-cond-sous").textContent = `Sur la dernière bougie terminée (fermée le ${fin})`;
   const act = ACTION_STRAT(d, g);
-  $("gr-action").innerHTML = act ? `<div class="etat-strat" style="margin-bottom:10px"><span>🤖</span><span><b>Décision du bot :</b> ${esc(act)}</span></div>` : "";
+  $("gr-action").innerHTML = act ? `<div class="etat-strat" style="margin-bottom:10px"><span><b>Décision du bot :</b> ${esc(act)}</span></div>` : "";
   $("gr-conds").innerHTML = liCond(g.conditions) || '<li class="nsp"><b>?</b><span>Pas encore de conditions.</span></li>';
   $("gr-positions").innerHTML = pos.length ? pos.map(p => {
     const achat = p.sens === "BUY", risque = p.stop != null ? Math.abs(p.prix_entree - p.stop) : null;
@@ -985,25 +937,25 @@ function etatCmd(strat, t) {
 let enCours = false;
 async function commander(cmd, strat, bouton) {
   const nom = NOMS_CMD[cmd] + (strat ? ` (${nomStrat(strat)})` : "");
-  if (!cle()) { etatCmd(strat, '🔑 Pour commander le bot depuis cet appareil, ajoute d\'abord ta clé dans <a href="#reglages">Réglages</a>.'); return false; }
-  if (enCours) { etatCmd(strat, "⏳ Une commande est déjà en cours, patiente quelques secondes."); return false; }
+  if (!cle()) { etatCmd(strat, 'Pour commander le bot depuis cet appareil, ajoute d\'abord ta clé dans <a href="#reglages">Réglages</a>.'); return false; }
+  if (enCours) { etatCmd(strat, "Une commande est déjà en cours, patiente quelques secondes."); return false; }
   if (bouton && cmd === "fermer" && !confirmer(bouton)) return false;
   if (strat && !D?.strategies) {
-    etatCmd(strat, "🛠️ Le bot reçoit bientôt la mise à jour qui permet de piloter chaque stratégie séparément. En attendant, utilise les boutons globaux.");
+    etatCmd(strat, "Le bot reçoit bientôt la mise à jour qui permet de piloter chaque stratégie séparément. En attendant, utilise les boutons globaux.");
     return false;
   }
   enCours = true;
   document.querySelectorAll("[data-cmd], [data-bascule]").forEach(x => x.disabled = true);
-  etatCmd(strat, `⏳ Envoi : ${nom}…`);
+  etatCmd(strat, `Envoi : ${nom}…`);
   try {
     const depart = new Date();
     const inputs = strat ? { action: cmd, strategie: strat } : { action: cmd };
     const r = await gh("/actions/workflows/bot.yml/dispatches", { method: "POST", body: JSON.stringify({ ref: "main", inputs }) });
     if (r.status !== 204) throw new Error([401, 403, 404].includes(r.status) ? "clé refusée par GitHub (vérifie ses permissions)" : r.status === 422 ? "le bot ne connaît pas encore cette commande" : "erreur " + r.status);
-    etatCmd(strat, `✅ ${nom} envoyée. Le bot démarre (30 à 60 secondes)…`);
+    etatCmd(strat, `${nom} envoyée. Le bot démarre (30 à 60 secondes)…`);
     await suivreExecution(depart, nom, strat);
   } catch (err) {
-    etatCmd(strat, "❌ " + esc(err.message));
+    etatCmd(strat, "" + esc(err.message));
   }
   enCours = false;
   if (D) afficher();
@@ -1033,21 +985,21 @@ async function suivreExecution(depart, nom, strat) {
       const r = await gh("/actions/workflows/bot.yml/runs?per_page=1");
       const run = (await r.json()).workflow_runs?.[0];
       if (!run || new Date(run.created_at) < depart - 5000) continue;
-      if (run.status !== "completed") { etatCmd(strat, `⚙️ Le bot travaille : ${nom}…`); continue; }
+      if (run.status !== "completed") { etatCmd(strat, `Le bot travaille : ${nom}…`); continue; }
       if (run.conclusion === "success") {
-        etatCmd(strat, `✅ ${nom} : terminé, je récupère la décision du bot…`);
+        etatCmd(strat, `${nom} : terminé, je récupère la décision du bot…`);
         await charger();
         const lignes = (D?.journal || []).filter(l => iso(l.date) >= depart - 60000 && l.type !== "commande"
           && (!strat || l.strategie === strat || (strat === "rapide" && /^\[Rapide\]/.test(l.texte || ""))));
         const der = lignes.at(-1);
         if (der) {
           const rien = /aucune action|position conservée|on attend|on garde/i.test(der.texte);
-          etatCmd(strat, `✅ ${nom} fait à ${new Date(der.date).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}. <b>Décision du bot :</b> ${esc(der.texte.replace(/^Tour immédiat : /, "").replace(/^\[Rapide\] /, ""))}`
+          etatCmd(strat, `${nom} fait à ${new Date(der.date).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })}. <b>Décision du bot :</b> ${esc(der.texte.replace(/^Tour immédiat : /, "").replace(/^\[Rapide\] /, ""))}`
             + (rien ? "<br><small>Pas de trade cette fois : c'est normal, la stratégie n'ouvre une position que sur un signal clair.</small>" : ""));
-        } else etatCmd(strat, `✅ ${nom} : terminé. Le détail apparaîtra dans le <a href="#journal">Journal</a> d'ici une minute.`);
+        } else etatCmd(strat, `${nom} : terminé. Le détail apparaîtra dans le <a href="#journal">Journal</a> d'ici une minute.`);
         setTimeout(charger, 20000);
       }
-      else etatCmd(strat, `❌ Le bot a rencontré une erreur. Regarde le <a href="#journal">Journal</a>.`);
+      else etatCmd(strat, `Le bot a rencontré une erreur. Regarde le <a href="#journal">Journal</a>.`);
       return;
     } catch {}
   }
@@ -1056,16 +1008,16 @@ async function suivreExecution(depart, nom, strat) {
 
 // Clé GitHub
 function majCle(msg) {
-  $("cle-etat").innerHTML = msg || (cle() ? "✅ Une clé est enregistrée sur cet appareil : les commandes sont actives." : "Aucune clé sur cet appareil : tu peux tout voir, mais pas commander le bot.");
+  $("cle-etat").innerHTML = msg || (cle() ? "Une clé est enregistrée sur cet appareil : les commandes sont actives." : "Aucune clé sur cet appareil : tu peux tout voir, mais pas commander le bot.");
 }
 $("cle-ok").onclick = async () => {
   const v = $("cle").value.trim();
   if (!v) return majCle("Colle d'abord ta clé dans le champ.");
-  memo.set("cleGithub", v); majCle("⏳ Test de la clé…");
+  memo.set("cleGithub", v); majCle("Test de la clé…");
   try {
     const r = await gh("/actions/workflows"); if (!r.ok) throw 0;
-    $("cle").value = ""; majCle("✅ Clé valide et enregistrée sur cet appareil. Les commandes sont actives."); charger();
-  } catch { memo.set("cleGithub", ""); majCle("❌ GitHub refuse cette clé. Vérifie le dépôt choisi et la permission Actions."); }
+    $("cle").value = ""; majCle("Clé valide et enregistrée sur cet appareil. Les commandes sont actives."); charger();
+  } catch { memo.set("cleGithub", ""); majCle("GitHub refuse cette clé. Vérifie le dépôt choisi et la permission Actions."); }
 };
 $("cle-suppr").onclick = () => { memo.set("cleGithub", ""); majCle(); };
 majCle();
@@ -1078,8 +1030,8 @@ const installee = matchMedia("(display-mode: standalone)").matches || navigator.
 window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); invite = e; $("installer").hidden = false; aideInstall(); });
 $("installer").onclick = async () => { if (!invite) return ouvrir("reglages"); invite.prompt(); await invite.userChoice; invite = null; $("installer").hidden = true; aideInstall(); };
 function aideInstall() {
-  $("aide-install").innerHTML = installee ? '<p class="sous" style="margin:0">✅ L\'application est installée sur cet appareil.</p>'
-    : `${invite ? '<p><button class="bouton primaire" onclick="document.getElementById(\'installer\').click()">⬇ Installer maintenant</button></p>' : ""}
+  $("aide-install").innerHTML = installee ? '<p class="sous" style="margin:0">L\'application est installée sur cet appareil.</p>'
+    : `${invite ? '<p><button class="bouton primaire" onclick="document.getElementById(\'installer\').click()">Installer maintenant</button></p>' : ""}
       <ol class="etapes">
         <li><b>PC (Chrome ou Edge)</b> : icône d'installation à droite de la barre d'adresse, ou menu ⋮ → <i>Installer « Bot de trading démo »</i>. Un raccourci apparaît sur le bureau.</li>
         <li><b>iPhone / iPad (Safari)</b> : bouton Partager → <i>Sur l'écran d'accueil</i>.</li>

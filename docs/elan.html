@@ -3,31 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Élan crypto</title>
+<meta name="theme-color" content="#0b0c0e">
+<title>Élan crypto · Bot de trading</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icone-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
 <style>
-  :root { --fond:#0f1115; --carte:#181b22; --texte:#e8eaf0; --doux:#9aa1b2; --vert:#3ecf8e; --rouge:#ff6b6b; --bord:#2a2f3a; }
-  * { box-sizing:border-box; }
-  body { margin:0; background:var(--fond); color:var(--texte); font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
-  main { max-width:720px; margin:0 auto; padding:16px; }
-  h1 { font-size:22px; margin:4px 0 2px; }
-  .sous { color:var(--doux); font-size:13px; margin-bottom:14px; }
-  .alerte { background:#2a2416; border:1px solid #5c4a1a; color:#f3d27a; border-radius:10px; padding:10px 12px; font-size:13px; margin-bottom:14px; }
-  .tuiles { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:14px; }
-  .tuile { background:var(--carte); border:1px solid var(--bord); border-radius:10px; padding:10px; }
-  .tuile b { display:block; font-size:20px; }
-  .tuile span { color:var(--doux); font-size:12px; }
-  .carte { background:var(--carte); border:1px solid var(--bord); border-radius:10px; padding:12px; margin-bottom:8px; }
+  main { max-width:1100px; margin:0 auto; padding:14px 20px 32px; }
+  .alerte { border-left:2px solid var(--orange); background:rgba(217,162,60,.08); color:#e6cf9f; padding:7px 12px; font-size:12.5px; margin-bottom:10px; }
+  .tuiles { display:grid; grid-template-columns:repeat(3,1fr); gap:0; margin-bottom:10px; background:var(--panneau); border:1px solid var(--bord); border-radius:var(--rayon); }
+  .tuile { padding:10px 14px; border-left:1px solid var(--bord); }
+  .tuile:first-child { border-left:0; }
+  .tuile b { display:block; font-size:18px; font-weight:600; color:var(--clair); font-variant-numeric:tabular-nums; }
+  .tuile span { color:var(--doux); font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:.06em; }
+  #marches { background:var(--panneau); border:1px solid var(--bord); border-radius:var(--rayon); }
+  .carte { padding:10px 14px; border-bottom:1px solid var(--bord); }
+  .carte:last-child { border-bottom:0; }
+  .carte b { color:var(--clair); font-weight:600; }
   .ligne { display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; }
-  .doux { color:var(--doux); font-size:13px; }
-  .vert { color:var(--vert); } .rouge { color:var(--rouge); }
-  h2 { font-size:16px; margin:18px 0 8px; }
-  .journal div { border-bottom:1px solid var(--bord); padding:6px 0; font-size:13px; }
+  .doux { color:var(--doux); font-size:12.5px; }
+  .vert { color:var(--vert) !important; } .rouge { color:var(--rouge) !important; }
+  h2 { font-size:13.5px; font-weight:600; color:var(--clair); margin:16px 0 8px; }
+  .journal { background:var(--panneau); border:1px solid var(--bord); border-radius:var(--rayon); padding:0 14px; }
+  .journal div { border-bottom:1px solid var(--bord); padding:6px 0; font-size:12.5px; }
+  .journal div:last-child { border-bottom:0; }
+  @media (max-width:760px) { main { padding:10px 10px 20px; } }
 </style>
 </head>
 <body>
+<script src="nav.js"></script>
 <main>
-  <h1>Élan crypto</h1>
-  <div class="sous">Bot à part, compte démo, 1 % par trade · Ethereum, Litecoin, Solana, XRP · bougies de 4 h</div>
+  <div class="titre-page"><div><h1>Élan crypto</h1>
+  <div class="sous-titre">Bot à part · 1 % par trade · Ethereum, Litecoin, Solana, XRP · bougies 4 h</div></div></div>
   <div class="alerte">Expérience : la stratégie a gagné sur les 4 derniers mois, mais sur 2 mois le hasard fait aussi bien. Ce bot ne touche pas à la Cassure ni à la Rapide.</div>
   <div class="tuiles">
     <div class="tuile"><b id="realise">–</b><span>Encaissé</span></div>
@@ -50,7 +59,7 @@ fetch("elan_crypto.json?t=" + Date.now()).then(r => r.json()).then(d => {
   const b = d.bilan || {realise:0, latent:0, trades:0};
   const r = document.getElementById("realise"); r.textContent = eur(b.realise); r.className = classe(b.realise);
   const l = document.getElementById("latent"); l.textContent = eur(b.latent); l.className = classe(b.latent);
-  document.getElementById("trades").textContent = b.trades + (b.trades ? ` (${b.gagnants} ✓)` : "");
+  document.getElementById("trades").textContent = b.trades + (b.trades ? ` (${b.gagnants} gagnants)` : "");
   if (b.blocage) document.getElementById("blocage").innerHTML = `<div class="alerte">Pas de nouvelle position : ${echap(b.blocage)}</div>`;
   const ouvertes = Object.values(d.deals || {});
   document.getElementById("marches").innerHTML = Object.entries(d.marches || {}).map(([epic, m]) => {

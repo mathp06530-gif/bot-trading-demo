@@ -3,79 +3,81 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0a0e16">
-<title>IA en direct</title>
+<meta name="theme-color" content="#0b0c0e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bot trading">
+<title>IA en direct · Bot de trading</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icone-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
 <style>
-  :root {
-    --fond:#0a0e16; --fond2:#0e131d; --carte:#121927; --carte2:#182133; --bord:rgba(255,255,255,.07); --bord2:rgba(255,255,255,.12);
-    --texte:#e8edf7; --doux:#8b97ad; --faible:#5d6980;
-    --vert:#16c784; --rouge:#ea3943; --bleu:#4f8cff; --cyan:#22d3ee; --orange:#f5a524; --violet:#8b5cf6;
-    --grad:linear-gradient(135deg,#6366f1 0%,#22d3ee 100%);
-    --police:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  }
-  * { box-sizing:border-box; }
-  html { color-scheme:dark; -webkit-text-size-adjust:100%; }
-  body { margin:0; background:var(--fond); color:var(--texte); font:14px/1.5 var(--police); -webkit-font-smoothing:antialiased; }
-  a { color:var(--cyan); text-decoration:none; }
-  main { max-width:1200px; margin:0 auto; padding:18px 16px 70px; }
-  header { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; justify-content:space-between; margin-bottom:14px; }
-  h1 { font-size:24px; margin:4px 0 2px; letter-spacing:-.01em; }
-  h1 span { background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
-  h2 { font-size:15px; margin:0 0 10px; font-weight:600; }
+  :root { --carte: var(--panneau); --carte2: var(--panneau2); --cyan: var(--accent); }
+  main { max-width:1440px; margin:0 auto; padding:14px 20px 32px; }
+  .titre-page .droite { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  h2 { font-size:13.5px; margin:0 0 8px; font-weight:600; color:var(--clair); }
+  b { color:var(--clair); font-weight:600; }
   .doux { color:var(--doux); } .petit { font-size:12px; } .faible { color:var(--faible); }
-  .grille { display:grid; gap:12px; }
-  .kpis { grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); margin-bottom:12px; }
+  .grille { display:grid; gap:10px; }
+  .kpis { grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); margin-bottom:10px; }
   .deux { grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); }
-  @media (max-width:860px) { .deux { grid-template-columns:minmax(0,1fr); } }
-  .carte { background:var(--carte); border:1px solid var(--bord); border-radius:16px; padding:14px; min-width:0; }
-  .kpi .val { font-size:24px; font-weight:650; letter-spacing:-.02em; margin-top:2px; font-variant-numeric:tabular-nums; }
-  .kpi .l { color:var(--doux); font-size:12px; }
+  @media (max-width:1000px) { .deux { grid-template-columns:minmax(0,1fr); } }
+  .carte { background:var(--panneau); border:1px solid var(--bord); border-radius:var(--rayon); padding:12px 14px; min-width:0; }
+  .kpi .val { font-size:20px; font-weight:600; color:var(--clair); margin-top:2px; font-variant-numeric:tabular-nums; }
+  .kpi .l { color:var(--doux); font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:.06em; }
   .defile { overflow-x:auto; }
-  table { border-collapse:collapse; width:100%; font-size:13px; font-variant-numeric:tabular-nums; }
-  th, td { text-align:left; padding:7px 8px; border-bottom:1px solid var(--bord); white-space:nowrap; }
-  th { color:var(--doux); font-weight:500; font-size:11.5px; position:sticky; top:0; background:var(--carte); cursor:pointer; user-select:none; }
+  table { border-collapse:collapse; width:100%; font-size:12.5px; font-variant-numeric:tabular-nums; }
+  th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--bord); white-space:nowrap; }
+  th { color:var(--doux); font-weight:500; font-size:11px; text-transform:uppercase; letter-spacing:.04em; position:sticky; top:0; background:var(--panneau); cursor:pointer; user-select:none; }
+  tbody tr:hover td, tr:hover td { background:rgba(255,255,255,.02); }
   tr:last-child td { border-bottom:0; }
   .v { color:var(--vert); } .r { color:var(--rouge); } .o { color:var(--orange); }
-  .barre { position:relative; display:inline-block; width:110px; height:8px; border-radius:4px; background:var(--carte2); vertical-align:middle; margin-left:8px; }
-  .barre i { position:absolute; top:0; bottom:0; border-radius:4px; }
-  .barre b { position:absolute; left:50%; top:-3px; bottom:-3px; width:2px; background:var(--doux); border-radius:1px; }
-  .pastille { display:inline-block; padding:1px 8px; border-radius:999px; font-size:11.5px; background:var(--carte2); color:var(--doux); }
-  .pastille.ok { color:var(--vert); background:rgba(22,199,132,.12); } .pastille.ko { color:var(--rouge); background:rgba(234,57,67,.12); }
-  .pastille.att { color:var(--orange); background:rgba(245,165,36,.12); }
-  .horizons { display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
-  .horizons button { all:unset; cursor:pointer; padding:6px 14px; border-radius:999px; background:var(--carte2); color:var(--doux); font-weight:600; font-size:13px; border:1px solid var(--bord2); }
-  .horizons button[aria-pressed="true"] { background:var(--grad); color:#fff; border-color:transparent; }
-  .filtres { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
-  input, select { background:var(--carte2); color:var(--texte); border:1px solid var(--bord2); border-radius:10px; padding:7px 10px; font:inherit; min-width:0; }
+  .barre { position:relative; display:inline-block; width:96px; height:4px; border-radius:2px; background:var(--panneau2); vertical-align:middle; margin-left:8px; }
+  .barre i { position:absolute; top:0; bottom:0; border-radius:2px; }
+  .barre b { position:absolute; left:50%; top:-3px; bottom:-3px; width:1px; background:var(--doux); }
+  .pastille { display:inline-block; padding:1px 6px; border-radius:3px; font-size:11px; font-weight:500; background:var(--panneau2); color:var(--doux); }
+  .pastille.ok { color:var(--vert); background:var(--vert-fond); } .pastille.ko { color:var(--rouge); background:var(--rouge-fond); }
+  .pastille.att { color:var(--orange); background:rgba(217,162,60,.12); }
+  .horizons { display:inline-flex; padding:2px; gap:1px; background:var(--fond); border:1px solid var(--bord); border-radius:var(--rayon); }
+  .horizons button { all:unset; cursor:pointer; padding:3px 10px; border-radius:3px; color:var(--doux); font-weight:500; font-size:12px; }
+  .horizons button:hover { color:var(--clair); }
+  .horizons button[aria-pressed="true"] { background:var(--vert); color:#fff; }
+  .filtres { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; }
+  input, select { background:var(--fond); color:var(--texte); border:1px solid var(--bord2); border-radius:var(--rayon); padding:5px 8px; font:inherit; font-size:12.5px; min-width:0; }
+  input:focus, select:focus { outline:none; border-color:var(--accent); }
   input { flex:1 1 180px; }
-  .chaleur td.c { text-align:center; font-size:12px; border:2px solid var(--carte); border-radius:6px; min-width:58px; }
+  .chaleur td.c { text-align:center; font-size:11.5px; border:1px solid var(--panneau); min-width:54px; }
   .proba { display:inline-flex; align-items:center; gap:6px; }
-  .proba .j { width:64px; height:8px; border-radius:4px; background:var(--carte2); position:relative; overflow:hidden; }
+  .proba .j { width:56px; height:4px; border-radius:2px; background:var(--panneau2); position:relative; overflow:hidden; }
   .proba .j i { position:absolute; top:0; bottom:0; }
   .proba .j b { position:absolute; left:50%; top:0; bottom:0; width:1px; background:var(--doux); }
-  .note { font-size:12px; color:var(--doux); margin-top:8px; }
+  .note { font-size:11.5px; color:var(--doux); margin-top:8px; }
   .haut { max-height:520px; overflow:auto; }
   svg text { fill:var(--doux); font-size:10px; }
-  #infobulle { position:fixed; pointer-events:none; background:#0b1220; border:1px solid var(--bord2); border-radius:8px; padding:6px 9px; font-size:12px; display:none; z-index:9; max-width:260px; }
+  #infobulle { position:fixed; pointer-events:none; background:var(--panneau2); border:1px solid var(--bord2); border-radius:var(--rayon); padding:5px 8px; font-size:12px; display:none; z-index:30; max-width:260px; }
+  @media (max-width:760px) { main { padding:10px 10px 20px; } .carte { padding:10px 12px; } .kpi .val { font-size:17px; } .kpis { grid-template-columns:1fr 1fr; gap:8px; } }
 </style>
 </head>
 <body>
+<script src="nav.js"></script>
 <main>
-  <header>
+  <div class="titre-page">
     <div>
-      <a href="./">← Retour à l'appli</a>
-      <h1><span>IA en direct</span> · direction à <span id="titre-h">1 minute</span></h1>
-      <div class="doux petit">Toutes les IA reçoivent les mêmes bougies 1 min en temps réel et disent : plus haut ou plus bas dans 1, 2, 3 et 5 minutes. Aucun ordre n'est passé. 50 % = le hasard.</div>
-      <div class="horizons" id="horizons"></div>
+      <h1>IA en direct · direction à <span id="titre-h">1 minute</span></h1>
+      <div class="sous-titre">Hausse ou baisse dans 1, 2, 3 et 5 min, sur les bougies 1 min en temps réel. Aucun ordre. 50 % = hasard.</div>
     </div>
-    <div class="doux petit" id="maj">Chargement…</div>
-  </header>
+    <div class="droite"><div class="horizons" id="horizons"></div><span class="doux petit" id="maj">Chargement…</span></div>
+  </div>
 
   <section class="grille kpis" id="kpis"></section>
 
   <section class="carte" style="margin-bottom:12px" id="super-carte">
-    <h2>Super IA · Sundial + TiDE + TCN + N-BEATS + N-HiTS</h2>
-    <div class="doux petit" style="margin-bottom:8px">Moteur à part : il lit les résultats des IA et se corrige après chaque prédiction jugée, sans toucher au test. 4 versions bien séparées : équipe <b>fixe</b> ou <b>évolutive</b> (remplace un membre qui faiblit par une IA qui fait nettement mieux), et pari <b>à chaque fois</b> ou <b>seulement quand elle est sûre</b>. Aucun ordre.</div>
+    <h2>Super IA <span class="doux" style="font-weight:400">· Sundial, TiDE, TCN, N-BEATS, N-HiTS</span></h2>
+    <div class="doux petit" style="margin-bottom:8px">Se corrige après chaque prédiction jugée. 4 versions : équipe <b>fixe</b> ou <b>évolutive</b>, pari <b>à chaque fois</b> ou <b>seulement si sûre</b>. Aucun ordre.</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px">
       <label class="doux petit" for="sup-portee">Marchés</label>
       <select id="sup-portee"></select>
@@ -93,7 +95,7 @@
   </section>
 
   <section class="carte" style="margin-bottom:12px">
-    <h2>Comparer les horizons : réussite ET gain après spread</h2>
+    <h2>Horizons : réussite et gain après spread</h2>
     <div class="defile"><table id="comparer"></table></div>
     <div class="note">Gain moyen = ce que rapporte en moyenne une prédiction suivie comme un trade, spread payé (en % du prix). Plus l'horizon est long, plus le mouvement est grand face au spread payé une seule fois.</div>
   </section>
@@ -177,7 +179,7 @@ function couleurChaleur(p, n) { // divergent : rouge <- gris (50 %) -> vert
   if (n < 50) return "background:var(--carte2);color:var(--faible)";
   const d = Math.max(-1, Math.min(1, (p - 50) / 6));
   const a = Math.abs(d) * 0.55 + 0.08;
-  return d >= 0 ? `background:rgba(22,199,132,${a})` : `background:rgba(234,57,67,${a})`;
+  return d >= 0 ? `background:rgba(34,171,148,${a})` : `background:rgba(242,54,69,${a})`;
 }
 function infobulle(ev, html) {
   const b = $("infobulle");
@@ -342,7 +344,7 @@ function superIA() {
   const sel = $("sup-portee"), choix = sel.value || "m:GOLD";
   const fam = new Set();
   Object.values(SUP.stats).forEach(hz => Object.values(hz).forEach(v => Object.keys(v.familles || {}).forEach(f => fam.add(f))));
-  const opts = [["m:GOLD", "★ Or"], ["m:SILVER", "★ Argent"], ["or+argent", "★ Or + argent"], ["tout", "Tous les marchés"], ["fb", "€ Frais bas (petit spread)"], ["fbl", "€ Frais bas + heures liquides"], ...[...fam].map(f => ["f:" + f, TYPES[f] || f])];
+  const opts = [["m:GOLD", "Or"], ["m:SILVER", "Argent"], ["or+argent", "Or + argent"], ["tout", "Tous les marchés"], ["fb", "Frais bas (petit spread)"], ["fbl", "Frais bas + heures liquides"], ...[...fam].map(f => ["f:" + f, TYPES[f] || f])];
   sel.innerHTML = opts.map(([v, l]) => `<option value="${v}">${echap(l)}</option>`).join(""); sel.value = choix;
   const portee = v => {
     if (!v) return null;
@@ -380,7 +382,7 @@ function superIA() {
   let t = `<tr><th>Heure (Paris)</th>${hzs.map(hz => `<th>${hz} min</th>`).join("")}</tr>`;
   for (const hh of heures) {
     const liq = +hh >= Math.floor(a) && +hh < Math.ceil(b);
-    t += `<tr${liq ? ' style="background:rgba(22,199,132,.06)"' : ""}><td><b>${hh} h</b></td>`;
+    t += `<tr${liq ? ' style="background:rgba(34,171,148,.06)"' : ""}><td><b>${hh} h</b></td>`;
     for (const hz of hzs) {
       const d = (((SUP.stats[String(hz)] || {})[var_] || {}).heures_frais_bas || {})[hh];
       if (!d || !d.n) { t += `<td class="faible">—</td>`; continue; }
@@ -399,7 +401,7 @@ function superIA() {
 function tout() {
   if (!S || !V) return;
   const t = totaux();
-  $("maj").textContent = "Mis à jour : " + new Date(V.maj).toLocaleString("fr-FR") + " · actualisation auto";
+  $("maj").textContent = "Mis à jour " + new Date(V.maj).toLocaleString("fr-FR");
   superIA(); horizons(); comparer(); kpis(t); classement(t); chaleur(); remplirSelects(); probas(); dernieres(); etat(); marches(); exclues();
 }
 async function charger() {
