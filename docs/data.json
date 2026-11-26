@@ -1811,7 +1811,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T10:13:27Z",
+ "derniere_execution": "2026-11-26T10:14:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11292,6 +11292,10 @@
   {
    "date": "2026-11-26T10:13:27Z",
    "valeur": 93.09
+  },
+  {
+   "date": "2026-11-26T10:14:26Z",
+   "valeur": 93.09
   }
  ],
  "compte": {
@@ -11788,7 +11792,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3569.76,
+   "prix": 3565.34,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3911.81,
@@ -11800,7 +11804,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.671,
+   "prix": 41.620000000000005,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.38,
@@ -11829,7 +11833,7 @@
      "tendance_4h": "SELL",
      "bollinger": 0.36
     },
-    "prix": 3565.77,
+    "prix": 3566.44,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 39.35 de plus dans le bon sens"
    },
@@ -12524,7 +12528,7 @@
   "deals": {},
   "marches": {
    "GOLD": {
-    "prix": 3569.76,
+    "prix": 3565.34,
     "ema200": 3913.07,
     "atr": 51.69,
     "trou_achat_atr": -0.55,
@@ -12532,7 +12536,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 41.67,
+    "prix": 41.62,
     "ema200": 50.42,
     "atr": 1.13,
     "trou_achat_atr": -0.33,
@@ -12548,7 +12552,7 @@
   "deals": {},
   "marches": {
    "ETHUSD": {
-    "prix": 1701.3,
+    "prix": 1701.88,
     "ligne": 1735.66,
     "sens": -1,
     "atr": 38.88,
@@ -12583,42 +12587,42 @@
    3564.91,
    3577.17,
    3562.44,
-   3569.76
+   3565.34
   ],
   "cassure_4h-SILVER": [
    1795680000,
    41.35,
    41.8,
    41.31,
-   41.67
+   41.62
   ],
   "rapide-GOLD": [
    1795687800,
    3568.69,
    3568.99,
-   3565.25,
-   3565.77
+   3565.14,
+   3566.44
   ],
   "elan_4h-GOLD": [
    1795680000,
    3564.91,
    3577.17,
    3562.44,
-   3569.76
+   3565.34
   ],
   "elan_4h-SILVER": [
    1795680000,
    41.35,
    41.8,
    41.31,
-   41.67
+   41.62
   ],
   "supertrend_4h-ETHUSD": [
    1795680000,
    1687.69,
    1704.01,
    1685.31,
-   1701.3
+   1701.88
   ],
   "usine-NATURALGAS": [
    1795680000,
