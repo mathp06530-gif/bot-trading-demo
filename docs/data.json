@@ -1780,7 +1780,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T06:17:26Z",
+ "derniere_execution": "2026-11-26T06:18:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10329,15 +10329,19 @@
   {
    "date": "2026-11-26T06:17:26Z",
    "valeur": 93.32
+  },
+  {
+   "date": "2026-11-26T06:18:25Z",
+   "valeur": 93.25
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.32,
+  "solde": 93.25,
   "depot": 93.15,
-  "resultat_latent": 0.17,
-  "disponible": 90.05
+  "resultat_latent": 0.1,
+  "disponible": 89.98
  },
  "positions": [
   {
@@ -10346,7 +10350,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3572.1,
-   "resultat": 0.17,
+   "resultat": 0.1,
    "ouverte_le": "2026-11-26T06:10:23.892"
   }
  ],
@@ -10669,7 +10673,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T06:10:23Z",
    "statut": "ouvert",
-   "resultat": 0.17,
+   "resultat": 0.1,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -10693,7 +10697,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.32
+  "2026-11-26": 93.25
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -10837,7 +10841,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.269,
+   "prix": 41.284,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.48,
@@ -10867,9 +10871,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3563.13,
+    "prix": 3566.3199999999997,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 26.39 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 29.64 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -11575,7 +11579,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 41.27,
+    "prix": 41.28,
     "ema200": 50.51,
     "atr": 1.14,
     "trou_achat_atr": -0.03,
