@@ -1868,7 +1868,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T13:06:26Z",
+ "derniere_execution": "2026-11-26T13:07:27Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -12021,6 +12021,10 @@
   {
    "date": "2026-11-26T13:06:26Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T13:07:27Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -12600,7 +12604,7 @@
      "tendance_4h": "SELL",
      "bollinger": 0.53
     },
-    "prix": 3564.785,
+    "prix": 3567.75,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    },
@@ -13319,7 +13323,7 @@
   "deals": {},
   "marches": {
    "ETHUSD": {
-    "prix": 1702.62,
+    "prix": 1704.84,
     "ligne": 1735.66,
     "sens": -1,
     "atr": 37.44,
@@ -13333,7 +13337,7 @@
   "deals": {},
   "marches": {
    "NATURALGAS": {
-    "prix": 3.51255,
+    "prix": 3.5193,
     "sens": -1,
     "atr": 0.07138,
     "regle": "MACD 24/52/18, achat et vente, seulement si marché calme (ADX < 20), stop garanti 2.5 ATR, objectif 1 R, suiveur 3 ATR",
@@ -13366,9 +13370,9 @@
   "rapide-GOLD": [
    1795698300,
    3564.28,
-   3565.24,
+   3568.56,
    3563.14,
-   3564.78
+   3567.75
   ],
   "elan_4h-GOLD": [
    1795694400,
@@ -13389,14 +13393,14 @@
    1698.2,
    1709.6,
    1697.37,
-   1702.62
+   1704.84
   ],
   "usine-NATURALGAS": [
    1795694400,
    3.5358,
    3.5358,
    3.4828,
-   3.51255
+   3.5193
   ],
   "usine-TSLA": [
    1795651200,
@@ -13407,9 +13411,15 @@
   ]
  },
  "veille": {
-  "titres_lus_le": "2026-11-26T12:07:21.803963+00:00",
+  "titres_lus_le": "2026-11-26T13:07:22.247071+00:00",
   "titres": {
    "ETHUSD": [
+    {
+     "titre": "Crypto Market Faces 3 Critical Risks Heading Into December 2026",
+     "lien": "https://beincrypto.com/crypto-market-outlook-december-2026-three-risks/?.tsrc=rss",
+     "date": "2026-11-26T11:26Z",
+     "sujets": []
+    },
     {
      "titre": "Can Shiba Inu Reach $1 in 2027? The Answer Might Shock You.",
      "lien": "https://www.fool.com/investing/2026/11/26/can-shiba-inu-reach-usd1-in-2027-answer-shock-you/?.tsrc=rss",
@@ -13440,12 +13450,6 @@
      "titre": "How Low Can Bitcoin, Ethereum and XRP Fall? 4 Price Levels to Watch",
      "lien": "https://beincrypto.com/critical-price-levels-for-bitcoin-ethereum-xrp/?.tsrc=rss",
      "date": "2026-11-26T01:37Z",
-     "sujets": []
-    },
-    {
-     "titre": "Shiba Inu Developer Teases a Major Privacy Boost for Its Blockchain",
-     "lien": "https://beincrypto.com/shiba-inu-shibarium-privacy-upgrade/?.tsrc=rss",
-     "date": "2026-11-25T22:30Z",
      "sujets": []
     }
    ],
@@ -13493,6 +13497,12 @@
    ],
    "NATURALGAS": [
     {
+     "titre": "Turkmenistan Nears Major Milestone in $10 Billion TAPI Gas Pipeline",
+     "lien": "https://finance.yahoo.com/energy/articles/turkmenistan-nears-major-milestone-10-114000289.html?.tsrc=rss",
+     "date": "2026-11-26T11:40Z",
+     "sujets": []
+    },
+    {
      "titre": "LS Power Completes Acquisition of 4.4 GW Natural Gas Generation Assets from Constellation",
      "lien": "https://finance.yahoo.com/energy/articles/ls-power-completes-acquisition-4-213800844.html?.tsrc=rss",
      "date": "2026-11-25T21:38Z",
@@ -13527,12 +13537,6 @@
      "sujets": [
       "résultats"
      ]
-    },
-    {
-     "titre": "3 Oil Stocks With Direct Exposure To Higher Crude Prices",
-     "lien": "https://finance.yahoo.com/energy/articles/3-oil-stocks-direct-exposure-061445059.html?.tsrc=rss",
-     "date": "2026-11-26T06:14Z",
-     "sujets": []
     }
    ],
    "SILVER": [
@@ -13607,9 +13611,9 @@
      "sujets": []
     },
     {
-     "titre": "Billionaire Brad Gerstner’s Altimeter Opened a $680 Million Tesla Stake and Exited Qualcomm and Applied Materials",
-     "lien": "https://247wallst.com/investing/2026/11/25/billionaire-brad-gerstners-altimeter-opened-a-680-million-tesla-stake-and-exited-qualcomm-and-applied-materials/?.tsrc=rss",
-     "date": "2026-11-25T20:22Z",
+     "titre": "SpaceX and Elon Musk Will Each Give a Share to Every Active Trump Account",
+     "lien": "https://247wallst.com/investing/2026/11/26/spacex-and-elon-musk-will-each-give-a-share-to-every-active-trump-account/?.tsrc=rss",
+     "date": "2026-11-26T12:38Z",
      "sujets": []
     }
    ],
