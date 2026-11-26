@@ -1,0 +1,468 @@
+{
+ "periodes": [
+  "entraînement 2017-2021",
+  "validation 2022-06/2024",
+  "test 07/2024-auj."
+ ],
+ "resultats": {
+  "actuelle (garde 50 % après +1,5 R)": [
+   {
+    "R": 12.31,
+    "trades": 238,
+    "reussite": 37.8,
+    "pire_baisse_R": -29.96
+   },
+   {
+    "R": 16.67,
+    "trades": 121,
+    "reussite": 46.3,
+    "pire_baisse_R": -8.74
+   },
+   {
+    "R": 63.52,
+    "trades": 125,
+    "reussite": 44.8,
+    "pire_baisse_R": -8.42
+   }
+  ],
+  "aucune protection": [
+   {
+    "R": -9.38,
+    "trades": 238,
+    "reussite": 29.8,
+    "pire_baisse_R": -46.56
+   },
+   {
+    "R": 34.32,
+    "trades": 121,
+    "reussite": 38.0,
+    "pire_baisse_R": -10.67
+   },
+   {
+    "R": 37.58,
+    "trades": 125,
+    "reussite": 31.2,
+    "pire_baisse_R": -22.8
+   }
+  ],
+  "prix d'entrée après +0.5 R": [
+   {
+    "R": 0.08,
+    "trades": 238,
+    "reussite": 17.6,
+    "pire_baisse_R": -36.36
+   },
+   {
+    "R": -5.03,
+    "trades": 121,
+    "reussite": 18.2,
+    "pire_baisse_R": -12.18
+   },
+   {
+    "R": -4.89,
+    "trades": 125,
+    "reussite": 12.0,
+    "pire_baisse_R": -17.87
+   }
+  ],
+  "garde 25 % après +0.5 R": [
+   {
+    "R": 3.65,
+    "trades": 238,
+    "reussite": 43.3,
+    "pire_baisse_R": -34.52
+   },
+   {
+    "R": -1.67,
+    "trades": 121,
+    "reussite": 56.2,
+    "pire_baisse_R": -9.24
+   },
+   {
+    "R": 1.92,
+    "trades": 126,
+    "reussite": 57.1,
+    "pire_baisse_R": -13.86
+   }
+  ],
+  "garde 50 % après +0.5 R": [
+   {
+    "R": 9.34,
+    "trades": 238,
+    "reussite": 43.7,
+    "pire_baisse_R": -33.02
+   },
+   {
+    "R": -0.94,
+    "trades": 121,
+    "reussite": 56.2,
+    "pire_baisse_R": -9.38
+   },
+   {
+    "R": -12.8,
+    "trades": 126,
+    "reussite": 57.1,
+    "pire_baisse_R": -15.31
+   }
+  ],
+  "garde 70 % après +0.5 R": [
+   {
+    "R": 15.45,
+    "trades": 238,
+    "reussite": 43.7,
+    "pire_baisse_R": -30.59
+   },
+   {
+    "R": -1.38,
+    "trades": 121,
+    "reussite": 56.2,
+    "pire_baisse_R": -8.52
+   },
+   {
+    "R": -13.57,
+    "trades": 127,
+    "reussite": 57.5,
+    "pire_baisse_R": -19.4
+   }
+  ],
+  "prix d'entrée après +0.75 R": [
+   {
+    "R": -12.4,
+    "trades": 238,
+    "reussite": 19.7,
+    "pire_baisse_R": -47.3
+   },
+   {
+    "R": 13.46,
+    "trades": 121,
+    "reussite": 25.6,
+    "pire_baisse_R": -8.82
+   },
+   {
+    "R": 32.83,
+    "trades": 125,
+    "reussite": 17.6,
+    "pire_baisse_R": -17.88
+   }
+  ],
+  "garde 25 % après +0.75 R": [
+   {
+    "R": -6.64,
+    "trades": 238,
+    "reussite": 42.0,
+    "pire_baisse_R": -43.78
+   },
+   {
+    "R": 16.35,
+    "trades": 121,
+    "reussite": 57.9,
+    "pire_baisse_R": -8.23
+   },
+   {
+    "R": 12.72,
+    "trades": 126,
+    "reussite": 54.8,
+    "pire_baisse_R": -9.78
+   }
+  ],
+  "garde 50 % après +0.75 R": [
+   {
+    "R": -0.33,
+    "trades": 238,
+    "reussite": 42.0,
+    "pire_baisse_R": -42.13
+   },
+   {
+    "R": 20.23,
+    "trades": 121,
+    "reussite": 57.9,
+    "pire_baisse_R": -7.78
+   },
+   {
+    "R": 2.93,
+    "trades": 126,
+    "reussite": 54.8,
+    "pire_baisse_R": -10.15
+   }
+  ],
+  "garde 70 % après +0.75 R": [
+   {
+    "R": 5.94,
+    "trades": 238,
+    "reussite": 42.0,
+    "pire_baisse_R": -39.65
+   },
+   {
+    "R": 9.79,
+    "trades": 121,
+    "reussite": 57.9,
+    "pire_baisse_R": -7.51
+   },
+   {
+    "R": -5.68,
+    "trades": 127,
+    "reussite": 55.1,
+    "pire_baisse_R": -14.17
+   }
+  ],
+  "prix d'entrée après +1 R": [
+   {
+    "R": -10.07,
+    "trades": 238,
+    "reussite": 23.1,
+    "pire_baisse_R": -52.38
+   },
+   {
+    "R": 15.58,
+    "trades": 121,
+    "reussite": 30.6,
+    "pire_baisse_R": -10.17
+   },
+   {
+    "R": 33.66,
+    "trades": 125,
+    "reussite": 21.6,
+    "pire_baisse_R": -17.72
+   }
+  ],
+  "garde 25 % après +1 R": [
+   {
+    "R": -4.04,
+    "trades": 238,
+    "reussite": 42.4,
+    "pire_baisse_R": -48.36
+   },
+   {
+    "R": 17.36,
+    "trades": 121,
+    "reussite": 52.9,
+    "pire_baisse_R": -9.19
+   },
+   {
+    "R": 42.56,
+    "trades": 125,
+    "reussite": 52.8,
+    "pire_baisse_R": -10.26
+   }
+  ],
+  "garde 50 % après +1 R": [
+   {
+    "R": 11.37,
+    "trades": 238,
+    "reussite": 42.4,
+    "pire_baisse_R": -37.99
+   },
+   {
+    "R": 17.65,
+    "trades": 121,
+    "reussite": 52.9,
+    "pire_baisse_R": -8.74
+   },
+   {
+    "R": 41.04,
+    "trades": 125,
+    "reussite": 52.8,
+    "pire_baisse_R": -7.81
+   }
+  ],
+  "garde 70 % après +1 R": [
+   {
+    "R": 13.04,
+    "trades": 238,
+    "reussite": 42.4,
+    "pire_baisse_R": -39.53
+   },
+   {
+    "R": 10.66,
+    "trades": 121,
+    "reussite": 52.9,
+    "pire_baisse_R": -8.5
+   },
+   {
+    "R": 5.05,
+    "trades": 127,
+    "reussite": 53.5,
+    "pire_baisse_R": -8.02
+   }
+  ],
+  "prix d'entrée après +1.25 R": [
+   {
+    "R": -5.82,
+    "trades": 238,
+    "reussite": 25.2,
+    "pire_baisse_R": -47.19
+   },
+   {
+    "R": 23.3,
+    "trades": 121,
+    "reussite": 32.2,
+    "pire_baisse_R": -11.01
+   },
+   {
+    "R": 38.27,
+    "trades": 125,
+    "reussite": 24.8,
+    "pire_baisse_R": -22.78
+   }
+  ],
+  "garde 25 % après +1.25 R": [
+   {
+    "R": -2.96,
+    "trades": 238,
+    "reussite": 40.3,
+    "pire_baisse_R": -44.52
+   },
+   {
+    "R": 25.2,
+    "trades": 121,
+    "reussite": 50.4,
+    "pire_baisse_R": -9.5
+   },
+   {
+    "R": 43.32,
+    "trades": 125,
+    "reussite": 48.8,
+    "pire_baisse_R": -15.2
+   }
+  ],
+  "garde 50 % après +1.25 R": [
+   {
+    "R": 12.31,
+    "trades": 238,
+    "reussite": 40.3,
+    "pire_baisse_R": -34.23
+   },
+   {
+    "R": 18.06,
+    "trades": 121,
+    "reussite": 50.4,
+    "pire_baisse_R": -8.74
+   },
+   {
+    "R": 48.77,
+    "trades": 125,
+    "reussite": 48.8,
+    "pire_baisse_R": -9.43
+   }
+  ],
+  "garde 70 % après +1.25 R": [
+   {
+    "R": 16.97,
+    "trades": 238,
+    "reussite": 40.3,
+    "pire_baisse_R": -33.71
+   },
+   {
+    "R": 14.54,
+    "trades": 121,
+    "reussite": 50.4,
+    "pire_baisse_R": -8.96
+   },
+   {
+    "R": 6.39,
+    "trades": 127,
+    "reussite": 49.6,
+    "pire_baisse_R": -12.97
+   }
+  ],
+  "garde 60 % après +1.5 R": [
+   {
+    "R": 13.7,
+    "trades": 238,
+    "reussite": 37.8,
+    "pire_baisse_R": -31.65
+   },
+   {
+    "R": 11.66,
+    "trades": 121,
+    "reussite": 46.3,
+    "pire_baisse_R": -8.93
+   },
+   {
+    "R": 51.28,
+    "trades": 126,
+    "reussite": 45.2,
+    "pire_baisse_R": -8.12
+   }
+  ],
+  "garde 70 % après +1.5 R": [
+   {
+    "R": 20.81,
+    "trades": 238,
+    "reussite": 37.8,
+    "pire_baisse_R": -26.74
+   },
+   {
+    "R": 12.93,
+    "trades": 121,
+    "reussite": 46.3,
+    "pire_baisse_R": -8.47
+   },
+   {
+    "R": 13.5,
+    "trades": 127,
+    "reussite": 45.7,
+    "pire_baisse_R": -12.58
+   }
+  ],
+  "garde 60 % après +2 R": [
+   {
+    "R": 7.82,
+    "trades": 238,
+    "reussite": 33.6,
+    "pire_baisse_R": -35.66
+   },
+   {
+    "R": 16.51,
+    "trades": 121,
+    "reussite": 43.8,
+    "pire_baisse_R": -12.27
+   },
+   {
+    "R": 51.48,
+    "trades": 126,
+    "reussite": 39.7,
+    "pire_baisse_R": -12.66
+   }
+  ],
+  "garde 70 % après +2 R": [
+   {
+    "R": 12.72,
+    "trades": 238,
+    "reussite": 33.6,
+    "pire_baisse_R": -33.41
+   },
+   {
+    "R": 17.47,
+    "trades": 121,
+    "reussite": 43.8,
+    "pire_baisse_R": -10.67
+   },
+   {
+    "R": 22.08,
+    "trades": 127,
+    "reussite": 40.2,
+    "pire_baisse_R": -13.22
+   }
+  ]
+ },
+ "retenues": [],
+ "meilleure_entrainement": "garde 70 % après +1.5 R",
+ "simultanes": {
+  "3 % chacun (actuel)": {
+   "R_total": 92.5,
+   "pire_baisse_R": -30.0,
+   "R_jamais_vu_2022+": 80.2,
+   "pire_baisse_jamais_vu": -11.6
+  },
+  "1,5 % chacun quand les 2 sont ouverts": {
+   "R_total": 15.4,
+   "pire_baisse_R": -32.3,
+   "R_jamais_vu_2022+": 29.1,
+   "pire_baisse_jamais_vu": -7.4
+  },
+  "part_trades_en_double": 84.1,
+  "R_moyen_en_double": 0.38,
+  "R_moyen_seul": -0.8
+ }
+}
