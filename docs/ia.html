@@ -28,7 +28,7 @@
   .deux { grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); }
   @media (max-width:860px) { .deux { grid-template-columns:minmax(0,1fr); } }
   .carte { background:var(--carte); border:1px solid var(--bord); border-radius:16px; padding:14px; min-width:0; }
-  .kpi .v { font-size:24px; font-weight:650; letter-spacing:-.02em; margin-top:2px; font-variant-numeric:tabular-nums; }
+  .kpi .val { font-size:24px; font-weight:650; letter-spacing:-.02em; margin-top:2px; font-variant-numeric:tabular-nums; }
   .kpi .l { color:var(--doux); font-size:12px; }
   .defile { overflow-x:auto; }
   table { border-collapse:collapse; width:100%; font-size:13px; font-variant-numeric:tabular-nums; }
@@ -166,7 +166,7 @@ function kpis(t) {
     ["IA actives", `${actives} / ${Object.keys(V.etat_ia || {}).length}`, "chargées et qui répondent"],
     ["Marchés", `${(V.marches_ouverts || 0).toLocaleString("fr-FR")} ouverts`, `${(V.marches_connus || 0).toLocaleString("fr-FR")} connus chez Capital.com`],
   ];
-  $("kpis").innerHTML = tiles.map(([l, v, s]) => `<div class="carte kpi"><div class="l">${l}</div><div class="v">${echap(v)}</div><div class="doux petit">${echap(s)}</div></div>`).join("");
+  $("kpis").innerHTML = tiles.map(([l, v, s]) => `<div class="carte kpi"><div class="l">${l}</div><div class="val">${echap(v)}</div><div class="doux petit">${echap(s)}</div></div>`).join("");
 }
 
 let triClassement = "reussite";
@@ -197,7 +197,7 @@ function chaleur() {
     }
     h += "</tr>";
   }
-  $("chaleur").innerHTML = h;
+  $("chaleur").innerHTML = types.length ? h : `<tr><td class="doux">Pas encore de prédictions jugées : les cases se remplissent après les premières minutes.</td></tr>`;
   $("chaleur").querySelectorAll("td.c").forEach(td => { td.onmousemove = e => infobulle(e, td.dataset.i); td.onmouseleave = e => infobulle(e, null); });
 }
 
@@ -235,7 +235,7 @@ function dernieres() {
     h += `<tr><td class="doux">${new Date(p.t).toLocaleTimeString("fr-FR")}</td><td>${echap(nomMarche(p.epic))}</td>${cel(p.arbitre)}${cel(p.vote)}` +
          `<td>${p.reel === "hausse" ? "▲" : "▼"} ${p.variation_pct >= 0 ? "+" : ""}${fmt(p.variation_pct, 3)} %</td></tr>`;
   }
-  $("dernieres").innerHTML = h;
+  $("dernieres").innerHTML = (V.dernieres || []).length ? h : `<tr><td class="doux">Les premières prédictions sont jugées 60 s après avoir été faites.</td></tr>`;
 }
 
 function etat() {
@@ -248,8 +248,8 @@ function etat() {
     svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img" aria-label="Délai prix → prédiction"><polyline points="${pts}" fill="none" stroke="var(--cyan)" stroke-width="2" stroke-linejoin="round"/><text x="0" y="10">max ${fmt(mx, 0)} s</text></svg>`;
   }
   $("delais").innerHTML = `<div class="grille kpis" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))">` +
-    `<div class="carte kpi"><div class="l">Prix frais → prédiction</div><div class="v">${fmt(d.prix_frais_vers_prediction_s)} s</div><div class="doux petit">temps de calcul de toutes les IA</div></div>` +
-    `<div class="carte kpi"><div class="l">Marchés par minute</div><div class="v">${d.marches_predits ?? "—"}</div><div class="doux petit">rotation sur les marchés ouverts</div></div></div>` + svg;
+    `<div class="carte kpi"><div class="l">Prix frais → prédiction</div><div class="val">${fmt(d.prix_frais_vers_prediction_s)} s</div><div class="doux petit">temps de calcul de toutes les IA</div></div>` +
+    `<div class="carte kpi"><div class="l">Marchés par minute</div><div class="val">${d.marches_predits ?? "—"}</div><div class="doux petit">rotation sur les marchés ouverts</div></div></div>` + svg;
   let h = `<tr><th>IA</th><th>État</th><th>Calcul</th></tr>`;
   for (const [m, e] of Object.entries(V.etat_ia || {})) {
     const ok = e === "prête";
