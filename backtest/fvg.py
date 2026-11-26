@@ -113,6 +113,7 @@ def dukascopy(sym: str, debut: date, fin: date, ecart_rel: float) -> pd.DataFram
     def jour(d):
         if not hasattr(local, "s"):
             local.s = requests.Session()
+            local.s.headers["User-Agent"] = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/120 Safari/537.36"
         url = f"https://datafeed.dukascopy.com/datafeed/{sym}/{d.year}/{d.month - 1:02d}/{d.day:02d}/BID_candles_min_1.bi5"
         for essai in range(3):
             try:
@@ -134,6 +135,16 @@ def dukascopy(sym: str, debut: date, fin: date, ecart_rel: float) -> pd.DataFram
 
     jours = [debut + timedelta(days=k) for k in range((fin - debut).days + 1)]
     jours = [d for d in jours if d.weekday() != 5]
+    # diagnostic sur un jour connu (mercredi 2019-03-06) : code HTTP, taille, début de la réponse
+    try:
+        essai = requests.get(f"https://datafeed.dukascopy.com/datafeed/{sym}/2019/02/06/BID_candles_min_1.bi5", timeout=20,
+                             headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/120 Safari/537.36"})
+        _p(f"  diagnostic Dukascopy : HTTP {essai.status_code}, {len(essai.content)} octets, "
+           f"type {essai.headers.get('content-type')}, début {essai.content[:16]!r}")
+        if essai.content:
+            _p(f"  décompressé : {len(lzma.decompress(essai.content))} octets")
+    except Exception as e:
+        _p(f"  diagnostic Dukascopy : erreur {type(e).__name__} {str(e)[:200]}")
     morceaux, t0 = [], time.time()
     with ThreadPoolExecutor(24) as ex:
         for k, m in enumerate(ex.map(jour, jours)):
@@ -141,6 +152,9 @@ def dukascopy(sym: str, debut: date, fin: date, ecart_rel: float) -> pd.DataFram
                 morceaux.append(m[m.vol > 0] if (m.vol > 0).mean() > 0.5 else m)
             if k % 500 == 0:
                 _p(f"  {sym} : {k}/{len(jours)} jours ({time.time() - t0:.0f} s)")
+    if not morceaux:
+        raise SystemExit(f"{sym} : Dukascopy n'a renvoyé aucune bougie")
+    _p(f"  {sym} : {len(morceaux)} jours reçus sur {len(jours)}")
     m = pd.concat(morceaux).sort_index()
     b = m.resample("15min").agg({"open": "first", "high": "max", "low": "min", "close": "last"}).dropna()
     d = pd.DataFrame({"date": b.index.strftime("%Y-%m-%dT%H:%M:%S")})
