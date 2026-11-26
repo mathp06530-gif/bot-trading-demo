@@ -1870,10 +1870,16 @@
    "type": "commande",
    "marche": "",
    "texte": "Nettoyage (26/11/2026, demande de Mathis) : le bot repart avec seulement la Cassure 4 h (or, argent) et la Rapide 5 min (or), plus les garde-fous. Élan, Supertrend, usine, Avant la Fed, veille d'actus, simulateur et Tendance Bitcoin sont retirés. Sauvegarde : branche « sauvegarde-26-11 »."
+  },
+  {
+   "date": "2026-11-26T15:51:21Z",
+   "type": "erreur",
+   "marche": "",
+   "texte": "Connexion refusée (429). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.too-many.requests\"}"
   }
  ],
- "statut": "ok",
- "derniere_execution": "2026-11-26T15:50:24Z",
+ "statut": "erreur",
+ "derniere_execution": "2026-11-26T15:51:21Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
