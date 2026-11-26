@@ -1786,7 +1786,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T07:50:26Z",
+ "derniere_execution": "2026-11-26T07:51:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10707,15 +10707,19 @@
   {
    "date": "2026-11-26T07:50:26Z",
    "valeur": 93.25
+  },
+  {
+   "date": "2026-11-26T07:51:26Z",
+   "valeur": 93.26
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.25,
+  "solde": 93.26,
   "depot": 93.15,
-  "resultat_latent": 0.1,
-  "disponible": 89.98
+  "resultat_latent": 0.11,
+  "disponible": 89.99
  },
  "positions": [
   {
@@ -11077,7 +11081,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.25
+  "2026-11-26": 93.26
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -11251,9 +11255,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3564.98,
+    "prix": 3566.65,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 28.28 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 29.96 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -12022,9 +12026,9 @@
   "rapide-GOLD": [
    1795679400,
    3564.48,
-   3565.08,
+   3567.2,
    3564.48,
-   3564.98
+   3566.65
   ],
   "elan_4h-GOLD": [
    1795665600,
