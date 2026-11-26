@@ -1830,7 +1830,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T10:59:26Z",
+ "derniere_execution": "2026-11-26T11:00:27Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11487,6 +11487,10 @@
   {
    "date": "2026-11-26T10:59:26Z",
    "valeur": 93.07
+  },
+  {
+   "date": "2026-11-26T11:00:27Z",
+   "valeur": 93.07
   }
  ],
  "compte": {
@@ -12068,9 +12072,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3556.41,
+    "prix": 3556.455,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 36.26 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 36.32 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -12088,7 +12092,7 @@
   "meilleur": {
    "00000000-76ca-6738-049f-c46d0015549e": {
     "depuis": "2026-11-26T10:50:00",
-    "prix": 3555.43
+    "prix": 3555.06
    }
   },
   "entree_bougie": {
@@ -12837,11 +12841,11 @@
    41.37
   ],
   "rapide-GOLD": [
-   1795690500,
-   3558.81,
-   3560.98,
-   3555.06,
-   3556.41
+   1795690800,
+   3555.82,
+   3556.69,
+   3555.8,
+   3556.45
   ],
   "elan_4h-GOLD": [
    1795680000,
@@ -13090,13 +13094,13 @@
  "_pauses_marches_notees": {},
  "simulations": {
   "00000000-76ca-6738-049f-c46d0015549e": {
-   "p_stop": 40.6,
-   "p_objectif": 5.1,
-   "p_aucun": 54.3,
-   "p_gain_fin": 42.5,
-   "prix_p5": 3495.5,
-   "prix_median": 3560.61,
-   "prix_p95": 3623.93,
+   "p_stop": 41.1,
+   "p_objectif": 5.4,
+   "p_aucun": 53.4,
+   "p_gain_fin": 41.5,
+   "prix_p5": 3497.56,
+   "prix_median": 3561.46,
+   "prix_p95": 3622.78,
    "objectif": 3484.36,
    "objectif_type": "gain de 2 R",
    "objectif_r": 2.0,
@@ -13104,10 +13108,10 @@
    "horizon": "4 h",
    "tirages": 4000,
    "bougies_utilisees": 298,
-   "prix_depart": 3556.41,
-   "calcule_sur": "2026-11-26T10:55:00",
+   "prix_depart": 3556.45,
+   "calcule_sur": "2026-11-26T11:00:00",
    "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
-   "verdict": "Penche nettement vers le stop (11 % des cas tranchés, équilibre 33 %)."
+   "verdict": "Penche nettement vers le stop (12 % des cas tranchés, équilibre 33 %)."
   }
  }
 }
