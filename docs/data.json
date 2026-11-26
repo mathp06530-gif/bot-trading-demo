@@ -1786,7 +1786,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T07:44:26Z",
+ "derniere_execution": "2026-11-26T07:45:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10683,6 +10683,10 @@
   {
    "date": "2026-11-26T07:44:26Z",
    "valeur": 93.17
+  },
+  {
+   "date": "2026-11-26T07:45:26Z",
+   "valeur": 93.17
   }
  ],
  "compte": {
@@ -10700,7 +10704,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3572.1,
-   "resultat": 0.02,
+   "resultat": 0.03,
    "ouverte_le": "2026-11-26T06:10:23.892",
    "id": "00000000-76c8-6a0d-049f-c46d0015549e",
    "stop": 3601.86,
@@ -11028,7 +11032,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T06:10:23Z",
    "statut": "ouvert",
-   "resultat": 0.02,
+   "resultat": 0.03,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -11227,9 +11231,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3570.72,
+    "prix": 3570.89,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 34.07 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 34.25 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -11965,7 +11969,7 @@
   "deals": {},
   "marches": {
    "NATURALGAS": {
-    "prix": 3.5408,
+    "prix": 3.5318,
     "sens": -1,
     "atr": 0.07024,
     "regle": "MACD 24/52/18, achat et vente, seulement si marché calme (ADX < 20), stop garanti 2.5 ATR, objectif 1 R, suiveur 3 ATR",
@@ -11996,11 +12000,11 @@
    41.49
   ],
   "rapide-GOLD": [
-   1795678800,
-   3572.69,
-   3572.74,
-   3569.58,
-   3570.72
+   1795679100,
+   3571.61,
+   3571.95,
+   3570.8,
+   3570.89
   ],
   "elan_4h-GOLD": [
    1795665600,
@@ -12028,7 +12032,7 @@
    3.5873,
    3.5938,
    3.4878,
-   3.5408
+   3.5318
   ],
   "usine-TSLA": [
    1795651200,
