@@ -1756,10 +1756,17 @@
    "type": "erreur",
    "marche": "",
    "texte": "Connexion refusée (401). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.invalid.api.key\"}"
+  },
+  {
+   "date": "2026-11-26T06:10:24Z",
+   "type": "ordre",
+   "marche": "GOLD",
+   "texte": "[Rapide] VENTE de 0.02 à 3572.10, stop garanti à 35.72 $.",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T06:09:25Z",
+ "derniere_execution": "2026-11-26T06:10:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10276,17 +10283,31 @@
   {
    "date": "2026-11-26T06:09:25Z",
    "valeur": 93.15
+  },
+  {
+   "date": "2026-11-26T06:10:25Z",
+   "valeur": 93.14
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.15,
+  "solde": 93.14,
   "depot": 93.15,
-  "resultat_latent": 0.0,
-  "disponible": 93.15
+  "resultat_latent": -0.01,
+  "disponible": 89.86
  },
- "positions": [],
+ "positions": [
+  {
+   "marche": "GOLD",
+   "nom": "Gold",
+   "sens": "SELL",
+   "taille": 0.02,
+   "prix_entree": 3572.1,
+   "resultat": 0,
+   "ouverte_le": "2026-11-26T06:10:23.892"
+  }
+ ],
  "analyses": {},
  "ordres": [
   {
@@ -10594,6 +10615,33 @@
     "GARDE_RAPIDE_PCT": 60.0
    },
    "resultat_estime": false
+  },
+  {
+   "id": "00000000-76c8-6a0d-049f-c46d0015549e",
+   "marche": "GOLD",
+   "nom": "Gold",
+   "sens": "SELL",
+   "taille": 0.02,
+   "prix_entree": 3572.1,
+   "stop": 3607.82,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-26T06:10:23Z",
+   "statut": "ouvert",
+   "resultat": 0,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "rapide",
+   "reglages": {
+    "ADX_RAPIDE_MIN": 20.0,
+    "FILTRE_BOLLINGER": "oui",
+    "SUIVI_RAPIDE_PCT": 1.0,
+    "SORTIE_ENTREE_R": 0.5,
+    "GARDE_RAPIDE_APRES_R": 1.5,
+    "GARDE_RAPIDE_PCT": 60.0,
+    "SORTIE_CONFIRMEE_RAPIDE": 3.0,
+    "EMPILER_RAPIDE": 2.0
+   }
   }
  ],
  "historique_jour": {
@@ -10603,7 +10651,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.15
+  "2026-11-26": 93.14
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -10751,18 +10799,22 @@
  },
  "pause": false,
  "rapide": {
-  "deals": [],
+  "deals": [
+   "00000000-76c8-6a0d-049f-c46d0015549e"
+  ],
   "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 1 %, sortie au prix d'entrée après +0.5 R, garde 60 % du gain après +1.5 R, sortie si le croisement inverse dure 3 bougies, jusqu'à 2 position(s), risque 1 % (expérimentale)",
   "marches": {
    "GOLD": {
-    "tendance": "BUY",
+    "tendance": "SELL",
     "filtre": {
-     "signal_5min": "BUY",
+     "signal_5min": "SELL",
      "tendance_1h": "SELL",
-     "tendance_4h": "SELL"
+     "tendance_4h": "SELL",
+     "bollinger": 1.16,
+     "adx": 25.5
     },
-    "prix": 3574.85,
-    "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
+    "prix": 3572.68,
+    "action": "VENTE de 0.02",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
    "SILVER": {
@@ -10777,9 +10829,16 @@
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)"
    }
   },
-  "tendance": "BUY",
-  "meilleur": {},
-  "entree_bougie": {}
+  "tendance": "SELL",
+  "meilleur": {
+   "00000000-76c8-6a0d-049f-c46d0015549e": {
+    "depuis": "2026-11-26T06:10:00",
+    "prix": 3572.1
+   }
+  },
+  "entree_bougie": {
+   "GOLD": "2026-11-26T06:05:00"
+  }
  },
  "debut_test": "2026-11-20T16:20:00Z",
  "ordres_avant_test": [
