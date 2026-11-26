@@ -1,11 +1,18 @@
-"""Un tour de bot : se connecte au compte DÉMO Capital.com, analyse le marché,
-passe les ordres si besoin, puis met à jour docs/data.json pour le tableau de bord.
+"""Un tour de bot : se connecte au compte DÉMO Capital.com, fait tourner chaque stratégie,
+passe les ordres si besoin, puis met à jour docs/data.json pour l'application.
 
-GitHub lance ce fichier automatiquement toutes les 5 minutes environ.
+GitHub lance ce fichier toutes les minutes (voir .github/workflows/moteur.yml).
 Lancement manuel :  python -m bot.main
+
+NETTOYAGE DU 26/11/2026 (demande de Mathis : repartir proprement) : seules les stratégies prouvées
+restent, la Cassure 4 h (or, argent) et la Rapide 5 min (or), avec les garde-fous. Tout le reste
+(Tendance Bitcoin, Élan, Supertrend, usine, Avant la Fed, veille d'actus, simulateur, deux cerveaux)
+est retiré. Sauvegarde complète de l'avant : branche « sauvegarde-26-11 » sur GitHub.
+
+AJOUTER UNE STRATÉGIE : écrire bot/<nom>.py avec une fonction tour(...) (voir bot/cassure.py ou
+bot/rapide.py), puis ajouter une ligne dans STRATEGIES ci-dessous. Rien d'autre à toucher.
 """
 import json
-import math
 import os
 import sys
 from datetime import datetime, timedelta, timezone
@@ -14,48 +21,20 @@ from pathlib import Path
 from bot.capital import CapitalDemo, ErreurCapital
 from bot.garde_fous import GardeFous, surveiller_series_de_stops
 from bot import rapide as module_rapide
-from bot import elan as module_elan
-from bot import supertrend as module_supertrend
-from bot import fed as module_fed
-from bot import usine as module_usine
 from bot import actualites
-from bot import veille
-from bot.empilement import EMPILER_MAX, peut_empiler
 from bot.cassure import LISTE as MARCHES_CASSURE
 from bot.cassure import NOM as NOM_CASSURE
 from bot.cassure import RISQUE_CASSURE_PCT, tour_cassure
 from bot.amelioration import reglages_du_moment
-from bot import cerveaux
 from bot import graphiques as module_graphiques
-from bot import simulateur as module_simulateur
-from bot.registre import mettre_a_jour_prix, noter_fermeture, synchroniser
-from bot.strategie import NOM as NOM_STRATEGIE
-from bot.strategie import EMA_LENTE, EMA_RAPIDE, bougies_vers_df, decider
+from bot.registre import noter_fermeture, synchroniser
 
 RACINE = Path(__file__).resolve().parent.parent
 FICHIER_DONNEES = RACINE / "docs" / "data.json"
 
-# Réglages (modifiables dans .github/workflows/bot.yml sans toucher au code)
-# 26/11/2026 : Bitcoin retiré à la demande de Mathis (MARCHES="" dans reglages.env). Liste vide = Tendance 4 h arrêtée
-# et cachée dans l'appli ; remettre MARCHES="BTCUSD" pour la relancer.
-MARCHES = [m.strip() for m in os.getenv("MARCHES", "").split(",") if m.strip()]
-UNITE = os.getenv("UNITE", "HOUR_4")  # bougies de 4 h : c'est l'unité testée en backtest
-RISQUE_PCT = float(os.getenv("RISQUE_PCT", "1"))  # % du capital perdu au maximum si le stop est touché
-NB_BOUGIES = 1000  # ~5 mois de bougies 4 h, pour que l'EMA 200 soit fiable
-STOP_GARANTI_MIN_PCT = 0.55  # Capital.com impose un stop garanti à 0,5 % minimum du prix (+ marge)
-PAS_TAILLE = 0.0001  # plus petite taille de position en BTC chez Capital.com
-# « Deux cerveaux » (25/11/2026, idée de Mathis) : une NOUVELLE entrée de la Tendance 4 h n'est prise que si
-# le 2e cerveau (bot/cerveaux.py : note des indicateurs + structure sommets/creux + tendance 1 h, 2 avis sur 3)
-# est d'accord. Backtest 2 ans BTC (backtest/deux_cerveaux.py) : +16,2 R -> +17,4 R, mieux les 2 années,
-# 48 trades au lieu de 58, pire baisse -3,7 R -> -2,7 R. Sur la Cassure or/argent, il ferait MOINS bien : pas utilisé.
-DEUX_CERVEAUX = os.getenv("DEUX_CERVEAUX_TENDANCE", "1") == "1"
-TP_PARTIEL_ATR = float(os.getenv("TP_PARTIEL_ATR", "1"))  # moitié de la position avec un TP à N × ATR (0 = aucun)
-MARGE = 0.5  # levier crypto 2:1 en Europe : il faut bloquer 50 % de la valeur
-
 MAX_JOURNAL = 1000
 MAX_HISTORIQUE = 3000  # ~1 mois de points à raison d'un toutes les 15 min
 MAX_JOURS = 3650  # un point par jour, sur 10 ans
-MAX_BOUGIES_GRAPHIQUE = 96  # 16 jours en bougies de 4 h
 
 
 def maintenant() -> str:
@@ -81,9 +60,51 @@ def milieu(prix: dict) -> float:
 DESCRIPTION_CASSURE = ("Un sous-bot pour l'or et un pour l'argent : il achète quand le prix casse le plus haut "
                        "des 20 dernières bougies de 4 h (vend sous le plus bas), dans le sens de l'EMA 200, "
                        "avec stop garanti. Environ 4 trades par mois.")
-DESCRIPTIONS = {
-    "tendance_4h": "Suit les grosses tendances du Bitcoin sur des bougies de 4 h : peu de trades, la seule gagnante en backtest.",
-}
+DESCRIPTION_RAPIDE = ("Trade souvent sur des bougies de 5 min, sur l'or, seulement dans le sens des tendances "
+                      "1 h et 4 h, avec stop garanti et stop suiveur.")
+
+
+def _tour_cassure(api, donnees, ctx, peut_entrer):
+    for epic in MARCHES_CASSURE:
+        try:
+            tour_cassure(api, donnees, epic, ctx["positions"], ctx["capital"], ctx["disponible"], ctx["eurusd"],
+                         ctx["noter"], ctx["garde"], maintenant(), peut_entrer=peut_entrer)
+        except Exception as e:  # un marché en erreur ne bloque pas les autres
+            donnees.setdefault("cassure", {}).setdefault(epic, {})["action"] = "Erreur"
+            ctx["noter"]("erreur", epic, str(e)[:300])
+
+
+def _tour_rapide(api, donnees, ctx, peut_entrer):
+    if not peut_entrer:  # la Rapide ne gère ses positions que quand elle est active (comme avant)
+        return
+    for epic in module_rapide.LISTE:
+        try:
+            res = module_rapide.tour_rapide(api, donnees, epic, api.positions(), ctx["capital"], ctx["eurusd"],
+                                            ctx["noter"], maintenant(), ctx["garde"])
+        except Exception as e:  # un marché en erreur ne bloque pas les autres
+            res = "Erreur"
+            ctx["noter"]("erreur", epic, f"[Rapide] {str(e)[:300]}")
+        donnees.setdefault("rapide", {}).setdefault("marches", {}).setdefault(epic, {})["action"] = res
+
+
+# Les stratégies qui tournent. Pour en ajouter une : une ligne ici (id, nom affiché, fonction du tour,
+# active par défaut, fiche pour l'appli). L'ordre compte : la première passe en priorité.
+STRATEGIES = [
+    {"id": "cassure_4h", "nom": "Cassure 4 h (or et argent)", "tour": _tour_cassure, "active": True,
+     "fiche": lambda: {"description": DESCRIPTION_CASSURE, "unite": "HOUR_4", "risque_pct": RISQUE_CASSURE_PCT,
+                       "reglages": NOM_CASSURE, "marches": MARCHES_CASSURE}},
+    {"id": "rapide", "nom": "Rapide 5 min (or)", "tour": _tour_rapide, "active": module_rapide.ACTIVE,
+     "fiche": lambda: {"description": DESCRIPTION_RAPIDE, "unite": module_rapide.UNITE_RAPIDE,
+                       "risque_pct": module_rapide.RISQUE_RAPIDE_PCT, "reglages": module_rapide.NOM,
+                       "marches": module_rapide.LISTE}},
+]
+
+# Données laissées dans docs/data.json par les stratégies et outils retirés le 26/11/2026 (effacées une fois).
+ANCIENNES_CLES = ("elan", "supertrend", "usine", "fed", "veille", "simulations", "deux_cerveaux_depuis",
+                  "valeur_corrigee_2511", "tour_1min_2511", "bitcoin_retire", "_pauses_marches_notees",
+                  "analyses", "empilement", "sous_bots", "petit_compte", "tendance_mois", "x5_or",
+                  "x5_argent", "cassure_tous", "challenge", "challenge_tm", "challenge_suivi", "londres")
+NETTOYAGE = "2026-11-26"
 
 
 DEBUT_TEST = "2026-11-20T16:20:00Z"  # début du test de 2 semaines (17 h 20 à Paris), compte démo ramené à ~98 €
@@ -130,6 +151,33 @@ def lire_activites(api, donnees: dict, positions: list) -> list:
     return []
 
 
+def strategie_de(p: dict, ids_rapide: set) -> str:
+    """Stratégie qui a ouvert une position Capital.com."""
+    if p["position"]["dealId"] in ids_rapide:
+        return "rapide"
+    return "cassure_4h" if p["market"]["epic"] in MARCHES_CASSURE else "autre"
+
+
+def nettoyer_une_fois(donnees: dict, noter):
+    """26/11/2026 : efface de data.json ce que les stratégies retirées y avaient laissé.
+    L'historique des ordres, le journal et la courbe du compte sont gardés."""
+    if donnees.get("nettoyage") == NETTOYAGE:
+        return
+    donnees["nettoyage"] = NETTOYAGE
+    for k in ANCIENNES_CLES:
+        donnees.pop(k, None)
+    donnees.get("entrees", {}).pop("BTCUSD", None)
+    dps = donnees.get("deals_par_strategie", {})
+    for k in [k for k in dps if k != "cassure"]:
+        del dps[k]
+    marches_r = donnees.get("rapide", {}).get("marches", {})
+    for m in [m for m in marches_r if m not in module_rapide.LISTE]:
+        del marches_r[m]  # ex. l'argent, retiré de la Rapide le 25/11
+    noter("commande", "", "Nettoyage (26/11/2026, demande de Mathis) : le bot repart avec seulement la Cassure 4 h "
+          "(or, argent) et la Rapide 5 min (or), plus les garde-fous. Élan, Supertrend, usine, Avant la Fed, veille "
+          "d'actus, simulateur et Tendance Bitcoin sont retirés. Sauvegarde : branche « sauvegarde-26-11 ».")
+
+
 def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = "toutes"):
     journal = donnees.setdefault("journal", [])
 
@@ -139,67 +187,24 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
             ligne["strategie"] = strat
         journal.append(ligne)
 
-    noter_4h = lambda t, m, x: noter(t, m, x, "tendance_4h")
-    if DEUX_CERVEAUX and not donnees.get("deux_cerveaux_depuis"):
-        donnees["deux_cerveaux_depuis"] = maintenant()  # une seule fois : changement daté pour les bilans
-        noter_4h("commande", "BTCUSD", "Nouveau (25/11/2026) : deux cerveaux sur la Tendance 4 h. Une nouvelle position "
-                 "n'est ouverte que si le 2e cerveau (indicateurs + structure sommets/creux + tendance 1 h) est d'accord. "
-                 "Backtest 2 ans : +16,2 R -> +17,4 R, pire baisse -3,7 R -> -2,7 R. À comparer au bilan du 4/12.")
-
-    toutes = ["tendance_4h", "cassure_4h", "rapide", "elan_4h", "supertrend_4h"]  # 25/11/2026 : + « Élan » et « Supertrend » (expérimentales)
-    if module_fed.LISTE:  # 26/11/2026 : « Avant la Fed » (expérimentale, recherche gains rapides)
-        toutes.append("fed")
-    if module_usine.STRATEGIES:  # 26/11/2026 : stratégies trouvées par l'usine (expérimentales)
-        toutes.append("usine")
-    if not MARCHES:  # 26/11/2026 : Bitcoin retiré, la Tendance 4 h n'a plus de marché
-        toutes.remove("tendance_4h")
-        if not donnees.get("bitcoin_retire"):
-            donnees["bitcoin_retire"] = maintenant()  # une seule fois : changement daté pour les bilans
-            noter("commande", "BTCUSD", "Bitcoin retiré (26/11/2026, demande de Mathis) : la Tendance 4 h ne trade plus. "
-                  "Les autres stratégies (Cassure, Rapide, Élan, Supertrend) ne changent pas.", "tendance_4h")
+    nettoyer_une_fois(donnees, noter)
+    toutes = [s["id"] for s in STRATEGIES]
+    noms = {s["id"]: s["nom"] for s in STRATEGIES}
     strategie = strategie if strategie in toutes else "toutes"
     cibles = toutes if strategie == "toutes" else [strategie]
     etats = donnees.setdefault("strategies", {})
     for k in [k for k in etats if k not in toutes]:
-        del etats[k]  # stratégies supprimées : plus affichées dans l'appli
-    for k in ("sous_bots", "petit_compte", "tendance_mois", "x5_or", "x5_argent", "cassure_tous",
-              "challenge", "challenge_tm", "challenge_suivi", "londres"):
-        donnees.pop(k, None)
-    dps = donnees.get("deals_par_strategie", {})
-    for k in [k for k in dps if k != "cassure"]:
-        del dps[k]
-    if "tendance_4h" in toutes:
-        etats.setdefault("tendance_4h", {}).setdefault("active", True)
-    etats.setdefault("cassure_4h", {}).setdefault("active", True)
-    etats.setdefault("rapide", {}).setdefault("active", module_rapide.ACTIVE)
-    etats.setdefault("elan_4h", {}).setdefault("active", module_elan.ACTIVE)
-    etats.setdefault("supertrend_4h", {}).setdefault("active", module_supertrend.ACTIVE)
-    if "usine" in toutes:
-        etats.setdefault("usine", {}).setdefault("active", module_usine.ACTIVE)
-    if "fed" in toutes:
-        etats.setdefault("fed", {}).setdefault("active", module_fed.ACTIVE)
+        del etats[k]  # stratégies retirées : plus affichées dans l'appli
+    for s in STRATEGIES:
+        etats.setdefault(s["id"], {}).setdefault("active", s["active"])
     if set(donnees.get("rapide", {}).get("deals", [])) and "marches" not in donnees["rapide"]:
         donnees["rapide"] = {"deals": []}  # ancienne rapide du Bitcoin : on repart de zéro
-    noms = {"tendance_4h": "Tendance 4 h (Bitcoin)", "cassure_4h": "Cassure 4 h (or et argent)",
-            "rapide": "Rapide 5 min (or et argent)", "elan_4h": "Élan des gros acteurs 4 h (expérimentale)",
-            "supertrend_4h": "Supertrend 4 h Ethereum (expérimentale, trouvée sur les réseaux)",
-            "usine": "Usine à stratégies (expérimentales)",
-            "fed": "Avant la Fed, Nasdaq 100 (expérimentale)"}
     lancer = set(cibles) if action == "lancer" else set()
 
     api.connexion()
     positions = api.positions()
     ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
-    ids_elan = set(donnees.get("elan", {}).get("deals", {}))
-    ids_supertrend = set(donnees.get("supertrend", {}).get("deals", {}))
-    ids_usine = set(donnees.get("usine", {}).get("deals", {}))
-    ids_fed = set(donnees.get("fed", {}).get("deals", {}))
-    strat_de = lambda p: ("rapide" if p["position"]["dealId"] in ids_rapide else
-                          "fed" if p["position"]["dealId"] in ids_fed else
-                          "usine" if p["position"]["dealId"] in ids_usine else
-                          "elan_4h" if p["position"]["dealId"] in ids_elan else
-                          "supertrend_4h" if p["position"]["dealId"] in ids_supertrend else
-                          "cassure_4h" if p["market"]["epic"] in MARCHES_CASSURE else "tendance_4h")
+    strat_de = lambda p: strategie_de(p, ids_rapide)
 
     # --- Commandes envoyées depuis l'application (téléphone, tablette, PC) ---
     if action == "pause":
@@ -233,26 +238,14 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     elif action == "analyser":
         noter("commande", "", "Analyse demandée depuis l'application.")
     en_pause = donnees.get("pause", False)
-    analyses = {}
 
     compte0 = next((c for c in api.comptes() if c.get("preferred")), None) or (api.comptes() or [{}])[0]
     capital = float(compte0.get("balance", {}).get("balance") or 0)
     disponible = float(compte0.get("balance", {}).get("available") or capital)
     eurusd = api.taux_eurusd()
     # Capital.com : « balance » contient DÉJÀ le gain/perte latent (balance = deposit + profitLoss).
-    # Avant le 25/11 le bot ajoutait profitLoss une 2e fois : les hausses et baisses étaient doublées.
-    valeur = capital
-    garde = GardeFous(donnees, valeur, positions, eurusd)
-    if not donnees.get("valeur_corrigee_2511"):  # une seule fois : le plus haut était gonflé par ce double comptage
-        donnees["valeur_corrigee_2511"] = True
-        etat_g = donnees.setdefault("garde_fous", {})
-        etat_g["plus_haut"] = valeur
-        etat_g["debut_jour"] = min(float(etat_g.get("debut_jour") or valeur), valeur)
-    if not donnees.get("tour_1min_2511"):  # une seule fois : date le changement de rythme dans le Journal
-        donnees["tour_1min_2511"] = True
-        noter("analyse", "", "Moteur : un tour toutes les 1 minute au lieu de 5 (demande de Mathis, test). Les stops et "
-              "les sorties sont surveillés chaque minute ; les signaux restent pris sur des bougies terminées et la "
-              "Rapide n'entre qu'une fois par bougie 5 min.")
+    # Ne jamais lui ajouter profitLoss (erreur corrigée le 25/11 : les hausses et baisses étaient doublées).
+    garde = GardeFous(donnees, capital, positions, eurusd)
     if action == "reprendre":
         garde.rearmer()
     instant = datetime.now(timezone.utc)
@@ -262,288 +255,26 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     garde.pause_actualite = actualites.annonce_en_cours(donnees, instant)
     donnees["actualites"]["pause"] = garde.pause_actualite
     donnees["actualites"]["prochaines"] = actualites.prochaines(donnees, instant)
-    # 26/11/2026 (skill trader-news) : titres par marché + dates de résultats des actions, pauses par marché
-    marches_trades = sorted(set(MARCHES) | set(MARCHES_CASSURE) | set(module_rapide.LISTE) | set(module_elan.LISTE)
-                            | set(module_supertrend.LISTE) | set(module_usine.LISTE) | set(module_fed.LISTE))
-    for souci_v in veille.mettre_a_jour(donnees, instant, marches_trades):
-        print(f"Veille : {souci_v}")
     garde.pauses_marches = actualites.pauses_marches(donnees, instant)
     donnees["actualites"]["pauses_marches"] = garde.pauses_marches
-    for m, raison_m in garde.pauses_marches.items():
-        if donnees.setdefault("_pauses_marches_notees", {}).get(m) != raison_m:
-            noter("analyse", m, f"Pause sur {m} : {raison_m}.")
-    donnees["_pauses_marches_notees"] = dict(garde.pauses_marches)
     if garde.pause_actualite and donnees.get("_derniere_pause_notee") != garde.pause_actualite:
         noter("analyse", "", f"Pause : {garde.pause_actualite}. Aucune nouvelle position de "
               f"{actualites.PAUSE_AVANT_MIN} min avant à {actualites.PAUSE_APRES_MIN} min après.")
     donnees["_derniere_pause_notee"] = garde.pause_actualite
-    # Qui a le droit de trader à ce tour ? (la pause globale passe avant tout, sauf « lancer »)
-    complet_4h = ("tendance_4h" in lancer) or (not en_pause and etats.get("tendance_4h", {}).get("active", False))
-    suivi_4h = complet_4h or not en_pause  # désactivée : plus d'entrées ni de sorties, mais le stop suiveur continue
     api.sans_couverture()  # le stop garanti est interdit en mode couverture (hedging)
-    entrees = donnees.setdefault("entrees", {})  # bougie du dernier signal utilisé, par marché
-    precedentes = donnees.get("analyses", {})
 
-    for epic in MARCHES:
-        bougies = api.bougies(epic, UNITE, NB_BOUGIES)
-        fermees = bougies[:-1]  # la dernière bougie n'est pas encore terminée
-        df = bougies_vers_df(fermees)
-        signal = decider(df)
-        prix = milieu(bougies[-1]["closePrice"]) if bougies else None
-        prix_achat = bougies[-1]["closePrice"]["ask"] if bougies else None
-        prix_vente = bougies[-1]["closePrice"]["bid"] if bougies else None
-        sig = signal["sig"]
-
-        mes_positions = [p for p in positions if p["market"]["epic"] == epic]
-        voulu = signal["direction"]
-        action = "Aucune action"
-        deja_note = precedentes.get(epic, {}).get("explication") == signal["explication"]
-
-        if not suivi_4h:
-            action = "En pause (aucun ordre)"
-        elif sig is None:
-            noter_4h("info", epic, signal["explication"])
-        else:
-            if not complet_4h:
-                action = "Désactivée (positions gardées, stop suiveur actif)"
-            # 1) Sortie : la tendance n'est plus dans le sens de la position
-            for p in [p for p in mes_positions if p["position"]["direction"] != voulu and complet_4h]:
-                conf = api.fermer(p["position"]["dealId"])
-                if conf.get("dealStatus") == "ACCEPTED":
-                    noter_fermeture(donnees, p, conf, maintenant(), "Fin de la tendance (signal de sortie)")
-                sens = "achat" if p["position"]["direction"] == "BUY" else "vente"
-                noter_4h("fermeture", epic, f"{signal['explication']} Position à l'{sens} fermée (gain/perte : {p['position'].get('upl', 0):.2f}). Statut : {conf.get('dealStatus', '?')}")
-                action = "Position fermée"
-            gardees = [p for p in mes_positions if p["position"]["direction"] == voulu or not complet_4h]
-
-            # 2) Stop suiveur : on rapproche le stop pour verrouiller les gains (jamais l'inverse)
-            derniere = sig.iloc[-1]
-            for p in gardees:
-                pos = p["position"]
-                actuel = pos.get("stopLevel")
-                marge_mini = prix * STOP_GARANTI_MIN_PCT / 100
-                if pos["direction"] == "BUY":
-                    cible_stop = min(derniere.cloture - derniere.suivi, prix_vente - marge_mini)
-                    mieux = actuel is None or cible_stop > float(actuel) + 1
-                else:
-                    cible_stop = max(derniere.cloture + derniere.suivi, prix_achat + marge_mini)
-                    mieux = actuel is None or cible_stop < float(actuel) - 1
-                if mieux:
-                    conf = api.modifier_stop(pos["dealId"], cible_stop, bool(pos.get("guaranteedStop", True)))
-                    ok = conf.get("dealStatus") == "ACCEPTED"
-                    noter_4h("stop" if ok else "erreur", epic,
-                          f"Stop suiveur déplacé de {float(actuel or 0):.2f} à {cible_stop:.2f} pour protéger le gain." if ok
-                          else f"Déplacement du stop refusé : {conf.get('reason', conf.get('dealStatus', '?'))}")
-                    action = "Stop remonté" if ok else action
-                if action == "Aucune action":
-                    action = "Position conservée"
-
-            # 3) Entrée : seulement sur un signal NOUVEAU, jamais deux fois le même
-            empile = ""
-            if voulu and gardees and complet_4h:
-                ok_e, empile = peut_empiler(gardees, voulu, prix_achat if voulu == "BUY" else prix_vente,
-                                            float(derniere.stop))
-                donnees.setdefault("empilement", {})[epic] = empile
-                empile = empile if ok_e else ""
-            if not complet_4h:
-                pass
-            elif voulu and (not gardees or empile):
-                if empile:
-                    pass
-                elif not signal["nouveau"]:
-                    if not deja_note:
-                        noter_4h("analyse", epic, f"{signal['explication']} Mais le signal n'est pas récent (il date du "
-                              f"{signal['debut_etat'][:16]}) : on attend le prochain pour ne pas entrer en retard.")
-                elif entrees.get(epic) == signal["debut_etat"]:
-                    if not deja_note:
-                        noter_4h("analyse", epic, "Ce signal a déjà été utilisé (position fermée par le stop) : on attend un nouveau signal.")
-                cerveau2 = None
-                if DEUX_CERVEAUX and not empile and signal["nouveau"] and entrees.get(epic) != signal["debut_etat"]:
-                    try:
-                        df1 = bougies_vers_df(api.bougies(epic, "HOUR", 300)[:-1])
-                    except Exception:
-                        df1 = None
-                    cerveau2 = cerveaux.avis_detail(df, df1)
-                    etats["tendance_4h"]["cerveau2"] = cerveau2["texte"]
-                    if cerveau2["conseil"] != {"BUY": 1, "SELL": -1}[voulu]:
-                        entrees[epic] = signal["debut_etat"]  # comme le backtest : signal refusé = on attend le suivant
-                        noter_4h("analyse", epic, f"{signal['explication']} Mais le 2e cerveau n'est pas d'accord "
-                                 f"({cerveau2['texte']}) : pas d'entrée, on attend un signal de meilleure qualité.")
-                        action = "Refusé (2e cerveau pas d'accord)"
-                        cerveau2 = False
-                if cerveau2 is not False and (empile or (signal["nouveau"] and entrees.get(epic) != signal["debut_etat"])):
-                    mot = "ACHAT" if voulu == "BUY" else "VENTE"
-                    prix_entree = prix_achat if voulu == "BUY" else prix_vente
-                    distance = max(float(derniere.stop), prix_entree * STOP_GARANTI_MIN_PCT / 100)
-                    risque_usd = capital * RISQUE_PCT / 100 * eurusd
-                    taille = math.floor(risque_usd / distance / PAS_TAILLE) * PAS_TAILLE
-                    taille_marge = math.floor(disponible * eurusd / (prix_entree * MARGE) * 0.9 / PAS_TAILLE) * PAS_TAILLE
-                    taille = round(min(taille, taille_marge), 4)
-                    autorise, raison = garde.autoriser(taille * distance / eurusd, distance, "tendance_4h", epic)
-                    if taille < PAS_TAILLE:
-                        noter_4h("erreur", epic, f"Capital trop faible pour ouvrir la plus petite position ({PAS_TAILLE} BTC).")
-                    elif not autorise:
-                        noter_4h("analyse", epic, f"{signal['explication']} Ordre REFUSÉ par les garde-fous : {raison}.")
-                        action = "Refusé (garde-fous)"
-                    else:
-                        garde.enregistrer({"position": {"level": prix_entree, "stopLevel": prix_entree - distance, "size": taille}})
-                        # Deux moitiés : l'une avec un TP proche (on encaisse vite), l'autre sans TP
-                        # qui suit la tendance avec le stop suiveur (on capte les gros mouvements).
-                        moitie = round(math.floor(taille / 2 / PAS_TAILLE) * PAS_TAILLE, 4)
-                        tp = float(derniere.atr) * TP_PARTIEL_ATR if TP_PARTIEL_ATR > 0 and moitie >= PAS_TAILLE else None
-                        parts = [(moitie, tp), (round(taille - moitie, 4), None)] if tp else [(taille, None)]
-                        for t, obj in parts:
-                            conf = api.ouvrir(epic, voulu, t, prix=prix_entree, stop_distance=distance, garanti=True,
-                                              objectif_distance=obj)
-                            statut = conf.get("dealStatus", "?")
-                            if statut == "ACCEPTED":
-                                entrees[epic] = signal["debut_etat"]
-                                action = f"{mot} de {taille} {epic}"
-                                texte_tp = f", TP à +{obj:.0f} $" if obj else ", sans TP (stop suiveur)"
-                                accord = f" Les 2 cerveaux sont d'accord ({cerveau2['texte']})." if cerveau2 else ""
-                                noter_4h("ordre", epic, f"{'Empilement : ' + empile + '.' if empile else signal['explication'] + accord} Ordre {mot} de {t} passé à "
-                                      f"{float(conf.get('level') or prix_entree):.2f}, stop garanti à {distance:.0f} $"
-                                      f"{texte_tp} (risque max ≈ {t * distance / eurusd:.2f} €).")
-                            else:
-                                noter_4h("erreur", epic, f"Ordre {mot} refusé par Capital.com : {conf.get('reason', statut)}")
-            elif not voulu and (not deja_note or "tendance_4h" in lancer):
-                noter_4h("analyse", epic, signal["explication"])
-            if "tendance_4h" in lancer and action in ("Aucune action", "Position conservée"):
-                noter_4h("analyse", epic, f"Tour immédiat : {signal['explication']} Décision : {action.lower()}.")
-
-        clotures = list(sig.cloture) if sig is not None else [milieu(b["closePrice"]) for b in fermees]
-        ema_r = [None if x != x else round(float(x), 2) for x in sig.ema_rapide] if sig is not None else []
-        ema_l = [None if x != x else round(float(x), 2) for x in sig.ema_lente] if sig is not None else []
-        if sig is not None:
-            der_sig = sig.iloc[-1]
-            etats["tendance_4h"]["indicateurs"] = {
-                "Prix": round(float(der_sig.cloture), 2), f"EMA {EMA_RAPIDE}": round(float(der_sig.ema_rapide), 2),
-                f"EMA {EMA_LENTE}": round(float(der_sig.ema_lente), 2), "ADX (force)": round(float(der_sig.adx), 1),
-                "ATR (agitation)": round(float(der_sig.atr), 2)}
-        etats["tendance_4h"].update({"nom": noms["tendance_4h"], "description": DESCRIPTIONS["tendance_4h"],
-                                     "unite": UNITE, "risque_pct": RISQUE_PCT, "action": action, "tendance": voulu,
-                                     "reglages": NOM_STRATEGIE})
-
-        mettre_a_jour_prix(donnees, epic, prix)
-        n = MAX_BOUGIES_GRAPHIQUE
-        analyses[epic] = {
-            "prix": prix,
-            "tendance": voulu,
-            "explication": signal["explication"],
-            "action": action,
-            "graphique": {
-                "dates": [b["snapshotTimeUTC"] for b in fermees][-n:],
-                "clotures": clotures[-n:],
-                "ema_rapide": ema_r[-n:],
-                "ema_lente": ema_l[-n:],
-            },
-        }
-
-    # --- Cassure 4 h : un sous-bot par marché (or et argent) ---
-    actif_c = ("cassure_4h" in lancer) or (not en_pause and etats["cassure_4h"]["active"])
-    if actif_c or not en_pause:
-        noter_c = lambda t, m, x: noter(t, m, x, "cassure_4h")
-        for epic in MARCHES_CASSURE:
-            try:
-                tour_cassure(api, donnees, epic, positions, capital, disponible, eurusd, noter_c, garde,
-                             maintenant(), peut_entrer=actif_c)
-            except Exception as e:  # un marché en erreur ne bloque pas les autres
-                donnees.setdefault("cassure", {}).setdefault(epic, {})["action"] = "Erreur"
-                noter_c("erreur", epic, str(e)[:300])
-    etats["cassure_4h"].update({"nom": noms["cassure_4h"], "description": DESCRIPTION_CASSURE, "unite": "HOUR_4",
-                                "risque_pct": RISQUE_CASSURE_PCT, "reglages": NOM_CASSURE, "marches": MARCHES_CASSURE,
-                                "action": "Actif" if actif_c else ("En pause" if en_pause else "Désactivée")})
-
-    # --- Rapide 5 min sur l'or et l'argent : EMA 9/50 dans le sens des tendances 1 h et 4 h ---
-    actif_r = ("rapide" in lancer) or (not en_pause and etats["rapide"]["active"])
-    if actif_r:
-        noter_r = lambda t, m, x: noter(t, m, x, "rapide")
-        for epic in module_rapide.LISTE:
-            try:
-                res = module_rapide.tour_rapide(api, donnees, epic, api.positions(), capital, eurusd, noter_r,
-                                                maintenant(), garde)
-            except Exception as e:  # un marché en erreur ne bloque pas les autres
-                res = "Erreur"
-                noter_r("erreur", epic, f"[Rapide] {str(e)[:300]}")
-            donnees.setdefault("rapide", {}).setdefault("marches", {}).setdefault(epic, {})["action"] = res
-    etats["rapide"].update({"nom": noms["rapide"], "unite": module_rapide.UNITE_RAPIDE,
-                            "risque_pct": module_rapide.RISQUE_RAPIDE_PCT, "reglages": module_rapide.NOM,
-                            "marches": module_rapide.LISTE,
-                            "description": ("Trade souvent sur des bougies de 5 min, sur l'or et l'argent, seulement dans le "
-                                            "sens des tendances 1 h et 4 h. Expérience : perdante en backtest à cause des frais."),
-                            "action": "Actif" if actif_r else ("En pause" if en_pause else "Désactivée")})
-
-    # --- Élan des gros acteurs 4 h (EXPÉRIMENTALE, 25/11/2026) : séparée, après la Cassure (qui passe en priorité) ---
-    actif_e = ("elan_4h" in lancer) or (not en_pause and etats["elan_4h"]["active"])
-    if actif_e or not en_pause:
-        noter_e = lambda t, m, x: noter(t, m, x, "elan_4h")
-        module_elan.premiere_fois(donnees, noter_e)
-        for epic in module_elan.LISTE:
-            try:
-                res = module_elan.tour_elan(api, donnees, epic, api.positions(), capital, disponible, eurusd, noter_e,
-                                            garde, maintenant(), peut_entrer=actif_e)
-            except Exception as e:  # un marché en erreur ne bloque pas les autres
-                res = "Erreur"
-                noter_e("erreur", epic, f"[Élan] {str(e)[:300]}")
-            donnees.setdefault("elan", {}).setdefault("marches", {}).setdefault(epic, {})["action"] = res
-    etats["elan_4h"].update({"nom": noms["elan_4h"], "unite": module_elan.UNITE, "risque_pct": module_elan.RISQUE_ELAN_PCT,
-                             "reglages": module_elan.NOM, "marches": module_elan.LISTE, "description": module_elan.DESCRIPTION,
-                             "debut": module_elan.DEBUT,
-                             "action": "Actif" if actif_e else ("En pause" if en_pause else "Désactivée")})
-
-    # --- Supertrend 4 h Ethereum (EXPÉRIMENTALE, 25/11/2026, trouvée sur les réseaux) : marché à part (ETH) ---
-    actif_st = ("supertrend_4h" in lancer) or (not en_pause and etats["supertrend_4h"]["active"])
-    if actif_st or not en_pause:
-        noter_st = lambda t, m, x: noter(t, m, x, "supertrend_4h")
-        module_supertrend.premiere_fois(donnees, noter_st)
-        for epic in module_supertrend.LISTE:
-            try:
-                res = module_supertrend.tour_supertrend(api, donnees, epic, api.positions(), capital, disponible, eurusd,
-                                                  noter_st, garde, maintenant(), peut_entrer=actif_st)
-            except Exception as e:  # un marché en erreur ne bloque pas les autres
-                res = "Erreur"
-                noter_st("erreur", epic, f"[Supertrend] {str(e)[:300]}")
-            donnees.setdefault("supertrend", {}).setdefault("marches", {}).setdefault(epic, {})["action"] = res
-    etats["supertrend_4h"].update({"nom": noms["supertrend_4h"], "unite": module_supertrend.UNITE,
-                                "risque_pct": module_supertrend.RISQUE_SUPERTREND_PCT, "reglages": module_supertrend.NOM,
-                                "marches": module_supertrend.LISTE, "description": module_supertrend.DESCRIPTION,
-                                "debut": module_supertrend.DEBUT,
-                                "action": "Actif" if actif_st else ("En pause" if en_pause else "Désactivée")})
-    # --- Usine à stratégies (EXPÉRIMENTALES, 26/11/2026) : une stratégie par marché, marchés à part ---
-    if "usine" in toutes:
-        actif_u = ("usine" in lancer) or (not en_pause and etats["usine"]["active"])
-        noter_u = lambda t, m, x: noter(t, m, x, "usine")
-        module_usine.premiere_fois(donnees, noter_u)
-        for strat in module_usine.STRATEGIES:
-            epic = strat["epic"]
-            try:
-                res = module_usine.tour_usine(api, donnees, strat, api.positions(), capital, disponible, eurusd,
-                                              noter_u, garde, maintenant(), peut_entrer=actif_u)
-            except Exception as e:  # un marché en erreur ne bloque pas les autres
-                res = "Erreur"
-                noter_u("erreur", epic, f"[Usine {epic}] {str(e)[:300]}")
-            donnees.setdefault("usine", {}).setdefault("marches", {}).setdefault(epic, {})["action"] = res
-        etats["usine"].update({"nom": noms["usine"], "unite": "HOUR_4 / DAY", "risque_pct": module_usine.RISQUE_USINE_PCT,
-                               "reglages": module_usine.NOM, "marches": module_usine.LISTE,
-                               "description": module_usine.DESCRIPTION, "debut": module_usine.DEBUT,
-                               "action": "Actif" if actif_u else ("En pause" if en_pause else "Désactivée")})
-    # --- Avant la Fed (EXPÉRIMENTALE, 26/11/2026) : achat du Nasdaq 100 la veille d'une annonce FOMC ---
-    if "fed" in toutes:
-        actif_f = ("fed" in lancer) or (not en_pause and etats["fed"]["active"])
-        noter_f = lambda t, m, x: noter(t, m, x, "fed")
-        module_fed.premiere_fois(donnees, noter_f)
-        for epic in module_fed.LISTE:
-            try:
-                res = module_fed.tour_fed(api, donnees, epic, api.positions(), capital, disponible, eurusd,
-                                          noter_f, garde, maintenant(), peut_entrer=actif_f)
-            except Exception as e:  # un marché en erreur ne bloque pas les autres
-                res = "Erreur"
-                noter_f("erreur", epic, f"[Fed] {str(e)[:300]}")
-            donnees.setdefault("fed", {}).setdefault("marches", {}).setdefault(epic, {})["action"] = res
-        etats["fed"].update({"nom": noms["fed"], "unite": module_fed.UNITE, "risque_pct": module_fed.RISQUE_FED_PCT,
-                             "reglages": module_fed.NOM, "marches": module_fed.LISTE,
-                             "description": module_fed.DESCRIPTION, "debut": module_fed.DEBUT,
-                             "action": "Actif" if actif_f else ("En pause" if en_pause else "Désactivée")})
+    # --- Chaque stratégie, dans l'ordre de STRATEGIES ---
+    # Active : elle entre et sort. Désactivée : elle gère seulement ses positions (stop, sorties).
+    # Pause générale : rien du tout, sauf « Lancer maintenant » depuis l'appli.
+    ctx = {"positions": positions, "capital": capital, "disponible": disponible, "eurusd": eurusd, "garde": garde}
+    for s in STRATEGIES:
+        sid = s["id"]
+        actif = (sid in lancer) or (not en_pause and etats[sid]["active"])
+        if actif or not en_pause:
+            ctx["noter"] = lambda t, m, x, sid=sid: noter(t, m, x, sid)
+            s["tour"](api, donnees, ctx, actif)
+        etats[sid].update({"nom": s["nom"], **s["fiche"](),
+                           "action": "Actif" if actif else ("En pause" if en_pause else "Désactivée")})
     donnees.pop("_cache_marches", None)
 
     # État final du compte, après les ordres
@@ -554,28 +285,14 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
     api.deconnexion()
     synchroniser(donnees, positions, maintenant(), activites, eurusd)
     ids_rapide = set(donnees.get("rapide", {}).get("deals", []))
-    ids_elan = set(donnees.get("elan", {}).get("deals", {}))
-    ids_supertrend = set(donnees.get("supertrend", {}).get("deals", {}))
-    ids_usine = set(donnees.get("usine", {}).get("deals", {}))
-    ids_fed = set(donnees.get("fed", {}).get("deals", {}))
     for o in donnees.get("ordres", []):
         if o["id"] in ids_rapide:
             o["strategie"] = "rapide"
-        elif o["id"] in ids_fed or (o.get("motif_sortie") or "").startswith("[Fed]"):
-            o["strategie"] = "fed"
-        elif o["id"] in ids_usine or (o.get("motif_sortie") or "").startswith("[Usine"):
-            o["strategie"] = "usine"
-        elif o["id"] in ids_elan or (o.get("motif_sortie") or "").startswith("[Élan]"):
-            o["strategie"] = "elan_4h"
-        elif o["id"] in ids_supertrend or (o.get("motif_sortie") or "").startswith("[Supertrend]"):
-            o["strategie"] = "supertrend_4h"
-        elif o.get("strategie") == "rapide" and o["marche"] not in module_rapide.LISTE:
-            o["strategie"] = "rapide_btc"  # ancienne rapide du Bitcoin (avant le 20/11/2026)
-        o.setdefault("strategie", "cassure_4h" if o["marche"] in MARCHES_CASSURE else "tendance_4h")
+        o.setdefault("strategie", "cassure_4h" if o["marche"] in MARCHES_CASSURE else "autre")
         if o.get("statut") == "ouvert" and "reglages" not in o:
             # réglages en vigueur à l'ouverture (auto-amélioration : on ne mélange jamais avant / après un changement)
             o["reglages"] = reglages_du_moment(o["strategie"])
-    # Garde-fou n° 9 : 3 stops perdants d'affilée sur une stratégie et un marché -> pause de 24 h pour ce couple
+    # Garde-fou : 3 stops perdants d'affilée sur une stratégie et un marché -> pause de 24 h pour ce couple
     surveiller_series_de_stops(donnees, maintenant(), noter)
 
     donnees["compte"] = {
@@ -595,7 +312,7 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
             "prix_entree": p["position"]["level"],
             "resultat": p["position"].get("upl"),
             "ouverte_le": p["position"].get("createdDateUTC"),
-            # 26/11/2026 : vrais niveaux chez Capital.com, pour les lignes du graphique de l'appli
+            # vrais niveaux chez Capital.com, pour les lignes du graphique de l'appli
             "id": p["position"]["dealId"],
             "stop": p["position"].get("stopLevel"),
             "stop_garanti": bool(p["position"].get("guaranteedStop")),
@@ -608,11 +325,6 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
         module_graphiques.publier(donnees, getattr(api, "vues", {}))
     except Exception as e:
         print(f"Graphiques non mis à jour : {e}")
-    try:  # simulateur (machine à remonter le temps) : chances stop / objectif de chaque position, pour l'appli
-        module_simulateur.publier(donnees, getattr(api, "vues", {}), module_usine.STRATEGIES)
-    except Exception as e:
-        print(f"Simulations non calculées : {e}")
-    donnees["analyses"] = analyses
     historique = donnees.setdefault("historique", [])
     if solde.get("balance") is not None:
         valeur = round(solde["balance"], 2)  # « balance » inclut déjà le latent (voir plus haut)
@@ -623,8 +335,8 @@ def un_tour(donnees: dict, api: CapitalDemo, action: str = "", strategie: str = 
 
 def principal() -> int:
     donnees = charger()
-    donnees["reglages"] = {"marches": MARCHES, "unite": UNITE, "risque_pct": RISQUE_PCT,
-                           "strategie": NOM_STRATEGIE, "ema": [EMA_RAPIDE, EMA_LENTE], "strategie_rapide": None}
+    donnees["reglages"] = {"strategies": [s["id"] for s in STRATEGIES],
+                           "marches": sorted(set(MARCHES_CASSURE) | set(module_rapide.LISTE))}
     donnees.setdefault("journal", [])
     code = 0
 

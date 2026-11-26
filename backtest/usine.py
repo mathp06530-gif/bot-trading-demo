@@ -4,7 +4,7 @@ Elle fabrique et teste automatiquement des dizaines de milliers de stratégies s
 puis ne garde que celles qui gagnent aussi sur des années de prix JAMAIS VUES pendant la fabrication.
 
 Une stratégie = déclencheur × filtre × sens × stop × objectif × suiveur × durée max × unité de temps
-(les briques sont dans bot/usine_regles.py, les mêmes que le bot utilise en démo) : ~45 800 combinaisons par marché
+(les briques sont dans backtest/usine_regles.py) : ~45 800 combinaisons par marché
 et par unité de temps (4 h et jour).
 
 Découpage du temps (fixe, décidé AVANT de lancer) :
@@ -41,7 +41,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from bot import usine_regles as R  # noqa: E402
+from backtest import usine_regles as R  # noqa: E402
 
 DEBUT_VALIDATION = pd.Timestamp("2022-01-01")
 DEBUT_TEST = pd.Timestamp("2024-07-01")
