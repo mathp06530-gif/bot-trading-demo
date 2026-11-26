@@ -29,7 +29,7 @@ from ia import predire  # noqa: E402
 from ia.geantes.familles import FAMILLES, MAISON, NOMS  # noqa: E402
 
 DUREE = int(os.getenv("IA_DUREE_S", str(50 * 60)))
-LOT = int(os.getenv("IA_LOT", "40"))  # marchés prédits par minute (rotation sur tous les marchés ouverts)
+LOT = int(os.getenv("IA_LOT", "24"))  # marchés prédits par minute (rotation sur tous les marchés ouverts)
 L = 512  # bougies données à chaque IA
 DOSSIER = Path(os.getenv("IA_JOURNAL_DIR", "journal_ia"))  # copie locale de la branche ia-journal
 BRANCHE = "ia-journal"
@@ -228,9 +228,15 @@ def principal():
     preparer_branche()
     univers = lire_json("marches.json", {})
     if not univers.get("marches") or time.time() - univers.get("t", 0) > 86400:
-        m = lister_marches(api)
+        try:
+            m = lister_marches(api)
+        except Exception as e:
+            print(f"liste des marchés impossible : {str(e)[:200]}", flush=True)
+            m = {}
         if m:
             univers = {"t": time.time(), "maj": iso(), "marches": m}
+    if not univers.get("marches"):  # navigation indisponible : au moins les grands marchés
+        univers = {"t": 0, "maj": iso(), "marches": {e: {"nom": e, "type": "?"} for e in GRANDS}}
     tous = list(univers.get("marches", {}))
     print(f"{len(tous)} marchés Capital.com connus", flush=True)
     etat = instantanes(api, tous)
@@ -239,7 +245,7 @@ def principal():
 
     maison = entrainer_maison(api, set(ouverts))
     from ia.geantes import Geantes
-    geantes = Geantes(familles=[f for f in os.getenv("IA_FAMILLES", " ".join(FAMILLES)).split() if f])
+    geantes = Geantes(attente_chargement=600, familles=[f for f in os.getenv("IA_FAMILLES", " ".join(FAMILLES)).split() if f])
     modeles = list(maison) + geantes.modeles() + ["vote", "arbitre"]
     st = lire_json("stats.json", None) or stats_vides(modeles)
     for m in modeles:

@@ -58,10 +58,9 @@ class Geantes:
         return [m for f in self.pret for m in self.pret[f]]
 
     def prevoir(self, prix, ohlcv, H=1, delai=40):
-        """prix (n, L), ohlcv (n, L, 5) -> ({modèle: proba de hausse (n,)}, {modèle: secondes ou erreur})."""
+        """prix (n, L), ohlcv (n, L, 5) -> ({modèle: proba de hausse pour les k premiers marchés (k <= n)}, {modèle: secondes ou erreur})."""
         self.numero += 1
-        entree = self.dossier / f"e{self.numero}.npz"
-        np.savez(entree, prix=prix.astype(np.float32), ohlcv=ohlcv.astype(np.float32))
+        entrees = {}
         envoyees, infos_avant = {}, {}
         for f, p in self.proc.items():
             if not self.pret.get(f) or p.poll() is not None:
@@ -74,6 +73,11 @@ class Geantes:
                 while not self.files[f].empty():
                     self.files[f].get_nowait()
                 self.occupe.discard(f)
+            k = min(len(prix), int(FAMILLES[f].get("lot_max", len(prix))))  # les plus lentes : moins de marchés
+            if k not in entrees:
+                entrees[k] = self.dossier / f"e{self.numero}_{k}.npz"
+                np.savez(entrees[k], prix=prix[:k].astype(np.float32), ohlcv=ohlcv[:k].astype(np.float32))
+            entree = entrees[k]
             sortie = self.dossier / f"s{self.numero}_{f}.npz"
             try:
                 p.stdin.write(json.dumps({"entree": str(entree), "sortie": str(sortie), "H": H}) + "\n")

@@ -9,9 +9,6 @@ on:
       retelecharger:
         description: "Retélécharger les prix (laisser vide = utiliser le cache)"
         required: false
-  push:
-    branches: ["claude/**"]
-    paths: [ia/predire.py, .github/workflows/ia_predire.yml]
 
 permissions:
   contents: write
