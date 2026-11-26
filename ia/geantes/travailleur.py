@@ -101,7 +101,55 @@ def charger(nom):
     if nom == "ttm":
         from tsfm_public.toolkit.get_model import get_model
         return get_model("ibm-granite/granite-timeseries-ttm-r2", context_length=512, prediction_length=96)
+    if nom == "chronos_t5":
+        from chronos import BaseChronosPipeline
+        return BaseChronosPipeline.from_pretrained("amazon/chronos-t5-small", device_map="cpu", torch_dtype=torch.float32)
+    if nom == "timer":
+        from transformers import AutoModelForCausalLM
+        return AutoModelForCausalLM.from_pretrained("thuml/timer-base-84m", trust_remote_code=True)
+    if nom == "lagllama":
+        sys.path.insert(0, os.path.join(DEPOT, "ia", "vendor", "lagllama"))
+        from huggingface_hub import hf_hub_download
+        from lag_llama.gluon.estimator import LagLlamaEstimator
+        ckpt = hf_hub_download("time-series-foundation-models/Lag-Llama", "lag-llama.ckpt")
+        a = torch.load(ckpt, map_location="cpu", weights_only=False)["hyper_parameters"]["model_kwargs"]
+        est = LagLlamaEstimator(ckpt_path=ckpt, prediction_length=1, context_length=32, input_size=a["input_size"],
+                                n_layer=a["n_layer"], n_embd_per_head=a["n_embd_per_head"], n_head=a["n_head"],
+                                scaling=a["scaling"], time_feat=a["time_feat"], batch_size=64, num_parallel_samples=20,
+                                device=torch.device("cpu"))
+        return est.create_predictor(est.create_transformation(), est.create_lightning_module())
+    if FAMILLE in ("nf_a", "nf_b"):
+        return entrainer_nf()
     raise ValueError(nom)
+
+
+_NF = {}
+
+
+def entrainer_nf():
+    """Entraîne une seule fois tous les modèles de la famille sur les bougies 1 min fournies par le chef d'orchestre."""
+    if "nf" in _NF:
+        return _NF["nf"]
+    import logging
+    import warnings
+    import pandas as pd
+    warnings.filterwarnings("ignore")
+    for n in ("pytorch_lightning", "lightning", "lightning.pytorch"):
+        logging.getLogger(n).setLevel(logging.ERROR)
+    from neuralforecast import NeuralForecast
+    from neuralforecast import models as M
+    d = np.load(os.environ["IA_ENTRAINEMENT"], allow_pickle=True)
+    df = pd.concat([pd.DataFrame({"unique_id": f"s{k}", "ds": np.arange(len(x)), "y": np.asarray(x, dtype=float)})
+                    for k, x in enumerate(d["series"]) if len(x) > 200])
+    kw = dict(h=2, input_size=64, max_steps=int(os.getenv("IA_NF_PAS", "80")), scaler_type="standard", batch_size=64,
+              enable_progress_bar=False, enable_model_summary=False, logger=False, accelerator="cpu")
+    classes = {"nbeats": M.NBEATS, "nhits": M.NHITS, "tide": M.TiDE, "tcn": M.TCN, "deepar": M.DeepAR,
+               "patchtst": M.PatchTST, "tft": M.TFT}
+    noms = list(FAMILLES[FAMILLE]["modeles"])
+    nf = NeuralForecast(models=[classes[n](**kw, alias=n) for n in noms], freq=1)
+    nf.fit(df)
+    _NF["nf"] = nf
+    return nf
 
 
 def prevoir(nom, m, prix, ohlcv, H):
@@ -168,6 +216,31 @@ def prevoir(nom, m, prix, ohlcv, H):
         out = m(past_values=torch.tensor(z[:, :, None], dtype=torch.float32)).prediction_outputs
         pred = out.detach().numpy()[:, H - 1, 0] * sd[:, 0] + mu[:, 0]
         return depuis_point(pred, prix)
+    if nom == "chronos_t5":
+        q, _ = m.predict_quantiles(x, prediction_length=H, quantile_levels=NIVEAUX)
+        return depuis_quantiles(np.asarray(q)[:, H - 1, :], dernier)
+    if nom == "timer":
+        z, mu, sd = normer(prix)
+        out = m.generate(torch.tensor(z, dtype=torch.float32), max_new_tokens=H)
+        pred = out[:, -H:].numpy()[:, H - 1] * sd[:, 0] + mu[:, 0]
+        return depuis_point(pred, prix)
+    if nom == "lagllama":
+        import pandas as pd
+        from gluonts.dataset.common import ListDataset
+        ds = ListDataset([{"start": pd.Period("2026-01-01 00:00", freq="1min"), "target": p.astype(np.float32)} for p in prix],
+                         freq="1min")
+        ech = np.stack([f.samples[:, 0] for f in m.predict(ds)])
+        return depuis_echantillons(ech, dernier)
+    if FAMILLE in ("nf_a", "nf_b"):
+        cle = _NF.get("demande")
+        if _NF.get("cle") != cle:  # une seule prévision pour tous les modèles de la famille
+            import pandas as pd
+            df = pd.concat([pd.DataFrame({"unique_id": f"m{k:04d}", "ds": np.arange(prix.shape[1]), "y": p})
+                            for k, p in enumerate(prix)])
+            out = m.predict(df=df)
+            out = out[out.ds == prix.shape[1]].sort_values("unique_id")
+            _NF["cle"], _NF["sortie"] = cle, out
+        return depuis_point(_NF["sortie"][nom].values, prix)
     raise ValueError(nom)
 
 
@@ -189,6 +262,7 @@ def principal():
         d = np.load(dem["entree"])
         prix, ohlcv, H = d["prix"].astype(np.float64), d["ohlcv"].astype(np.float64), int(dem.get("H", 1))
         sortie, ok, err = {}, {}, {}
+        _NF["demande"] = _NF.get("demande", 0) + 1
         with torch.no_grad():
             for nom, m in list(modeles.items()):
                 t0 = time.time()

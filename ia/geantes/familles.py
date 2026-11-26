@@ -19,6 +19,31 @@ FAMILLES = {
                "git": "https://github.com/shiyu-coder/Kronos", "lot_max": 3,
                "modeles": {"kronos": "Kronos (Université Tsinghua, Chine) - spécial bougies de bourse"}},
     "granite": {"pip": ["granite-tsfm"], "modeles": {"ttm": "Granite TinyTimeMixer (IBM)"}},
+    "chronos_t5": {"pip": ["chronos-forecasting>=2.0"], "lot_max": 8,
+                   "modeles": {"chronos_t5": "Chronos-T5 original (Amazon, États-Unis)"}},
+    "timer": {"pip": ["transformers==4.40.1", "accelerate"], "lot_max": 12,
+              "modeles": {"timer": "Timer (Université Tsinghua, Chine)"}},
+    "lagllama": {"py": "3.10", "pip": ["gluonts[torch]<=0.14.4", "huggingface_hub", "numpy<2"],
+                 "git": "https://github.com/time-series-foundation-models/lag-llama", "lot_max": 8, "sans_requirements": True,
+                 "modeles": {"lagllama": "Lag-Llama (ServiceNow / Mila, Canada)"}},
+    # modèles de recherche connus, réentraînés à chaque heure sur les bougies 1 min de ~30 grands marchés
+    "nf_a": {"pip": ["neuralforecast"], "entraine": True,
+             "modeles": {"nbeats": "N-BEATS (Element AI, Canada)", "nhits": "N-HiTS (Nixtla / CMU)",
+                         "tide": "TiDE (Google)", "tcn": "TCN (réseau convolutif)"}},
+    "nf_b": {"pip": ["neuralforecast"], "entraine": True,
+             "modeles": {"deepar": "DeepAR (Amazon)", "patchtst": "PatchTST (IBM / Princeton)",
+                         "tft": "Temporal Fusion Transformer (Google)"}},
+}
+
+# Étudiées mais pas branchées (et pourquoi)
+EXCLUES = {
+    "TimeGPT (Nixtla)": "payant : seulement par leur service en ligne, pas de modèle à télécharger",
+    "MOMENT (Carnegie Mellon)": "ne prévoit pas tout seul : il faut le réentraîner pour chaque tâche de prévision",
+    "TimesFM 1.0 / 2.0 (Google)": "remplacés par TimesFM 2.5, déjà branché (même famille, en mieux)",
+    "TimesFM 3 (Google)": "licence non commerciale et 330 M de paramètres : trop lent sur nos machines gratuites",
+    "Toto 2.0 (Datadog)": "pas encore dans la bibliothèque toto-ts utilisée ; Toto 1.0 est branché",
+    "Timestral (Mistral, France)": "sorti en octobre 2026, pas encore de bibliothèque Python simple pour le lancer",
+    "Informer / Autoformer": "anciens transformers dépassés par PatchTST et TFT, déjà branchés",
 }
 
 # IA entraînées par nous sur les données Capital.com (ia/predire.py)

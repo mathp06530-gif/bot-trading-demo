@@ -26,7 +26,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from ia import predire  # noqa: E402
-from ia.geantes.familles import FAMILLES, MAISON, NOMS  # noqa: E402
+from ia.geantes.familles import EXCLUES, FAMILLES, MAISON, NOMS  # noqa: E402
 
 DUREE = int(os.getenv("IA_DUREE_S", str(50 * 60)))
 LOT = int(os.getenv("IA_LOT", "24"))  # marchés prédits par minute (rotation sur tous les marchés ouverts)
@@ -148,6 +148,9 @@ def vers_df(bougies):
 
 
 # --------------------------------------------------------------------------- IA maison (un seul jeu pour tous les marchés)
+SERIES = []  # bougies 1 min des grands marchés, aussi données aux IA de recherche (N-BEATS, TFT…) pour s'entraîner
+
+
 def entrainer_maison(api, ouverts):
     choix = [e for e in GRANDS if e in ouverts] or list(ouverts)[:30]
     X, Xs, Y = [], [], []
@@ -165,6 +168,7 @@ def entrainer_maison(api, ouverts):
         ok = F.notna().all(axis=1).values & ~np.isnan(y) & (np.arange(len(d)) >= predire.SEQ + 200)
         ii = np.where(ok)[0]
         X.append(F.values[ii]); Xs.append(np.stack([S[i - predire.SEQ + 1:i + 1] for i in ii])); Y.append(y[ii])
+        SERIES.append(mid)
         time.sleep(0.1)
     if not X:
         return {}
@@ -250,8 +254,11 @@ def principal():
     print(f"{len(ouverts)} ouverts maintenant", flush=True)
 
     maison = entrainer_maison(api, set(ouverts))
+    if SERIES:
+        np.savez("entrainement_ia.npz", series=np.array(SERIES, dtype=object))
+        os.environ["IA_ENTRAINEMENT"] = os.path.abspath("entrainement_ia.npz")
     from ia.geantes import Geantes
-    geantes = Geantes(attente_chargement=600, familles=[f for f in os.getenv("IA_FAMILLES", " ".join(FAMILLES)).split() if f])
+    geantes = Geantes(attente_chargement=900, familles=[f for f in os.getenv("IA_FAMILLES", " ".join(FAMILLES)).split() if f])
     modeles = list(maison) + geantes.modeles() + ["vote", "arbitre"]
     st = lire_json("stats.json", None) or stats_vides(modeles)
     for m in modeles:
@@ -259,7 +266,8 @@ def principal():
     vivant = lire_json("vivant.json", {})
     vivant.update({"debut_tour": iso(), "marches_connus": len(tous), "marches_ouverts": len(ouverts), "lot": LOT,
                    "etat_ia": {**{m: "prête" for m in maison}, **geantes.etat}, "noms": NOMS,
-                   "familles_maison": list(MAISON), "familles": {f: list(v["modeles"]) for f, v in FAMILLES.items()}})
+                   "familles_maison": list(MAISON), "familles": {f: list(v["modeles"]) for f, v in FAMILLES.items()},
+                   "exclues": EXCLUES})
     vivant.setdefault("probas", {})
     vivant.setdefault("dernieres", [])
     vivant.setdefault("vitesse", {})

@@ -45,5 +45,5 @@ jobs:
           CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
           CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
           CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
-          IA_DUREE_S: "2700"
+          IA_DUREE_S: "2400"
         run: python -u ia/direct.py
