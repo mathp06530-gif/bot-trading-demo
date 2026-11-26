@@ -1763,10 +1763,17 @@
    "marche": "GOLD",
    "texte": "[Rapide] VENTE de 0.02 à 3572.10, stop garanti à 35.72 $.",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-26T06:11:24Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Nouveau (26/11/2026) : 2 stratégie(s) EXPÉRIMENTALE(S) de l'usine à stratégies, risque 1 % chacune, sur NATURALGAS, TSLA. Trouvées parmi des dizaines de milliers d'essais et gardées seulement si elles gagnent sur des années jamais vues (2022-2026).",
+   "strategie": "usine"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T06:10:25Z",
+ "derniere_execution": "2026-11-26T06:11:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10287,15 +10294,19 @@
   {
    "date": "2026-11-26T06:10:25Z",
    "valeur": 93.14
+  },
+  {
+   "date": "2026-11-26T06:11:25Z",
+   "valeur": 93.17
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.14,
+  "solde": 93.17,
   "depot": 93.15,
-  "resultat_latent": -0.01,
-  "disponible": 89.86
+  "resultat_latent": 0.02,
+  "disponible": 89.89
  },
  "positions": [
   {
@@ -10304,7 +10315,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3572.1,
-   "resultat": 0,
+   "resultat": 0.02,
    "ouverte_le": "2026-11-26T06:10:23.892"
   }
  ],
@@ -10627,7 +10638,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T06:10:23Z",
    "statut": "ouvert",
-   "resultat": 0,
+   "resultat": 0.02,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -10651,7 +10662,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.14
+  "2026-11-26": 93.17
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -10733,6 +10744,20 @@
    "description": "Expérience lancée le 25/11/2026, trouvée sur les réseaux (Supertrend 10/3) : suit la tendance de l'Ethereum en 4 h. Seule idée sur 48 qui gagne sur des données jamais vues (2017-2025 : +138 R) ET sur les 2 dernières années (+10 R). Avantage en baisse : preuve moyenne.",
    "debut": "2026-11-25",
    "action": "Actif"
+  },
+  "usine": {
+   "active": true,
+   "nom": "Usine à stratégies (expérimentales)",
+   "unite": "HOUR_4 / DAY",
+   "risque_pct": 1.0,
+   "reglages": "Stratégies de l'usine, risque 1 % chacune (expérimentales)",
+   "marches": [
+    "NATURALGAS",
+    "TSLA"
+   ],
+   "description": "Expérience lancée le 26/11/2026 : stratégies fabriquées et triées par l'usine (des dizaines de milliers d'essais sur ~40 marchés), gardées seulement si elles gagnent sur 2022-2026, des années jamais vues pendant la fabrication, même avec des frais x 1,5.",
+   "debut": "2026-11-26",
+   "action": "Actif"
   }
  },
  "garde_fous": {
@@ -10809,13 +10834,11 @@
     "filtre": {
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
-     "tendance_4h": "SELL",
-     "bollinger": 1.16,
-     "adx": 25.5
+     "tendance_4h": "SELL"
     },
-    "prix": 3572.68,
-    "action": "VENTE de 0.02",
-    "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
+    "prix": 3570.49,
+    "action": "Position conservée",
+    "empilement": "position 2/2 possible quand le prix aura avancé de 33.84 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -11545,5 +11568,25 @@
    }
   }
  },
- "bitcoin_retire": "2026-11-26T05:34:20Z"
+ "bitcoin_retire": "2026-11-26T05:34:20Z",
+ "usine": {
+  "depuis": "2026-11-26T06:11:24Z",
+  "deals": {},
+  "marches": {
+   "NATURALGAS": {
+    "prix": 3.5433,
+    "sens": -1,
+    "atr": 0.07024,
+    "regle": "MACD 24/52/18, achat et vente, seulement si marché calme (ADX < 20), stop garanti 2.5 ATR, objectif 1 R, suiveur 3 ATR",
+    "action": "En attente d'un signal"
+   },
+   "TSLA": {
+    "prix": 383.245,
+    "sens": 1,
+    "atr": 9.40285,
+    "regle": "MACD 12/26/9, achat et vente, seulement si la volatilité baisse, stop garanti 2.5 ATR, objectif 2 R, 20 bougies max",
+    "action": "En attente d'un signal"
+   }
+  }
+ }
 }
