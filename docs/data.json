@@ -1822,8 +1822,8 @@
    "texte": "Connexion refusée (401). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.invalid.api.key\"}"
   }
  ],
- "statut": "erreur",
- "derniere_execution": "2026-11-26T10:42:49Z",
+ "statut": "ok",
+ "derniere_execution": "2026-11-26T10:43:27Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11412,6 +11412,10 @@
   {
    "date": "2026-11-26T10:41:27Z",
    "valeur": 93.09
+  },
+  {
+   "date": "2026-11-26T10:43:27Z",
+   "valeur": 93.09
   }
  ],
  "compte": {
@@ -11949,7 +11953,7 @@
      "tendance_4h": "SELL",
      "bollinger": 0.84
     },
-    "prix": 3555.28,
+    "prix": 3554.06,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 39.35 de plus dans le bon sens"
    },
@@ -12682,7 +12686,7 @@
   "deals": {},
   "marches": {
    "NATURALGAS": {
-    "prix": 3.5258,
+    "prix": 3.5298,
     "sens": -1,
     "atr": 0.07279,
     "regle": "MACD 24/52/18, achat et vente, seulement si marché calme (ADX < 20), stop garanti 2.5 ATR, objectif 1 R, suiveur 3 ATR",
@@ -12716,8 +12720,8 @@
    1795689600,
    3557.93,
    3558.67,
-   3555.02,
-   3555.28
+   3553.41,
+   3554.06
   ],
   "elan_4h-GOLD": [
    1795680000,
@@ -12745,7 +12749,7 @@
    3.5273,
    3.5493,
    3.4988,
-   3.5258
+   3.5298
   ],
   "usine-TSLA": [
    1795651200,
