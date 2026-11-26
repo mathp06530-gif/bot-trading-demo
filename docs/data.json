@@ -1804,7 +1804,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T09:42:26Z",
+ "derniere_execution": "2026-11-26T09:43:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11161,6 +11161,10 @@
   {
    "date": "2026-11-26T09:42:26Z",
    "valeur": 93.07
+  },
+  {
+   "date": "2026-11-26T09:43:26Z",
+   "valeur": 93.07
   }
  ],
  "compte": {
@@ -11713,9 +11717,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3575.25,
+    "prix": 3575.98,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 38.65 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 39.39 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -12484,9 +12488,9 @@
   "rapide-GOLD": [
    1795686000,
    3575.03,
-   3576.07,
+   3576.57,
    3574.38,
-   3575.25
+   3575.98
   ],
   "elan_4h-GOLD": [
    1795680000,
@@ -12735,13 +12739,13 @@
  "_pauses_marches_notees": {},
  "simulations": {
   "00000000-76c8-6a0d-049f-c46d0015549e": {
-   "p_stop": 56.6,
-   "p_objectif": 6.8,
-   "p_aucun": 36.6,
-   "p_gain_fin": 33.6,
-   "prix_p5": 3520.04,
-   "prix_median": 3583.42,
-   "prix_p95": 3644.51,
+   "p_stop": 57.7,
+   "p_objectif": 6.5,
+   "p_aucun": 35.8,
+   "p_gain_fin": 33.1,
+   "prix_p5": 3520.76,
+   "prix_median": 3584.15,
+   "prix_p95": 3645.26,
    "objectif": 3512.58,
    "objectif_type": "gain de 2 R",
    "objectif_r": 2.0,
@@ -12749,10 +12753,10 @@
    "horizon": "4 h",
    "tirages": 4000,
    "bougies_utilisees": 298,
-   "prix_depart": 3575.25,
+   "prix_depart": 3575.98,
    "calcule_sur": "2026-11-26T09:40:00",
    "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
-   "verdict": "Penche nettement vers le stop (11 % des cas tranchés, équilibre 33 %)."
+   "verdict": "Penche nettement vers le stop (10 % des cas tranchés, équilibre 33 %)."
   }
  }
 }
