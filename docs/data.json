@@ -1727,7 +1727,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-25T23:59:24Z",
+ "derniere_execution": "2026-11-26T00:00:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -8764,15 +8764,19 @@
   {
    "date": "2026-11-25T23:59:24Z",
    "valeur": 93.99
+  },
+  {
+   "date": "2026-11-26T00:00:24Z",
+   "valeur": 94.07
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.99,
+  "solde": 94.07,
   "depot": 96.11,
-  "resultat_latent": -2.12,
-  "disponible": 87.54
+  "resultat_latent": -2.04,
+  "disponible": 87.63
  },
  "positions": [
   {
@@ -8781,7 +8785,7 @@
    "sens": "SELL",
    "taille": 1.7,
    "prix_entree": 40.117,
-   "resultat": -2.12,
+   "resultat": -2.01,
    "ouverte_le": "2026-11-25T08:05:23.800"
   }
  ],
@@ -9343,7 +9347,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-25T08:05:23Z",
    "statut": "ouvert",
-   "resultat": -2.12,
+   "resultat": -2.01,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -9500,7 +9504,8 @@
   "2026-11-22": 97.91,
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
-  "2026-11-25": 93.99
+  "2026-11-25": 93.99,
+  "2026-11-26": 94.07
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -9602,7 +9607,7 @@
   }
  },
  "garde_fous": {
-  "debut_jour": 96.44,
+  "debut_jour": 94.07,
   "plus_haut": 97.04,
   "regles": {
    "perte_max_pct": 50.0,
@@ -9613,7 +9618,7 @@
    "pause_stops_h": 24.0
   },
   "coupe_circuit": false,
-  "jour": "2026-11-25"
+  "jour": "2026-11-26"
  },
  "actualites": {
   "annonces": [
@@ -9638,7 +9643,7 @@
    "prix": 3576.425,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
-   "ema200": 3922.16,
+   "ema200": 3922.17,
    "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)",
    "atr": 52.52,
    "empilement": "position 2/3 possible quand le prix aura avancé de 182.82 de plus dans le bon sens",
@@ -9674,7 +9679,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3577.645,
+    "prix": 3573.525,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -10396,10 +10401,10 @@
   "deals": {},
   "marches": {
    "ETHUSD": {
-    "prix": 1694.2,
+    "prix": 1690.28,
     "ligne": 1735.66,
     "sens": -1,
-    "atr": 41.73,
+    "atr": 40.02,
     "action": "En attente d'un retournement (sens actuel : baisse)"
    }
   }
