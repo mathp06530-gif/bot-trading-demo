@@ -1,6 +1,6 @@
 // Service worker : permet d'installer l'application et de l'ouvrir même sans réseau.
 // Toujours le réseau d'abord (pour les données à jour), la copie locale seulement en secours.
-const CACHE = "bot-trading-v3";
+const CACHE = "bot-trading-v4";
 const BASE = ["./", "./index.html", "./manifest.webmanifest", "./icone-192.png", "./icone-512.png", "./lib/lightweight-charts.js"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(BASE))); self.skipWaiting(); });
 self.addEventListener("activate", e => {
