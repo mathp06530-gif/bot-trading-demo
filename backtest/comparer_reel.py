@@ -9,6 +9,7 @@ Usage (GitHub Actions, secrets Capital.com) : python backtest/comparer_reel.py [
 """
 import json
 import os
+import time
 import sys
 from pathlib import Path
 
@@ -29,7 +30,15 @@ def charger():
     DOSSIER.mkdir(parents=True, exist_ok=True)
     telecharger.DOSSIER = DOSSIER
     api = CapitalDemo(*(os.getenv(n, "").strip() for n in ("CAPITAL_API_KEY", "CAPITAL_IDENTIFIER", "CAPITAL_PASSWORD")))
-    api.connexion()
+    for essai in range(12):  # le bot se connecte chaque minute : Capital.com peut répondre 429, on réessaie
+        try:
+            api.connexion()
+            break
+        except Exception as e:
+            print(f"connexion {essai + 1} : {e}")
+            time.sleep(25 + 5 * essai)
+    else:
+        raise SystemExit("connexion impossible")
     for epic in ("GOLD", "SILVER"):
         (DOSSIER / f"{epic}_marche.json").write_text(json.dumps(api.marche(epic), ensure_ascii=False))
         for unite, minutes, jours in (("MINUTE_5", 5, 20), ("HOUR", 60, 60), ("HOUR_4", 240, 400)):
