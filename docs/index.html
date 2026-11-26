@@ -203,8 +203,31 @@
   footer { color: var(--faible); font-size: 12px; text-align: center; padding: 26px 0 0; }
   nav.bas { display: none; }
 
+  /* ---------- Graphique en direct ---------- */
+  .gr-choix { display: flex; gap: 6px; flex-wrap: wrap; }
+  .gr-choix button { all: unset; cursor: pointer; padding: 6px 11px; border-radius: 10px; font-size: 12.5px; font-weight: 700; color: var(--doux); background: var(--fond); border: 1px solid var(--bord); }
+  .gr-choix button[aria-pressed="true"] { color: var(--texte); background: var(--carte2); border-color: var(--c, var(--cyan)); box-shadow: inset 0 -2px 0 var(--c, var(--cyan)); }
+  .graph.direct { height: 480px; }
+  .conds { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .conds li { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; padding: 8px 10px; border-radius: 10px; background: var(--fond); border: 1px solid var(--bord); }
+  .conds li b { flex: none; width: 20px; text-align: center; }
+  .conds li.ok b { color: var(--vert); } .conds li.ko b { color: var(--rouge); } .conds li.nsp b { color: var(--doux); }
+  .niv { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 8px; }
+  .niv div { background: var(--fond); border: 1px solid var(--bord); border-radius: 10px; padding: 8px 10px; }
+  .niv span { display: block; font-size: 10.5px; color: var(--doux); font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+  .niv b { font-size: 15px; }
+  .trade-gr { border-top: 1px solid var(--bord); padding: 10px 0; }
+  .trade-gr summary { color: var(--texte); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; list-style: none; }
+  .trade-gr summary::-webkit-details-marker { display: none; }
+  .trade-gr .conds { margin-top: 8px; }
+  .note-cap { font-size: 13.5px; color: var(--doux); background: rgba(79,140,255,.08); border: 1px solid rgba(79,140,255,.3); border-radius: 12px; padding: 10px 12px; }
+  .note-cap b { color: var(--texte); }
+
   /* ---------- Mobile / tablette ---------- */
   @media (max-width: 900px) {
+    .graph.direct { height: 400px; }
+    .gr-choix { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+    .gr-choix button { flex: none; }
     .app { grid-template-columns: minmax(0, 1fr); }
     aside.cote { display: none; }
     header.barre { padding: 12px 16px; padding-top: max(12px, env(safe-area-inset-top)); }
@@ -315,6 +338,39 @@
         </div>
       </section>
 
+      <!-- ============ GRAPHIQUE EN DIRECT ============ -->
+      <section class="page" id="p-graphique">
+        <div class="pile">
+          <div class="carte">
+            <div class="titre-carte">
+              <h2>Ce que le bot regarde<small id="gr-sous">Bougies, indicateurs de la stratégie, signaux, entrée, stop et TP réels</small></h2>
+            </div>
+            <div class="gr-choix" id="gr-choix"></div>
+            <div class="graph direct" id="g-direct"></div>
+            <div class="legende" id="gr-legende"></div>
+          </div>
+          <div class="g2e">
+            <div class="carte">
+              <div class="titre-carte"><h2>Conditions en ce moment<small id="gr-cond-sous">Sur la dernière bougie terminée</small></h2></div>
+              <div id="gr-action"></div>
+              <ul class="conds" id="gr-conds"></ul>
+            </div>
+            <div class="carte">
+              <div class="titre-carte"><h2>Position sur ce graphique<small>Niveaux réels chez Capital.com</small></h2></div>
+              <div id="gr-positions"></div>
+            </div>
+          </div>
+          <div class="carte">
+            <div class="titre-carte"><h2>Trades ici<small>Touche un trade pour voir les conditions remplies au moment de l'entrée</small></h2></div>
+            <div id="gr-trades"></div>
+          </div>
+          <div class="note-cap">ℹ️ <b>Et sur le graphique de Capital.com ?</b> Le stop (garanti) et le TP de chaque position sont de vrais ordres
+            chez Capital.com : tu les vois sur leur graphique (lignes de la position), et le bot y déplace le stop quand il suit le gain.
+            Par contre, Capital.com ne permet pas à un bot de dessiner sur son graphique : les indicateurs, les flèches de signaux et les
+            conditions ne sont visibles qu'ici.</div>
+        </div>
+      </section>
+
       <!-- ============ ORDRES ============ -->
       <section class="page" id="p-ordres">
         <div class="pile">
@@ -411,6 +467,7 @@ const COUL = { vert: "#16c784", rouge: "#ea3943", bleu: "#4f8cff", violet: "#8b5
 // =====================================================================
 const IC = {
   accueil: '<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
+  graphique: '<path d="M7 4v16M17 4v16"/><rect x="4.5" y="8" width="5" height="7" rx="1"/><rect x="14.5" y="6" width="5" height="9" rx="1"/>',
   strategies: '<path d="M12 2l3 6 6 1-4.5 4.4 1 6.6L12 17l-5.5 3 1-6.6L3 9l6-1z"/>',
   ordres: '<path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/>',
   journal: '<path d="M6 3h11a2 2 0 0 1 2 2v16l-4-2-4 2-4-2-3 2V5a2 2 0 0 1 2-2zM9 8h6M9 12h6"/>',
@@ -418,9 +475,9 @@ const IC = {
   plus: '<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',
 };
 const svg = id => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IC[id]}</svg>`;
-const PAGES = { accueil: "Accueil", strategies: "Stratégies", ordres: "Ordres", journal: "Journal", reglages: "Réglages", plus: "Plus" };
-$("menu").innerHTML = ["accueil", "strategies", "ordres", "journal", "reglages"].map(p => `<button data-p="${p}">${svg(p)}${PAGES[p]}</button>`).join("");
-$("nav-bas").innerHTML = [["accueil", "Accueil"], ["strategies", "Stratégies"], ["ordres", "Ordres"], ["plus", "Plus"]]
+const PAGES = { accueil: "Accueil", graphique: "Graphique en direct", strategies: "Stratégies", ordres: "Ordres", journal: "Journal", reglages: "Réglages", plus: "Plus" };
+$("menu").innerHTML = ["accueil", "graphique", "strategies", "ordres", "journal", "reglages"].map(p => `<button data-p="${p}">${svg(p)}${PAGES[p]}</button>`).join("");
+$("nav-bas").innerHTML = [["accueil", "Accueil"], ["graphique", "Graphique"], ["strategies", "Stratégies"], ["ordres", "Ordres"], ["plus", "Plus"]]
   .map(([p, n]) => `<button data-p="${p}">${svg(p)}${n}</button>`).join("");
 $("plus-liens").innerHTML = ["journal", "reglages"].map(p => `<button data-p="${p}">${svg(p)}${PAGES[p]}</button>`).join("");
 let pageActive = "accueil";
@@ -756,6 +813,7 @@ function carteOrdre(o) {
 // Graphiques : seulement ceux de la page visible (ils ont besoin d'une taille à l'écran)
 function dessinerGraphiques() {
   const d = D; if (!d) return;
+  if (pageActive === "graphique") chargerGraphique();
   if (pageActive === "accueil") {
     const pts = serieValeur(d);
     const ptsP = periode === "0" ? pts : pts.filter(p => p.t >= Date.now() - Number(periode) * JOUR);
@@ -780,6 +838,130 @@ function dessinerGraphiques() {
     }
     c.timeScale().fitContent();
   }
+}
+
+
+// =====================================================================
+// Graphique en direct : ce que le bot analyse (fichiers docs/graphiques/*.json écrits par le bot)
+// =====================================================================
+const GR = { index: null, fichiers: {}, choix: memo.get("graphique", ""), vue: null, dessine: null };
+const lireFichier = async chemin => {
+  const r = cle() ? await gh("/contents/docs/" + chemin + "?ref=main", { headers: { Accept: "application/vnd.github.raw+json" } })
+    : await fetch(chemin + "?t=" + Date.now(), { cache: "no-store" });
+  if (!r.ok) throw new Error(r.status);
+  return r.json();
+};
+const ACTION_STRAT = (d, g) => ({ cassure_4h: d.cassure?.[g.marche]?.action, rapide: d.rapide?.marches?.[g.marche]?.action,
+  elan_4h: d.elan?.marches?.[g.marche]?.action, supertrend_4h: d.supertrend?.marches?.[g.marche]?.action,
+  usine: d.usine?.marches?.[g.marche]?.action })[g.strategie];
+async function chargerGraphique() {
+  try { GR.index = (await lireFichier("graphiques/index.json")).graphiques || []; } catch { GR.index = GR.index || []; }
+  const liste = GR.index;
+  if (!liste.length) { $("gr-choix").innerHTML = ""; return graphVide("g-direct", "Les graphiques apparaîtront après le prochain tour du bot (1 minute)."); }
+  if (!liste.some(g => g.id === GR.choix)) GR.choix = liste[0].id;
+  $("gr-choix").innerHTML = liste.map(g => `<button data-gr="${esc(g.id)}" aria-pressed="${g.id === GR.choix}" style="--c:${(STRAT_INFO[g.strategie] || {}).couleur || COUL.cyan}">${(STRAT_INFO[g.strategie] || {}).ico || ""} ${esc(g.titre)}</button>`).join("");
+  try { GR.fichiers[GR.choix] = await lireFichier("graphiques/" + GR.choix + ".json"); } catch {}
+  dessinerDirect();
+}
+$("gr-choix").onclick = e => { const b = e.target.closest("[data-gr]"); if (!b) return; GR.choix = b.dataset.gr; memo.set("graphique", GR.choix); GR.dessine = null; chargerGraphique(); };
+
+function dessinerDirect() {
+  const g = GR.fichiers[GR.choix], d = D;
+  if (!g || !d) return graphVide("g-direct", "Chargement du graphique…");
+  const dec = g.decimales ?? 2, B = g.bougies, dur = ({ MINUTE_5: 300, HOUR: 3600, HOUR_4: 14400, DAY: 86400 })[g.unite] || 14400;
+  const T = t => t + TZ;
+  const bougies = B.t.map((t, i) => ({ time: T(t), open: B.o[i], high: B.h[i], low: B.l[i], close: B.c[i] }));
+  const live = d.graph_live?.[g.id];
+  if (live && live[0] > B.t.at(-1)) bougies.push({ time: T(live[0]), open: live[1], high: live[2], low: live[3], close: live[4] });
+  const cleDessin = g.id + ":" + B.t.at(-1);
+  const garderVue = GR.dessine === cleDessin && GRAPHS["g-direct"];
+  const vue = garderVue ? GRAPHS["g-direct"].timeScale().getVisibleLogicalRange() : null;
+  const c = graphique("g-direct", { timeScale: { borderVisible: false, timeVisible: true, secondsVisible: false, rightOffset: 4 },
+    localization: { locale: "fr-FR", priceFormatter: p => fmt(p, dec),
+      timeFormatter: t => new Date((t - TZ) * 1000).toLocaleString("fr-FR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" }) } });
+  if (!c) return;
+  const osc = g.oscillateur;
+  c.priceScale("right").applyOptions({ scaleMargins: { top: .06, bottom: osc ? .27 : .06 } });
+  const sb = c.addCandlestickSeries({ upColor: COUL.vert, downColor: COUL.rouge, borderVisible: false, wickUpColor: COUL.vert, wickDownColor: COUL.rouge,
+    priceFormat: { type: "price", precision: dec, minMove: Math.pow(10, -dec) } });
+  sb.setData(bougies);
+  const leg = [];
+  const STY = { tirets: 2, points: 1 };
+  for (const l of g.lignes || []) {
+    const s = c.addLineSeries({ color: l.couleur, lineWidth: l.style === "points" ? 1 : 2, lineStyle: STY[l.style] || 0, priceLineVisible: false,
+      lastValueVisible: false, crosshairMarkerVisible: false });
+    s.setData(B.t.map((t, i) => l.v[i] == null ? { time: T(t) } : { time: T(t), value: l.v[i] }));
+    leg.push(`<span><i style="background:${l.couleur}"></i>${esc(l.nom)}</span>`);
+  }
+  if (osc) {
+    if (osc.histo) {
+      const h = c.addHistogramSeries({ priceScaleId: "osc", priceLineVisible: false, lastValueVisible: false });
+      h.setData(B.t.map((t, i) => osc.histo[i] == null ? { time: T(t) } : { time: T(t), value: osc.histo[i], color: osc.histo[i] >= 0 ? "rgba(22,199,132,.45)" : "rgba(234,57,67,.45)" }));
+    }
+    osc.lignes.forEach((l, k) => {
+      const s = c.addLineSeries({ priceScaleId: "osc", color: l.couleur, lineWidth: 1.5, priceLineVisible: false, lastValueVisible: k === 0, crosshairMarkerVisible: false });
+      s.setData(B.t.map((t, i) => l.v[i] == null ? { time: T(t) } : { time: T(t), value: l.v[i] }));
+      if (k === 0 && osc.seuil) s.createPriceLine({ price: osc.seuil, color: "rgba(255,255,255,.3)", lineStyle: 2, lineWidth: 1, axisLabelVisible: true, title: "seuil" });
+    });
+    c.priceScale("osc").applyOptions({ scaleMargins: { top: .78, bottom: 0 } });
+    leg.push(`<span><i style="background:${osc.lignes[0].couleur}"></i>${esc(osc.nom)} (en bas)</span>`);
+  }
+  // Flèches : signaux repérés par la stratégie (petits ronds) + vrais trades du bot (grosses flèches)
+  const tMin = B.t[0], tCase = s => { const t = Math.floor(iso(s) / 1000); let k = -1; for (let i = 0; i < B.t.length; i++) if (B.t[i] <= t) k = i; return k < 0 ? null : B.t[k]; };
+  const marques = (g.marqueurs || []).map(m => ({ time: T(m.t), position: m.sens === "BUY" ? "belowBar" : "aboveBar", shape: "circle", size: .6,
+    color: m.sens === "BUY" ? "rgba(22,199,132,.6)" : "rgba(234,57,67,.6)" }));
+  const ordres = (d.ordres || []).filter(o => o.strategie === g.strategie && o.marche === g.marche);
+  for (const o of ordres) {
+    const achat = o.sens === "BUY", te = o.ouvert_le && iso(o.ouvert_le) / 1000 >= tMin ? tCase(o.ouvert_le) : null;
+    if (te != null) marques.push({ time: T(te), position: achat ? "belowBar" : "aboveBar", shape: achat ? "arrowUp" : "arrowDown", size: 1.6,
+      color: achat ? COUL.vert : COUL.rouge, text: (achat ? "Achat " : "Vente ") + fmt(o.prix_entree, dec) });
+    const ts = o.statut === "ferme" && o.ferme_le && iso(o.ferme_le) / 1000 >= tMin ? tCase(o.ferme_le) : null;
+    if (ts != null) marques.push({ time: T(ts), position: achat ? "aboveBar" : "belowBar", shape: "square", size: 1, color: o.resultat >= 0 ? COUL.vert : COUL.orange,
+      text: "Sortie " + fmtS(o.resultat) + dev });
+  }
+  sb.setMarkers(marques.sort((a, b) => a.time - b.time));
+  // Lignes de la position ouverte : entrée, stop garanti, TP (vrais niveaux chez Capital.com)
+  const pos = (d.positions || []).filter(p => p.marche === g.marche && (!p.strategie || p.strategie === g.strategie));
+  for (const p of pos) {
+    const mot = p.sens === "BUY" ? "achat" : "vente";
+    sb.createPriceLine({ price: p.prix_entree, color: COUL.bleu, lineStyle: 2, lineWidth: 1, axisLabelVisible: true, title: "Entrée " + mot });
+    if (p.stop != null) sb.createPriceLine({ price: p.stop, color: COUL.rouge, lineStyle: 0, lineWidth: 2, axisLabelVisible: true, title: p.stop_garanti ? "Stop garanti" : "Stop" });
+    if (p.objectif != null) sb.createPriceLine({ price: p.objectif, color: COUL.vert, lineStyle: 0, lineWidth: 2, axisLabelVisible: true, title: "TP" });
+  }
+  if (pos.length) leg.push(`<span><i style="background:${COUL.bleu}"></i>Entrée</span><span><i style="background:${COUL.rouge}"></i>Stop</span>` + (pos.some(p => p.objectif != null) ? `<span><i style="background:${COUL.vert}"></i>TP</span>` : ""));
+  leg.push(`<span>⬆⬇ trade du bot · ● signal de la stratégie</span>`);
+  $("gr-legende").innerHTML = leg.join("");
+  if (vue) c.timeScale().setVisibleLogicalRange(vue);
+  else c.timeScale().setVisibleLogicalRange({ from: Math.max(0, bougies.length - (dur === 300 ? 110 : 90)), to: bougies.length + 3 });
+  GR.dessine = cleDessin;
+  const info = UNITES[g.unite]?.[0] || g.unite;
+  $("gr-sous").textContent = `${g.regle} · bougies ${info}`;
+
+  // Conditions, positions, trades
+  const liCond = cs => (cs || []).map(x => `<li class="${x.ok === true ? "ok" : x.ok === false ? "ko" : "nsp"}"><b>${x.ok === true ? "✓" : x.ok === false ? "✗" : "?"}</b><span>${esc(x.texte)}</span></li>`).join("");
+  const fin = new Date((B.t.at(-1) + dur) * 1000).toLocaleString("fr-FR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+  $("gr-cond-sous").textContent = `Sur la dernière bougie terminée (fermée le ${fin})`;
+  const act = ACTION_STRAT(d, g);
+  $("gr-action").innerHTML = act ? `<div class="etat-strat" style="margin-bottom:10px"><span>🤖</span><span><b>Décision du bot :</b> ${esc(act)}</span></div>` : "";
+  $("gr-conds").innerHTML = liCond(g.conditions) || '<li class="nsp"><b>?</b><span>Pas encore de conditions.</span></li>';
+  $("gr-positions").innerHTML = pos.length ? pos.map(p => {
+    const achat = p.sens === "BUY", risque = p.stop != null ? Math.abs(p.prix_entree - p.stop) : null;
+    return `<div class="etat-strat"><span class="fleche ${achat ? "pos" : "neg"}">${achat ? "▲" : "▼"}</span><span><b>${achat ? "Achat" : "Vente"} de ${p.taille}</b> · résultat en cours <b class="${signe(p.resultat)}">${fmtS(p.resultat)}${dev}</b></span></div>
+      <div class="niv"><div><span>Entrée</span><b class="num">${fmt(p.prix_entree, dec)}</b></div>
+      <div><span>${p.stop_garanti ? "Stop garanti" : "Stop"}</span><b class="num neg">${p.stop != null ? fmt(p.stop, dec) : "—"}</b></div>
+      <div><span>TP</span><b class="num pos">${p.objectif != null ? fmt(p.objectif, dec) : "aucun"}</b></div>
+      <div><span>Distance du stop</span><b class="num">${risque != null ? fmt(risque, dec) : "—"}</b></div></div>
+      ${p.objectif == null ? '<p class="sous" style="margin:8px 0 0">Pas de TP fixe : c\'est voulu, la stratégie laisse courir le gain et le stop suit le prix.</p>' : ""}`;
+  }).join('<div style="height:12px"></div>') : '<div class="vide">Aucune position ouverte ici en ce moment.</div>';
+  const tr = ordres.slice().sort((a, b) => iso(b.ouvert_le) - iso(a.ouvert_le)).slice(0, 15);
+  $("gr-trades").innerHTML = tr.length ? tr.map(o => {
+    const cs = g.conditions_trades?.[o.id];
+    return `<details class="trade-gr"><summary><span class="badge ${o.statut === "ouvert" ? "b-ouvert" : "b-ferme"}">${o.statut === "ouvert" ? "ouvert" : "fermé"}</span>
+      <b class="${o.sens === "BUY" ? "pos" : "neg"}">${o.sens === "BUY" ? "▲ Achat" : "▼ Vente"}</b> à ${fmt(o.prix_entree, dec)} · ${quand(o.ouvert_le)}
+      ${o.statut === "ferme" ? `· sortie ${fmt(o.prix_sortie, dec)} · <b class="${signe(o.resultat)}">${fmtS(o.resultat)}${dev}</b>` : ""}</summary>
+      ${cs ? `<ul class="conds">${liCond(cs)}</ul>` : '<p class="sous">Trade trop ancien : les bougies de ce moment ne sont plus chargées.</p>'}
+      ${o.motif_sortie ? `<p class="sous" style="margin:6px 0 0">Sortie : ${esc(o.motif_sortie)}</p>` : ""}</details>`;
+  }).join("") : '<div class="vide">Pas encore de trade de cette stratégie sur ce marché.</div>';
 }
 
 // =====================================================================

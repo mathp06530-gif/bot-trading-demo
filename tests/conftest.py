@@ -35,3 +35,10 @@ def tendance_btc_pour_les_tests(monkeypatch):
     la Tendance 4 h sur BTCUSD pour vérifier que son code marche toujours si on la relance."""
     from bot import main
     monkeypatch.setattr(main, "MARCHES", ["BTCUSD"])
+
+
+@pytest.fixture(autouse=True)
+def graphiques_ailleurs(monkeypatch, tmp_path):
+    """Les tests n'écrivent jamais dans docs/graphiques/ du dépôt."""
+    from bot import graphiques
+    monkeypatch.setattr(graphiques, "DOSSIER", tmp_path / "graphiques")
