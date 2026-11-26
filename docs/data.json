@@ -1827,10 +1827,17 @@
    "marche": "GOLD",
    "texte": "[Rapide] VENTE de 0.02 à 3555.46, stop garanti à 35.55 $.",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-26T11:22:25Z",
+   "type": "commande",
+   "marche": "",
+   "texte": "Nouveau (26/11/2026) : stratégie EXPÉRIMENTALE « Avant la Fed » sur le Nasdaq 100, risque 1 %. Achat la veille d'une annonce de la Fed, vente juste avant l'annonce. Backtest 10 ans : gagnante sur 2017-21 et sur les années jamais vues (+4,4 R puis +3,2 R), mais seulement 8 trades par an. Prochaine annonce : 9/12/2026.",
+   "strategie": "fed"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T11:21:26Z",
+ "derniere_execution": "2026-11-26T11:22:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11575,15 +11582,19 @@
   {
    "date": "2026-11-26T11:21:26Z",
    "valeur": 92.83
+  },
+  {
+   "date": "2026-11-26T11:22:26Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 92.83,
+  "solde": 92.86,
   "depot": 93.09,
-  "resultat_latent": -0.26,
-  "disponible": 89.56
+  "resultat_latent": -0.23,
+  "disponible": 89.59
  },
  "positions": [
   {
@@ -11592,7 +11603,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3555.46,
-   "resultat": -0.26,
+   "resultat": -0.23,
    "ouverte_le": "2026-11-26T10:50:25.127",
    "id": "00000000-76ca-6738-049f-c46d0015549e",
    "stop": 3591.01,
@@ -11950,7 +11961,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T10:50:25Z",
    "statut": "ouvert",
-   "resultat": -0.26,
+   "resultat": -0.23,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -11974,7 +11985,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 92.83
+  "2026-11-26": 92.86
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -12070,6 +12081,19 @@
    "description": "Expérience lancée le 26/11/2026 : stratégies fabriquées et triées par l'usine (des dizaines de milliers d'essais sur ~40 marchés), gardées seulement si elles gagnent sur 2022-2026, des années jamais vues pendant la fabrication, même avec des frais x 1,5.",
    "debut": "2026-11-26",
    "action": "Actif"
+  },
+  "fed": {
+   "active": true,
+   "nom": "Avant la Fed, Nasdaq 100 (expérimentale)",
+   "unite": "HOUR",
+   "risque_pct": 1.0,
+   "reglages": "Achat la veille d'une annonce de la Fed à 14 h (New York), fermeture juste avant l'annonce, stop garanti 1 ATR jour, risque 1 % (expérimentale)",
+   "marches": [
+    "US100"
+   ],
+   "description": "Expérience du 26/11/2026 : les actions américaines montent en moyenne la veille d'une annonce de la Fed. Achat du Nasdaq 100 la veille à 14 h (New York), vente juste avant l'annonce. Backtest 10 ans Capital.com : +7,5 R (2017-21), +4,4 R puis +3,2 R sur des années jamais vues. 8 trades par an, preuve faible à moyenne.",
+   "debut": "2026-11-26",
+   "action": "Actif"
   }
  },
  "garde_fous": {
@@ -12156,9 +12180,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3569.045,
+    "prix": 3567.73,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 48.89 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 47.69 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -12894,7 +12918,7 @@
   "deals": {},
   "marches": {
    "NATURALGAS": {
-    "prix": 3.5333,
+    "prix": 3.5343,
     "sens": -1,
     "atr": 0.07279,
     "regle": "MACD 24/52/18, achat et vente, seulement si marché calme (ADX < 20), stop garanti 2.5 ATR, objectif 1 R, suiveur 3 ATR",
@@ -12927,9 +12951,9 @@
   "rapide-GOLD": [
    1795692000,
    3567.97,
-   3569.49,
-   3567.88,
-   3569.05
+   3569.79,
+   3567.65,
+   3567.73
   ],
   "elan_4h-GOLD": [
    1795680000,
@@ -12957,7 +12981,7 @@
    3.5273,
    3.5493,
    3.4988,
-   3.5333
+   3.5343
   ],
   "usine-TSLA": [
    1795651200,
@@ -13180,13 +13204,13 @@
  "_pauses_marches_notees": {},
  "simulations": {
   "00000000-76ca-6738-049f-c46d0015549e": {
-   "p_stop": 62.5,
-   "p_objectif": 1.9,
-   "p_aucun": 35.6,
-   "p_gain_fin": 30.8,
-   "prix_p5": 3514.06,
-   "prix_median": 3576.1,
-   "prix_p95": 3639.16,
+   "p_stop": 60.2,
+   "p_objectif": 2.1,
+   "p_aucun": 37.7,
+   "p_gain_fin": 32.0,
+   "prix_p5": 3512.76,
+   "prix_median": 3574.79,
+   "prix_p95": 3637.82,
    "objectif": 3484.36,
    "objectif_type": "gain de 2 R",
    "objectif_r": 2.0,
@@ -13194,10 +13218,20 @@
    "horizon": "4 h",
    "tirages": 4000,
    "bougies_utilisees": 298,
-   "prix_depart": 3569.05,
+   "prix_depart": 3567.73,
    "calcule_sur": "2026-11-26T11:20:00",
    "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
    "verdict": "Penche nettement vers le stop (3 % des cas tranchés, équilibre 33 %)."
+  }
+ },
+ "fed": {
+  "depuis": "2026-11-26T11:22:25Z",
+  "deals": {},
+  "marches": {
+   "US100": {
+    "prochaine_annonce": "2026-12-09",
+    "action": "En attente : achat la veille de l'annonce du 2026-12-09 à 14 h (New York)"
+   }
   }
  }
 }
