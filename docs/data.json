@@ -1868,7 +1868,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T13:24:26Z",
+ "derniere_execution": "2026-11-26T13:25:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -12093,6 +12093,10 @@
   {
    "date": "2026-11-26T13:24:26Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T13:25:25Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -12670,9 +12674,9 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 0.59
+     "bollinger": 0.6
     },
-    "prix": 3567.39,
+    "prix": 3566.51,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    },
@@ -13436,11 +13440,11 @@
    41.41
   ],
   "rapide-GOLD": [
-   1795699200,
-   3565.14,
-   3570.29,
-   3565.14,
-   3567.39
+   1795699500,
+   3566.32,
+   3566.51,
+   3565.01,
+   3566.51
   ],
   "elan_4h-GOLD": [
    1795694400,
