@@ -1780,7 +1780,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T06:45:25Z",
+ "derniere_execution": "2026-11-26T06:46:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10441,15 +10441,19 @@
   {
    "date": "2026-11-26T06:45:25Z",
    "valeur": 93.23
+  },
+  {
+   "date": "2026-11-26T06:46:25Z",
+   "valeur": 93.2
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.23,
+  "solde": 93.2,
   "depot": 93.15,
-  "resultat_latent": 0.08,
-  "disponible": 89.96
+  "resultat_latent": 0.05,
+  "disponible": 89.92
  },
  "positions": [
   {
@@ -10458,8 +10462,13 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3572.1,
-   "resultat": 0.08,
-   "ouverte_le": "2026-11-26T06:10:23.892"
+   "resultat": 0.05,
+   "ouverte_le": "2026-11-26T06:10:23.892",
+   "id": "00000000-76c8-6a0d-049f-c46d0015549e",
+   "stop": 3601.86,
+   "stop_garanti": true,
+   "objectif": null,
+   "strategie": "rapide"
   }
  ],
  "analyses": {},
@@ -10781,7 +10790,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T06:10:23Z",
    "statut": "ouvert",
-   "resultat": 0.08,
+   "resultat": 0.05,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -10795,7 +10804,8 @@
     "GARDE_RAPIDE_PCT": 60.0,
     "SORTIE_CONFIRMEE_RAPIDE": 3.0,
     "EMPILER_RAPIDE": 2.0
-   }
+   },
+   "objectif": null
   }
  ],
  "historique_jour": {
@@ -10805,7 +10815,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.23
+  "2026-11-26": 93.2
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -10979,9 +10989,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3567.16,
+    "prix": 3567.785,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 30.48 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 31.12 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -11731,5 +11741,63 @@
     "action": "En attente d'un signal"
    }
   }
+ },
+ "graph_live": {
+  "cassure_4h-GOLD": [
+   1795665600,
+   3575.32,
+   3605.17,
+   3561.35,
+   3566.31
+  ],
+  "cassure_4h-SILVER": [
+   1795665600,
+   41.67,
+   42.29,
+   41.24,
+   41.37
+  ],
+  "rapide-GOLD": [
+   1795675500,
+   3566.81,
+   3568.09,
+   3566.24,
+   3567.78
+  ],
+  "elan_4h-GOLD": [
+   1795665600,
+   3575.32,
+   3605.17,
+   3561.35,
+   3566.31
+  ],
+  "elan_4h-SILVER": [
+   1795665600,
+   41.67,
+   42.29,
+   41.24,
+   41.37
+  ],
+  "supertrend_4h-ETHUSD": [
+   1795665600,
+   1695.62,
+   1705.19,
+   1680.16,
+   1684.44
+  ],
+  "usine-NATURALGAS": [
+   1795665600,
+   3.5873,
+   3.5938,
+   3.4908,
+   3.4973
+  ],
+  "usine-TSLA": [
+   1795651200,
+   380.5,
+   383.25,
+   380.4,
+   383.25
+  ]
  }
 }
