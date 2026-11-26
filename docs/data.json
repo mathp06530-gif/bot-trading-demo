@@ -1843,7 +1843,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T12:06:27Z",
+ "derniere_execution": "2026-11-26T12:07:27Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11764,15 +11764,19 @@
   {
    "date": "2026-11-26T12:06:27Z",
    "valeur": 92.8
+  },
+  {
+   "date": "2026-11-26T12:07:27Z",
+   "valeur": 92.79
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 92.8,
+  "solde": 92.79,
   "depot": 93.09,
-  "resultat_latent": -0.29,
-  "disponible": 89.53
+  "resultat_latent": -0.3,
+  "disponible": 89.51
  },
  "positions": [
   {
@@ -11781,7 +11785,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3555.46,
-   "resultat": -0.29,
+   "resultat": -0.3,
    "ouverte_le": "2026-11-26T10:50:25.127",
    "id": "00000000-76ca-6738-049f-c46d0015549e",
    "stop": 3591.01,
@@ -12139,7 +12143,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T10:50:25Z",
    "statut": "ouvert",
-   "resultat": -0.29,
+   "resultat": -0.3,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -12163,7 +12167,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 92.8
+  "2026-11-26": 92.79
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -12358,9 +12362,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3571.39,
+    "prix": 3571.375,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 51.35 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 51.37 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -13096,7 +13100,7 @@
   "deals": {},
   "marches": {
    "NATURALGAS": {
-    "prix": 3.5288,
+    "prix": 3.5078,
     "sens": -1,
     "atr": 0.07138,
     "regle": "MACD 24/52/18, achat et vente, seulement si marché calme (ADX < 20), stop garanti 2.5 ATR, objectif 1 R, suiveur 3 ATR",
@@ -13131,7 +13135,7 @@
    3570.87,
    3572.38,
    3570.07,
-   3571.39
+   3571.38
   ],
   "elan_4h-GOLD": [
    1795694400,
@@ -13158,8 +13162,8 @@
    1795694400,
    3.5358,
    3.5358,
-   3.5248,
-   3.5288
+   3.5068,
+   3.5078
   ],
   "usine-TSLA": [
    1795651200,
@@ -13170,7 +13174,7 @@
   ]
  },
  "veille": {
-  "titres_lus_le": "2026-11-26T11:06:22.732251+00:00",
+  "titres_lus_le": "2026-11-26T12:07:21.803963+00:00",
   "titres": {
    "ETHUSD": [
     {
@@ -13214,46 +13218,44 @@
    ],
    "GOLD": [
     {
+     "titre": "JZR Gold Provides Update on Gold Processing and  Metallurgical Optimization on the Vila Nova Gold Project",
+     "lien": "https://finance.yahoo.com/markets/commodities/articles/jzr-gold-provides-gold-processing-120200609.html?.tsrc=rss",
+     "date": "2026-11-26T12:02Z",
+     "sujets": []
+    },
+    {
+     "titre": "Elizabeth Warren is ‘ready to go’ on Trump’s 10% credit card cap. With rates averaging 22%, are you overpaying?",
+     "lien": "https://finance.yahoo.com/economy/policy/articles/elizabeth-warren-ready-trump-10-114500907.html?.tsrc=rss",
+     "date": "2026-11-26T11:45Z",
+     "sujets": []
+    },
+    {
+     "titre": "Fed official issues new warning for US savers after ‘distressing’ report — nest eggs now in danger from disturbing data",
+     "lien": "https://finance.yahoo.com/economy/policy/articles/fed-official-issues-warning-us-113000686.html?.tsrc=rss",
+     "date": "2026-11-26T11:30Z",
+     "sujets": [
+      "Fed / taux"
+     ]
+    },
+    {
+     "titre": "The government can reduce your Social Security without consent: Mom stunned by $60K repayment demand. Protect your check",
+     "lien": "https://finance.yahoo.com/economy/policy/articles/government-reduce-social-security-without-111500254.html?.tsrc=rss",
+     "date": "2026-11-26T11:15Z",
+     "sujets": []
+    },
+    {
+     "titre": "Holding GLD For Stock Falls? Gold Missed This One",
+     "lien": "https://www.trefis.com/stock/gld/articles/629222/holding-gld-for-stock-falls-gold-missed-this-one/2026-11-26?.tsrc=rss",
+     "date": "2026-11-26T11:02Z",
+     "sujets": []
+    },
+    {
      "titre": "Gold Prices Mixed as Stronger US Dollar Pressures Spot Bullion While Futures Advance",
      "lien": "https://investorshub.advfn.com/market-news/article/40751/gold-prices-mixed-as-stronger-us-dollar-pressures-spot-bullion-while-futures-advance?.tsrc=rss",
      "date": "2026-11-26T09:58Z",
      "sujets": [
       "dollar"
      ]
-    },
-    {
-     "titre": "Crossroads Gold gets exploration licence for Club Terrace Project in Australia",
-     "lien": "https://www.mining-technology.com/news/crossroads-exploration-licence-club-terrace-project/?.tsrc=rss",
-     "date": "2026-11-26T08:28Z",
-     "sujets": []
-    },
-    {
-     "titre": "Gold spot prices slip as dollar firms, while U.S. futures gain",
-     "lien": "https://finance.yahoo.com/markets/commodities/articles/gold-eases-u-inflation-data-035043521.html?.tsrc=rss",
-     "date": "2026-11-26T03:50Z",
-     "sujets": [
-      "dollar"
-     ]
-    },
-    {
-     "titre": "Horizon Gold marks 10 years on ASX with strong results",
-     "lien": "https://finance.yahoo.com/video/horizon-gold-marks-10-years-015021434.html?.tsrc=rss",
-     "date": "2026-11-26T01:50Z",
-     "sujets": [
-      "résultats"
-     ]
-    },
-    {
-     "titre": "If you invested $1,000 in gold, Bitcoin or silver last Thanksgiving, here’s what you’d have today",
-     "lien": "https://www.thestreet.com/crypto/markets/if-you-invested-1000-in-gold-bitcoin-or-silver-last-thanksgiving-heres-what-youd-have-today?.tsrc=rss",
-     "date": "2026-11-26T00:15Z",
-     "sujets": []
-    },
-    {
-     "titre": "Ora Banda Mining expands Davyhurst gold pipeline with new Bluey trend and high-grade regional hits",
-     "lien": "https://www.proactiveinvestors.com/companies/news/1102473/ora-banda-mining-expands-davyhurst-gold-pipeline-with-new-bluey-trend-and-high-grade-regional-hits-1102473.html?.tsrc=rss",
-     "date": "2026-11-25T23:21Z",
-     "sujets": []
     }
    ],
    "NATURALGAS": [
@@ -13272,10 +13274,12 @@
      ]
     },
     {
-     "titre": "Equinor (OB:EQNR) Lands Its Longest Gas Supply Deal Since 1986",
-     "lien": "https://finance.yahoo.com/energy/articles/equinor-ob-eqnr-lands-longest-131459675.html?.tsrc=rss",
-     "date": "2026-11-25T13:14Z",
-     "sujets": []
+     "titre": "Europe gas prices rangebound as markets weigh Middle East tensions",
+     "lien": "https://finance.yahoo.com/energy/articles/europe-gas-prices-rangebound-markets-114458393.html?.tsrc=rss",
+     "date": "2026-11-26T11:44Z",
+     "sujets": [
+      "géopolitique"
+     ]
     },
     {
      "titre": "Constellation concludes 4.4GW natural gas-fired power plants sale",
@@ -13340,6 +13344,18 @@
    ],
    "TSLA": [
     {
+     "titre": "JPMorgan Says S&P Could Waive Its Rules for a Tesla-SpaceX Merger. That’s Good News for SpaceX Holders",
+     "lien": "https://www.tikr.com/blog/jpmorgan-says-sp-could-waive-its-rules-for-a-tesla-spacex-merger-thats-good-news-for-spacex-holders?ref=yahoofinance&tlnk=yf-261126-gpc9wr29&.tsrc=rss",
+     "date": "2026-11-26T11:45Z",
+     "sujets": []
+    },
+    {
+     "titre": "Invesco QQQ Trust (QQQ) Buys $187.4 Million More Apple on Tuesday",
+     "lien": "https://finance.yahoo.com/markets/stocks/articles/invesco-qqq-trust-qqq-buys-110402435.html?.tsrc=rss",
+     "date": "2026-11-26T11:04Z",
+     "sujets": []
+    },
+    {
      "titre": "Cathie Wood Buys More SpaceX Amid Tesla Merger Talks — Ron Baron Says SpaceX Could Make $50B A Year From One Data Center",
      "lien": "https://stocktwits.com/news-articles/markets/equity/cathie-wood-buys-spacex-tesla-merger-talks-ron-baron-spacex-50b-one-data-center/cNbxeDKR9Z4?.tsrc=rss",
      "date": "2026-11-26T03:32Z",
@@ -13362,17 +13378,43 @@
      "lien": "https://247wallst.com/investing/2026/11/25/billionaire-brad-gerstners-altimeter-opened-a-680-million-tesla-stake-and-exited-qualcomm-and-applied-materials/?.tsrc=rss",
      "date": "2026-11-25T20:22Z",
      "sujets": []
-    },
+    }
+   ],
+   "US100": [
     {
-     "titre": "Is Space Exploration Technologies (SPCX) Cheap As Tesla Merger Talks Raise Valuation Questions?",
-     "lien": "https://finance.yahoo.com/markets/stocks/articles/space-exploration-technologies-spcx-cheap-201121157.html?.tsrc=rss",
-     "date": "2026-11-25T20:11Z",
+     "titre": "Asian stocks rally as Taiwan, South Korea rebound; Nvidia risks linger",
+     "lien": "https://finance.yahoo.com/markets/world-indices/articles/asian-stocks-rally-taiwan-south-053137366.html?.tsrc=rss",
+     "date": "2026-11-26T05:31Z",
      "sujets": []
     },
     {
-     "titre": "Ford Motor vs. Tesla: Which Automaker Stock Is a Better Buy for 2027?",
-     "lien": "https://www.fool.com/coverage/better-buy/2026/11/25/ford-motor-vs-tesla-which-automaker-stock-is-a-better-buy-for-2027/?.tsrc=rss",
-     "date": "2026-11-25T18:13Z",
+     "titre": "S&P 500, Nasdaq End Lower But Dow Rebounds As Traders Rotate Out Of AI — NVDA, SPCX, PANW  In Focus",
+     "lien": "https://stocktwits.com/news-articles/markets/equity/s-and-p-500-nasdaq-end-lower-but-dow-rebounds-as-traders-rotate-out-of-ai-nvda-spcx-panw-in-focus/cNbx21AR9mC?.tsrc=rss",
+     "date": "2026-11-26T00:09Z",
+     "sujets": []
+    },
+    {
+     "titre": "Stocks Pare AI-Driven Losses as Dip Buyers Emerge",
+     "lien": "https://finance.yahoo.com/video/stocks-pare-ai-driven-losses-222542755.html?.tsrc=rss",
+     "date": "2026-11-25T22:25Z",
+     "sujets": []
+    },
+    {
+     "titre": "The economy is hot, but stocks are not.",
+     "lien": "https://www.axios.com/2026/11/25/nvidia-stock-jensen-huang-economy#utm_source=yahoo_finance&utm_medium=partner&utm_campaign=subs-partner-yahoo-finance-AI?.tsrc=rss",
+     "date": "2026-11-25T22:03Z",
+     "sujets": []
+    },
+    {
+     "titre": "Anthropic Rebounds From 10% Drop as Markets Stage Dramatic Recovery | Closing Bell",
+     "lien": "https://finance.yahoo.com/video/anthropic-rebounds-10-drop-markets-214201731.html?.tsrc=rss",
+     "date": "2026-11-25T21:42Z",
+     "sujets": []
+    },
+    {
+     "titre": "Goldman Sachs Sinks 8% in a Week to a New 52-Week Low. Is the Selling Overdone?",
+     "lien": "https://www.tikr.com/blog/goldman-sachs-sinks-8-in-a-week-to-a-new-52-week-low-is-the-selling-overdone?ref=yahoofinance&tlnk=yf-261126-7q249p7q&.tsrc=rss",
+     "date": "2026-11-26T08:31Z",
      "sujets": []
     }
    ]
@@ -13386,9 +13428,9 @@
    "p_objectif": 1.6,
    "p_aucun": 31.4,
    "p_gain_fin": 28.4,
-   "prix_p5": 3513.64,
-   "prix_median": 3578.09,
-   "prix_p95": 3641.96,
+   "prix_p5": 3513.62,
+   "prix_median": 3578.08,
+   "prix_p95": 3641.95,
    "objectif": 3484.36,
    "objectif_type": "gain de 2 R",
    "objectif_r": 2.0,
@@ -13396,7 +13438,7 @@
    "horizon": "4 h",
    "tirages": 4000,
    "bougies_utilisees": 298,
-   "prix_depart": 3571.39,
+   "prix_depart": 3571.38,
    "calcule_sur": "2026-11-26T12:05:00",
    "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
    "verdict": "Penche nettement vers le stop (2 % des cas tranchés, équilibre 33 %)."
