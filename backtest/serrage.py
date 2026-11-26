@@ -83,10 +83,12 @@ def simuler(df, voulu, ok, dstop, dsuivi, cond, regle=None, be=None, dobj=None):
     dates = df.index
     nuits = nuits_par_bougie(dates)
     trades, pos, sortir = [], 0, None
+    sorties = []  # 26/11 : bougie de sortie de chaque trade (colonne « fin »)
     for i in range(1, len(df)):
         if pos and (voulu[i - 1] != pos or sortir):
             px = ob[i] if pos > 0 else oa[i]
             trades.append((d_entree, ((px - entree) * pos - frais) / dist, sortir or "signal"))
+            sorties.append(i)
             pos, sortir = 0, None
         if not pos and voulu[i - 1] and ok[i - 1] and dstop[i - 1] == dstop[i - 1]:
             pos = int(voulu[i - 1])
@@ -100,11 +102,13 @@ def simuler(df, voulu, ok, dstop, dsuivi, cond, regle=None, be=None, dobj=None):
         if (lb[i] <= stop) if pos > 0 else (ha[i] >= stop):
             frais += abs(stop) * PRIME_PCT / 100
             trades.append((d_entree, ((stop - entree) * pos - frais) / dist, "stop"))
+            sorties.append(i)
             pos = 0
             continue
         if obj is not None and ((hb[i] >= obj) if pos > 0 else (la[i] <= obj)):
             px = max(obj, ob[i]) if pos > 0 else min(obj, oa[i])
             trades.append((d_entree, ((px - entree) * pos - frais) / dist, "objectif"))
+            sorties.append(i)
             pos = 0
             continue
         mid = (cb[i] + ca[i]) / 2
@@ -125,7 +129,9 @@ def simuler(df, voulu, ok, dstop, dsuivi, cond, regle=None, be=None, dobj=None):
             stop = max(stop, cible) if pos > 0 else min(stop, cible)
         if be is not None and gain_max >= be and ((cb[i] if pos > 0 else ca[i]) - entree) * pos <= 0:
             sortir = "point d'entrée"
-    return pd.DataFrame(trades, columns=["date", "R", "raison"])
+    out = pd.DataFrame(trades, columns=["date", "R", "raison"])
+    out["fin"] = pd.DatetimeIndex([dates[k] for k in sorties])
+    return out
 
 
 def resumer(t, debut, milieu_):
