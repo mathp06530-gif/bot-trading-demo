@@ -1879,7 +1879,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T18:55:23Z",
+ "derniere_execution": "2026-11-26T19:06:23Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -13428,6 +13428,50 @@
   {
    "date": "2026-11-26T18:55:23Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T18:56:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T18:57:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T18:58:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T18:59:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T19:00:24Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T19:01:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T19:02:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T19:03:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T19:04:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T19:05:23Z",
+   "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T19:06:23Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -13904,7 +13948,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3569.0,
+   "prix": 3567.97,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3905.05,
@@ -13916,7 +13960,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.572,
+   "prix": 41.573,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.21,
@@ -13943,9 +13987,9 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 0.41
+     "bollinger": 0.32
     },
-    "prix": 3569.1,
+    "prix": 3567.9,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    }
@@ -14629,7 +14673,7 @@
    3573.58,
    3578.32,
    3565.19,
-   3569.0
+   3567.97
   ],
   "cassure_4h-SILVER": [
    1795708800,
@@ -14639,11 +14683,11 @@
    41.57
   ],
   "rapide-GOLD": [
-   1795719000,
-   3568.75,
-   3569.22,
-   3568.29,
-   3569.1
+   1795719900,
+   3567.57,
+   3567.9,
+   3567.56,
+   3567.9
   ]
  },
  "nettoyage": "2026-11-26"
