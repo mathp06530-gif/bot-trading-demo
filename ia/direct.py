@@ -48,7 +48,10 @@ def iso(t=None):
 
 # --------------------------------------------------------------------------- publication (branche sans historique)
 def git(*args, check=False):
-    return subprocess.run(["git", *args], cwd=DOSSIER, capture_output=True, text=True, check=check)
+    try:
+        return subprocess.run(["git", *args], cwd=DOSSIER, capture_output=True, text=True, check=check, timeout=90)
+    except subprocess.TimeoutExpired:
+        return subprocess.CompletedProcess(args, 1, "", "délai dépassé")
 
 
 def preparer_branche():
@@ -275,8 +278,9 @@ def principal():
     attente = []
     derniere_session, derniere_pub, dernier_etat = time.time(), 0.0, time.time()
     pool = ThreadPoolExecutor(6)
-    fond = ThreadPoolExecutor(1)
-    tache_etat = tache_pub = None
+    fond = ThreadPoolExecutor(1)  # publication seulement
+    tache_pub = None
+    curseur_etat, tours = 0, 0
     while time.time() - debut < DUREE:
         time.sleep(max(0.0, 60.5 - (maintenant().second + maintenant().microsecond / 1e6)) % 60)
         t_tour = time.time()
@@ -287,16 +291,15 @@ def principal():
                 pass
             api.connexion()
             derniere_session = time.time()
-        if tache_etat is not None and tache_etat.done():
-            try:
-                ouverts = trier_ouverts(tache_etat.result(), tous)
-                curseur = 0
-            except Exception:
-                pass
-            tache_etat = None
-        if t_tour - dernier_etat > 15 * 60 and tache_etat is None:  # marchés qui ouvrent / ferment (en arrière-plan)
-            tache_etat = fond.submit(instantanes, api, tous)
-            dernier_etat = time.time()
+        # marchés qui ouvrent / ferment : 100 marchés revérifiés par minute (2 appels), liste triée toutes les 10 min
+        part = [tous[(curseur_etat + k) % len(tous)] for k in range(min(100, len(tous)))]
+        curseur_etat = (curseur_etat + len(part)) % max(1, len(tous))
+        for e in part:
+            etat.pop(e, None)
+        etat.update(instantanes(api, part))
+        tours += 1
+        if tours % 10 == 0:
+            ouverts = trier_ouverts(etat, tous)  # la rotation continue où elle en était
         etapes = {}
         # 1. juger les prédictions arrivées à échéance (60 s)
         dues = [p for p in attente if p["echeance"] <= time.time()]
