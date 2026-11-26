@@ -786,3 +786,56 @@ def test_bitcoin_retire_plus_de_tendance_4h(tmp_path, monkeypatch):
     assert d["bitcoin_retire"] and sum("Bitcoin retiré" in l["texte"] for l in d["journal"]) == 1
     main.un_tour(d, faux)
     assert sum("Bitcoin retiré" in l["texte"] for l in d["journal"]) == 1
+
+
+def test_usine_achete_suit_et_se_retourne(tmp_path, monkeypatch):
+    """Stratégie de l'usine (Supertrend 10/3 sur un marché libre) : achat sur signal nouveau, une seule fois,
+    stop suiveur remonté, puis fermeture + vente quand le signal s'inverse."""
+    from bot import usine
+    monkeypatch.setattr(main, "FICHIER_DONNEES", tmp_path / "data.json")
+    monkeypatch.setattr(main, "MARCHES", [])
+    spec = {"famille": "st", "p": [10, 3.0], "filtre": "aucun", "sens": "les2", "stop": 1.5, "objectif": 2.0,
+            "suiveur": 3.0, "duree": 0}
+    monkeypatch.setattr(usine, "STRATEGIES", [{"epic": "PLATINUM", "unite": "HOUR_4", "spec": spec, "texte": "test"}])
+    monkeypatch.setattr(usine, "LISTE", ["PLATINUM"])
+    baisse = [2400 - 2 * i for i in range(350)]
+    prix = baisse + [baisse[-1] + 300]
+    faux = FauxCapitalActions(prix)
+    d = {}
+    main.un_tour(d, faux)
+    platine = [o for o in faux.ouvertes if faux.epics[o[0]] == "PLATINUM"]
+    assert [o[1] for o in platine] == ["BUY"]
+    assert d["strategies"]["usine"]["action"] == "Actif" and d["usine"]["depuis"]
+    assert faux.objectifs[-1] and faux.objectifs[-1] > 0  # objectif à 2 R envoyé à Capital.com
+    main.un_tour(d, faux)  # même signal : pas de 2e ordre
+    assert len([o for o in faux.ouvertes if faux.epics[o[0]] == "PLATINUM"]) == 1
+    faux.prix_action = prix + [prix[-1] + 200 + 20 * i for i in range(5)]  # ça monte : le suiveur remonte
+    main.un_tour(d, faux)
+    assert faux.stops, "le stop suiveur aurait dû être déplacé"
+    faux.prix_action = faux.prix_action + [faux.prix_action[-1] - 900]  # chute : signal inversé
+    main.un_tour(d, faux)
+    deal = platine[0][0]
+    assert deal in faux.fermees
+    o = next(o for o in d["ordres"] if o["id"] == deal)
+    assert o["strategie"] == "usine"
+    assert [x[1] for x in faux.ouvertes if faux.epics[x[0]] == "PLATINUM"][-1] == "SELL"
+
+
+def test_usine_regles_identiques_backtest_et_bot():
+    """Le bot et le backtest utilisent la même fonction : le signal calculé sur un historique coupé est le même
+    que celui calculé sur l'historique complet (pas de regard vers le futur)."""
+    import numpy as np
+    import pandas as pd
+    from bot import usine_regles as R
+    rng = np.random.default_rng(3)
+    c = 100 * np.exp(np.cumsum(rng.normal(0, 0.01, 1500)))
+    o = np.r_[c[0], c[:-1]]
+    df = pd.DataFrame({"open": o, "high": np.maximum(o, c) * 1.003, "low": np.minimum(o, c) * 0.997, "close": c},
+                      index=pd.date_range("2020-01-01", periods=1500, freq="4h"))
+    for fam, (_, grille, _) in R.FAMILLES.items():
+        spec = {"famille": fam, "p": list(grille[0]), "filtre": "t200", "sens": "les2", "stop": 2.5, "objectif": 0,
+                "suiveur": 0, "duree": 0}
+        v_tout, ok_tout, _, _ = R.preparer(R.Indicateurs(df), spec)
+        for coupe in (900, 1200):
+            v, ok, _, _ = R.preparer(R.Indicateurs(df.iloc[:coupe]), spec)
+            assert v[-1] == v_tout[coupe - 1] and ok[-1] == ok_tout[coupe - 1], fam

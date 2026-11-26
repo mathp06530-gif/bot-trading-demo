@@ -1,0 +1,109 @@
+name: Usine à stratégies (fouille sur tous les marchés)
+
+# Fabrique et teste des dizaines de milliers de stratégies sur ~40 marchés Capital.com (démo), puis ne garde
+# que celles qui gagnent aussi sur des années jamais vues (voir backtest/usine.py). Ne passe AUCUN ordre.
+# Lancement : onglet Actions > « Usine à stratégies » > Run workflow (ou automatiquement le 1er de chaque mois).
+# Résultat : backtest/resultats_usine.json (enregistré sur la branche lancée).
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+    paths: [backtest/usine.py, bot/usine_regles.py, .github/workflows/usine.yml]
+  schedule:
+    - cron: "17 3 1 * *"   # 1er du mois, 3 h 17 UTC : nouvelle fouille avec les données du mois écoulé
+
+permissions:
+  contents: write
+
+concurrency:
+  group: usine-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  donnees:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Historique Capital.com (~10 ans, bougies 4 h et jour, bid + ask)
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+        run: python backtest/usine.py telecharger donnees_usine
+      - uses: actions/upload-artifact@v4
+        with:
+          name: donnees
+          path: donnees_usine
+          retention-days: 7
+
+  fouille:
+    needs: donnees
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        epic: [GOLD, SILVER, PLATINUM, PALLADIUM, COPPER, OIL_CRUDE, OIL_BRENT, NATURALGAS,
+               US500, US100, US30, RTY, DE40, UK100, FR40, EU50, J225, HK50, AU200,
+               EURUSD, GBPUSD, USDJPY, AUDUSD, USDCAD, USDCHF, NZDUSD, EURGBP, EURJPY, GBPJPY,
+               BTCUSD, ETHUSD, SOLUSD, XRPUSD, LTCUSD,
+               AAPL, MSFT, NVDA, TSLA, AMZN, META, GOOGL]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: donnees
+          path: donnees_usine
+      - name: Fouille ${{ matrix.epic }}
+        run: |
+          mkdir -p resultats
+          if ls donnees_usine/${{ matrix.epic }}_*.csv >/dev/null 2>&1; then
+            python backtest/usine.py fouiller donnees_usine ${{ matrix.epic }} resultats/${{ matrix.epic }}.json
+          else
+            echo "${{ matrix.epic }} : pas de données (marché absent chez Capital.com)"
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: resultat-${{ matrix.epic }}
+          path: resultats
+          if-no-files-found: ignore
+          retention-days: 30
+
+  bilan:
+    needs: fouille
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: resultat-*
+          path: resultats
+          merge-multiple: true
+      - name: Bilan (contrôles anti-hasard sur tous les marchés)
+        run: python backtest/usine.py bilan resultats backtest/resultats_usine.json
+      - name: Enregistrer le bilan
+        run: |
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          git add backtest/resultats_usine.json
+          git diff --cached --quiet && exit 0
+          git commit -qm "Usine à stratégies : bilan de la fouille $(date -u +%Y-%m-%d)"
+          for i in 1 2 3; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin HEAD:"${GITHUB_REF_NAME}" && exit 0; sleep 5; done
+          exit 1

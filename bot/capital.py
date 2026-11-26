@@ -14,6 +14,11 @@ class ErreurCapital(Exception):
     pass
 
 
+def _decimales(prix: float | None) -> int:
+    """Arrondi des distances et niveaux : 2 décimales (or, indices, actions), 5 pour le forex (prix < 10)."""
+    return 5 if prix and abs(prix) < 10 else 2
+
+
 class CapitalDemo:
     def __init__(self, cle_api: str, identifiant: str, mot_de_passe: str):
         self.base = URL_DEMO + "/api/v1"
@@ -89,12 +94,13 @@ class CapitalDemo:
     def ouvrir(self, epic: str, direction: str, taille: float, stop_pct: float | None = None, prix: float | None = None,
                stop_distance: float | None = None, garanti: bool = False, objectif_distance: float | None = None):
         corps = {"epic": epic, "direction": direction, "size": taille}
+        d = _decimales(prix)
         if objectif_distance:
-            corps["profitDistance"] = round(objectif_distance, 2)  # prise de bénéfice (TP) chez Capital.com
+            corps["profitDistance"] = round(objectif_distance, d)  # prise de bénéfice (TP) chez Capital.com
         if stop_distance:
-            corps["stopDistance"] = round(stop_distance, 2)
+            corps["stopDistance"] = round(stop_distance, d)
         elif stop_pct and prix:
-            corps["stopDistance"] = round(prix * stop_pct / 100, 2)
+            corps["stopDistance"] = round(prix * stop_pct / 100, d)
         if garanti and prix:
             corps["guaranteedStop"] = True
             corps["stopDistance"] = max(corps.get("stopDistance", 0), self.distance_stop_garanti(epic, prix))
@@ -115,13 +121,13 @@ class CapitalDemo:
             regle = self.marche(epic)["dealingRules"]["minGuaranteedStopDistance"]
             valeur = float(regle["value"])
             distance = prix * valeur / 100 if regle.get("unit") == "PERCENTAGE" else valeur
-            return round(distance * 1.1, 2)
+            return round(distance * 1.1, _decimales(prix))
         except Exception:
-            return round(prix * 0.05, 2)
+            return round(prix * 0.05, _decimales(prix))
 
     def modifier_stop(self, deal_id: str, niveau: float, garanti: bool = True):
         """Déplace le stop d'une position ouverte (stop suiveur géré par le bot)."""
-        corps = {"stopLevel": round(niveau, 2)}
+        corps = {"stopLevel": round(niveau, _decimales(niveau))}
         if garanti:
             corps["guaranteedStop"] = True
         ref = self._requete("PUT", f"/positions/{deal_id}", json=corps).get("dealReference")

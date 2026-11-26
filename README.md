@@ -109,6 +109,18 @@ Chaque dimanche à 19 h (Paris), le workflow « Auto-amélioration (chaque semai
 
 Il ne touche jamais au risque par trade ni aux garde-fous. Tout est écrit dans le Journal (filtre « Améliorations ») et dans l'onglet Stratégies. Le mode se règle dans `reglages.env` (`AUTO_AMELIORATION` : `auto`, `suggestions` ou `non`). Détails : `bot/amelioration.py`.
 
+## Usine à stratégies (26/11/2026)
+
+`backtest/usine.py` fabrique et teste automatiquement des millions de stratégies (10 familles de signaux × filtres ×
+sens × stops × objectifs × suiveurs × durées, en 4 h et en jour) sur 41 marchés Capital.com. Choix sur 2017-2021
+seulement, puis contrôle sur 2022-2026 (jamais vu) : validation, test final, années gagnantes, réglages voisins,
+frais × 1,5 et pénalité du nombre d'essais (Deflated Sharpe). Workflow « Usine à stratégies » (lancement manuel ou
+le 1er de chaque mois), résultat dans `backtest/resultats_usine.json`. Une stratégie « solide » se met dans
+`bot/usine_strategies.json` : le bot la joue alors en démo à 1 % (`bot/usine.py`, désactivable avec `USINE="non"`).
+
+1re fouille (26/11/2026) : 3 663 360 stratégies essayées, 8 417 envoyées au jamais vu, **0 solide**.
+Aucune ne fait mieux que ce que le hasard donne avec autant d'essais : rien n'a été ajouté au bot.
+
 ## Si quelque chose ne va pas
 
 - **Le tableau de bord affiche « Problème »** : regarde la dernière ligne rouge du journal, elle explique l'erreur.
