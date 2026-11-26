@@ -319,7 +319,9 @@ def test_commandes_par_strategie(tmp_path, monkeypatch):
     faux = FauxCapital(debut)
     d = {"strategies": {"rapide": {"active": False}, "londres": {"active": True}}, "londres": {}}
     main.un_tour(d, faux, "desactiver", "tendance_4h")
-    assert set(d["strategies"]) == {"tendance_4h", "cassure_4h", "rapide", "elan_4h", "supertrend_4h"}  # anciennes stratégies supprimées
+    from bot import usine
+    attendu = {"tendance_4h", "cassure_4h", "rapide", "elan_4h", "supertrend_4h"} | ({"usine"} if usine.STRATEGIES else set())
+    assert set(d["strategies"]) == attendu  # anciennes stratégies supprimées
     assert "londres" not in d
     assert d["strategies"]["tendance_4h"]["active"] is False and not faux.ouvertes
     main.un_tour(d, faux, "activer", "tendance_4h")
