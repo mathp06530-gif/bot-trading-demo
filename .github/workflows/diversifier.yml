@@ -1,0 +1,53 @@
+name: Backtest diversifier à budget égal
+
+# 26/11/2026 : Cassure 4 h et Supertrend 4 h (réglages actuels) sur devises, dollar, indices, matières premières,
+# corrélation avec or+argent, portefeuille à risque total égal. Ne passe AUCUN ordre.
+# Résultat : backtest/resultats_diversifier.json (+ .txt), enregistré sur la branche lancée.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+    paths: [backtest/diversifier.py, .github/workflows/diversifier.yml]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: diversifier-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  diversifier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Cache des prix (10 ans)
+        uses: actions/cache@v4
+        with:
+          path: donnees_div
+          key: prix-diversifier-v1-${{ github.run_id }}
+          restore-keys: prix-diversifier-v1-
+      - name: Historique Capital.com démo (4 h, 30 marchés)
+        timeout-minutes: 90
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+        run: python -u backtest/diversifier.py telecharger donnees_div
+      - name: Backtests + contrôle sur prix mélangés
+        run: python -u backtest/diversifier.py donnees_div 2>&1 | tee backtest/resultats_diversifier.txt
+      - name: Enregistrer le bilan
+        run: |
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          git add backtest/resultats_diversifier.json backtest/resultats_diversifier.txt
+          git diff --cached --quiet && exit 0
+          git commit -qm "Backtest diversifier à budget égal : bilan $(date -u +%Y-%m-%d)"
+          for i in 1 2 3; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin HEAD:"${GITHUB_REF_NAME}" && exit 0; sleep 5; done
+          exit 1
