@@ -1,0 +1,289 @@
+GOLD : fait
+SILVER : fait
+EURUSD : fait
+USDJPY : fait
+GBPUSD : fait
+AUDUSD : fait
+USDCAD : fait
+USDCHF : fait
+NZDUSD : fait
+EURJPY : fait
+GBPJPY : fait
+EURGBP : fait
+DXY : fait
+US500 : fait
+US100 : fait
+US30 : fait
+RTY : fait
+DE40 : fait
+UK100 : fait
+FR40 : fait
+EU50 : fait
+J225 : fait
+HK50 : fait
+AU200 : fait
+OIL_CRUDE : fait
+OIL_BRENT : fait
+COPPER : fait
+PLATINUM : fait
+PALLADIUM : fait
+NATURALGAS : fait
+USCOCOA : fait
+COFFEEARABICA : fait
+UKSUGAR : fait
+USCOTTON : fait
+OATS : fait
+WHEAT : fait
+CORN : fait
+SOYBEAN : fait
+HEATINGOIL : fait
+GASOLINE : fait
+USDTRY : fait
+USDZAR : fait
+USDMXN : fait
+USDPLN : fait
+USDHUF : fait
+USDSEK : fait
+USDNOK : fait
+USDSGD : fait
+EURTRY : fait
+USDCZK : fait
+ADAUSD : fait
+DOTUSD : fait
+LINKUSD : fait
+AVAXUSD : fait
+ATOMUSD : fait
+BCHUSD : fait
+XLMUSD : fait
+UNIUSD : fait
+TRXUSD : fait
+ALGOUSD : fait
+ETCUSD : fait
+NL25 : fait
+SP35 : fait
+IT40 : fait
+SW20 : fait
+CN50 : fait
+SG25 : fait
+PLUG : fait
+RIOT : fait
+MARA : fait
+SOFI : fait
+GME : fait
+AMC : fait
+LCID : fait
+NIO : fait
+SNAP : fait
+PLTR : fait
+COIN : fait
+      Cassure 4 h     USCOCOA    matières pre   -10.0    65.8     1.5 stress=  61.1 corr=-0.02 [49, 31, 33]
+      Cassure 4 h     GOLD       petits indic    -8.1    -2.0    41.6 stress=  36.5 corr= 0.85 [119, 60, 61]
+TIENT Cassure 4 h     SILVER     grands march    19.6    16.6    17.8 stress=  20.6 corr= 0.66 [115, 61, 64]
+      Supertrend 4 h  USCOCOA    matières pre   -14.7    13.0    17.6 stress=  27.0 corr= 0.06 [83, 63, 52]
+TIENT Supertrend 4 h  SILVER     grands march     4.1     8.1    22.2 stress=  27.0 corr= 0.53 [195, 109, 91]
+TIENT Supertrend 4 h  GOLD       petits indic     8.1    13.6    14.9 stress=  24.6 corr= 0.53 [209, 106, 96]
+      Cassure 4 h     SP35       petits indic   -32.0     7.5    12.8 stress=  11.5 corr= 0.18 [94, 51, 39]
+      Supertrend 4 h  COIN       petites acti    -5.0    22.3    -4.9 stress=  14.5 corr=-0.15 [28, 80, 90]
+      Supertrend 4 h  NATURALGAS grands march   -51.9    30.3   -14.2 stress=  11.9 corr=-0.04 [262, 118, 126]
+      Supertrend 4 h  XLMUSD     petites cryp     6.3   -35.0    50.4 stress=  -9.1 corr=-0.02 [244, 125, 142]
+      Supertrend 4 h  J225       grands march   -18.0     5.1     9.4 stress=   9.3 corr= 0.03 [217, 116, 97]
+      Supertrend 4 h  SG25       petits indic   -22.1    -0.9    14.1 stress=   3.5 corr= 0.00 [163, 112, 90]
+      Cassure 4 h     IT40       petits indic    -4.1    12.1     0.1 stress=   6.9 corr= 0.01 [51, 35, 43]
+      Cassure 4 h     SW20       petits indic   -24.6     4.0     8.1 stress=   3.4 corr= 0.05 [71, 46, 50]
+      Cassure 4 h     NATURALGAS grands march   -21.9    11.6    -1.7 stress=   5.9 corr=-0.11 [136, 65, 66]
+      Supertrend 4 h  USDJPY     grands march   -12.7     5.9    -0.5 stress=   1.8 corr=-0.18 [199, 120, 102]
+      Cassure 4 h     HK50       grands march    18.8    -3.2     8.5 stress=   1.1 corr= 0.02 [100, 75, 65]
+TIENT Cassure 4 h     COIN       petites acti     0.6     2.5     2.5 stress=   4.2 corr=-0.04 [8, 42, 45]
+      Cassure 4 h     EURJPY     grands march   -10.8    -3.6     7.4 stress=  -0.8 corr= 0.19 [132, 75, 66]
+      Supertrend 4 h  HK50       grands march    20.8     3.6    -1.5 stress=  -4.1 corr= 0.17 [163, 119, 122]
+      Supertrend 4 h  RIOT       petites acti    -1.4     0.2     1.7 stress=  -1.5 corr= 0.17 [16, 50, 75]
+      Cassure 4 h     RIOT       petites acti     1.9     9.4    -7.7 stress=  -3.3 corr=-0.14 [5, 24, 48]
+      Cassure 4 h     US100      grands march     6.3     3.3    -1.7 stress=  -3.2 corr= 0.01 [120, 76, 70]
+      Supertrend 4 h  MARA       petites acti     7.3    11.4   -10.0 stress=  -1.5 corr=-0.03 [18, 43, 72]
+      Supertrend 4 h  ADAUSD     petites cryp   -13.7   -18.8    20.0 stress= -20.0 corr=-0.07 [54, 137, 131]
+      Supertrend 4 h  SW20       petits indic   -24.7    -7.3     8.1 stress=  -5.7 corr= 0.11 [133, 95, 74]
+      Supertrend 4 h  HEATINGOIL matières pre     0.0     0.4    -0.2 stress=  -0.8 corr= 0.00 [0, 27, 106]
+      Cassure 4 h     GASOLINE   matières pre     0.0    -0.6     0.5 stress=  -1.0 corr= 0.11 [0, 13, 60]
+      Supertrend 4 h  AMC        petites acti     1.1    -0.7     0.6 stress=  -1.1 corr=-0.03 [99, 76, 55]
+      Cassure 4 h     LCID       petites acti    -0.1    -0.1    -0.0 stress=  -0.4 corr= 0.17 [1, 21, 22]
+      Supertrend 4 h  GME        petites acti     8.4     0.3    -0.6 stress=  -1.0 corr=-0.00 [84, 76, 60]
+      Cassure 4 h     PLTR       petites acti    -0.3   -12.2    10.4 stress=  -2.5 corr=-0.10 [14, 48, 38]
+      Cassure 4 h     GME        petites acti     1.6    -1.2    -1.0 stress=  -2.7 corr=-0.03 [47, 45, 45]
+      Supertrend 4 h  USDCAD     grands march   -38.8   -14.0    11.6 stress=  -7.0 corr= 0.08 [206, 117, 88]
+      Cassure 4 h     US500      grands march   -12.1     8.6   -11.1 stress=  -9.4 corr= 0.00 [121, 74, 70]
+      Cassure 4 h     ALGOUSD    petites cryp    -4.7    -2.8     0.3 stress=  -5.9 corr=-0.04 [34, 77, 97]
+      Cassure 4 h     PLUG       petites acti     2.4    -0.7    -1.8 stress=  -3.2 corr=-0.10 [12, 45, 39]
+      Cassure 4 h     HEATINGOIL matières pre     0.0    -0.5    -2.1 stress=  -3.4 corr=-0.01 [0, 14, 67]
+      Supertrend 4 h  PLUG       petites acti     1.3     0.4    -3.0 stress=  -4.2 corr=-0.05 [36, 84, 76]
+      Supertrend 4 h  LCID       petites acti     0.9    -1.7    -1.0 stress=  -3.3 corr=-0.01 [6, 53, 54]
+      Cassure 4 h     ADAUSD     petites cryp   -10.3   -32.9    30.1 stress= -53.6 corr=-0.01 [36, 90, 97]
+      Cassure 4 h     AMC        petites acti     3.8    -3.1     0.3 stress=  -3.4 corr=-0.06 [45, 44, 33]
+      Supertrend 4 h  US30       grands march    16.3    18.2   -21.1 stress=  -9.5 corr= 0.06 [199, 109, 126]
+      Supertrend 4 h  IT40       petits indic     2.9     2.2    -5.2 stress=  -8.0 corr= 0.08 [99, 54, 80]
+      Supertrend 4 h  COFFEEARABICA matières pre    -9.2    -8.3     4.7 stress=  -7.4 corr= 0.22 [118, 72, 53]
+      Cassure 4 h     COFFEEARABICA matières pre    22.1    -6.2     2.2 stress=  -5.1 corr= 0.09 [52, 36, 33]
+      Supertrend 4 h  CORN       matières pre     0.0     4.5    -8.7 stress= -12.0 corr=-0.22 [0, 88, 89]
+      Supertrend 4 h  ALGOUSD    petites cryp    -6.0    -6.4     1.9 stress=  -9.4 corr=-0.05 [53, 118, 132]
+      Cassure 4 h     OATS       matières pre     0.0     1.1    -6.0 stress=  -6.4 corr=-0.20 [0, 4, 58]
+      Cassure 4 h     ETCUSD     petites cryp     8.5    -1.8    -3.4 stress=  -8.6 corr=-0.02 [26, 79, 99]
+      Cassure 4 h     TRXUSD     petites cryp    -3.6    -4.0    -1.8 stress=  -8.9 corr= 0.12 [133, 91, 95]
+      Supertrend 4 h  OIL_BRENT  grands march     5.9    -7.0     0.9 stress= -10.0 corr= 0.04 [205, 122, 119]
+      Cassure 4 h     ATOMUSD    petites cryp    -2.3    -4.3    -1.8 stress=  -9.5 corr= 0.04 [31, 101, 93]
+      Cassure 4 h     DE40       grands march   -25.8     1.6    -8.5 stress= -12.6 corr=-0.05 [115, 72, 74]
+      Supertrend 4 h  ETCUSD     petites cryp     3.2    -2.6    -4.7 stress= -11.9 corr=-0.08 [36, 122, 150]
+      Cassure 4 h     NL25       petits indic   -20.3     4.1   -11.5 stress= -14.2 corr= 0.03 [84, 49, 53]
+      Supertrend 4 h  DE40       grands march   -27.3     3.7   -11.3 stress= -13.9 corr=-0.01 [183, 114, 120]
+      Supertrend 4 h  UKSUGAR    matières pre     0.6     3.9   -11.8 stress= -14.6 corr=-0.04 [137, 68, 71]
+      Supertrend 4 h  ATOMUSD    petites cryp    -4.4    -6.8    -1.2 stress= -12.6 corr=-0.10 [57, 143, 134]
+      Supertrend 4 h  SP35       petits indic    -9.7     6.0   -14.3 stress= -14.1 corr= 0.09 [155, 71, 77]
+      Cassure 4 h     USDJPY     grands march   -32.1    11.1   -20.0 stress= -10.0 corr=-0.11 [146, 59, 70]
+      Cassure 4 h     EURTRY     devises exot    -1.1    -4.4    -4.5 stress= -16.5 corr=-0.11 [71, 31, 35]
+      Supertrend 4 h  SOFI       petites acti     0.0   -11.3     2.2 stress= -13.5 corr=-0.05 [0, 60, 70]
+      Supertrend 4 h  GASOLINE   matières pre     0.0     0.7   -10.0 stress= -10.6 corr=-0.07 [0, 23, 114]
+      Supertrend 4 h  EURTRY     devises exot    -7.6    -4.0    -5.3 stress= -17.2 corr=-0.08 [181, 30, 46]
+      Supertrend 4 h  TRXUSD     petites cryp    -4.7    -6.6    -2.7 stress= -14.4 corr=-0.01 [198, 145, 156]
+      Cassure 4 h     J225       grands march    20.3   -10.4    -0.2 stress= -14.7 corr= 0.00 [134, 77, 65]
+      Supertrend 4 h  OIL_CRUDE  grands march    24.1   -11.0     0.3 stress= -14.1 corr= 0.02 [195, 124, 117]
+      Cassure 4 h     SG25       petits indic   -54.1   -15.7     4.7 stress= -20.3 corr= 0.10 [93, 70, 51]
+      Cassure 4 h     MARA       petites acti     3.0     1.3   -12.6 stress= -14.7 corr=-0.10 [7, 25, 45]
+      Cassure 4 h     US30       grands march    28.7     9.4   -21.0 stress= -18.8 corr= 0.33 [117, 64, 64]
+      Supertrend 4 h  US100      grands march   -19.3    -3.9    -8.1 stress= -16.5 corr= 0.12 [242, 141, 116]
+      Cassure 4 h     WHEAT      matières pre     0.0    -6.4    -6.0 stress= -14.5 corr=-0.12 [0, 19, 54]
+      Cassure 4 h     UK100      grands march   -59.6    -0.9   -12.6 stress= -20.9 corr= 0.13 [140, 65, 64]
+      Supertrend 4 h  RTY        grands march    -2.6    -3.9   -10.0 stress= -18.4 corr= 0.06 [167, 130, 117]
+      Cassure 4 h     UKSUGAR    matières pre     6.2    -2.3   -12.5 stress= -20.7 corr= 0.05 [83, 44, 38]
+      Supertrend 4 h  OATS       matières pre     0.0    -5.3   -10.0 stress= -18.8 corr=-0.09 [0, 19, 105]
+      Cassure 4 h     XLMUSD     petites cryp   -22.5   -26.7    10.7 stress= -32.2 corr=-0.11 [147, 85, 100]
+      Supertrend 4 h  FR40       grands march    18.4    -4.0   -12.8 stress= -22.9 corr=-0.06 [181, 109, 98]
+      Supertrend 4 h  EURJPY     grands march    -9.9     5.0   -22.1 stress= -22.0 corr= 0.06 [209, 116, 106]
+      Cassure 4 h     EU50       grands march     4.1    -1.9   -15.8 stress= -23.5 corr=-0.02 [129, 76, 74]
+      Cassure 4 h     COPPER     grands march   -40.6     6.2   -24.0 stress= -21.4 corr=-0.08 [125, 76, 74]
+      Supertrend 4 h  COPPER     grands march   -30.9    -2.4   -15.9 stress= -24.0 corr=-0.04 [197, 117, 111]
+      Cassure 4 h     SOFI       petites acti     0.0    -9.5    -9.2 stress= -21.3 corr=-0.03 [0, 26, 39]
+      Cassure 4 h     FR40       grands march    18.2   -10.8    -7.9 stress= -22.8 corr= 0.04 [128, 73, 51]
+      Supertrend 4 h  USDNOK     devises exot    -7.6   -18.5    -1.1 stress= -31.0 corr= 0.01 [174, 101, 71]
+      Supertrend 4 h  UK100      grands march   -29.7     9.5   -29.5 stress= -28.3 corr=-0.03 [205, 91, 120]
+      Cassure 4 h     CORN       matières pre     0.0    -3.5   -17.1 stress= -25.1 corr=-0.07 [0, 48, 51]
+      Supertrend 4 h  PALLADIUM  grands march     1.8   -17.5    -3.6 stress= -36.1 corr= 0.09 [184, 97, 82]
+      Supertrend 4 h  CN50       petits indic    -9.2    -8.6   -12.6 stress= -28.8 corr=-0.07 [194, 126, 136]
+      Cassure 4 h     SNAP       petites acti    -7.9   -10.8   -10.5 stress= -26.9 corr= 0.03 [55, 42, 48]
+      Cassure 4 h     OIL_CRUDE  grands march    18.3    -1.5   -19.9 stress= -23.4 corr= 0.14 [114, 74, 84]
+      Supertrend 4 h  SNAP       petites acti    -0.5   -13.1    -8.5 stress= -28.7 corr=-0.01 [109, 78, 66]
+      Supertrend 4 h  WHEAT      matières pre     0.0    -5.1   -16.7 stress= -25.1 corr=-0.15 [0, 35, 88]
+      Supertrend 4 h  PLTR       petites acti     6.9   -21.5    -1.5 stress= -28.7 corr= 0.07 [27, 100, 77]
+      Cassure 4 h     NIO        petites acti     9.8   -15.9    -8.1 stress= -27.3 corr= 0.10 [23, 51, 46]
+      Supertrend 4 h  PLATINUM   grands march    -9.2    -6.6   -18.3 stress= -35.4 corr= 0.23 [196, 101, 98]
+      Supertrend 4 h  USDCHF     grands march   -29.1    -4.0   -21.3 stress= -30.3 corr= 0.17 [208, 107, 108]
+      Cassure 4 h     EURUSD     grands march   -36.7   -19.2    -6.3 stress= -29.6 corr= 0.21 [138, 73, 59]
+      Cassure 4 h     UNIUSD     petites cryp   -16.4   -15.9   -10.2 stress= -52.1 corr=-0.10 [39, 93, 88]
+      Cassure 4 h     PLATINUM   grands march   -16.9   -23.7    -3.3 stress= -59.0 corr= 0.28 [120, 72, 58]
+      Supertrend 4 h  AU200      grands march   -32.4    -4.1   -23.5 stress= -36.1 corr= 0.04 [185, 104, 105]
+      Cassure 4 h     OIL_BRENT  grands march    14.6    -1.9   -25.8 stress= -29.9 corr= 0.29 [109, 73, 77]
+      Cassure 4 h     USDMXN     devises exot    -9.8   -12.8   -15.4 stress= -33.6 corr= 0.01 [125, 69, 65]
+      Cassure 4 h     NZDUSD     grands march   -27.0   -25.8    -2.6 stress= -32.4 corr= 0.09 [129, 75, 69]
+      Cassure 4 h     RTY        grands march   -21.4   -18.1   -10.4 stress= -32.0 corr= 0.08 [100, 80, 54]
+      Supertrend 4 h  USDMXN     devises exot   -18.0    -4.5   -24.7 stress= -35.7 corr= 0.09 [216, 121, 113]
+      Supertrend 4 h  AUDUSD     grands march    16.1   -26.9    -2.4 stress= -32.7 corr= 0.21 [181, 119, 97]
+      Cassure 4 h     GBPJPY     grands march   -14.6    -8.2   -21.4 stress= -33.8 corr= 0.00 [130, 69, 66]
+      Supertrend 4 h  US500      grands march    -8.1    -7.1   -23.0 stress= -36.6 corr= 0.16 [203, 126, 131]
+      Supertrend 4 h  NZDUSD     grands march    11.0   -22.3    -7.9 stress= -36.5 corr= 0.08 [185, 111, 103]
+      Cassure 4 h     USDCHF     grands march   -36.8   -18.9   -11.8 stress= -33.7 corr= 0.04 [129, 68, 73]
+      Cassure 4 h     USCOTTON   matières pre   -23.3    -5.5   -25.3 stress= -40.1 corr=-0.05 [87, 52, 66]
+      Cassure 4 h     SOYBEAN    matières pre     0.0   -14.5   -17.7 stress= -45.6 corr=-0.03 [0, 42, 55]
+      Supertrend 4 h  EURUSD     grands march     0.6   -33.5     0.9 stress= -36.9 corr= 0.14 [207, 127, 97]
+      Supertrend 4 h  GBPJPY     grands march    17.6   -19.5   -13.8 stress= -37.9 corr=-0.03 [191, 128, 98]
+      Supertrend 4 h  NIO        petites acti     4.5   -15.5   -18.1 stress= -46.1 corr=-0.04 [57, 99, 96]
+      Cassure 4 h     AUDUSD     grands march    21.7   -27.9    -7.4 stress= -37.2 corr= 0.33 [121, 87, 67]
+      Cassure 4 h     BCHUSD     petites cryp     4.7   -21.9   -13.4 stress= -77.6 corr=-0.26 [140, 90, 103]
+      Supertrend 4 h  UNIUSD     petites cryp   -20.1   -27.6    -7.8 stress= -57.6 corr= 0.05 [68, 146, 143]
+      Cassure 4 h     CN50       petits indic    -4.5   -26.6    -8.9 stress= -42.9 corr=-0.00 [95, 63, 63]
+      Cassure 4 h     USDCAD     grands march   -53.6   -43.3     7.5 stress= -41.9 corr= 0.07 [129, 79, 60]
+      Supertrend 4 h  USCOTTON   matières pre   -13.3     0.5   -36.5 stress= -45.9 corr=-0.11 [177, 92, 95]
+      Supertrend 4 h  USDCZK     devises exot   -25.6   -11.3   -24.8 stress= -60.4 corr= 0.01 [202, 101, 99]
+      Supertrend 4 h  NL25       petits indic     0.5   -21.6   -14.5 stress= -42.5 corr= 0.04 [141, 94, 85]
+      Supertrend 4 h  USDZAR     devises exot   -13.9   -22.1   -14.8 stress= -44.1 corr=-0.06 [187, 118, 91]
+      Cassure 4 h     GBPUSD     grands march   -24.6   -31.9    -6.6 stress= -40.9 corr= 0.11 [129, 71, 68]
+      Supertrend 4 h  GBPUSD     grands march   -15.7   -31.6    -8.0 stress= -44.9 corr= 0.19 [217, 125, 106]
+      Supertrend 4 h  SOYBEAN    matières pre     0.0   -16.8   -22.9 stress= -61.7 corr= 0.05 [0, 82, 94]
+      Cassure 4 h     USDHUF     devises exot   -21.4   -23.5   -16.4 stress= -62.4 corr=-0.01 [119, 70, 60]
+      Cassure 4 h     DOTUSD     petites cryp   -12.2   -22.3   -19.0 stress= -64.2 corr= 0.03 [32, 86, 89]
+      Supertrend 4 h  EU50       grands march     6.7    -8.2   -33.4 stress= -49.7 corr=-0.05 [193, 115, 129]
+      Supertrend 4 h  BCHUSD     petites cryp    71.0   -29.7   -12.7 stress= -62.8 corr=-0.17 [222, 133, 136]
+      Cassure 4 h     USDTRY     devises exot    -5.6   -36.8    -6.5 stress= -75.5 corr= 0.01 [91, 8, 2]
+      Cassure 4 h     AU200      grands march    -9.5   -19.3   -24.3 stress= -50.5 corr= 0.06 [124, 75, 68]
+      Cassure 4 h     DXY        grands march   -49.8   -32.5   -12.1 stress= -57.8 corr= 0.10 [93, 75, 60]
+      Cassure 4 h     USDSEK     devises exot    -8.4   -23.0   -21.6 stress= -80.4 corr= 0.08 [114, 67, 62]
+      Supertrend 4 h  USDTRY     devises exot   -22.8   -33.1   -11.7 stress= -74.6 corr=-0.05 [211, 20, 5]
+      Supertrend 4 h  DOTUSD     petites cryp   -11.3   -50.8     6.0 stress= -62.0 corr=-0.06 [52, 137, 126]
+      Cassure 4 h     USDPLN     devises exot   -35.5   -19.3   -26.5 stress= -54.1 corr= 0.00 [118, 62, 65]
+      Cassure 4 h     USDZAR     devises exot    -8.6   -12.6   -33.4 stress= -59.6 corr= 0.08 [91, 72, 69]
+      Cassure 4 h     PALLADIUM  grands march    12.7   -23.7   -23.5 stress= -62.5 corr= 0.01 [90, 60, 64]
+      Supertrend 4 h  USDHUF     devises exot   -13.6   -20.7   -29.5 stress= -66.1 corr=-0.15 [196, 111, 93]
+      Supertrend 4 h  EURGBP     grands march   -34.2   -33.8   -17.9 stress= -61.8 corr= 0.04 [202, 111, 85]
+      Supertrend 4 h  USDSGD     devises exot    12.2   -26.3   -27.8 stress= -66.4 corr=-0.09 [164, 105, 91]
+      Cassure 4 h     USDNOK     devises exot   -18.0   -31.3   -25.0 stress= -76.9 corr= 0.04 [119, 78, 59]
+      Cassure 4 h     USDCZK     devises exot   -36.3   -24.1   -34.8 stress= -75.8 corr= 0.04 [108, 63, 67]
+      Supertrend 4 h  AVAXUSD    petites cryp    -6.8   -40.0   -19.8 stress= -97.7 corr=-0.08 [42, 143, 144]
+      Supertrend 4 h  USDPLN     devises exot   -11.0   -37.0   -23.7 stress= -70.3 corr=-0.00 [190, 127, 101]
+      Supertrend 4 h  USDSEK     devises exot   -13.7   -17.0   -44.2 stress= -74.5 corr= 0.02 [178, 105, 99]
+      Cassure 4 h     USDSGD     devises exot   -61.0   -37.7   -28.0 stress= -81.6 corr= 0.02 [125, 73, 62]
+      Supertrend 4 h  DXY        grands march    -8.0   -40.8   -26.4 stress= -85.0 corr= 0.08 [150, 133, 118]
+      Cassure 4 h     AVAXUSD    petites cryp    -3.6   -47.6   -19.6 stress=-104.1 corr=-0.06 [22, 93, 94]
+      Cassure 4 h     EURGBP     grands march   -27.3   -35.4   -34.1 stress= -82.1 corr= 0.11 [130, 78, 69]
+      Supertrend 4 h  LINKUSD    petites cryp   -16.6   -66.5   -27.4 stress=-133.9 corr= 0.01 [58, 148, 144]
+      Cassure 4 h     LINKUSD    petites cryp   -20.3   -54.6   -53.9 stress=-115.1 corr=-0.03 [34, 92, 102]
+{
+ "portefeuilles": {
+  "or+argent seuls (actuel)": {
+   "marches": [
+    "Cassure 4 h GOLD",
+    "Cassure 4 h SILVER"
+   ],
+   "R_total_par_unite_de_risque": 43.3,
+   "R_2022_auj": 37.5,
+   "sharpe_mensuel": 0.53,
+   "sharpe_2022_auj": 0.91,
+   "pire_baisse": -15.82,
+   "mois_gagnants_pct": 52.0
+  },
+  "or+argent + marchés qui tiennent": {
+   "marches": [
+    "Cassure 4 h GOLD",
+    "Cassure 4 h SILVER",
+    "Cassure 4 h COIN"
+   ],
+   "R_total_par_unite_de_risque": 30.7,
+   "R_2022_auj": 26.7,
+   "sharpe_mensuel": 0.55,
+   "sharpe_2022_auj": 0.92,
+   "pire_baisse": -10.54,
+   "mois_gagnants_pct": 52.0
+  }
+ },
+ "petits": {
+  "devises exotiques": {
+   "tiennent": [],
+   "testes": 20
+  },
+  "matières premières secondaires": {
+   "tiennent": [],
+   "testes": 20
+  },
+  "petites actions": {
+   "tiennent": [
+    "Cassure 4 h COIN"
+   ],
+   "testes": 22
+  },
+  "petites cryptos": {
+   "tiennent": [],
+   "testes": 22
+  },
+  "petits indices": {
+   "tiennent": [
+    "Supertrend 4 h GOLD"
+   ],
+   "testes": 14
+  }
+ }
+}
