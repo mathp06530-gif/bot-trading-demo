@@ -1,1 +1,68 @@
-[]
+[
+ {
+  "epic": "NATURALGAS",
+  "unite": "HOUR_4",
+  "spec": {
+   "famille": "macd",
+   "p": [
+    24,
+    52,
+    18
+   ],
+   "filtre": "adx20m",
+   "sens": "les2",
+   "stop": 2.5,
+   "objectif": 1.0,
+   "suiveur": 3.0,
+   "duree": 0
+  },
+  "texte": "MACD 24/52/18, achat et vente, seulement si marché calme (ADX < 20), stop garanti 2.5 ATR, objectif 1 R, suiveur 3 ATR",
+  "backtest": {
+   "entrainement_R": 27.53,
+   "jamais_vu_R": 20.58,
+   "trades_jamais_vu": 99,
+   "annees": {
+    "2022": 8.4,
+    "2023": 3.89,
+    "2024": 0.48,
+    "2025": 6.24,
+    "2026": 1.58
+   },
+   "dsr": 0.133
+  },
+  "note": "EXPÉRIMENTALE (26/11/2026, choix de Mathis) : juste sous le seuil « solide » de l'usine."
+ },
+ {
+  "epic": "TSLA",
+  "unite": "HOUR_4",
+  "spec": {
+   "famille": "macd",
+   "p": [
+    12,
+    26,
+    9
+   ],
+   "filtre": "volb",
+   "sens": "les2",
+   "stop": 2.5,
+   "objectif": 2.0,
+   "suiveur": 0,
+   "duree": 20
+  },
+  "texte": "MACD 12/26/9, achat et vente, seulement si la volatilité baisse, stop garanti 2.5 ATR, objectif 2 R, 20 bougies max",
+  "backtest": {
+   "entrainement_R": 22.05,
+   "jamais_vu_R": 29.4,
+   "trades_jamais_vu": 207,
+   "annees": {
+    "2022": 9.26,
+    "2023": 1.8,
+    "2024": 5.98,
+    "2025": 13.0,
+    "2026": -0.64
+   },
+   "dsr": 0.097
+  },
+  "note": "EXPÉRIMENTALE (26/11/2026, choix de Mathis) : juste sous le seuil « solide » de l'usine."
+ }
+]
