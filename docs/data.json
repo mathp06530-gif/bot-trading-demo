@@ -1896,15 +1896,25 @@
    "type": "erreur",
    "marche": "",
    "texte": "Connexion refusée (429). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.too-many.requests\"}"
+  },
+  {
+   "date": "2026-11-26T23:00:22Z",
+   "type": "analyse",
+   "marche": "GOLD",
+   "texte": "Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-11 12:00).",
+   "strategie": "cassure_4h"
+  },
+  {
+   "date": "2026-11-26T23:00:22Z",
+   "type": "analyse",
+   "marche": "SILVER",
+   "texte": "Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-12 08:00).",
+   "strategie": "cassure_4h"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T22:59:24Z",
+ "derniere_execution": "2026-11-26T23:00:23Z",
  "historique": [
-  {
-   "date": "2026-11-21T02:50:23Z",
-   "valeur": 97.91
-  },
   {
    "date": "2026-11-21T02:55:23Z",
    "valeur": 97.91
@@ -13900,6 +13910,10 @@
   {
    "date": "2026-11-26T22:59:24Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-26T23:00:23Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -14380,10 +14394,10 @@
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3905.05,
-   "action": "Refusé : marché fermé",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)",
    "atr": 47.92,
    "empilement": "position 2/3 possible quand le prix aura avancé de 182.82 de plus dans le bon sens",
-   "dernier_refus": "marché fermé"
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)"
   },
   "SILVER": {
    "nom": "Silver",
@@ -14392,10 +14406,10 @@
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.21,
-   "action": "Refusé : marché fermé",
+   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)",
    "atr": 1.05,
    "empilement": "position 2/3 possible quand le prix aura avancé de 3.75 de plus dans le bon sens",
-   "dernier_refus": "marché fermé"
+   "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)"
   }
  },
  "deals_par_strategie": {
@@ -14415,9 +14429,9 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 0.34
+     "bollinger": 0.36
     },
-    "prix": 3566.52,
+    "prix": 3566.89,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    }
@@ -15111,11 +15125,11 @@
    41.53
   ],
   "rapide-GOLD": [
-   1795721100,
-   3565.75,
-   3566.88,
-   3565.71,
-   3566.52
+   1795734000,
+   3568.19,
+   3569.02,
+   3566.89,
+   3566.89
   ]
  },
  "nettoyage": "2026-11-26"
