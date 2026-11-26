@@ -1820,10 +1820,17 @@
    "type": "erreur",
    "marche": "",
    "texte": "Connexion refusée (401). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.invalid.api.key\"}"
+  },
+  {
+   "date": "2026-11-26T10:50:25Z",
+   "type": "ordre",
+   "marche": "GOLD",
+   "texte": "[Rapide] VENTE de 0.02 à 3555.46, stop garanti à 35.55 $.",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T10:49:27Z",
+ "derniere_execution": "2026-11-26T10:50:27Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11440,17 +11447,36 @@
   {
    "date": "2026-11-26T10:49:27Z",
    "valeur": 93.09
+  },
+  {
+   "date": "2026-11-26T10:50:27Z",
+   "valeur": 93.08
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.09,
+  "solde": 93.08,
   "depot": 93.09,
-  "resultat_latent": 0.0,
-  "disponible": 93.09
+  "resultat_latent": -0.01,
+  "disponible": 89.82
  },
- "positions": [],
+ "positions": [
+  {
+   "marche": "GOLD",
+   "nom": "Gold",
+   "sens": "SELL",
+   "taille": 0.02,
+   "prix_entree": 3555.46,
+   "resultat": -0.01,
+   "ouverte_le": "2026-11-26T10:50:25.127",
+   "id": "00000000-76ca-6738-049f-c46d0015549e",
+   "stop": 3591.01,
+   "stop_garanti": true,
+   "objectif": null,
+   "strategie": "rapide"
+  }
+ ],
  "analyses": {},
  "ordres": [
   {
@@ -11787,6 +11813,34 @@
    },
    "objectif": null,
    "resultat_estime": false
+  },
+  {
+   "id": "00000000-76ca-6738-049f-c46d0015549e",
+   "marche": "GOLD",
+   "nom": "Gold",
+   "sens": "SELL",
+   "taille": 0.02,
+   "prix_entree": 3555.46,
+   "stop": 3591.01,
+   "objectif": null,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-26T10:50:25Z",
+   "statut": "ouvert",
+   "resultat": -0.01,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "rapide",
+   "reglages": {
+    "ADX_RAPIDE_MIN": 20.0,
+    "FILTRE_BOLLINGER": "oui",
+    "SUIVI_RAPIDE_PCT": 1.0,
+    "SORTIE_ENTREE_R": 0.5,
+    "GARDE_RAPIDE_APRES_R": 1.5,
+    "GARDE_RAPIDE_PCT": 60.0,
+    "SORTIE_CONFIRMEE_RAPIDE": 3.0,
+    "EMPILER_RAPIDE": 2.0
+   }
   }
  ],
  "historique_jour": {
@@ -11796,7 +11850,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 93.09
+  "2026-11-26": 93.08
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -11966,7 +12020,9 @@
  },
  "pause": false,
  "rapide": {
-  "deals": [],
+  "deals": [
+   "00000000-76ca-6738-049f-c46d0015549e"
+  ],
   "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 1 %, sortie au prix d'entrée après +0.5 R, garde 60 % du gain après +1.5 R, sortie si le croisement inverse dure 3 bougies, jusqu'à 2 position(s), risque 1 % (expérimentale)",
   "marches": {
    "GOLD": {
@@ -11975,10 +12031,11 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 1.0
+     "bollinger": 1.08,
+     "adx": 26.9
     },
-    "prix": 3555.7,
-    "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
+    "prix": 3555.52,
+    "action": "VENTE de 0.02",
     "empilement": "position 2/2 possible quand le prix aura avancé de 39.35 de plus dans le bon sens"
    },
    "SILVER": {
@@ -11994,9 +12051,14 @@
    }
   },
   "tendance": "SELL",
-  "meilleur": {},
+  "meilleur": {
+   "00000000-76ca-6738-049f-c46d0015549e": {
+    "depuis": "2026-11-26T10:50:00",
+    "prix": 3555.46
+   }
+  },
   "entree_bougie": {
-   "GOLD": "2026-11-26T06:05:00"
+   "GOLD": "2026-11-26T10:45:00"
   }
  },
  "debut_test": "2026-11-20T16:20:00Z",
@@ -12741,11 +12803,11 @@
    41.31
   ],
   "rapide-GOLD": [
-   1795689900,
-   3555.1,
-   3555.91,
-   3552.16,
-   3555.7
+   1795690200,
+   3556.05,
+   3556.24,
+   3555.52,
+   3555.52
   ],
   "elan_4h-GOLD": [
    1795680000,
@@ -12992,5 +13054,26 @@
   "resultats": {}
  },
  "_pauses_marches_notees": {},
- "simulations": {}
+ "simulations": {
+  "00000000-76ca-6738-049f-c46d0015549e": {
+   "p_stop": 38.2,
+   "p_objectif": 5.2,
+   "p_aucun": 56.5,
+   "p_gain_fin": 42.7,
+   "prix_p5": 3495.42,
+   "prix_median": 3558.88,
+   "prix_p95": 3621.55,
+   "objectif": 3484.36,
+   "objectif_type": "gain de 2 R",
+   "objectif_r": 2.0,
+   "stop_en_gain": false,
+   "horizon": "4 h",
+   "tirages": 4000,
+   "bougies_utilisees": 298,
+   "prix_depart": 3555.52,
+   "calcule_sur": "2026-11-26T10:50:00",
+   "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
+   "verdict": "Penche nettement vers le stop (12 % des cas tranchés, équilibre 33 %)."
+  }
+ }
 }
