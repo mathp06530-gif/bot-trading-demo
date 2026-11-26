@@ -18,7 +18,7 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from backtest.serrage import conditions, lire  # noqa: E402
+from backtest.serrage import conditions, lire, nuits_par_bougie  # noqa: E402
 from bot.strategie import adx, ema, milieu  # noqa: E402
 from backtest.sortie_rapide import alignee  # noqa: E402
 
@@ -50,7 +50,7 @@ def simuler(df, voulu, ok, cond, suivi_pct=2.0, empiler=3, sortie_k=1, be=0.5, g
     ob, oa, hb, ha, lb, la, cb, ca = (df[c].values for c in
                                       ("open_bid", "open_ask", "high_bid", "high_ask", "low_bid", "low_ask", "close_bid", "close_ask"))
     dates = df.index
-    heures, minutes = dates.hour.values, dates.minute.values
+    nuits = nuits_par_bougie(dates)
     trades, pos, sens, contre = [], [], 0, 0
     for i in range(1, len(df)):
         # croisement inverse (confirmé sur sortie_k bougies) : tout fermer à l'ouverture
@@ -83,8 +83,8 @@ def simuler(df, voulu, ok, cond, suivi_pct=2.0, empiler=3, sortie_k=1, be=0.5, g
             if (lb[i] <= p["stop"]) if sens > 0 else (ha[i] >= p["stop"]):
                 trades.append((p["d"], ((p["stop"] - p["e"]) * sens - p["f"]) / p["dist"], "stop"))
                 continue
-            if heures[i] == 22 and minutes[i] == 0:
-                p["f"] += mid * (cond["nuit_achat"] if sens > 0 else cond["nuit_vente"]) / 100
+            if nuits[i]:
+                p["f"] += nuits[i] * mid * (cond["nuit_achat"] if sens > 0 else cond["nuit_vente"]) / 100
             e = mid * max(suivi_pct, stop_pct) / 100
             p["stop"] = max(p["stop"], mid - e) if sens > 0 else min(p["stop"], mid + e)
             p["m"] = max(p["m"], haut) if sens > 0 else min(p["m"], haut)

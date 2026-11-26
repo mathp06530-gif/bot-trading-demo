@@ -62,6 +62,8 @@ def simuler(df, voulu, ok_entree, cond, be=None, suiv=None, tp=None, verrou=None
     ob, oa, hb, ha, lb, la, cb, ca = (df[c].values for c in
                                       ("open_bid", "open_ask", "high_bid", "high_ask", "low_bid", "low_ask", "close_bid", "close_ask"))
     dates = df.index
+    from backtest.serrage import nuits_par_bougie
+    nuits = nuits_par_bougie(dates)
     trades = []
     pos = 0
     for i in range(1, len(df)):
@@ -100,8 +102,8 @@ def simuler(df, voulu, ok_entree, cond, be=None, suiv=None, tp=None, verrou=None
                 reste, tp_fait = 0.5, True
         # 3) clôture : frais de nuit, meilleur prix, suiveur garanti (2 %), sorties protégées
         mid = (cb[i] + ca[i]) / 2
-        if dates[i].hour == 22 and dates[i].minute == 0:
-            frais += mid * (cond["nuit_achat"] if pos > 0 else cond["nuit_vente"]) / 100 * reste
+        if nuits[i]:
+            frais += nuits[i] * mid * (cond["nuit_achat"] if pos > 0 else cond["nuit_vente"]) / 100 * reste
         haut = (hb[i] + ha[i]) / 2 if pos > 0 else (lb[i] + la[i]) / 2
         meilleur = max(meilleur, haut) if pos > 0 else min(meilleur, haut)
         if suivi_pct > 0:
