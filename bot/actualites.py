@@ -20,6 +20,11 @@ URL = "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
 ACTIVE = os.getenv("PAUSE_ANNONCES", "oui").strip().lower() in ("oui", "1", "true", "on")
 PAUSE_AVANT_MIN = int(os.getenv("PAUSE_AVANT_MIN", "30"))
 PAUSE_APRES_MIN = int(os.getenv("PAUSE_APRES_MIN", "60"))
+PAUSE_RESULTATS_H = int(os.getenv("PAUSE_RESULTATS_H", "24"))  # 26/11 : autour des résultats d'une action (Tesla)
+
+
+# Annonces de moindre impact global mais qui font bondir un marché précis : pause sur CE marché seulement.
+ANNONCES_MARCHE = {"Natural Gas Storage": ["NATURALGAS"]}
 
 
 def _lire_calendrier() -> list[dict]:
@@ -27,9 +32,16 @@ def _lire_calendrier() -> list[dict]:
     r.raise_for_status()
     annonces = []
     for e in r.json():
-        if e.get("country") == "USD" and e.get("impact") == "High" and e.get("date"):
-            quand = datetime.fromisoformat(e["date"]).astimezone(timezone.utc)
-            annonces.append({"date": quand.strftime("%Y-%m-%dT%H:%MZ"), "titre": e.get("title", "?")})
+        if e.get("country") != "USD" or not e.get("date"):
+            continue
+        quand = datetime.fromisoformat(e["date"]).astimezone(timezone.utc)
+        a = {"date": quand.strftime("%Y-%m-%dT%H:%MZ"), "titre": e.get("title", "?")}
+        if e.get("impact") == "High":
+            annonces.append(a)
+        else:  # 26/11/2026 : annonces qui ne secouent qu'UN marché (ex. stocks de gaz américains, chaque jeudi)
+            for mot, marches in ANNONCES_MARCHE.items():
+                if mot.lower() in a["titre"].lower():
+                    annonces.append({**a, "marches": marches})
     return sorted(annonces, key=lambda a: a["date"])
 
 
@@ -53,11 +65,36 @@ def annonce_en_cours(donnees: dict, maintenant: datetime) -> str | None:
     if not ACTIVE:
         return None
     for a in donnees.get("actualites", {}).get("annonces", []):
+        if a.get("marches"):
+            continue  # annonce propre à un marché : voir pauses_marches()
         quand = datetime.strptime(a["date"], "%Y-%m-%dT%H:%MZ").replace(tzinfo=timezone.utc)
         if quand - timedelta(minutes=PAUSE_AVANT_MIN) <= maintenant <= quand + timedelta(minutes=PAUSE_APRES_MIN):
             heure = quand.astimezone(_PARIS).strftime("%H h %M")
             return f"pause actualité : « {a['titre']} » (annonce américaine importante) à {heure}, heure de Paris"
     return None
+
+
+def pauses_marches(donnees: dict, maintenant: datetime) -> dict:
+    """{marché: raison} pour les pauses qui ne concernent qu'un marché : annonces propres à un marché
+    (stocks de gaz) et résultats trimestriels d'une action (bot/veille.py)."""
+    if not ACTIVE:
+        return {}
+    sortie = {}
+    for a in donnees.get("actualites", {}).get("annonces", []):
+        if not a.get("marches"):
+            continue
+        quand = datetime.strptime(a["date"], "%Y-%m-%dT%H:%MZ").replace(tzinfo=timezone.utc)
+        if quand - timedelta(minutes=PAUSE_AVANT_MIN) <= maintenant <= quand + timedelta(minutes=PAUSE_APRES_MIN):
+            heure = quand.astimezone(_PARIS).strftime("%H h %M")
+            for m in a["marches"]:
+                sortie.setdefault(m, f"pause actualité sur ce marché : « {a['titre']} » à {heure}, heure de Paris")
+    for m, quand_txt in donnees.get("veille", {}).get("resultats", {}).items():
+        quand = datetime.strptime(quand_txt, "%Y-%m-%dT%H:%MZ").replace(tzinfo=timezone.utc)
+        if quand - timedelta(hours=PAUSE_RESULTATS_H) <= maintenant <= quand + timedelta(hours=PAUSE_RESULTATS_H):
+            jour = quand.astimezone(_PARIS).strftime("%d/%m vers %H h %M")
+            sortie.setdefault(m, f"pause résultats trimestriels de {m} (le {jour}, heure de Paris) : "
+                                 f"pas de nouvelle position {PAUSE_RESULTATS_H} h avant et après")
+    return sortie
 
 
 def prochaines(donnees: dict, maintenant: datetime, n: int = 5) -> list[dict]:

@@ -1,0 +1,59 @@
+name: Test du simulateur (temporaire)
+
+# Teste bot/simulateur.py sur 10 ans de Cassure 4 h or + argent (backtest/time_machine.py) et vérifie que les
+# sources d'actus gratuites répondent depuis GitHub. Ne passe AUCUN ordre. Workflow temporaire (retiré après).
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["claude/**"]
+    paths: [backtest/time_machine.py, .github/workflows/time_machine.yml]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Sources d'actus (Yahoo, Nasdaq, ForexFactory)
+        run: |
+          python - <<'PY'
+          from datetime import datetime, timezone
+          import requests
+          from bot import veille, actualites
+          for s in ("GC=F", "SI=F", "ETH-USD", "NG=F", "TSLA"):
+              try:
+                  t = veille._titres(s)
+                  print(s, len(t), "titres :", [x["titre"][:70] + " " + str(x["sujets"]) for x in t[:3]])
+              except Exception as e:
+                  print(s, "ERREUR", e)
+          try:
+              print("Résultats :", veille._resultats(["TSLA"], datetime.now(timezone.utc)))
+              print("Janvier :", veille._resultats(["TSLA"], datetime(2027, 1, 15, tzinfo=timezone.utc)))
+          except Exception as e:
+              print("Nasdaq ERREUR", e)
+          try:
+              a = actualites._lire_calendrier()
+              print("Calendrier :", [x for x in a if x.get("marches")] or "aucune annonce gaz", len(a))
+              r = requests.get(actualites.URL, timeout=15, headers={"User-Agent": "bot-trading-demo"})
+              print("Titres FF :", sorted({(e["title"], e["impact"]) for e in r.json() if e.get("country") == "USD"}))
+          except Exception as e:
+              print("FF ERREUR", e)
+          PY
+      - name: Historique Capital.com (or, argent, 4 h)
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+          EPICS: "GOLD,SILVER"
+        run: python backtest/usine.py telecharger donnees_tm
+      - name: Test du simulateur
+        run: python backtest/time_machine.py donnees_tm
+      - run: cat backtest/resultats_time_machine.json
