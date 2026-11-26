@@ -57,9 +57,11 @@ class Geantes:
     def modeles(self):
         return [m for f in self.pret for m in self.pret[f]]
 
-    def prevoir(self, prix, ohlcv, H=1, delai=40):
+    def prevoir(self, prix, ohlcv, H=(1, 2, 3, 5), delai=40):
         """prix (n, L), ohlcv (n, L, 5) -> ({modèle: proba de hausse pour les k premiers marchés (k <= n)}, {modèle: secondes ou erreur})."""
         self.numero += 1
+        if isinstance(H, int):
+            H = [H]
         entrees = {}
         envoyees, infos_avant = {}, {}
         for f, p in self.proc.items():
@@ -80,7 +82,7 @@ class Geantes:
             entree = entrees[k]
             sortie = self.dossier / f"s{self.numero}_{f}.npz"
             try:
-                p.stdin.write(json.dumps({"entree": str(entree), "sortie": str(sortie), "H": H}) + "\n")
+                p.stdin.write(json.dumps({"entree": str(entree), "sortie": str(sortie), "H": list(H)}) + "\n")
                 p.stdin.flush()
                 envoyees[f] = sortie
             except Exception:

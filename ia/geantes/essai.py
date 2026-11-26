@@ -22,7 +22,7 @@ prix = 100 * np.exp(np.cumsum(rng.normal(0, 5e-4, (n, L)), axis=1))
 ohlcv = np.stack([prix, prix * 1.0003, prix * 0.9997, prix, np.full_like(prix, 10.0)], axis=2)
 res = {"chargement_s": round(charge), "etat": g.etat, "tours": []}
 for k in range(3):
-    probas, infos = g.prevoir(prix, ohlcv, 1, delai=40)
+    probas, infos = g.prevoir(prix, ohlcv, [1, 2, 3, 5], delai=40)
     res["tours"].append({"infos": infos, "exemple": {m: [round(float(x), 3) for x in p[:5]] for m, p in probas.items()}})
     print(json.dumps(res["tours"][-1], ensure_ascii=False)[:3000], flush=True)
 g.fermer()

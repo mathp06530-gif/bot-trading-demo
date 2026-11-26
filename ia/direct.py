@@ -31,6 +31,7 @@ from ia.geantes.familles import EXCLUES, FAMILLES, MAISON, NOMS  # noqa: E402
 DUREE = int(os.getenv("IA_DUREE_S", str(50 * 60)))
 LOT = int(os.getenv("IA_LOT", "24"))  # marchés prédits par minute (rotation sur tous les marchés ouverts)
 L = 512  # bougies données à chaque IA
+HS = [1, 2, 3, 5]  # horizons jugés (minutes) : mêmes IA, même journal
 DOSSIER = Path(os.getenv("IA_JOURNAL_DIR", "journal_ia"))  # copie locale de la branche ia-journal
 BRANCHE = "ia-journal"
 GRANDS = ["GOLD", "SILVER", "OIL_CRUDE", "NATURALGAS", "COPPER", "US500", "US100", "US30", "DE40", "UK100", "FR40",
@@ -156,7 +157,7 @@ SERIES = []  # bougies 1 min des grands marchés, aussi données aux IA de reche
 
 def entrainer_maison(api, ouverts):
     choix = [e for e in GRANDS if e in ouverts] or list(ouverts)[:30]
-    X, Xs, Y = [], [], []
+    X, Xs, Y = [], [], {h: [] for h in HS}
     for epic in choix[:30]:
         try:
             d = vers_df(api.bougies(epic, "MINUTE", 1000))
@@ -166,18 +167,27 @@ def entrainer_maison(api, ouverts):
             continue
         F, S = predire.indicateurs(d), predire.sequences(d)
         mid = ((d.close_bid + d.close_ask) / 2).values
-        fut = np.r_[mid[1:] - mid[:-1], np.nan]
-        y = np.where(fut > 0, 1.0, np.where(fut < 0, 0.0, np.nan))
-        ok = F.notna().all(axis=1).values & ~np.isnan(y) & (np.arange(len(d)) >= predire.SEQ + 200)
+        ys = {}
+        for h in HS:
+            fut = np.r_[mid[h:] - mid[:-h], np.full(h, np.nan)]
+            ys[h] = np.where(fut > 0, 1.0, np.where(fut < 0, 0.0, np.nan))
+        ok = F.notna().all(axis=1).values & (np.arange(len(d)) >= predire.SEQ + 200) & (np.arange(len(d)) < len(d) - max(HS))
         ii = np.where(ok)[0]
-        X.append(F.values[ii]); Xs.append(np.stack([S[i - predire.SEQ + 1:i + 1] for i in ii])); Y.append(y[ii])
+        X.append(F.values[ii]); Xs.append(np.stack([S[i - predire.SEQ + 1:i + 1] for i in ii]))
+        for h in HS:
+            Y[h].append(ys[h][ii])
         SERIES.append(mid)
         time.sleep(0.1)
     if not X:
         return {}
-    X, Xs, Y = np.concatenate(X), np.concatenate(Xs), np.concatenate(Y)
-    print(f"IA maison : {len(Y)} bougies d'entraînement sur {len(choix[:30])} marchés", flush=True)
-    return predire.entrainer(X, Xs, Y)
+    X, Xs = np.concatenate(X), np.concatenate(Xs)
+    print(f"IA maison : {len(X)} bougies d'entraînement sur {len(choix[:30])} marchés", flush=True)
+    out = {}
+    for h in HS:  # un jeu d'IA par horizon (bougies où le prix n'a pas bougé : retirées)
+        y = np.concatenate(Y[h])
+        k = ~np.isnan(y)
+        out[h] = predire.entrainer(X[k], Xs[k], y[k])
+    return out
 
 
 # --------------------------------------------------------------------------- statistiques
@@ -262,16 +272,21 @@ def principal():
         os.environ["IA_ENTRAINEMENT"] = os.path.abspath("entrainement_ia.npz")
     from ia.geantes import Geantes
     geantes = Geantes(attente_chargement=900, familles=[f for f in os.getenv("IA_FAMILLES", " ".join(FAMILLES)).split() if f])
-    modeles = list(maison) + geantes.modeles() + ["vote", "arbitre"]
-    st = lire_json("stats.json", None) or stats_vides(modeles)
-    for m in modeles:
-        index_modele(st, m)
+    noms_maison = list(maison.get(1, {}))
+    modeles = noms_maison + geantes.modeles() + ["vote", "arbitre"]
+    lu = lire_json("stats.json", None) or {}
+    if lu and "horizons" not in lu:  # ancien format (1 min seulement)
+        lu = {"horizons": {"1": lu}}
+    ST = {h: lu.get("horizons", {}).get(str(h)) or stats_vides(list(modeles)) for h in HS}
+    for h in HS:
+        for m in modeles:
+            index_modele(ST[h], m)
     vivant = lire_json("vivant.json", {})
     vivant.update({"debut_tour": iso(), "marches_connus": len(tous), "marches_ouverts": len(ouverts), "lot": LOT,
-                   "etat_ia": {**{m: "prête" for m in maison}, **geantes.etat}, "noms": NOMS,
+                   "etat_ia": {**{m: "prête" for m in noms_maison}, **geantes.etat}, "horizons": HS, "noms": NOMS,
                    "familles_maison": list(MAISON), "familles": {f: list(v["modeles"]) for f, v in FAMILLES.items()},
                    "exclues": EXCLUES})
-    vivant.setdefault("probas", {})
+    vivant["probas"] = {e: v for e, v in vivant.get("probas", {}).items() if "1" in v.get("p", {})}
     vivant.setdefault("dernieres", [])
     vivant.setdefault("vitesse", {})
     curseur = int(vivant.get("curseur", 0))
@@ -315,12 +330,12 @@ def principal():
                 for m, pr in p["probas"].items():
                     sens = 1 if pr > 0.5 else -1
                     gain = (sens * (fin["mid"] - p["depart"]) - p["spread"]) / p["depart"] * 100
-                    compter(st, p["epic"], p["type"], jour, m, (sens > 0) == hausse, gain)
-                vivant["dernieres"].append({"t": p["heure"], "epic": p["epic"], "vote": round(p["probas"]["vote"], 3),
+                    compter(ST[p["h"]], p["epic"], p["type"], jour, m, (sens > 0) == hausse, gain)
+                vivant["dernieres"].append({"t": p["heure"], "epic": p["epic"], "h": p["h"], "vote": round(p["probas"]["vote"], 3),
                                             "arbitre": round(p["probas"]["arbitre"], 3),
                                             "reel": "hausse" if hausse else "baisse",
                                             "variation_pct": round((fin["mid"] / p["depart"] - 1) * 100, 4)})
-            vivant["dernieres"] = vivant["dernieres"][-300:]
+            vivant["dernieres"] = vivant["dernieres"][-400:]
         # 2. nouveau lot de marchés (rotation)
         if not ouverts:
             continue
@@ -353,7 +368,7 @@ def principal():
                 d.iloc[-1, d.columns.get_loc(c)] = f(d[c].iloc[-1], d[c.replace("high", "close").replace("low", "close")].iloc[-1])
             donnees[e] = d
         epics = list(donnees)
-        probas = {e: {} for e in epics}
+        probas = {e: {h: {} for h in HS} for e in epics}
         # IA maison
         Xf, Xsq, ok = [], [], []
         for e in epics:
@@ -365,15 +380,16 @@ def principal():
             Xf.append(x); Xsq.append(S[-predire.SEQ:]); ok.append(e)
         if ok:
             Xf, Xsq = np.array(Xf), np.array(Xsq, dtype=np.float32)
-            for m, f in maison.items():
-                t0 = time.time()
-                try:
-                    pr = f(Xf, Xsq)
-                    for e, p in zip(ok, pr):
-                        probas[e][m] = float(p)
-                    vivant["vitesse"][m] = round(time.time() - t0, 2)
-                except Exception as ex:
-                    vivant["etat_ia"][m] = f"erreur : {str(ex)[:150]}"
+            for h in HS:
+                for m, f in maison.get(h, {}).items():
+                    t0 = time.time()
+                    try:
+                        pr = f(Xf, Xsq)
+                        for e, p in zip(ok, pr):
+                            probas[e][h][m] = float(p)
+                        vivant["vitesse"][m] = round(time.time() - t0, 2)
+                    except Exception as ex:
+                        vivant["etat_ia"][m] = f"erreur : {str(ex)[:150]}"
         # IA géantes : même entrée pour toutes
         n_max = max(len(donnees[e]) for e in epics)
         prix_mat, ohlcv = [], []
@@ -387,10 +403,13 @@ def principal():
         etapes["ia_maison_s"] = round(time.time() - t_frais, 1)
         t0 = time.time()
         reste = max(5.0, 40 - (time.time() - t_tour))
-        pg, infos = geantes.prevoir(np.array(prix_mat), np.array(ohlcv), 1, delai=reste)
-        for m, pr in pg.items():
+        pg, infos = geantes.prevoir(np.array(prix_mat), np.array(ohlcv), HS, delai=reste)
+        for cle, pr in pg.items():
+            m, h = cle.rsplit("@", 1)
+            if int(h) not in HS:
+                continue
             for e, p in zip(epics, pr):
-                probas[e][m] = float(p)
+                probas[e][int(h)][m] = float(p)
         for m, v in infos.items():
             if isinstance(v, (int, float)):
                 vivant["vitesse"][m] = v
@@ -398,28 +417,31 @@ def principal():
             else:
                 vivant["etat_ia"][m] = v
         # vote + arbitre, puis prix de départ
-        w = poids_arbitre(st)
+        W = {h: poids_arbitre(ST[h]) for h in HS}
         etapes["ia_geantes_s"] = round(time.time() - t0, 1)
         depart = instantanes(api, epics)
         heure = iso()
+        t_depart = time.time()
         for e in epics:
-            pe = probas[e]
-            if not pe or e not in depart:
+            if e not in depart:
                 continue
-            ps = list(pe.values())
-            pe["vote"] = float(np.mean(ps))
-            tw = sum(w.get(m, 0) for m in pe if m != "vote")
-            pe["arbitre"] = float(sum(w.get(m, 0) * p for m, p in pe.items() if m != "vote") / tw) if tw > 0 else pe["vote"]
-            attente.append({"epic": e, "type": univers["marches"].get(e, {}).get("type", "?"), "heure": heure,
-                            "echeance": time.time() + 60, "depart": depart[e]["mid"], "spread": depart[e]["spread"],
-                            "probas": pe})
-            vivant["probas"][e] = {"t": heure, "p": {m: round(p, 3) for m, p in pe.items()}}
+            for h in HS:
+                pe, w = probas[e][h], W[h]
+                if not pe:
+                    continue
+                pe["vote"] = float(np.mean(list(pe.values())))
+                tw = sum(w.get(m, 0) for m in pe if m != "vote")
+                pe["arbitre"] = float(sum(w.get(m, 0) * p for m, p in pe.items() if m != "vote") / tw) if tw > 0 else pe["vote"]
+                attente.append({"epic": e, "h": h, "type": univers["marches"].get(e, {}).get("type", "?"), "heure": heure,
+                                "echeance": t_depart + 60 * h, "depart": depart[e]["mid"], "spread": depart[e]["spread"],
+                                "probas": pe})
+            vivant["probas"][e] = {"t": heure, "p": {str(h): {m: round(p, 3) for m, p in probas[e][h].items()} for h in HS}}
         vivant["delais"] = {"prix_frais_vers_prediction_s": round(time.time() - t_frais, 1),
                             "debut_minute_vers_prediction_s": round(time.time() - t_tour, 1),
                             "marches_predits": len(epics)}
         vivant.setdefault("historique_delais", []).append([heure, vivant["delais"]["prix_frais_vers_prediction_s"]])
         vivant["historique_delais"] = vivant["historique_delais"][-120:]
-        vivant["poids_arbitre"] = {m: round(v, 4) for m, v in w.items()}
+        vivant["poids_arbitre"] = {str(h): {m: round(v, 4) for m, v in W[h].items()} for h in HS}
         vivant["curseur"] = curseur
         vivant["duree_tour_s"] = round(time.time() - t_tour, 1)
         vivant["etapes"] = etapes
@@ -428,13 +450,13 @@ def principal():
         vivant["probas"] = {e: v for e, v in vivant["probas"].items() if v["t"] >= limite}
         if time.time() - derniere_pub > 3 * 60 and (tache_pub is None or tache_pub.done()):
             vivant["maj"] = iso()
-            copie = json.loads(json.dumps({"stats.json": st, "vivant.json": vivant, "marches.json": univers}))
+            copie = json.loads(json.dumps({"stats.json": {"horizons": {str(h): ST[h] for h in HS}}, "vivant.json": vivant, "marches.json": univers}))
             tache_pub = fond.submit(publier, copie)  # en arrière-plan : la minute suivante n'attend pas
             derniere_pub = time.time()
     if tache_pub is not None:
         tache_pub.result()
     vivant["maj"] = iso()
-    publier({"stats.json": st, "vivant.json": vivant, "marches.json": univers})
+    publier({"stats.json": {"horizons": {str(h): ST[h] for h in HS}}, "vivant.json": vivant, "marches.json": univers})
     geantes.fermer()
     api.deconnexion()
 
