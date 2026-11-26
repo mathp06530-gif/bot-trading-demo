@@ -1792,7 +1792,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T08:15:26Z",
+ "derniere_execution": "2026-11-26T08:16:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10809,6 +10809,10 @@
   {
    "date": "2026-11-26T08:15:26Z",
    "valeur": 93.3
+  },
+  {
+   "date": "2026-11-26T08:16:26Z",
+   "valeur": 93.3
   }
  ],
  "compte": {
@@ -11354,9 +11358,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3563.835,
+    "prix": 3563.8,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 26.98 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 27.09 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -12092,7 +12096,7 @@
   "deals": {},
   "marches": {
    "NATURALGAS": {
-    "prix": 3.5283,
+    "prix": 3.5293,
     "sens": -1,
     "atr": 0.07279,
     "regle": "MACD 24/52/18, achat et vente, seulement si marché calme (ADX < 20), stop garanti 2.5 ATR, objectif 1 R, suiveur 3 ATR",
@@ -12126,8 +12130,8 @@
    1795680900,
    3564.86,
    3564.86,
-   3563.66,
-   3563.84
+   3562.51,
+   3563.8
   ],
   "elan_4h-GOLD": [
    1795680000,
@@ -12155,7 +12159,7 @@
    3.5273,
    3.5348,
    3.5263,
-   3.5283
+   3.5293
   ],
   "usine-TSLA": [
    1795651200,
@@ -12378,13 +12382,13 @@
  "_pauses_marches_notees": {},
  "simulations": {
   "00000000-76c8-6a0d-049f-c46d0015549e": {
-   "p_stop": 37.5,
+   "p_stop": 37.4,
    "p_objectif": 14.5,
-   "p_aucun": 48.0,
-   "p_gain_fin": 41.4,
-   "prix_p5": 3506.05,
-   "prix_median": 3569.54,
-   "prix_p95": 3632.29,
+   "p_aucun": 48.1,
+   "p_gain_fin": 41.5,
+   "prix_p5": 3506.02,
+   "prix_median": 3569.51,
+   "prix_p95": 3632.25,
    "objectif": 3512.58,
    "objectif_type": "gain de 2 R",
    "objectif_r": 2.0,
@@ -12392,7 +12396,7 @@
    "horizon": "4 h",
    "tirages": 4000,
    "bougies_utilisees": 298,
-   "prix_depart": 3563.84,
+   "prix_depart": 3563.8,
    "calcule_sur": "2026-11-26T08:15:00",
    "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
    "verdict": "Penche vers le stop (28 % des cas tranchés, équilibre 33 %)."
