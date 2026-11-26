@@ -1748,7 +1748,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T05:31:25Z",
+ "derniere_execution": "2026-11-26T05:32:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10117,6 +10117,10 @@
   {
    "date": "2026-11-26T05:31:25Z",
    "valeur": 93.15
+  },
+  {
+   "date": "2026-11-26T05:32:24Z",
+   "valeur": 93.15
   }
  ],
  "compte": {
@@ -10992,7 +10996,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 42.0995,
+   "prix": 42.016000000000005,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.48,
@@ -11020,7 +11024,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3591.52,
+    "prix": 3594.34,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -11721,7 +11725,7 @@
     "action": "En attente d'un trou (élan d'un gros ordre)"
    },
    "SILVER": {
-    "prix": 42.1,
+    "prix": 42.02,
     "ema200": 50.51,
     "atr": 1.14,
     "trou_achat_atr": -0.03,
