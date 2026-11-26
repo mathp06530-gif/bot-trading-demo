@@ -1773,7 +1773,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T06:14:25Z",
+ "derniere_execution": "2026-11-26T06:15:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10310,6 +10310,10 @@
   {
    "date": "2026-11-26T06:14:25Z",
    "valeur": 93.16
+  },
+  {
+   "date": "2026-11-26T06:15:25Z",
+   "valeur": 93.16
   }
  ],
  "compte": {
@@ -10327,7 +10331,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3572.1,
-   "resultat": 0.01,
+   "resultat": 0,
    "ouverte_le": "2026-11-26T06:10:23.892"
   }
  ],
@@ -10650,7 +10654,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T06:10:23Z",
    "statut": "ouvert",
-   "resultat": 0.01,
+   "resultat": 0,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -10848,9 +10852,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3570.21,
+    "prix": 3569.625,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 33.56 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 32.97 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -10868,7 +10872,7 @@
   "meilleur": {
    "00000000-76c8-6a0d-049f-c46d0015549e": {
     "depuis": "2026-11-26T06:10:00",
-    "prix": 3572.1
+    "prix": 3569.03
    }
   },
   "entree_bougie": {
