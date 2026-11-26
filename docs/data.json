@@ -1786,7 +1786,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T07:46:27Z",
+ "derniere_execution": "2026-11-26T07:47:26Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10691,6 +10691,10 @@
   {
    "date": "2026-11-26T07:46:27Z",
    "valeur": 93.22
+  },
+  {
+   "date": "2026-11-26T07:47:26Z",
+   "valeur": 93.22
   }
  ],
  "compte": {
@@ -11235,9 +11239,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3567.9,
+    "prix": 3568.34,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 31.23 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 31.67 de plus dans le bon sens"
    },
    "SILVER": {
     "tendance": "SELL",
@@ -12008,7 +12012,7 @@
    3571.61,
    3571.95,
    3567.55,
-   3567.9
+   3568.34
   ],
   "elan_4h-GOLD": [
    1795665600,
