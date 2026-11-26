@@ -42,6 +42,9 @@
   .pastille { display:inline-block; padding:1px 8px; border-radius:999px; font-size:11.5px; background:var(--carte2); color:var(--doux); }
   .pastille.ok { color:var(--vert); background:rgba(22,199,132,.12); } .pastille.ko { color:var(--rouge); background:rgba(234,57,67,.12); }
   .pastille.att { color:var(--orange); background:rgba(245,165,36,.12); }
+  .horizons { display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
+  .horizons button { all:unset; cursor:pointer; padding:6px 14px; border-radius:999px; background:var(--carte2); color:var(--doux); font-weight:600; font-size:13px; border:1px solid var(--bord2); }
+  .horizons button[aria-pressed="true"] { background:var(--grad); color:#fff; border-color:transparent; }
   .filtres { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
   input, select { background:var(--carte2); color:var(--texte); border:1px solid var(--bord2); border-radius:10px; padding:7px 10px; font:inherit; min-width:0; }
   input { flex:1 1 180px; }
@@ -61,13 +64,20 @@
   <header>
     <div>
       <a href="./">← Retour à l'appli</a>
-      <h1><span>IA en direct</span> · direction à 1 minute</h1>
-      <div class="doux petit">Toutes les IA reçoivent les mêmes bougies 1 min en temps réel et disent : plus haut ou plus bas dans 60 s. Aucun ordre n'est passé. 50 % = le hasard.</div>
+      <h1><span>IA en direct</span> · direction à <span id="titre-h">1 minute</span></h1>
+      <div class="doux petit">Toutes les IA reçoivent les mêmes bougies 1 min en temps réel et disent : plus haut ou plus bas dans 1, 2, 3 et 5 minutes. Aucun ordre n'est passé. 50 % = le hasard.</div>
+      <div class="horizons" id="horizons"></div>
     </div>
     <div class="doux petit" id="maj">Chargement…</div>
   </header>
 
   <section class="grille kpis" id="kpis"></section>
+
+  <section class="carte" style="margin-bottom:12px">
+    <h2>Comparer les horizons : réussite ET gain après spread</h2>
+    <div class="defile"><table id="comparer"></table></div>
+    <div class="note">Gain moyen = ce que rapporte en moyenne une prédiction suivie comme un trade, spread payé (en % du prix). Plus l'horizon est long, plus le mouvement est grand face au spread payé une seule fois.</div>
+  </section>
 
   <section class="grille deux">
     <div class="carte">
@@ -120,7 +130,8 @@
 <script>
 const SOURCE = "https://raw.githubusercontent.com/mathp06530-gif/bot-trading-demo/ia-journal/";
 const TYPES = {SHARES:"Actions", CURRENCIES:"Devises", INDICES:"Indices", COMMODITIES:"Matières premières", CRYPTOCURRENCIES:"Cryptos"};
-let S = null, V = null, M = {};
+let S = null, V = null, M = {}, TOUT = {}, HZ = "1";
+try { HZ = localStorage.getItem("ia-horizon") || "1"; } catch (e) {}
 const $ = id => document.getElementById(id);
 const echap = t => String(t ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const nomIA = m => (V && V.noms && V.noms[m]) || m;
@@ -181,7 +192,7 @@ function classement(t) {
   let h = `<tr><th>#</th><th>IA</th><th data-t="reussite">Réussite ▾</th><th data-t="n">Jugées</th><th data-t="gain">Gain si trade</th><th>Verdict</th><th>Poids arbitre</th></tr>`;
   lignes.forEach((x, i) => {
     const etiq = x.s === "ok" ? `<span class="pastille ok">✓ mieux que le hasard</span>` : x.s === "ko" ? `<span class="pastille ko">✗ moins bien</span>` : x.s === "att" ? `<span class="pastille att">≈ hasard</span>` : `<span class="pastille">trop tôt</span>`;
-    const w = (V.poids_arbitre || {})[x.m];
+    const pa = V.poids_arbitre || {}; const w = (pa[HZ] && typeof pa[HZ] === "object" ? pa[HZ] : (HZ === "1" ? pa : {}))[x.m];
     h += `<tr><td class="faible">${i + 1}</td><td>${echap(nomIA(x.m))}</td><td>${x.p == null ? "—" : fmt(x.p, 2) + " %"}${x.p == null ? "" : barre(x.p)}</td>` +
          `<td>${x.n.toLocaleString("fr-FR")}</td><td class="${x.g >= 0 ? "v" : "r"}">${x.g >= 0 ? "+" : ""}${fmt(x.g, 2)} %</td><td>${etiq}</td><td>${w == null ? "—" : fmt(w * 100, 2)}</td></tr>`;
   });
@@ -216,7 +227,8 @@ function remplirSelects() {
 
 function probas() {
   const q = $("cherche").value.trim().toLowerCase(), ty = $("type").value, ia = $("ia").value || "arbitre", tri = $("tri").value;
-  let l = Object.entries(V.probas || {}).map(([e, v]) => ({e, t:v.t, p:v.p[ia], tout:v.p}))
+  const ph = v => v.p[HZ] && typeof v.p[HZ] === "object" ? v.p[HZ] : (HZ === "1" && typeof v.p.vote === "number" ? v.p : {});
+  let l = Object.entries(V.probas || {}).map(([e, v]) => ({e, t:v.t, p:ph(v)[ia], tout:ph(v)}))
     .filter(x => x.p != null && (!q || nomMarche(x.e).toLowerCase().includes(q) || x.e.toLowerCase().includes(q)) && (!ty || typeMarche(x.e) === ty));
   l.sort((a, b) => tri === "hausse" ? b.p - a.p : tri === "baisse" ? a.p - b.p : tri === "nom" ? nomMarche(a.e).localeCompare(nomMarche(b.e)) : Math.abs(b.p - .5) - Math.abs(a.p - .5));
   let h = `<tr><th>Marché</th><th>Type</th><th>${echap(nomIA(ia))}</th><th>IA d'accord</th><th>Heure</th></tr>`;
@@ -235,7 +247,7 @@ function probas() {
 
 function dernieres() {
   let h = `<tr><th>Heure</th><th>Marché</th><th>Arbitre</th><th>Vote</th><th>Réel</th></tr>`;
-  for (const p of (V.dernieres || []).slice(-120).reverse()) {
+  for (const p of (V.dernieres || []).filter(p => String(p.h || 1) === HZ).slice(-120).reverse()) {
     const cel = pr => { const ok = (pr > .5) === (p.reel === "hausse"); return `<td class="${ok ? "v" : "r"}">${pr > .5 ? "▲" : "▼"} ${Math.round(100 * Math.max(pr, 1 - pr))} % ${ok ? "✓" : "✗"}</td>`; };
     h += `<tr><td class="doux">${new Date(p.t).toLocaleTimeString("fr-FR")}</td><td>${echap(nomMarche(p.epic))}</td>${cel(p.arbitre)}${cel(p.vote)}` +
          `<td>${p.reel === "hausse" ? "▲" : "▼"} ${p.variation_pct >= 0 ? "+" : ""}${fmt(p.variation_pct, 3)} %</td></tr>`;
@@ -282,18 +294,41 @@ function exclues() {
   const e = Object.entries(V.exclues || {});
   $("exclues").innerHTML = e.length ? `<tr><th>IA</th><th>Pourquoi</th></tr>` + e.map(([n, r]) => `<tr><td>${echap(n)}</td><td class="doux" style="white-space:normal">${echap(r)}</td></tr>`).join("") : `<tr><td class="doux">—</td></tr>`;
 }
+function horizons() {
+  const hs = Object.keys(TOUT).sort((a, b) => a - b);
+  $("horizons").innerHTML = hs.map(h => `<button aria-pressed="${h === HZ}" data-h="${h}">${h} min</button>`).join("");
+  $("horizons").querySelectorAll("button").forEach(b => b.onclick = () => { HZ = b.dataset.h; try { localStorage.setItem("ia-horizon", HZ); } catch (e) {} S = TOUT[HZ]; tout(); });
+  $("titre-h").textContent = HZ === "1" ? "1 minute" : HZ + " minutes";
+}
+function comparer() {
+  const hs = Object.keys(TOUT).sort((a, b) => a - b);
+  const tot = st => { const t = {}; st.modeles.forEach((m, k) => { let n = 0, j = 0, g = 0; st.n.forEach((r, i) => { n += r[k]; j += st.justes[i][k]; g += st.gain[i][k]; }); t[m] = {n, j, g}; }); return t; };
+  let h = `<tr><th>Horizon</th><th>Vote : réussite</th><th>Vote : gain moyen</th><th>Arbitre : réussite</th><th>Arbitre : gain moyen</th><th>Meilleure IA (300 min.)</th><th>Sa réussite</th><th>Son gain moyen</th></tr>`;
+  for (const hz of hs) {
+    const t = tot(TOUT[hz]);
+    const c = (m) => { const x = t[m]; return x && x.n ? [`${fmt(100 * x.j / x.n, 2)} %`, x.g / x.n] : ["—", null]; };
+    const [vp, vg] = c("vote"), [ap, ag] = c("arbitre");
+    const best = Object.entries(t).filter(([m, x]) => !["vote","arbitre"].includes(m) && x.n >= 300).sort((a, b) => b[1].j / b[1].n - a[1].j / a[1].n)[0];
+    const g = x => x == null ? `<td>—</td>` : `<td class="${x >= 0 ? "v" : "r"}">${x >= 0 ? "+" : ""}${fmt(x, 3)} %</td>`;
+    h += `<tr${hz === HZ ? ' style="background:var(--carte2)"' : ""}><td><b>${hz} min</b></td><td>${vp}</td>${g(vg)}<td>${ap}</td>${g(ag)}` +
+         `<td>${best ? echap(nomIA(best[0])) : "—"}</td><td>${best ? fmt(100 * best[1].j / best[1].n, 2) + " %" : "—"}</td>${g(best ? best[1].g / best[1].n : null)}</tr>`;
+  }
+  $("comparer").innerHTML = h;
+}
 function tout() {
   if (!S || !V) return;
   const t = totaux();
   $("maj").textContent = "Mis à jour : " + new Date(V.maj).toLocaleString("fr-FR") + " · actualisation auto";
-  kpis(t); classement(t); chaleur(); remplirSelects(); probas(); dernieres(); etat(); marches(); exclues();
+  horizons(); comparer(); kpis(t); classement(t); chaleur(); remplirSelects(); probas(); dernieres(); etat(); marches(); exclues();
 }
 async function charger() {
   try {
     const q = "?t=" + Math.floor(Date.now() / 60000);
     const [s, v, m] = await Promise.all(["stats.json", "vivant.json", "marches.json"].map(f => fetch(SOURCE + f + q).then(r => r.ok ? r.json() : null)));
     if (!s || !v) throw new Error("vide");
-    S = s; V = v; M = (m && m.marches) || {};
+    TOUT = s.horizons || {"1": s}; V = v; M = (m && m.marches) || {};
+    if (!TOUT[HZ]) HZ = "1";
+    S = TOUT[HZ];
     tout();
   } catch (e) {
     $("maj").textContent = "Pas encore de données : le journal se remplit dès que les IA ont fait leurs premières prédictions.";

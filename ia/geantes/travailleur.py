@@ -29,6 +29,7 @@ import torch  # noqa: E402
 
 torch.set_num_threads(max(1, int(os.getenv("IA_FILS", "1"))))
 NIVEAUX = [round(x, 1) for x in np.linspace(0.1, 0.9, 9)]
+HORIZONS = [1, 2, 3, 5]  # minutes
 
 
 def depuis_quantiles(q, dernier):
@@ -43,10 +44,10 @@ def depuis_echantillons(s, dernier):
     return np.clip(((s > dernier[:, None]).sum(1) + 0.5 * (s == dernier[:, None]).sum(1)) / s.shape[1], 0.02, 0.98)
 
 
-def depuis_point(pred, prix):
-    """Prévision unique -> probabilité, selon l'écart rapporté au mouvement habituel d'une minute."""
+def depuis_point(pred, prix, h=1):
+    """Prévision unique -> probabilité, selon l'écart rapporté au mouvement habituel sur h minutes."""
     dernier = prix[:, -1]
-    sigma = np.std(np.diff(prix[:, -61:], axis=1), axis=1) + 1e-12
+    sigma = np.std(np.diff(prix[:, -61:], axis=1), axis=1) * math.sqrt(h) + 1e-12
     return 0.5 + 0.5 * np.tanh((np.asarray(pred, dtype=float) - dernier) / sigma)
 
 
@@ -113,7 +114,7 @@ def charger(nom):
         from lag_llama.gluon.estimator import LagLlamaEstimator
         ckpt = hf_hub_download("time-series-foundation-models/Lag-Llama", "lag-llama.ckpt")
         a = torch.load(ckpt, map_location="cpu", weights_only=False)["hyper_parameters"]["model_kwargs"]
-        est = LagLlamaEstimator(ckpt_path=ckpt, prediction_length=1, context_length=32, input_size=a["input_size"],
+        est = LagLlamaEstimator(ckpt_path=ckpt, prediction_length=max(HORIZONS), context_length=32, input_size=a["input_size"],
                                 n_layer=a["n_layer"], n_embd_per_head=a["n_embd_per_head"], n_head=a["n_head"],
                                 scaling=a["scaling"], time_feat=a["time_feat"], batch_size=64, num_parallel_samples=20,
                                 device=torch.device("cpu"))
@@ -141,7 +142,7 @@ def entrainer_nf():
     d = np.load(os.environ["IA_ENTRAINEMENT"], allow_pickle=True)
     df = pd.concat([pd.DataFrame({"unique_id": f"s{k}", "ds": np.arange(len(x)), "y": np.asarray(x, dtype=float)})
                     for k, x in enumerate(d["series"]) if len(x) > 200])
-    kw = dict(h=2, input_size=64, max_steps=int(os.getenv("IA_NF_PAS", "80")), scaler_type="standard", batch_size=64,
+    kw = dict(h=max(HORIZONS), input_size=64, max_steps=int(os.getenv("IA_NF_PAS", "80")), scaler_type="standard", batch_size=64,
               enable_progress_bar=False, enable_model_summary=False, logger=False, accelerator="cpu")
     classes = {"nbeats": M.NBEATS, "nhits": M.NHITS, "tide": M.TiDE, "tcn": M.TCN, "deepar": M.DeepAR,
                "patchtst": M.PatchTST, "tft": M.TFT}
@@ -152,31 +153,34 @@ def entrainer_nf():
     return nf
 
 
-def prevoir(nom, m, prix, ohlcv, H):
+def prevoir(nom, m, prix, ohlcv, Hs):
+    """Prévoit jusqu'à max(Hs) minutes en UNE fois, puis renvoie {h: probabilité de hausse à h minutes}."""
     dernier = prix[:, -1]
     x = torch.tensor(prix, dtype=torch.float32)
-    if nom == "chronos_bolt":
+    H = max(Hs)
+    Q = lambda q: {h: depuis_quantiles(q[:, h - 1, :], dernier) for h in Hs}  # noqa: E731  q (n, H, 9)
+    E = lambda e: {h: depuis_echantillons(e[:, :, h - 1], dernier) for h in Hs}  # noqa: E731  e (n, S, H)
+    P = lambda pr: {h: depuis_point(pr[:, h - 1], prix, h) for h in Hs}  # noqa: E731  pr (n, H)
+    if nom in ("chronos_bolt", "chronos_t5"):
         q, _ = m.predict_quantiles(x, prediction_length=H, quantile_levels=NIVEAUX)
-        return depuis_quantiles(q[:, H - 1, :].numpy(), dernier)
+        return Q(np.asarray(q))
     if nom == "chronos2":
         q, _ = m.predict_quantiles([p[None, :] for p in prix.astype(np.float32)], prediction_length=H, quantile_levels=NIVEAUX)
-        q = np.stack([np.asarray(t)[0, H - 1, :] for t in q])
-        return depuis_quantiles(q, dernier)
+        return Q(np.stack([np.asarray(t)[0] for t in q]))
     if nom == "timesfm":
         _, q = m.forecast(horizon=H, inputs=[p for p in prix])
-        return depuis_quantiles(np.asarray(q)[:, H - 1, 1:10], dernier)
+        return Q(np.asarray(q)[:, :H, 1:10])
     if nom == "tirex":
         q, _ = m.forecast(context=x, prediction_length=H)
-        q = q.numpy() if hasattr(q, "numpy") else np.asarray(q)
-        return depuis_quantiles(q[:, H - 1, :], dernier)
+        return Q(q.numpy() if hasattr(q, "numpy") else np.asarray(q))
     if nom == "toto":
         from toto.data.util.dataset import MaskedTimeseries
         s = x[:, None, :]
         entree = MaskedTimeseries(series=s, padding_mask=torch.ones_like(s, dtype=torch.bool), id_mask=torch.zeros_like(s),
                                   timestamp_seconds=torch.zeros_like(s), time_interval_seconds=torch.full((len(s), 1), 60))
         f = m.forecast(entree, prediction_length=H, num_samples=64, samples_per_batch=64)
-        ech = f.samples.numpy()  # (n, 1, H, S)
-        return depuis_echantillons(ech[:, 0, H - 1, :], dernier)
+        ech = f.samples.numpy()[:, 0]  # (n, H, S)
+        return E(ech.transpose(0, 2, 1))
     if nom == "moirai2":
         from uni2ts.model.moirai2 import Moirai2Forecast
         f = Moirai2Forecast(module=m, prediction_length=H, context_length=prix.shape[1], target_dim=1,
@@ -185,17 +189,15 @@ def prevoir(nom, m, prix, ohlcv, H):
         q = q.reshape(len(prix), -1, H) if q.ndim != 3 else q
         if q.shape[1] != 9 and q.shape[2] == 9:
             q = q.transpose(0, 2, 1)
-        return depuis_quantiles(q[:, :, H - 1], dernier)
+        return Q(q.transpose(0, 2, 1))  # (n, 9, H) -> (n, H, 9)
     if nom == "sundial":
         z, mu, sd = normer(prix)
-        ech = m.generate(torch.tensor(z, dtype=torch.float32), max_new_tokens=H, num_samples=20)
-        ech = ech.numpy()[:, :, H - 1] * sd + mu  # (n, 20)
-        return depuis_echantillons(ech, dernier)
-    if nom == "timemoe":
+        ech = m.generate(torch.tensor(z, dtype=torch.float32), max_new_tokens=H, num_samples=20).numpy()  # (n, 20, H)
+        return E(ech * sd[:, :, None] + mu[:, :, None])
+    if nom in ("timemoe", "timer"):
         z, mu, sd = normer(prix)
         out = m.generate(torch.tensor(z, dtype=torch.float32), max_new_tokens=H)
-        pred = out[:, -H:].numpy()[:, H - 1] * sd[:, 0] + mu[:, 0]
-        return depuis_point(pred, prix)
+        return P(out[:, -H:].numpy() * sd + mu)
     if nom == "kronos":
         import pandas as pd
         L = ohlcv.shape[1]
@@ -209,38 +211,27 @@ def prevoir(nom, m, prix, ohlcv, H):
         else:
             res = [m.predict(df=d, x_timestamp=t, y_timestamp=ty, pred_len=H, T=1.0, top_p=0.9, sample_count=4,
                              verbose=False) for d in dfs]
-        pred = np.array([r["close"].iloc[H - 1] for r in res])
-        return depuis_point(pred, prix)
+        return P(np.array([r["close"].values[:H] for r in res]))
     if nom == "ttm":
         z, mu, sd = normer(prix[:, -512:])
         out = m(past_values=torch.tensor(z[:, :, None], dtype=torch.float32)).prediction_outputs
-        pred = out.detach().numpy()[:, H - 1, 0] * sd[:, 0] + mu[:, 0]
-        return depuis_point(pred, prix)
-    if nom == "chronos_t5":
-        q, _ = m.predict_quantiles(x, prediction_length=H, quantile_levels=NIVEAUX)
-        return depuis_quantiles(np.asarray(q)[:, H - 1, :], dernier)
-    if nom == "timer":
-        z, mu, sd = normer(prix)
-        out = m.generate(torch.tensor(z, dtype=torch.float32), max_new_tokens=H)
-        pred = out[:, -H:].numpy()[:, H - 1] * sd[:, 0] + mu[:, 0]
-        return depuis_point(pred, prix)
+        return P(out.detach().numpy()[:, :H, 0] * sd + mu)
     if nom == "lagllama":
         import pandas as pd
         from gluonts.dataset.common import ListDataset
         ds = ListDataset([{"start": pd.Period("2026-01-01 00:00", freq="1min"), "target": p.astype(np.float32)} for p in prix],
                          freq="1min")
-        ech = np.stack([f.samples[:, 0] for f in m.predict(ds)])
-        return depuis_echantillons(ech, dernier)
+        return E(np.stack([f.samples[:, :H] for f in m.predict(ds)]))
     if FAMILLE in ("nf_a", "nf_b"):
         cle = _NF.get("demande")
         if _NF.get("cle") != cle:  # une seule prévision pour tous les modèles de la famille
             import pandas as pd
             df = pd.concat([pd.DataFrame({"unique_id": f"m{k:04d}", "ds": np.arange(prix.shape[1]), "y": p})
                             for k, p in enumerate(prix)])
-            out = m.predict(df=df)
-            out = out[out.ds == prix.shape[1]].sort_values("unique_id")
+            out = m.predict(df=df).sort_values(["unique_id", "ds"])
             _NF["cle"], _NF["sortie"] = cle, out
-        return depuis_point(_NF["sortie"][nom].values, prix)
+        o = _NF["sortie"]
+        return P(o[nom].values.reshape(len(prix), -1)[:, :H])
     raise ValueError(nom)
 
 
@@ -260,17 +251,20 @@ def principal():
     for ligne in sys.stdin:
         dem = json.loads(ligne)
         d = np.load(dem["entree"])
-        prix, ohlcv, H = d["prix"].astype(np.float64), d["ohlcv"].astype(np.float64), int(dem.get("H", 1))
+        prix, ohlcv = d["prix"].astype(np.float64), d["ohlcv"].astype(np.float64)
+        Hs = [int(h) for h in dem.get("H", HORIZONS)] if isinstance(dem.get("H"), list) else HORIZONS
         sortie, ok, err = {}, {}, {}
         _NF["demande"] = _NF.get("demande", 0) + 1
         with torch.no_grad():
             for nom, m in list(modeles.items()):
                 t0 = time.time()
                 try:
-                    p = np.asarray(prevoir(nom, m, prix, ohlcv, H), dtype=float).reshape(-1)
-                    if len(p) != len(prix) or not np.all(np.isfinite(p)):
-                        raise ValueError(f"sortie invalide ({len(p)} valeurs)")
-                    sortie[nom] = np.clip(p, 0.0, 1.0)
+                    r = prevoir(nom, m, prix, ohlcv, Hs)
+                    for h, p in r.items():
+                        p = np.asarray(p, dtype=float).reshape(-1)
+                        if len(p) != len(prix) or not np.all(np.isfinite(p)):
+                            raise ValueError(f"sortie invalide ({len(p)} valeurs, {h} min)")
+                        sortie[f"{nom}@{h}"] = np.clip(p, 0.0, 1.0)
                     ok[nom] = round(time.time() - t0, 2)
                 except Exception as e:
                     err[nom] = f"{type(e).__name__}: {str(e)[:300]}"
