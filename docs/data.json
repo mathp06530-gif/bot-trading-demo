@@ -1741,7 +1741,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T03:13:25Z",
+ "derniere_execution": "2026-11-26T03:14:24Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -9558,6 +9558,10 @@
   {
    "date": "2026-11-26T03:13:25Z",
    "valeur": 93.15
+  },
+  {
+   "date": "2026-11-26T03:14:24Z",
+   "valeur": 93.15
   }
  ],
  "compte": {
@@ -10421,7 +10425,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3583.07,
+   "prix": 3580.77,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3918.73,
@@ -10461,7 +10465,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3580.755,
+    "prix": 3582.385,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -11154,7 +11158,7 @@
   "deals": {},
   "marches": {
    "GOLD": {
-    "prix": 3583.07,
+    "prix": 3580.77,
     "ema200": 3919.99,
     "atr": 52.02,
     "trou_achat_atr": 0.27,
@@ -11178,7 +11182,7 @@
   "deals": {},
   "marches": {
    "ETHUSD": {
-    "prix": 1694.55,
+    "prix": 1694.91,
     "ligne": 1735.66,
     "sens": -1,
     "atr": 40.02,
