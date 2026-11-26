@@ -1748,7 +1748,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T05:03:25Z",
+ "derniere_execution": "2026-11-26T05:04:25Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -10005,6 +10005,10 @@
   {
    "date": "2026-11-26T05:03:25Z",
    "valeur": 93.15
+  },
+  {
+   "date": "2026-11-26T05:04:25Z",
+   "valeur": 93.15
   }
  ],
  "compte": {
@@ -10018,7 +10022,7 @@
  "positions": [],
  "analyses": {
   "BTCUSD": {
-   "prix": 60867.8,
+   "prix": 60874.9,
    "tendance": "SELL",
    "explication": "Tendance baissière nette (ADX 17) : on veut être VENDEUR.",
    "action": "Aucune action",
@@ -10868,7 +10872,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3593.9799999999996,
+   "prix": 3596.145,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3915.3,
@@ -10908,7 +10912,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3595.125,
+    "prix": 3596.115,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/3 possible quand le prix aura avancé de 34.37 de plus dans le bon sens"
    },
@@ -11601,7 +11605,7 @@
   "deals": {},
   "marches": {
    "GOLD": {
-    "prix": 3593.98,
+    "prix": 3596.14,
     "ema200": 3916.56,
     "atr": 52.29,
     "trou_achat_atr": -0.12,
@@ -11625,7 +11629,7 @@
   "deals": {},
   "marches": {
    "ETHUSD": {
-    "prix": 1699.71,
+    "prix": 1699.04,
     "ligne": 1735.66,
     "sens": -1,
     "atr": 39.94,
