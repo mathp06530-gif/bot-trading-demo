@@ -1,0 +1,36 @@
+name: Backtest protection Cassure (temporaire)
+
+on:
+  push:
+    branches: ["claude/project-thread-0gi4h2"]
+    paths: [backtest/cassure_protection.py, .github/workflows/cassure_protection.yml]
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Historique or + argent 4 h (~10 ans)
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+          EPICS: GOLD,SILVER
+        run: python backtest/usine.py telecharger donnees_usine
+      - name: Backtest
+        run: python backtest/cassure_protection.py donnees_usine
+      - name: Enregistrer
+        run: |
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          git add backtest/resultats_cassure_protection.json
+          git commit -qm "Backtest protection Cassure : résultats"
+          git push -q origin HEAD:"${GITHUB_REF_NAME}"
