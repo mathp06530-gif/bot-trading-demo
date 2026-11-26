@@ -1843,7 +1843,7 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-26T12:09:26Z",
+ "derniere_execution": "2026-11-26T12:10:27Z",
  "historique": [
   {
    "date": "2026-11-20T16:20:13Z",
@@ -11776,15 +11776,19 @@
   {
    "date": "2026-11-26T12:09:26Z",
    "valeur": 92.75
+  },
+  {
+   "date": "2026-11-26T12:10:27Z",
+   "valeur": 92.76
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 92.75,
+  "solde": 92.76,
   "depot": 93.09,
-  "resultat_latent": -0.34,
-  "disponible": 89.47
+  "resultat_latent": -0.33,
+  "disponible": 89.48
  },
  "positions": [
   {
@@ -11793,7 +11797,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3555.46,
-   "resultat": -0.34,
+   "resultat": -0.33,
    "ouverte_le": "2026-11-26T10:50:25.127",
    "id": "00000000-76ca-6738-049f-c46d0015549e",
    "stop": 3591.01,
@@ -12151,7 +12155,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-26T10:50:25Z",
    "statut": "ouvert",
-   "resultat": -0.34,
+   "resultat": -0.33,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -12175,7 +12179,7 @@
   "2026-11-23": 97.91,
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
-  "2026-11-26": 92.75
+  "2026-11-26": 92.76
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -12364,14 +12368,14 @@
   "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 1 %, sortie au prix d'entrée après +0.5 R, garde 60 % du gain après +1.5 R, sortie si le croisement inverse dure 3 bougies, jusqu'à 2 position(s), risque 1 % (expérimentale)",
   "marches": {
    "GOLD": {
-    "tendance": "SELL",
+    "tendance": "BUY",
     "filtre": {
-     "signal_5min": "SELL",
+     "signal_5min": "BUY",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3573.4449999999997,
-    "action": "Position conservée",
+    "prix": 3573.29,
+    "action": "Position gardée : le signal contraire n'est pas encore confirmé",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    },
    "SILVER": {
@@ -12386,7 +12390,7 @@
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)"
    }
   },
-  "tendance": "SELL",
+  "tendance": "BUY",
   "meilleur": {
    "00000000-76ca-6738-049f-c46d0015549e": {
     "depuis": "2026-11-26T10:50:00",
@@ -13139,11 +13143,11 @@
    41.64
   ],
   "rapide-GOLD": [
-   1795694700,
-   3570.87,
-   3574.96,
-   3570.07,
-   3573.44
+   1795695000,
+   3573.71,
+   3573.92,
+   3573.14,
+   3573.29
   ],
   "elan_4h-GOLD": [
    1795694400,
@@ -13432,13 +13436,13 @@
  "_pauses_marches_notees": {},
  "simulations": {
   "00000000-76ca-6738-049f-c46d0015549e": {
-   "p_stop": 71.4,
-   "p_objectif": 1.3,
-   "p_aucun": 27.3,
-   "p_gain_fin": 25.4,
+   "p_stop": 71.8,
+   "p_objectif": 1.6,
+   "p_aucun": 26.7,
+   "p_gain_fin": 25.1,
    "prix_p5": 3515.66,
-   "prix_median": 3580.15,
-   "prix_p95": 3644.06,
+   "prix_median": 3581.43,
+   "prix_p95": 3642.92,
    "objectif": 3484.36,
    "objectif_type": "gain de 2 R",
    "objectif_r": 2.0,
@@ -13446,8 +13450,8 @@
    "horizon": "4 h",
    "tirages": 4000,
    "bougies_utilisees": 298,
-   "prix_depart": 3573.44,
-   "calcule_sur": "2026-11-26T12:05:00",
+   "prix_depart": 3573.29,
+   "calcule_sur": "2026-11-26T12:10:00",
    "fiabilite": "Test sur 10 ans : ces chances ne sont pas plus fiables qu'une moyenne fixe (sur la Cassure, le stop arrive d'abord environ 1 fois sur 2). Ordre de grandeur seulement, le bot ne s'en sert pas.",
    "verdict": "Penche nettement vers le stop (2 % des cas tranchés, équilibre 33 %)."
   }
