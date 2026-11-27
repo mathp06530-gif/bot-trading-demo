@@ -2087,12 +2087,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T17:43:24Z",
+ "derniere_execution": "2026-11-27T17:44:25Z",
  "historique": [
-  {
-   "date": "2026-11-24T22:10:24Z",
-   "valeur": 101.23
-  },
   {
    "date": "2026-11-24T22:15:24Z",
    "valeur": 101.23
@@ -14088,15 +14084,19 @@
   {
    "date": "2026-11-27T17:43:24Z",
    "valeur": 93.01
+  },
+  {
+   "date": "2026-11-27T17:44:25Z",
+   "valeur": 93.03
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.01,
+  "solde": 93.03,
   "depot": 92.84,
-  "resultat_latent": 0.17,
-  "disponible": 89.67
+  "resultat_latent": 0.19,
+  "disponible": 89.69
  },
  "positions": [
   {
@@ -14105,7 +14105,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3644.44,
-   "resultat": 0.17,
+   "resultat": 0.19,
    "ouverte_le": "2026-11-27T14:55:25.411",
    "id": "00000000-7723-03da-049f-c46d0015549e",
    "stop": 3653.44,
@@ -14520,7 +14520,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-27T14:55:25Z",
    "statut": "ouvert",
-   "resultat": 0.17,
+   "resultat": 0.19,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -14545,7 +14545,7 @@
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
   "2026-11-26": 92.86,
-  "2026-11-27": 93.01
+  "2026-11-27": 93.03
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -14637,7 +14637,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3636.15,
+   "prix": 3634.28,
    "plus_haut_20": 3685.3,
    "plus_bas_20": 3426.62,
    "ema200": 3888.52,
@@ -14679,9 +14679,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3634.76,
+    "prix": 3634.31,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 26.42 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 25.96 de plus dans le bon sens"
    }
   },
   "tendance": "SELL",
@@ -15368,7 +15368,7 @@
    3627.69,
    3640.5,
    3618.62,
-   3636.15
+   3634.28
   ],
   "cassure_4h-SILVER": [
    1795795200,
@@ -15382,7 +15382,7 @@
    3635.85,
    3636.35,
    3633.88,
-   3634.76
+   3634.31
   ]
  },
  "nettoyage": "2026-11-26"
