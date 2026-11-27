@@ -1973,12 +1973,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T04:52:23Z",
+ "derniere_execution": "2026-11-27T04:53:24Z",
  "historique": [
-  {
-   "date": "2026-11-22T07:05:24Z",
-   "valeur": 97.91
-  },
   {
    "date": "2026-11-22T07:10:24Z",
    "valeur": 97.91
@@ -13974,6 +13970,10 @@
   {
    "date": "2026-11-27T04:52:23Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-27T04:53:24Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -14441,7 +14441,7 @@
     "titre": "Prelim GDP q/q"
    }
   ],
-  "lu_le": "2026-11-27T03:52:22.191268+00:00",
+  "lu_le": "2026-11-27T04:53:22.376626+00:00",
   "pause": null,
   "prochaines": [],
   "pauses_marches": {}
@@ -14463,7 +14463,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 43.5015,
+   "prix": 43.504000000000005,
    "plus_haut_20": 44.03,
    "plus_bas_20": 38.2,
    "ema200": 49.97,
@@ -14491,7 +14491,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3636.75,
+    "prix": 3636.48,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    }
@@ -15188,8 +15188,8 @@
    1795755000,
    3637.01,
    3637.76,
-   3636.7,
-   3636.75
+   3636.42,
+   3636.48
   ]
  },
  "nettoyage": "2026-11-26"
