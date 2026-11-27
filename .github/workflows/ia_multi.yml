@@ -1,0 +1,29 @@
+name: IA - IA unique multi-cerveaux (en direct, aucun ordre)
+
+# Toutes les 20 min : rejoue dans l'ordre du temps toutes les prédictions jugées (ia-archives + juges.json),
+# fait tourner l'IA unique (cerveaux + miroirs, méta-cerveaux par régime, chef) et publie ia-multi/multi.json,
+# avec ses prédictions en cours. N'influence PAS le direct, la Super IA ni les boosts.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "12,32,52 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ia-multi
+  cancel-in-progress: false
+
+jobs:
+  multi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: IA unique
+        run: python -u -m ia.multi_cerveaux

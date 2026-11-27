@@ -1,0 +1,110 @@
+name: IA - Labo de l'IA unique multi-cerveaux (historique, prix mélangés)
+
+# Teste l'architecture multi-cerveaux sur 1 à 2 ans de bougies Capital.com (12 derniers mois jamais vus),
+# après le vrai spread, et refait tout sur des prix mélangés. Aucun ordre. Résultat : ia/MULTI_LABO.md + docs/multi_labo.json.
+
+on:
+  workflow_dispatch:
+    inputs:
+      retelecharger:
+        description: "Retélécharger les prix (laisser vide = utiliser le cache)"
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: multi-labo
+  cancel-in-progress: true
+
+jobs:
+  donnees:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ia/requirements.txt
+      - name: Cache des prix (le même que le test des IA)
+        uses: actions/cache@v4
+        with:
+          path: donnees_ia
+          key: ia-donnees-v1-${{ github.run_id }}
+          restore-keys: ia-donnees-v1-
+      - name: Historique Capital.com démo (seulement ce qui manque)
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+        run: |
+          for e in GOLD SILVER US100 US500 EURUSD OIL_CRUDE DE40 GBPUSD; do
+            if [ -f donnees_ia/${e}_HOUR_4.csv ] && [ -z "${{ github.event.inputs.retelecharger }}" ]; then echo "$e : déjà en cache"; continue; fi
+            python -u ia/predire.py telecharger donnees_ia $e || echo "$e : échec"
+          done
+          ls -la donnees_ia | head -60
+      - uses: actions/upload-artifact@v4
+        with:
+          name: donnees-multi
+          path: donnees_ia
+          retention-days: 7
+
+  tester:
+    needs: donnees
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      max-parallel: 24
+      matrix:
+        epic: [GOLD, SILVER, US100, US500, EURUSD, OIL_CRUDE, DE40, GBPUSD]
+        unite: [MINUTE_15, HOUR, MINUTE_5]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ia/requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: donnees-multi
+          path: donnees_ia
+      - name: Labo ${{ matrix.epic }} ${{ matrix.unite }}
+        run: |
+          mkdir -p resultats
+          if [ "${{ matrix.unite }}" = "MINUTE_5" ]; then export LABO_MOIS_TEST=6 LABO_MOIS_CHAUFFE=3; fi
+          python -u ia/multi_labo.py tester donnees_ia ${{ matrix.epic }} ${{ matrix.unite }} resultats/${{ matrix.epic }}_${{ matrix.unite }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: multi-${{ matrix.epic }}-${{ matrix.unite }}
+          path: resultats
+          if-no-files-found: ignore
+          retention-days: 30
+
+  bilan:
+    needs: tester
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ia/requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: multi-*
+          path: resultats
+          merge-multiple: true
+      - run: python ia/multi_labo.py bilan resultats ia/MULTI_LABO.md docs/multi_labo.json
+      - name: Enregistrer le bilan
+        run: |
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          git add ia/MULTI_LABO.md docs/multi_labo.json
+          git diff --cached --quiet && exit 0
+          git commit -qm "IA unique : bilan du labo multi-cerveaux $(date -u +%Y-%m-%d)"
+          for i in 1 2 3 4 5; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin HEAD:"${GITHUB_REF_NAME}" && exit 0; sleep 7; done
+          exit 1

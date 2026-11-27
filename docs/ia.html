@@ -100,6 +100,16 @@
     <div class="defile"><table id="boosts"><tr><td class="doux">Chargement…</td></tr></table></div>
   </section>
 
+  <section class="carte" style="margin-bottom:12px" id="multi-carte">
+    <h2>IA unique multi-cerveaux <span class="doux" style="font-weight:400">· toutes les IA dedans, un méta-cerveau choisit qui écouter selon le régime</span></h2>
+    <div class="doux petit" style="margin-bottom:8px">Chaque IA garde son avis (plus son « miroir », le sens inverse). Un méta-cerveau par régime (tendance / retournement / neutre × calme / agité) suit les cerveaux qui marchent en ce moment (Fixed Share), et un chef choisit entre les méta-cerveaux et le vote. Rejeu dans l'ordre du temps, rien du futur. « Prix mélangés » doit rester proche de 50 %. Aucun ordre.</div>
+    <div class="defile"><table id="multi-encours"><tr><td class="doux">Chargement…</td></tr></table></div>
+    <div class="defile" style="margin-top:10px"><table id="multi-table"></table></div>
+    <div class="note" id="multi-ecoute"></div>
+    <h2 style="margin-top:14px;font-size:15px">Labo sur l'historique <span class="doux" style="font-weight:400">· 12 derniers mois jamais vus, 8 marchés, après le vrai spread</span></h2>
+    <div class="defile"><table id="multi-labo"><tr><td class="doux">Le labo tourne (environ 1 h). Résultats ici dès qu'il a fini.</td></tr></table></div>
+  </section>
+
   <section class="carte" style="margin-bottom:12px" id="chal-carte">
     <h2>Challenge prop firm simulé <span class="doux" style="font-weight:400">· virtuel, rien payé</span></h2>
     <div class="doux petit" style="margin-bottom:8px">Compte virtuel de 100 000 $ : réussi à <b>+10 %</b>, raté si on perd <b>5 % dans une journée</b> ou <b>10 % au total</b>. Les vrais résultats de la Super IA sur les 8 marchés à petits frais, vrai spread payé, une position à la fois par marché. Le <b>hasard</b> prend les mêmes trades : la Super IA doit faire mieux que lui.</div>
@@ -361,6 +371,39 @@ function boosts(B) {
     h += `<tr><td>${hz} min</td><td>${echap(nomS)}</td><td>${c(r.en_direct)}</td><td>${c(r.test_complet)}</td><td>${r.prix_melanges ? fmt(100 * r.prix_melanges.reussite) + " %" : "—"}</td></tr>`;
   t.innerHTML = h;
 }
+function multi(B) {
+  const t = $("multi-table"), e = $("multi-encours");
+  if (!B) { e.innerHTML = '<tr><td class="doux">Premiers résultats après le prochain calcul (toutes les 20 min).</td></tr>'; return; }
+  const REG = {tendance: "tendance", retournement: "retournement", neutre: "neutre", calme: "calme", agite: "agité", tous: "tous"};
+  const reg = r => (r || "").split("|").map(x => REG[x] || x).join(" · ");
+  const fr = q => q > 0.5 ? `<span class="v">▲ hausse ${fmt(100 * q, 0)} %</span>` : `<span class="r">▼ baisse ${fmt(100 * (1 - q), 0)} %</span>`;
+  const ec = (B.en_cours || []).filter(x => x.h === 15);
+  e.innerHTML = '<tr><th>Marché</th><th>Prédiction 15 min en cours</th><th>Régime</th><th>Sûre ?</th><th>Vote simple</th></tr>' +
+    (ec.length ? ec.map(x => `<tr><td>${echap(x.e)}</td><td>${fr(x.q)}</td><td>${reg(x.regime)}</td><td>${x.sure ? '<span class="pastille">parie</span>' : '<span class="doux">s\'abstient</span>'}</td><td>${fr(x.vote)}</td></tr>`).join("") : '<tr><td class="doux" colspan="5">Aucune prédiction en cours.</td></tr>');
+  const c = r => r ? `${fmt(100 * r.reussite)} % <span class="doux">(${r.n})</span> · <span class="${r.gain > 0 ? "v" : "r"}">${r.gain > 0 ? "+" : ""}${fmt(r.gain, 3)} %</span>` : '<span class="doux">—</span>';
+  let h = '<tr><th>Horizon</th><th>Version</th><th>En direct</th><th>Test complet</th><th>Matin</th><th>Après-midi</th><th>Prix mélangés</th></tr>';
+  for (const hz of ["15", "5", "30", "60"]) for (const [nom, r] of Object.entries((B.horizons || {})[hz] || {}))
+    h += `<tr><td>${hz} min</td><td>${echap(nom)}</td><td>${c(r.en_direct)}</td><td>${c(r.test_complet)}</td><td>${c(r.matin)}</td><td>${c(r.apres_midi)}</td><td>${r.prix_melanges && r.prix_melanges.reussite_moy != null ? fmt(100 * r.prix_melanges.reussite_moy) + " %" : "—"}</td></tr>`;
+  t.innerHTML = h;
+  const q = (B.qui_ecouter || {})["15"] || {}, nomC = m => m.startsWith("~") ? "inverse de " + m.slice(1) : m;
+  $("multi-ecoute").innerHTML = "<b>Qui elle écoute à 15 min, par régime :</b><br>" + Object.entries(q).sort((a, b) => b[1].resultats - a[1].resultats)
+    .map(([r, v]) => `${reg(r)} <span class="doux">(${v.resultats} résultats)</span> : ${v.top.slice(0, 4).map(([m, w]) => `${echap(nomC(m))} ${fmt(100 * w, 0)} %`).join(", ")}`).join("<br>") +
+    `<br><span class="doux">Chef à 15 min : ${((B.chef || {})["15"] || []).map(([m, w]) => `${echap(m)} ${fmt(100 * w, 0)} %`).join(", ")} · mis à jour ${new Date(B.maj).toLocaleString("fr-FR")}</span>`;
+}
+function multiLabo(L) {
+  const t = $("multi-labo");
+  if (!L || !L.lignes) return;
+  const U = {MINUTE_15: "15 min", HOUR: "1 h", MINUTE_5: "5 min"};
+  let h = '<tr><th>Bougies</th><th>Méta-cerveau</th><th>Réussite</th><th>Gain après spread</th><th>Si sûr</th><th>Prix mélangés</th></tr>';
+  for (const x of L.lignes) {
+    const ok = x.melange != null && x.melange > 0.53 ? ' <span class="pastille">jeté (triche ?)</span>' : "";
+    h += `<tr><td>${U[x.unite] || x.unite}</td><td>${echap(x.nom)}${ok}</td><td>${fmt(100 * x.reussite, 2)} % <span class="doux">(${x.n.toLocaleString("fr-FR")})</span></td>` +
+         `<td class="${x.gain > 0 ? "v" : "r"}">${x.gain > 0 ? "+" : ""}${fmt(x.gain, 4)} %</td>` +
+         `<td>${x.sur_reussite != null ? `${fmt(100 * x.sur_reussite, 2)} % · parie ${fmt(100 * x.sur_couverture, 0)} % · <span class="${x.sur_gain > 0 ? "v" : "r"}">${x.sur_gain > 0 ? "+" : ""}${fmt(x.sur_gain, 4)} %</span> · ${x.sur_marches_gagnants} marchés` : '<span class="doux">ne parie jamais</span>'}</td>` +
+         `<td>${x.melange != null ? fmt(100 * x.melange, 2) + " %" : "—"}</td></tr>`;
+  }
+  t.innerHTML = h + `<tr><td colspan="6" class="doux petit">${L.essais} essais comptés · ${L.marches.join(", ")} · ${new Date(L.maj).toLocaleString("fr-FR")}</td></tr>`;
+}
 function superIA() {
   if (!SUP || !SUP.stats) { $("sup-table").innerHTML = `<tr><td class="doux">La Super IA démarre : ses premiers chiffres arrivent environ 1 h 15 après le lancement (elle attend 68 min pour être sûre de ne rien savoir du futur).</td></tr>`; return; }
   const sel = $("sup-portee"), choix = sel.value || "m:GOLD";
@@ -453,6 +496,8 @@ async function charger() {
     const q = "?t=" + Math.floor(Date.now() / 60000);
     const [s, v, m] = await Promise.all(["stats.json", "vivant.json", "marches.json"].map(f => fetch(SOURCE + f + q).then(r => r.ok ? r.json() : null)));
     fetch(SOURCE.replace("ia-journal", "ia-boost") + "boost.json" + q).then(r => r.ok ? r.json() : null).then(boosts).catch(() => boosts(null));
+    fetch(SOURCE.replace("ia-journal", "ia-multi") + "multi.json" + q).then(r => r.ok ? r.json() : null).then(multi).catch(() => multi(null));
+    fetch("multi_labo.json" + q).then(r => r.ok ? r.json() : null).then(multiLabo).catch(() => {});
     fetch(SOURCE.replace("ia-journal", "ia-challenge") + "challenge.json" + q).then(r => r.ok ? r.json() : null).then(x => { CHAL = x; challenge(); }).catch(() => challenge());
     fetch(SOURCE.replace("ia-journal", "ia-super") + "super.json" + q).then(r => r.ok ? r.json() : null).then(x => { SUP = x; if (V) superIA(); }).catch(() => {});
     if (!s || !v) throw new Error("vide");
