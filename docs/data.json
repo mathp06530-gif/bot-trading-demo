@@ -2084,15 +2084,18 @@
    "type": "erreur",
    "marche": "",
    "texte": "Connexion refusée (401). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.invalid.api.key\"}"
+  },
+  {
+   "date": "2026-11-27T18:00:25Z",
+   "type": "fermeture",
+   "marche": "GOLD",
+   "texte": "[Rapide] Le gain avait atteint 0.8 R et le prix est revenu au prix d'entrée (3644.44) : position fermée pour ne pas transformer un gain en perte (gain/perte : -0.06).",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T17:59:24Z",
+ "derniere_execution": "2026-11-27T18:00:26Z",
  "historique": [
-  {
-   "date": "2026-11-24T23:35:23Z",
-   "valeur": 98.98
-  },
   {
    "date": "2026-11-24T23:40:23Z",
    "valeur": 98.98
@@ -14088,32 +14091,21 @@
   {
    "date": "2026-11-27T17:59:24Z",
    "valeur": 92.75
+  },
+  {
+   "date": "2026-11-27T18:00:26Z",
+   "valeur": 92.79
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 92.75,
-  "depot": 92.84,
-  "resultat_latent": -0.09,
-  "disponible": 89.39
+  "solde": 92.79,
+  "depot": 92.79,
+  "resultat_latent": 0.0,
+  "disponible": 92.79
  },
- "positions": [
-  {
-   "marche": "GOLD",
-   "nom": "Gold",
-   "sens": "SELL",
-   "taille": 0.02,
-   "prix_entree": 3644.44,
-   "resultat": -0.09,
-   "ouverte_le": "2026-11-27T14:55:25.411",
-   "id": "00000000-7723-03da-049f-c46d0015549e",
-   "stop": 3653.44,
-   "stop_garanti": true,
-   "objectif": null,
-   "strategie": "rapide"
-  }
- ],
+ "positions": [],
  "ordres": [
   {
    "id": "00000000-750e-5d28-049f-c46d0015549e",
@@ -14519,11 +14511,11 @@
    "objectif": null,
    "stop_garanti": true,
    "ouvert_le": "2026-11-27T14:55:25Z",
-   "statut": "ouvert",
-   "resultat": -0.09,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
+   "statut": "ferme",
+   "resultat": -0.06,
+   "ferme_le": "2026-11-27T18:00:24Z",
+   "prix_sortie": 3647.16,
+   "motif_sortie": "[Rapide] Retour au prix d'entrée",
    "strategie": "rapide",
    "reglages": {
     "ADX_RAPIDE_MIN": 20.0,
@@ -14534,7 +14526,8 @@
     "GARDE_RAPIDE_PCT": 60.0,
     "SORTIE_CONFIRMEE_RAPIDE": 3.0,
     "EMPILER_RAPIDE": 2.0
-   }
+   },
+   "resultat_estime": false
   }
  ],
  "historique_jour": {
@@ -14545,7 +14538,7 @@
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
   "2026-11-26": 92.86,
-  "2026-11-27": 92.75
+  "2026-11-27": 92.79
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -14627,7 +14620,7 @@
     "titre": "Prelim GDP q/q"
    }
   ],
-  "lu_le": "2026-11-27T16:59:22.592488+00:00",
+  "lu_le": "2026-11-27T18:00:22.123249+00:00",
   "pause": null,
   "prochaines": [],
   "pauses_marches": {}
@@ -14667,30 +14660,23 @@
  },
  "pause": false,
  "rapide": {
-  "deals": [
-   "00000000-7723-03da-049f-c46d0015549e"
-  ],
+  "deals": [],
   "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 1 %, sortie au prix d'entrée après +0.5 R, garde 60 % du gain après +1.5 R, sortie si le croisement inverse dure 3 bougies, jusqu'à 2 position(s), risque 1 % (expérimentale)",
   "marches": {
    "GOLD": {
-    "tendance": "SELL",
+    "tendance": "BUY",
     "filtre": {
-     "signal_5min": "SELL",
+     "signal_5min": "BUY",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3649.16,
-    "action": "Position conservée",
+    "prix": 3648.26,
+    "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 40.96 de plus dans le bon sens"
    }
   },
-  "tendance": "SELL",
-  "meilleur": {
-   "00000000-7723-03da-049f-c46d0015549e": {
-    "depuis": "2026-11-27T14:55:00",
-    "prix": 3616.1
-   }
-  },
+  "tendance": "BUY",
+  "meilleur": {},
   "entree_bougie": {
    "GOLD": "2026-11-27T14:50:00"
   }
@@ -15378,11 +15364,11 @@
    43.59
   ],
   "rapide-GOLD": [
-   1795802100,
-   3637.23,
-   3649.33,
-   3637.23,
-   3649.16
+   1795802400,
+   3648.35,
+   3648.47,
+   3645.59,
+   3648.26
   ]
  },
  "nettoyage": "2026-11-26"
