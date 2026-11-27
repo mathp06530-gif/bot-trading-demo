@@ -5,13 +5,19 @@
    "type": "commande",
    "marche": "",
    "texte": "Démarrage du bot à part « Élan crypto » (expérimental, démo, 1 % par trade) sur Ethereum, Litecoin, Solana et XRP. Gagnant sur les 4 derniers mois, mais pas prouvé."
+  },
+  {
+   "date": "2026-11-27T17:00:45Z",
+   "type": "analyse",
+   "marche": "LTCUSD",
+   "texte": "Signal ignoré : spread trop cher par rapport au stop."
   }
  ],
  "depuis": "2026-11-26T15:49:17Z",
  "nom": "Élan crypto 4 h (bot à part, expérimental)",
  "risque_pct": 1.0,
  "actif": true,
- "dernier_tour": "2026-11-27T15:56:15Z",
+ "dernier_tour": "2026-11-27T17:00:45Z",
  "deals": {},
  "ordres": [],
  "marches": {
@@ -19,32 +25,32 @@
    "nom": "Ethereum",
    "n": 50,
    "sens": -1,
-   "prix": 1721.645,
-   "atr": 35.88305,
-   "sma200": 2030.32355,
-   "bougie": "2026-11-27 08:00:00+00:00",
+   "prix": 1670.595,
+   "atr": 40.06855,
+   "sma200": 2026.9523,
+   "bougie": "2026-11-27 12:00:00+00:00",
    "regle": "Élan 50 bougies de 4 h dans le sens de la moyenne 200, stop garanti 1.5 ATR",
    "action": "En attente d'un signal"
   },
   "LTCUSD": {
    "nom": "Litecoin",
    "n": 50,
-   "sens": 1,
-   "prix": 44.58,
-   "atr": 0.90513,
-   "sma200": 49.391149999999996,
-   "bougie": "2026-11-27 08:00:00+00:00",
+   "sens": -1,
+   "prix": 43.66,
+   "atr": 0.97012,
+   "sma200": 49.327299999999994,
+   "bougie": "2026-11-27 12:00:00+00:00",
    "regle": "Élan 50 bougies de 4 h dans le sens de la moyenne 200, stop garanti 1.5 ATR",
-   "action": "En attente d'un signal"
+   "action": "Spread trop cher"
   },
   "SOLUSD": {
    "nom": "Solana",
    "n": 50,
    "sens": -1,
-   "prix": 73.0575,
-   "atr": 1.5863,
-   "sma200": 83.93501475000001,
-   "bougie": "2026-11-27 08:00:00+00:00",
+   "prix": 72.0875,
+   "atr": 1.71585,
+   "sma200": 83.78785225,
+   "bougie": "2026-11-27 12:00:00+00:00",
    "regle": "Élan 50 bougies de 4 h dans le sens de la moyenne 200, stop garanti 1.5 ATR",
    "action": "En attente d'un signal"
   },
@@ -52,10 +58,10 @@
    "nom": "XRP",
    "n": 200,
    "sens": -1,
-   "prix": 0.97484,
-   "atr": 0.02111,
-   "sma200": 1.10081395,
-   "bougie": "2026-11-27 08:00:00+00:00",
+   "prix": 0.95165,
+   "atr": 0.02291,
+   "sma200": 1.09907055,
+   "bougie": "2026-11-27 12:00:00+00:00",
    "regle": "Élan 200 bougies de 4 h dans le sens de la moyenne 200, stop garanti 1.5 ATR",
    "action": "En attente d'un signal"
   }
@@ -68,5 +74,19 @@
   "gagnants": 0,
   "blocage": null
  },
- "_cache_marches": {}
+ "_cache_marches": {
+  "LTCUSD": {
+   "statut": "TRADEABLE",
+   "taille_min": 0.1,
+   "pas": 0.1,
+   "stop_min_pct": 0.5,
+   "stop_min_points": null,
+   "marge": 0.5,
+   "nom": "Litecoin/USD",
+   "devise": "USD"
+  }
+ },
+ "signaux_utilises": {
+  "LTCUSD": "2026-11-27 12:00:00+00:00"
+ }
 }
