@@ -2004,12 +2004,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T13:39:25Z",
+ "derniere_execution": "2026-11-27T13:40:24Z",
  "historique": [
-  {
-   "date": "2026-11-24T02:15:24Z",
-   "valeur": 97.26
-  },
   {
    "date": "2026-11-24T02:20:25Z",
    "valeur": 97.26
@@ -14005,6 +14001,10 @@
   {
    "date": "2026-11-27T13:39:25Z",
    "valeur": 92.82
+  },
+  {
+   "date": "2026-11-27T13:40:24Z",
+   "valeur": 92.82
   }
  ],
  "compte": {
@@ -14022,7 +14022,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3643.87,
-   "resultat": -0.04,
+   "resultat": -0.03,
    "ouverte_le": "2026-11-27T13:35:24.837",
    "id": "00000000-7721-b93c-049f-c46d0015549e",
    "stop": 3680.31,
@@ -14408,7 +14408,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-27T13:35:24Z",
    "statut": "ouvert",
-   "resultat": -0.04,
+   "resultat": -0.03,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -14567,16 +14567,16 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3645.41,
+    "prix": 3645.575,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 37.72 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 37.89 de plus dans le bon sens"
    }
   },
   "tendance": "SELL",
   "meilleur": {
    "00000000-7721-b93c-049f-c46d0015549e": {
     "depuis": "2026-11-27T13:35:00",
-    "prix": 3643.87
+    "prix": 3643.01
    }
   },
   "entree_bougie": {
@@ -15266,11 +15266,11 @@
    43.83
   ],
   "rapide-GOLD": [
-   1795786500,
-   3644.37,
-   3646.75,
-   3643.01,
-   3645.41
+   1795786800,
+   3645.67,
+   3645.87,
+   3644.63,
+   3645.57
   ]
  },
  "nettoyage": "2026-11-26"
