@@ -223,9 +223,14 @@ def prevoir(nom, m, prix, ohlcv, Hs):
         z, mu, sd = normer(prix)
         with torch.no_grad():  # 0,4 = 24 / 60 : cycle de base d'une heure sur des bougies 1 min
             out = m(torch.tensor(z[:, :, None], dtype=torch.float32), scale_factor=0.4, prediction_length=H,
-                    batch_first=True).prediction_outputs.numpy()  # (n, 9 quantiles, H, 1)
-        q = out[..., 0].transpose(0, 2, 1) * sd[:, :, None] + mu[:, :, None]  # (n, H, 9)
-        return Q(q) if q.shape[2] == 9 else P(np.median(q, axis=2))
+                    batch_first=True).prediction_outputs.numpy()
+        a = out.reshape(len(prix), *[t for t in out.shape[1:] if t != 1])  # forme variable selon la version : on la range
+        if a.ndim == 2:  # une seule valeur par minute
+            return P(a[:, :H] * sd + mu)
+        if a.shape[1] == len(NIVEAUX) and a.shape[2] != len(NIVEAUX):
+            a = a.transpose(0, 2, 1)  # (n, 9, H) -> (n, H, 9)
+        q = a[:, :H, :] * sd[:, :, None] + mu[:, :, None]
+        return Q(q) if q.shape[2] == len(NIVEAUX) else P(np.median(q, axis=2))
     if nom == "ttm":
         z, mu, sd = normer(prix[:, -512:])
         out = m(past_values=torch.tensor(z[:, :, None], dtype=torch.float32)).prediction_outputs
