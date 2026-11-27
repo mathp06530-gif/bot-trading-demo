@@ -1,11 +1,11 @@
 """SUPER IA : moteur À PART (aucun ordre, aucune influence sur le test des autres IA).
 
 Il lit le journal publié par ia/direct.py (branche ia-journal, fichier juges.json : chaque prédiction jugée à
-2, 3 et 5 min avec les probabilités de toutes les IA) et rejoue les événements DANS L'ORDRE DU TEMPS :
+5, 15, 30 et 60 min avec les probabilités de toutes les IA) et rejoue les événements DANS L'ORDRE DU TEMPS :
   - à l'heure t où la prédiction a été faite, la Super IA donne SA probabilité, avec uniquement ce qu'elle
     savait à t (résultats arrivés à échéance avant t) ;
   - à l'échéance, le résultat réel la corrige (poids, recalibrage, seuil de confiance, équipe).
-Le moteur attend 12 min avant de traiter un instant, pour être sûr d'avoir reçu tous les résultats d'avant :
+Le moteur attend 68 min avant de traiter un instant, pour être sûr d'avoir reçu tous les résultats d'avant :
 aucune information du futur.
 
 Variantes, bien séparées (chacune a ses propres chiffres) :
@@ -28,7 +28,7 @@ from zoneinfo import ZoneInfo
 FUSEAU = ZoneInfo("Europe/Paris")
 from pathlib import Path
 
-HS = [2, 3, 5]
+HS = [5, 15, 30, 60]
 NOYAU = ["sundial", "tide", "tcn", "nbeats", "nhits"]
 PRIORITE = {"GOLD": "Or", "SILVER": "Argent"}
 # Vue « frais bas » : seulement les prédictions où le VRAI spread Capital.com du moment était petit,
@@ -44,7 +44,7 @@ ETA = 0.05
 MIN_MARCHE, MIN_FAMILLE = 150, 300
 COUVERTURE, FENETRE_CONF = 0.25, 400
 FENETRE_EQUIPE, MIN_CANDIDAT, AVANCE = 1500, 300, 0.01
-ATTENTE = 12 * 60  # secondes : un instant n'est traité que quand tous les résultats d'avant sont publiés
+ATTENTE = 68 * 60  # secondes : un instant n'est traité que quand tous les résultats d'avant sont publiés
 DOSSIER = Path(os.getenv("SUPER_DOSSIER", "super_ia"))
 BRANCHE, SOURCE = "ia-super", "ia-journal"
 

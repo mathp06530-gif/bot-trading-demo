@@ -31,7 +31,9 @@ from ia.geantes.familles import EXCLUES, FAMILLES, MAISON, NOMS  # noqa: E402
 DUREE = int(os.getenv("IA_DUREE_S", str(50 * 60)))
 LOT = int(os.getenv("IA_LOT", "24"))  # marchés prédits par minute (rotation sur tous les marchés ouverts)
 L = 512  # bougies données à chaque IA
-HS = [1, 2, 3, 5]  # horizons jugés (minutes) : mêmes IA, même journal
+HS = [5, 15, 30, 60]  # horizons jugés (minutes) : assez longs pour que le mouvement puisse couvrir les frais (27/11)
+# marchés à petits frais prédits À CHAQUE MINUTE (demande de Mathis, 27/11), le reste du lot tourne sur tous les marchés
+PRIORITAIRES = ["GOLD", "SILVER", "OIL_CRUDE", "US100", "US500", "DE40", "EURUSD", "GBPUSD"]
 DOSSIER = Path(os.getenv("IA_JOURNAL_DIR", "journal_ia"))  # copie locale de la branche ia-journal
 BRANCHE = "ia-journal"
 GRANDS = ["GOLD", "SILVER", "OIL_CRUDE", "NATURALGAS", "COPPER", "US500", "US100", "US30", "DE40", "UK100", "FR40",
@@ -290,7 +292,9 @@ def principal():
     vivant.setdefault("dernieres", [])
     vivant.setdefault("vitesse", {})
     curseur = int(vivant.get("curseur", 0))
-    attente = []
+    # prédictions pas encore jugées de la session précédente (horizons longs) : gardées si l'échéance n'est pas passée
+    attente = [p for p in lire_json("attente.json", []) if p.get("echeance", 0) > time.time() + 5 and p.get("h") in HS]
+    anciens = {k: v for k, v in (lu.get("horizons") or {}).items() if int(k) not in HS}  # 1, 2, 3 min : chiffres gardés
     juges = lire_json("juges.json", {}).get("items", [])
     derniere_session, derniere_pub, dernier_etat = time.time(), 0.0, time.time()
     pool = ThreadPoolExecutor(6)
@@ -332,12 +336,12 @@ def principal():
                     sens = 1 if pr > 0.5 else -1
                     gain = (sens * (fin["mid"] - p["depart"]) - p["spread"]) / p["depart"] * 100
                     compter(ST[p["h"]], p["epic"], p["type"], jour, m, (sens > 0) == hausse, gain)
-                if p["h"] in (2, 3, 5):  # pour le moteur Super IA (à part) : aucune influence sur ce test
+                if p["h"] >= 2:  # pour le moteur Super IA (à part) : aucune influence sur ce test
                     juges.append({"id": f'{p["heure"]}|{p["epic"]}|{p["h"]}', "t": p["heure"], "ech": round(p["echeance"]),
                                   "e": p["epic"], "ty": p["type"], "h": p["h"], "up": int(hausse),
                                   "mv": round((fin["mid"] / p["depart"] - 1) * 100, 5), "sp": round(p["spread"] / p["depart"] * 100, 5),
                                   "p": {m: round(v, 4) for m, v in p["probas"].items() if m not in ("vote", "arbitre")}})
-                del juges[:-2500]
+                del juges[:-9000]
                 vivant["dernieres"].append({"t": p["heure"], "epic": p["epic"], "h": p["h"], "vote": round(p["probas"]["vote"], 3),
                                             "arbitre": round(p["probas"]["arbitre"], 3),
                                             "reel": "hausse" if hausse else "baisse",
@@ -346,8 +350,11 @@ def principal():
         # 2. nouveau lot de marchés (rotation)
         if not ouverts:
             continue
-        lot = [ouverts[(curseur + k) % len(ouverts)] for k in range(min(LOT, len(ouverts)))]
-        curseur = (curseur + len(lot)) % max(1, len(ouverts))
+        prio = [e for e in PRIORITAIRES if e in ouverts]
+        reste = [e for e in ouverts if e not in prio]
+        tour = [reste[(curseur + k) % len(reste)] for k in range(min(LOT - len(prio), len(reste)))] if reste else []
+        lot = prio + tour
+        curseur = (curseur + len(tour)) % max(1, len(reste))
 
         def bougies(e):
             try:
@@ -409,7 +416,7 @@ def principal():
             prix_mat.append(arr[:, 3])
         etapes["ia_maison_s"] = round(time.time() - t_frais, 1)
         t0 = time.time()
-        reste = max(5.0, min(16.0, 40 - (time.time() - t_tour)))  # les prix doivent rester frais : une IA trop lente saute la minute
+        reste = max(5.0, min(30.0, 45 - (time.time() - t_tour)))  # les prix doivent rester frais : une IA trop lente saute la minute
         pg, infos = geantes.prevoir(np.array(prix_mat), np.array(ohlcv), HS, delai=reste)
         for cle, pr in pg.items():
             m, h = cle.rsplit("@", 1)
@@ -457,13 +464,13 @@ def principal():
         vivant["probas"] = {e: v for e, v in vivant["probas"].items() if v["t"] >= limite}
         if time.time() - derniere_pub > 3 * 60 and (tache_pub is None or tache_pub.done()):
             vivant["maj"] = iso()
-            copie = json.loads(json.dumps({"stats.json": {"horizons": {str(h): ST[h] for h in HS}}, "vivant.json": vivant, "marches.json": univers, "juges.json": {"maj": iso(), "items": juges}}))
+            copie = json.loads(json.dumps({"stats.json": {"horizons": {**anciens, **{str(h): ST[h] for h in HS}}}, "vivant.json": vivant, "marches.json": univers, "juges.json": {"maj": iso(), "items": juges}, "attente.json": attente}))
             tache_pub = fond.submit(publier, copie)  # en arrière-plan : la minute suivante n'attend pas
             derniere_pub = time.time()
     if tache_pub is not None:
         tache_pub.result()
     vivant["maj"] = iso()
-    publier({"stats.json": {"horizons": {str(h): ST[h] for h in HS}}, "vivant.json": vivant, "marches.json": univers, "juges.json": {"maj": iso(), "items": juges}})
+    publier({"stats.json": {"horizons": {**anciens, **{str(h): ST[h] for h in HS}}}, "vivant.json": vivant, "marches.json": univers, "juges.json": {"maj": iso(), "items": juges}, "attente.json": attente})
     geantes.fermer()
     api.deconnexion()
 
