@@ -1,0 +1,45 @@
+name: IA - Challenge prop firm simulé (aucun ordre, rien à payer)
+
+# Rejoue un challenge prop firm virtuel (+10 %, -5 %/jour, -10 % max, compte 100 000 $) sur les vrais résultats
+# jugés de la Super IA (archives ia-archives + juges.json). Publie challenge.json sur la branche « ia-challenge ».
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "35 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ia-challenge
+  cancel-in-progress: false
+
+jobs:
+  challenge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Lire les résultats jugés
+        run: |
+          git fetch -q --depth 1 origin ia-archives ia-journal
+          mkdir -p entree/archives
+          git archive origin/ia-archives | tar -x -C entree/archives
+          git show origin/ia-journal:juges.json > entree/juges.json || echo '{"items":[]}' > entree/juges.json
+      - name: Challenge simulé
+        run: python -u ia/challenge_ia.py entree sortie
+      - name: Publier
+        run: |
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          cp sortie/challenge.json /tmp/challenge.json
+          git checkout -q --orphan publication
+          git rm -rq --cached . && git clean -fdxq
+          cp /tmp/challenge.json challenge.json
+          git add challenge.json
+          git commit -qm "Challenge simulé $(date -u +%FT%TZ)"
+          git push -q -f origin HEAD:ia-challenge
