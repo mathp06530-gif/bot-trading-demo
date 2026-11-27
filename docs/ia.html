@@ -110,6 +110,14 @@
     <div class="defile"><table id="multi-labo"><tr><td class="doux">Le labo tourne (environ 1 h). Résultats ici dès qu'il a fini.</td></tr></table></div>
   </section>
 
+  <section class="carte" style="margin-bottom:12px" id="pistes-carte">
+    <h2>Pistes confirmées, en direct <span class="doux" style="font-weight:400">· celles qui ont tenu sur des années jamais vues</span></h2>
+    <div class="doux petit" style="margin-bottom:8px"><b>4 h, 5 % plus sûres :</b> à chaque bougie 4 h, les 14 cerveaux votent sur la bougie 4 h suivante ; on ne parie que si la confiance est dans ses 5 % les plus hautes (seuil pris sur le passé). <b>Fin de séance à l'envers :</b> US100 / US500, à 21 h 30 et 21 h 45, on parie contre le mouvement depuis 15 h 30. Chaque prédiction est écrite avant le résultat, jugée au vrai spread. Aucun ordre.</div>
+    <div class="defile"><table id="pistes-encours"><tr><td class="doux">Chargement…</td></tr></table></div>
+    <div class="defile" style="margin-top:10px"><table id="pistes-table"></table></div>
+    <div class="note" id="pistes-note"></div>
+  </section>
+
   <section class="carte" style="margin-bottom:12px" id="chal-carte">
     <h2>Challenge prop firm simulé <span class="doux" style="font-weight:400">· virtuel, rien payé</span></h2>
     <div class="doux petit" style="margin-bottom:8px">Compte virtuel de 100 000 $ : réussi à <b>+10 %</b>, raté si on perd <b>5 % dans une journée</b> ou <b>10 % au total</b>. Les vrais résultats de la Super IA sur les 8 marchés à petits frais, vrai spread payé, une position à la fois par marché. Le <b>hasard</b> prend les mêmes trades : la Super IA doit faire mieux que lui.</div>
@@ -390,6 +398,22 @@ function multi(B) {
     .map(([r, v]) => `${reg(r)} <span class="doux">(${v.resultats} résultats)</span> : ${v.top.slice(0, 4).map(([m, w]) => `${echap(nomC(m))} ${fmt(100 * w, 0)} %`).join(", ")}`).join("<br>") +
     `<br><span class="doux">Chef à 15 min : ${((B.chef || {})["15"] || []).map(([m, w]) => `${echap(m)} ${fmt(100 * w, 0)} %`).join(", ")} · mis à jour ${new Date(B.maj).toLocaleString("fr-FR")}</span>`;
 }
+function pistesDirect(P) {
+  const e = $("pistes-encours"), t = $("pistes-table");
+  if (!P) { e.innerHTML = '<tr><td class="doux">Premiers chiffres à la prochaine bougie 4 h terminée (calcul toutes les heures).</td></tr>'; return; }
+  const fr = q => q > 0.5 ? `<span class="v">▲ hausse ${fmt(100 * q, 1)} %</span>` : `<span class="r">▼ baisse ${fmt(100 * (1 - q), 1)} %</span>`;
+  e.innerHTML = '<tr><th>Marché</th><th>Vote sur les 4 h suivantes</th><th>Confiance / seuil 5 %</th><th>Décision</th><th>Jugé vers</th></tr>' +
+    (P.en_cours || []).map(x => `<tr><td>${echap(x.e)}</td><td>${fr(x.q)}</td><td>${fmt(100 * x.conf, 2)} / ${fmt(100 * x.seuil, 2)}</td><td>${x.parie ? '<span class="pastille">parie</span>' : '<span class="doux">s\'abstient</span>'}</td><td>${new Date(x.fin + "Z").toLocaleString("fr-FR", {weekday: "short", hour: "2-digit", minute: "2-digit"})}</td></tr>`).join("");
+  const c = r => r ? `${fmt(100 * r.reussite)} % <span class="doux">(${r.n})</span> · <span class="${r.gain > 0 ? "v" : "r"}">${r.gain > 0 ? "+" : ""}${fmt(r.gain, 3)} %</span>` : '<span class="doux">pas encore</span>';
+  const S = P.stats || {}, Q = S.quatre_h || {}, F = S.fin_seance || {}, R = P.references || {};
+  let h = '<tr><th>Piste</th><th>En direct (réussite · gain moyen après spread)</th><th>Historique jamais vu</th></tr>';
+  h += `<tr><td>4 h · 5 % plus sûres</td><td>${c(Q.top5)}</td><td>${(R.quatre_h || []).map(r => `${echap(r.periode)} : ${fmt(100 * r.reussite)} % · +${fmt(r.gain, 3)} % · ${r.marches} marchés`).join("<br>")}</td></tr>`;
+  h += `<tr><td class="doux">4 h · toutes les bougies (repère)</td><td>${c(Q.toujours)}</td><td class="doux">~51 %, sous les frais</td></tr>`;
+  for (const m of ["US100", "US500"]) h += `<tr><td>Fin de séance à l'envers · ${m}</td><td>${c(F[m])}</td><td>${(R.fin_seance || []).map(r => `${echap(r.periode)} : ${fmt(100 * r[m])} %`).join("<br>")}</td></tr>`;
+  t.innerHTML = h;
+  const pm = Object.entries(Q.par_marche || {}).filter(([, v]) => v).map(([m, v]) => `${echap(m)} ${fmt(100 * v.reussite, 0)} % (${v.n})`).join(", ");
+  $("pistes-note").innerHTML = `Compté depuis le ${new Date(P.depuis).toLocaleString("fr-FR")}. ${pm ? "Paris 4 h par marché : " + pm + ". " : ""}Il faut plusieurs semaines (≈ 50 paris 4 h par mois sur les 8 marchés) avant de juger. Mis à jour ${new Date(P.maj).toLocaleString("fr-FR")}.`;
+}
 function multiLabo(L) {
   const t = $("multi-labo");
   if (!L || !L.lignes) return;
@@ -497,6 +521,7 @@ async function charger() {
     const [s, v, m] = await Promise.all(["stats.json", "vivant.json", "marches.json"].map(f => fetch(SOURCE + f + q).then(r => r.ok ? r.json() : null)));
     fetch(SOURCE.replace("ia-journal", "ia-boost") + "boost.json" + q).then(r => r.ok ? r.json() : null).then(boosts).catch(() => boosts(null));
     fetch(SOURCE.replace("ia-journal", "ia-multi") + "multi.json" + q).then(r => r.ok ? r.json() : null).then(multi).catch(() => multi(null));
+    fetch(SOURCE.replace("ia-journal", "ia-pistes") + "pistes.json" + q).then(r => r.ok ? r.json() : null).then(pistesDirect).catch(() => pistesDirect(null));
     fetch("multi_labo.json" + q).then(r => r.ok ? r.json() : null).then(multiLabo).catch(() => {});
     fetch(SOURCE.replace("ia-journal", "ia-challenge") + "challenge.json" + q).then(r => r.ok ? r.json() : null).then(x => { CHAL = x; challenge(); }).catch(() => challenge());
     fetch(SOURCE.replace("ia-journal", "ia-super") + "super.json" + q).then(r => r.ok ? r.json() : null).then(x => { SUP = x; if (V) superIA(); }).catch(() => {});

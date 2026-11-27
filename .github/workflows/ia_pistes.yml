@@ -1,0 +1,46 @@
+name: IA - Pistes confirmées en direct (4 h plus sûres + fin de séance, aucun ordre)
+
+# Toutes les heures : si une bougie 4 h vient de se terminer (ou une fin de séance US), écrit la prédiction du vote
+# des 14 cerveaux (et « parie » seulement sur ses 5 % plus sûres), juge les anciennes au vrai spread.
+# Résultat : branche ia-pistes, pistes.json (page IA). N'envoie AUCUN ordre.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "6 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ia-pistes
+  cancel-in-progress: false
+
+jobs:
+  pistes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ia/requirements.txt
+      - uses: actions/cache/restore@v4
+        with:
+          path: donnees_pistes
+          key: ia-pistes-donnees-
+          restore-keys: ia-pistes-donnees-
+      - name: Pistes en direct
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+        run: python -u -m ia.pistes_direct
+      - id: jour
+        run: echo "j=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache/save@v4
+        continue-on-error: true
+        with:
+          path: donnees_pistes
+          key: ia-pistes-donnees-${{ steps.jour.outputs.j }}
