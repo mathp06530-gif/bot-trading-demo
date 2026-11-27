@@ -291,6 +291,51 @@ def publier(s):
         print("publication impossible :", r.stderr[:300], flush=True)
 
 
+# ---------------------------------------------------------------------- archives (pour entraîner des améliorations plus tard)
+ARCHIVE_BRANCHE = "ia-archives"
+ARCHIVE = Path(os.getenv("SUPER_ARCHIVE", "archives_ia"))
+
+
+def archiver(lignes):
+    """Ajoute les résultats jugés (avec les probabilités de chaque IA) à la branche ia-archives : un fichier
+    compressé par session, avec historique normal (on ajoute, on n'écrase jamais)."""
+    import gzip
+    if not lignes:
+        return
+    def g(*a):
+        return subprocess.run(["git", *a], cwd=ARCHIVE, capture_output=True, text=True, timeout=120)
+    if not (ARCHIVE / ".git").exists():
+        ARCHIVE.mkdir(parents=True, exist_ok=True)
+        subprocess.run(["git", "init", "-q", str(ARCHIVE)])
+        for k in ("remote.origin.url",):
+            v = subprocess.run(["git", "config", "--get", k], capture_output=True, text=True).stdout.strip()
+            g("remote", "add", "origin", v)
+        auth = subprocess.run(["git", "config", "--get-regexp", r"http\..*\.extraheader"], capture_output=True, text=True).stdout
+        for ligne in auth.splitlines():
+            k, v = ligne.split(" ", 1)
+            g("config", k, v)
+        g("config", "user.name", "bot-trading-demo")
+        g("config", "user.email", "bot-trading-demo@users.noreply.github.com")
+    jour = lignes[0]["t"][:10]
+    nom = f"{jour}/{lignes[0]['ech']}-{lignes[-1]['ech']}-{len(lignes)}.jsonl.gz"  # unique
+    for essai in range(3):
+        if g("fetch", "-q", "origin", ARCHIVE_BRANCHE).returncode == 0:
+            g("checkout", "-q", "-f", "-B", ARCHIVE_BRANCHE, "FETCH_HEAD")
+        else:
+            g("checkout", "-q", "--orphan", ARCHIVE_BRANCHE)
+        (ARCHIVE / jour).mkdir(parents=True, exist_ok=True)
+        with gzip.open(ARCHIVE / nom, "wt") as f:
+            for it in lignes:
+                f.write(json.dumps(it, separators=(",", ":")) + "\n")
+        g("add", "-A")
+        g("commit", "-qm", f"Archives IA {iso()}")
+        if g("push", "-q", "origin", ARCHIVE_BRANCHE).returncode == 0:
+            print(f"archives : {len(lignes)} résultats -> {nom}", flush=True)
+            return
+        time.sleep(5)
+    print("archives : envoi impossible", flush=True)
+
+
 def principal():
     preparer()
     try:
@@ -300,13 +345,26 @@ def principal():
     s = SuperIA(e)
     debut = time.time()
     duree = int(os.getenv("SUPER_DUREE_S", "3300"))
+    a_archiver, dernier_envoi = [], time.time()
     while True:
         items = lire_journal()
+        jusqua = s.e.get("archive_jusqua", 0)
+        nouveaux = [it for it in items if it["ech"] > jusqua]
+        if nouveaux:
+            a_archiver += nouveaux
+            s.e["archive_jusqua"] = max(it["ech"] for it in nouveaux)
         maintenant = float(os.getenv("SUPER_MAINTENANT", "0")) or time.time()
         n_pred, n_corr = s.traiter(items, maintenant)
         print(f"{iso()} : {len(items)} résultats lus, {n_pred} prédictions, {n_corr} corrections", flush=True)
         publier(s)
-        if time.time() - debut > duree or os.getenv("SUPER_UNE_FOIS"):
+        fin = time.time() - debut > duree or os.getenv("SUPER_UNE_FOIS")
+        if a_archiver and os.getenv("SUPER_GIT", "oui") == "oui" and (fin or time.time() - dernier_envoi > 1200):
+            try:
+                archiver(a_archiver)
+            except Exception as ex:
+                print("archives :", str(ex)[:200], flush=True)
+            a_archiver, dernier_envoi = [], time.time()
+        if fin:
             break
         time.sleep(120)
 
