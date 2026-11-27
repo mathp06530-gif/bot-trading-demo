@@ -2029,15 +2029,25 @@
    "marche": "GOLD",
    "texte": "[Rapide] Stop suiveur déplacé de 3667.90 à 3662.83 pour garder le gain.",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-27T14:55:25Z",
+   "type": "fermeture",
+   "marche": "GOLD",
+   "texte": "[Rapide] Le gain avait atteint 0.5 R et le prix est revenu au prix d'entrée (3643.87) : position fermée pour ne pas transformer un gain en perte (gain/perte : -0.02).",
+   "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-27T14:55:25Z",
+   "type": "ordre",
+   "marche": "GOLD",
+   "texte": "[Rapide] VENTE de 0.02 à 3644.44, stop garanti à 36.44 $.",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T14:54:24Z",
+ "derniere_execution": "2026-11-27T14:55:26Z",
  "historique": [
-  {
-   "date": "2026-11-24T08:20:25Z",
-   "valeur": 97.98
-  },
   {
    "date": "2026-11-24T08:25:25Z",
    "valeur": 98.12
@@ -14033,14 +14043,18 @@
   {
    "date": "2026-11-27T14:54:24Z",
    "valeur": 92.83
+  },
+  {
+   "date": "2026-11-27T14:55:26Z",
+   "valeur": 92.83
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
   "solde": 92.83,
-  "depot": 92.86,
-  "resultat_latent": -0.03,
+  "depot": 92.84,
+  "resultat_latent": -0.01,
   "disponible": 89.48
  },
  "positions": [
@@ -14049,11 +14063,11 @@
    "nom": "Gold",
    "sens": "SELL",
    "taille": 0.02,
-   "prix_entree": 3643.87,
-   "resultat": -0.04,
-   "ouverte_le": "2026-11-27T13:35:24.837",
-   "id": "00000000-7721-b93c-049f-c46d0015549e",
-   "stop": 3662.83,
+   "prix_entree": 3644.44,
+   "resultat": -0.01,
+   "ouverte_le": "2026-11-27T14:55:25.411",
+   "id": "00000000-7723-03da-049f-c46d0015549e",
+   "stop": 3680.88,
    "stop_garanti": true,
    "objectif": null,
    "strategie": "rapide"
@@ -14435,8 +14449,37 @@
    "objectif": null,
    "stop_garanti": true,
    "ouvert_le": "2026-11-27T13:35:24Z",
+   "statut": "ferme",
+   "resultat": -0.02,
+   "ferme_le": "2026-11-27T14:55:24Z",
+   "prix_sortie": 3644.94,
+   "motif_sortie": "[Rapide] Retour au prix d'entrée",
+   "strategie": "rapide",
+   "reglages": {
+    "ADX_RAPIDE_MIN": 20.0,
+    "FILTRE_BOLLINGER": "oui",
+    "SUIVI_RAPIDE_PCT": 1.0,
+    "SORTIE_ENTREE_R": 0.5,
+    "GARDE_RAPIDE_APRES_R": 1.5,
+    "GARDE_RAPIDE_PCT": 60.0,
+    "SORTIE_CONFIRMEE_RAPIDE": 3.0,
+    "EMPILER_RAPIDE": 2.0
+   },
+   "resultat_estime": false
+  },
+  {
+   "id": "00000000-7723-03da-049f-c46d0015549e",
+   "marche": "GOLD",
+   "nom": "Gold",
+   "sens": "SELL",
+   "taille": 0.02,
+   "prix_entree": 3644.44,
+   "stop": 3680.88,
+   "objectif": null,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-27T14:55:25Z",
    "statut": "ouvert",
-   "resultat": -0.04,
+   "resultat": -0.01,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -14584,7 +14627,7 @@
  "pause": false,
  "rapide": {
   "deals": [
-   "00000000-7721-b93c-049f-c46d0015549e"
+   "00000000-7723-03da-049f-c46d0015549e"
   ],
   "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 1 %, sortie au prix d'entrée après +0.5 R, garde 60 % du gain après +1.5 R, sortie si le croisement inverse dure 3 bougies, jusqu'à 2 position(s), risque 1 % (expérimentale)",
   "marches": {
@@ -14593,22 +14636,24 @@
     "filtre": {
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
-     "tendance_4h": "SELL"
+     "tendance_4h": "SELL",
+     "bollinger": 1.14,
+     "adx": 37.9
     },
-    "prix": 3643.72,
-    "action": "Position conservée",
+    "prix": 3644.675,
+    "action": "VENTE de 0.02",
     "empilement": "position 2/2 possible quand le prix aura avancé de 36.03 de plus dans le bon sens"
    }
   },
   "tendance": "SELL",
   "meilleur": {
-   "00000000-7721-b93c-049f-c46d0015549e": {
-    "depuis": "2026-11-27T13:35:00",
-    "prix": 3625.31
+   "00000000-7723-03da-049f-c46d0015549e": {
+    "depuis": "2026-11-27T14:55:00",
+    "prix": 3644.44
    }
   },
   "entree_bougie": {
-   "GOLD": "2026-11-27T13:30:00"
+   "GOLD": "2026-11-27T14:50:00"
   }
  },
  "debut_test": "2026-11-20T16:20:00Z",
@@ -15294,11 +15339,11 @@
    43.76
   ],
   "rapide-GOLD": [
-   1795791000,
-   3634.35,
-   3645.61,
-   3634.05,
-   3643.72
+   1795791300,
+   3644.93,
+   3645.35,
+   3643.5,
+   3644.68
   ]
  },
  "nettoyage": "2026-11-26"
