@@ -2074,12 +2074,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T15:12:25Z",
+ "derniere_execution": "2026-11-27T15:13:24Z",
  "historique": [
-  {
-   "date": "2026-11-24T09:50:25Z",
-   "valeur": 97.88
-  },
   {
    "date": "2026-11-24T09:55:25Z",
    "valeur": 97.84
@@ -14075,15 +14071,19 @@
   {
    "date": "2026-11-27T15:12:25Z",
    "valeur": 93.13
+  },
+  {
+   "date": "2026-11-27T15:13:24Z",
+   "valeur": 93.09
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.13,
+  "solde": 93.09,
   "depot": 92.84,
-  "resultat_latent": 0.29,
-  "disponible": 89.79
+  "resultat_latent": 0.25,
+  "disponible": 89.75
  },
  "positions": [
   {
@@ -14092,7 +14092,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3644.44,
-   "resultat": 0.29,
+   "resultat": 0.25,
    "ouverte_le": "2026-11-27T14:55:25.411",
    "id": "00000000-7723-03da-049f-c46d0015549e",
    "stop": 3663.62,
@@ -14507,7 +14507,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-27T14:55:25Z",
    "statut": "ouvert",
-   "resultat": 0.29,
+   "resultat": 0.25,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -14532,7 +14532,7 @@
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
   "2026-11-26": 92.86,
-  "2026-11-27": 93.13
+  "2026-11-27": 93.09
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -14636,7 +14636,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": null,
-   "prix": 43.55500000000001,
+   "prix": 43.5555,
    "plus_haut_20": 44.58,
    "plus_bas_20": 38.2,
    "ema200": 49.86,
@@ -14666,9 +14666,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3627.35,
-    "action": "Stop suiveur déplacé",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 18.87 de plus dans le bon sens"
+    "prix": 3630.41,
+    "action": "Position conservée",
+    "empilement": "position 2/2 possible quand le prix aura avancé de 22.02 de plus dans le bon sens"
    }
   },
   "tendance": "SELL",
@@ -15368,8 +15368,8 @@
    1795792200,
    3628.9,
    3633.13,
-   3627.26,
-   3627.35
+   3626.97,
+   3630.41
   ]
  },
  "nettoyage": "2026-11-26"
