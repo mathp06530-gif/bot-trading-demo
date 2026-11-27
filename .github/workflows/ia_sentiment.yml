@@ -1,0 +1,33 @@
+name: IA - enregistrer le sentiment des clients Capital.com (chaque minute, aucun ordre)
+
+# Piste 4 (PISTES_BOOST) : Capital.com ne garde pas d'historique du « Client Sentiment ».
+# Chaque heure, ~57 min d'enregistrement minute par minute des 8 marchés à petits frais -> branche « ia-sentiment ».
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "1 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ia-sentiment
+  cancel-in-progress: false
+
+jobs:
+  sentiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 62
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -q requests
+      - name: Enregistrement
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+        run: python -u ia/sentiment.py

@@ -79,6 +79,30 @@ RDV = {"londres": 9.0, "lbma_matin": 11.5, "bce": 14.25, "us_ouvre": 15.5, "lbma
 SEANCE = {"US100": (15.5, 22.0), "US500": (15.5, 22.0), "DE40": (9.0, 17.5)}
 
 
+def annonces_utc():
+    """Heures UTC des grosses annonces (NFP, CPI US, FOMC, BCE, BoE) + stocks de pétrole EIA chaque mercredi 10h30 New York."""
+    d = json.loads((Path(__file__).parent / "dates_annonces.json").read_text())
+    regles_h = {"NFP": ("America/New_York", 8, 30), "CPI_US": ("America/New_York", 8, 30), "FOMC": ("America/New_York", 14, 0),
+                "ECB": ("Europe/Berlin", 14, 15), "BOE": ("Europe/London", 12, 0)}
+    out = {"eco": [], "eia": []}
+    for k, (tz, hh, mm) in regles_h.items():
+        for j in d.get(k, []):
+            out["eco"].append(pd.Timestamp(f"{j} {hh:02d}:{mm:02d}", tz=tz).tz_convert("UTC").tz_localize(None))
+    for j in pd.date_range("2016-01-06", "2027-12-31", freq="W-WED"):
+        out["eia"].append(pd.Timestamp(f"{j.date()} 10:30", tz="America/New_York").tz_convert("UTC").tz_localize(None))
+    return {k: pd.DatetimeIndex(sorted(v)) for k, v in out.items()}
+
+
+def minutes_annonce(index, ev):
+    """Minutes entre le début de la bougie et l'annonce la plus proche (négatif = annonce passée)."""
+    t = index.values.astype("datetime64[m]").astype(np.int64)
+    e = ev.values.astype("datetime64[m]").astype(np.int64)
+    k = np.searchsorted(e, t)
+    av = np.where(k > 0, t - e[np.maximum(k - 1, 0)], 10 ** 6)
+    ap = np.where(k < len(e), e[np.minimum(k, len(e) - 1)] - t, 10 ** 6)
+    return np.where(ap <= av, ap, -av).astype(float)
+
+
 def pistes(f, mid, epic):
     """Pistes du 27/11 : horloge fine, périodicité du même créneau, momentum de fin de séance, chiffres ronds.
     Tout est connu à la clôture de la bougie (ou vient de jours passés)."""
@@ -104,6 +128,10 @@ def pistes(f, mid, epic):
         ouv = pd.Series(np.where(np.abs(h - o) < 1e-6, lm, np.nan), index=f.index).groupby(jour).transform("first")
         actif = (h >= c - 0.5) & (h < c)
         f["fin_seance"] = np.where(actif, (lm - ouv).fillna(0.0), 0.0)
+    # calendrier économique : minutes jusqu'à la grosse annonce la plus proche (et stocks EIA pour le pétrole)
+    ev = annonces_utc()
+    f["eco_min"] = np.clip(minutes_annonce(f.index, ev["eco"]), -240, 240)
+    f["eia_min"] = np.clip(minutes_annonce(f.index, ev["eia"]), -240, 240) if epic == "OIL_CRUDE" else 240.0
     # chiffres ronds (Osler 2003) : distance au rond le plus proche, en unités de volatilité
     unite = 10 ** (np.floor(np.log10(mid.reindex(f.index))) - 2)
     rond = np.round(mid.reindex(f.index) / unite) * unite
@@ -411,6 +439,11 @@ def tout(f: pd.DataFrame):
     ratio_h = (f.mv.abs()[av] / f.sp[av].clip(lower=1e-6)).groupby(f.index[av].hour).median()
     bonnes_h = set(ratio_h[ratio_h >= ratio_h.quantile(2 / 3)].index)
     heures_ok = np.isin(f.index.hour, list(bonnes_h))
+    hors_ann = None
+    if "eco_min" in f:  # on ne joue pas de 5 min avant à 15 min après une grosse annonce (bougie suivante comprise)
+        pas = float(pd.Series(f.index).diff().dt.total_seconds().median() / 60)
+        hors_ann = ~((f.eco_min.to_numpy() >= -15) & (f.eco_min.to_numpy() <= 2 * pas + 5)) & \
+                   ~((f.eia_min.to_numpy() >= -15) & (f.eia_min.to_numpy() <= 2 * pas + 5))
     moitie = f.index[test].min() + (f.index.max() - f.index[test].min()) / 2
     res = {}
     regs_a = np.array(regs)
@@ -423,6 +456,7 @@ def tout(f: pd.DataFrame):
                     "courbe": {str(c): mesurer(f, q, couverture(q, c), test) for c in COUVERTURES},
                     "amplitude": {str(k): mesurer(f, q, ~np.isnan(amp) & (amp >= k * sp_), test) for k in (2, 3, 5)},
                     "heures_petits_frais": mesurer(f, q, heures_ok, test),
+                    "hors_annonces": mesurer(f, q, hors_ann, test) if hors_ann is not None else None,
                     "combo": mesurer(f, q, couverture(q, 0.2) & ~np.isnan(amp) & (amp >= 3 * sp_) & heures_ok, test)}
     for c in racc_cols:
         res.setdefault("_cerveaux", {})[c] = mesurer(f, P[c].to_numpy(), masque=test)
@@ -527,8 +561,8 @@ def bilan(dossier, sortie_md, sortie_json):
         L.append("")
     # leviers : ne jouer que les plus sûres, amplitude, heures à petits frais, combinaison
     L += ["## Leviers (moyenne des marchés ; réussite / gain après spread / part des bougies jouées)", "",
-          "| Bougies | Méta-cerveau | 50 % plus sûres | 20 % | 10 % | 5 % | Amplitude ≥ 3x spread | Heures petits frais | Combo (20 % + ampl. 3x + heures) | Combo prix mélangés |",
-          "|---|---|---|---|---|---|---|---|---|---|"]
+          "| Bougies | Méta-cerveau | 50 % plus sûres | 20 % | 10 % | 5 % | Amplitude ≥ 3x spread | Heures petits frais | Hors annonces | Combo (20 % + ampl. 3x + heures) | Combo prix mélangés |",
+          "|---|---|---|---|---|---|---|---|---|---|---|"]
     def agr(lst, ref):
         lst = [x for x in lst if x]
         if not lst:
@@ -549,13 +583,14 @@ def bilan(dossier, sortie_md, sortie_json):
             lv[f"cov{c}"] = agr([x["courbe"].get(str(c)) for _, x in d["reel"]], ref)
         lv["ampl3"] = agr([x["amplitude"].get("3") for _, x in d["reel"]], ref)
         lv["heures"] = agr([x["heures_petits_frais"] for _, x in d["reel"]], ref)
+        lv["hors_annonces"] = agr([x.get("hors_annonces") for _, x in d["reel"]], ref)
         lv["combo"] = agr([x["combo"] for _, x in d["reel"]], ref)
         refm = sum(x["toujours"]["n"] for _, x in d["melange"] if x.get("toujours"))
         lv["combo_melange"] = agr([x.get("combo") for _, x in d["melange"]], refm)
         lv["cov0.05_melange"] = agr([x.get("courbe", {}).get("0.05") for _, x in d["melange"]], refm)
         leviers.append(lv)
         L.append(f"| {u} | {nom} | " + " | ".join(cel(lv[f"cov{c}"]) for c in COUVERTURES) +
-                 f" | {cel(lv['ampl3'])} | {cel(lv['heures'])} | {cel(lv['combo'])} | {cel(lv['combo_melange'])} |")
+                 f" | {cel(lv['ampl3'])} | {cel(lv['heures'])} | {cel(lv['hors_annonces'])} | {cel(lv['combo'])} | {cel(lv['combo_melange'])} |")
     L.append("")
     # cerveaux seuls (pistes comprises), moyenne des marchés
     L += ["## Cerveaux seuls (moyenne des marchés : réussite / gain après spread ; prix mélangés)", "",
