@@ -1997,12 +1997,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T12:59:25Z",
+ "derniere_execution": "2026-11-27T13:00:25Z",
  "historique": [
-  {
-   "date": "2026-11-23T22:55:25Z",
-   "valeur": 97.63
-  },
   {
    "date": "2026-11-23T23:00:25Z",
    "valeur": 97.55
@@ -13998,6 +13994,10 @@
   {
    "date": "2026-11-27T12:59:25Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-27T13:00:25Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -14514,9 +14514,9 @@
      "signal_5min": "SELL",
      "tendance_1h": "SELL",
      "tendance_4h": "SELL",
-     "bollinger": 0.76
+     "bollinger": 0.74
     },
-    "prix": 3668.0299999999997,
+    "prix": 3666.37,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    }
@@ -15210,11 +15210,11 @@
    43.97
   ],
   "rapide-GOLD": [
-   1795784100,
-   3663.87,
-   3669.91,
-   3663.15,
-   3668.03
+   1795784400,
+   3669.6,
+   3670.09,
+   3665.69,
+   3666.37
   ]
  },
  "nettoyage": "2026-11-26"
