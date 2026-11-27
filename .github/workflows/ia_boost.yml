@@ -1,0 +1,29 @@
+name: IA - Boosts en test (correcteur, filtre, champion ; aucun ordre)
+
+# Chaque heure : refait le test hors échantillon des boosts sur toutes les prédictions jugées (ia-archives + juges.json)
+# et publie boost.json sur la branche « ia-boost ». N'influence PAS le direct ni la Super IA.
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "40 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ia-boost
+  cancel-in-progress: false
+
+jobs:
+  boost:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -q numpy lightgbm
+      - name: Boosts
+        run: python -u ia/boost/direct.py
