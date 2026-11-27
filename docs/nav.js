@@ -22,7 +22,7 @@
 
   const entete = document.createElement("header");
   entete.className = "entete";
-  entete.innerHTML = `<a class="marque" href="ia.html">${LOGO}<span>Bot de trading</span></a>
+  entete.innerHTML = `<a class="marque" href="ia.html">${LOGO}<span>Centre de contrôle</span></a>
     <nav class="onglets" aria-label="Navigation">${HAUT.map(x => x ? `<a href="${x[2]}" data-nav="${x[0]}">${x[1]}</a>` : '<span class="sep"></span>').join("")}</nav>
     <div class="droite" id="entete-droite"><span class="etiquette-demo">DÉMO</span></div>`;
   const bas = document.createElement("nav");

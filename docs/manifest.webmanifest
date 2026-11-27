@@ -1,6 +1,6 @@
 {
-  "name": "Bot de trading démo",
-  "short_name": "Bot trading",
+  "name": "Centre de contrôle",
+  "short_name": "Contrôle",
   "description": "Suivi du bot de trading et des IA de prédiction (compte démo Capital.com).",
   "lang": "fr",
   "start_url": "./ia.html",
