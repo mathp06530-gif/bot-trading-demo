@@ -45,13 +45,33 @@ ALPHA = float(os.getenv("LABO_ALPHA", "0.01"))
 MIN_REGIME = 300
 SEUILS = (0.0, 0.01, 0.02, 0.03, 0.05, 0.08)
 FEN_SEUIL, MIN_SEUIL = 3000, 200
+MARCHES = ["GOLD", "SILVER", "US100", "US500", "EURUSD", "OIL_CRUDE", "DE40", "GBPUSD"]
+COUVERTURES = (0.5, 0.2, 0.1, 0.05)
 UNITE_MIN = {"MINUTE_5": 5, "MINUTE_15": 15, "HOUR": 60}
 APPRIS = ["logistique", "lightgbm", "foret"]
 COLS = None
 
 
 # --------------------------------------------------------------------------- données
-def preparer(d: pd.DataFrame, minutes: int, melange_graine=None):
+def croises(dossier, epic, unite, index):
+    """Rendements des AUTRES marchés à la même bougie (connus à la même clôture) : dollar, indices, or/argent croisés."""
+    from ia.predire import lire
+    X = pd.DataFrame(index=index)
+    for e in MARCHES:
+        if e == epic:
+            continue
+        d = lire(Path(dossier), e, unite)
+        if d is None:
+            continue
+        lc = np.log((d.close_bid + d.close_ask) / 2)
+        r1, r4 = lc.diff(), lc - lc.shift(4)
+        v = r1.rolling(100, min_periods=20).std()
+        X[f"x_{e}_r1"] = (r1 / v).reindex(index)
+        X[f"x_{e}_r4"] = (r4 / (2 * v)).reindex(index)
+    return X.fillna(0.0)
+
+
+def preparer(d: pd.DataFrame, minutes: int, melange_graine=None, croix=None):
     """Indicateurs connus à la clôture t, cible = sens de la bougie suivante, mouvement % et spread %."""
     from ia.predire import indicateurs
     d = d.copy()
@@ -67,6 +87,8 @@ def preparer(d: pd.DataFrame, minutes: int, melange_graine=None):
             d[c] = d[c] * k
         mid = pd.Series(nm, index=d.index)
     f = indicateurs(d)
+    if croix is not None:
+        f = f.join(croix.reindex(f.index).fillna(0.0))
     lc = np.log(mid)
     r1 = lc.diff()
     f["er16"] = (lc - lc.shift(16)).abs() / r1.abs().rolling(16).sum()
@@ -272,6 +294,39 @@ def mesurer(f, q, garde=None, masque=None):
             "mois_positifs": int((gm > 0).sum()), "mois": int(len(gm))}
 
 
+def amplitude(f, blocs):
+    """Prédit la TAILLE du mouvement suivant (|mv|, en %) avec un LightGBM réentraîné chaque mois sur le passé."""
+    import lightgbm as lgb
+    cols = [c for c in f.columns if c not in ("mv", "sp", "y")]
+    X, a = f[cols].to_numpy(), f.mv.abs().to_numpy()
+    q = np.full(len(f), np.nan)
+    for debut, fin in blocs:
+        tr = np.where(f.index < debut - pd.Timedelta(hours=2))[0][-TRAIN_MAX:]
+        te = np.where((f.index >= debut) & (f.index < fin))[0]
+        if len(tr) < 3000 or not len(te):
+            continue
+        m = lgb.LGBMRegressor(n_estimators=200, learning_rate=0.03, num_leaves=15, min_child_samples=200, verbose=-1,
+                              random_state=3).fit(X[tr], a[tr])
+        q[te] = m.predict(X[te])
+    return q
+
+
+def couverture(q, part):
+    """Garde les `part` % de prédictions les plus confiantes, avec un seuil pris sur les 3000 précédentes (passé seul)."""
+    c = np.abs(q - 0.5)
+    garde = np.zeros(len(q), bool)
+    hist = deque(maxlen=FEN_SEUIL)
+    seuil = None
+    for i in range(len(q)):
+        if np.isnan(c[i]):
+            continue
+        if i % 100 == 0 and len(hist) >= 500:
+            seuil = float(np.quantile(hist, 1 - part))
+        garde[i] = seuil is not None and c[i] >= seuil
+        hist.append(c[i])
+    return garde
+
+
 def tout(f: pd.DataFrame):
     fin = f.index.max()
     debut_test = fin - pd.DateOffset(months=MOIS_TEST)
@@ -306,6 +361,13 @@ def tout(f: pd.DataFrame):
     Q["CHEF (IA unique)"] = chef(f, {k: np.where(np.isnan(v), 0.5, v) for k, v in Q.items()})
     Q["Élève (distillation)"] = qe
     test = np.asarray(f.index >= debut_test)
+    amp = amplitude(f, [b for b in blocs if b[0] >= debut_test])
+    sp_ = f.sp.to_numpy()
+    # heures à petits frais : choisies AVANT la période jugée (mouvement habituel / spread le plus grand)
+    av = np.asarray(f.index < debut_test)
+    ratio_h = (f.mv.abs()[av] / f.sp[av].clip(lower=1e-6)).groupby(f.index[av].hour).median()
+    bonnes_h = set(ratio_h[ratio_h >= ratio_h.quantile(2 / 3)].index)
+    heures_ok = np.isin(f.index.hour, list(bonnes_h))
     moitie = f.index[test].min() + (f.index.max() - f.index[test].min()) / 2
     res = {}
     regs_a = np.array(regs)
@@ -314,9 +376,14 @@ def tout(f: pd.DataFrame):
         res[nom] = {"toujours": mesurer(f, q, masque=test), "si_sur": mesurer(f, q, garde, test),
                     "moitie1": mesurer(f, q, masque=test & np.asarray(f.index < moitie)),
                     "moitie2": mesurer(f, q, masque=test & np.asarray(f.index >= moitie)),
-                    "regimes": {r: mesurer(f, q, masque=test & (regs_a == r)) for r in sorted(set(regs_a[test])) if r}}
+                    "regimes": {r: mesurer(f, q, masque=test & (regs_a == r)) for r in sorted(set(regs_a[test])) if r},
+                    "courbe": {str(c): mesurer(f, q, couverture(q, c), test) for c in COUVERTURES},
+                    "amplitude": {str(k): mesurer(f, q, ~np.isnan(amp) & (amp >= k * sp_), test) for k in (2, 3, 5)},
+                    "heures_petits_frais": mesurer(f, q, heures_ok, test),
+                    "combo": mesurer(f, q, couverture(q, 0.2) & ~np.isnan(amp) & (amp >= 3 * sp_) & heures_ok, test)}
     for c in racc_cols:
         res.setdefault("_cerveaux", {})[c] = mesurer(f, P[c].to_numpy(), masque=test)
+    res["_heures_petits_frais"] = sorted(int(h) for h in bonnes_h)
     res["_periode"] = [str(debut_test), str(f.index.max())]
     res["_sens_majoritaire"] = round(float(max(yv[test].mean(), 1 - yv[test].mean())), 4)
     return res
@@ -330,8 +397,9 @@ def tester(dossier, epic, unite, sortie):
         return
     minutes = UNITE_MIN[unite]
     out = {"epic": epic, "unite": unite}
-    out["reel"] = tout(preparer(d, minutes))
-    out["melange"] = tout(preparer(d, minutes, melange_graine=7))
+    croix = croises(dossier, epic, unite, d.index)
+    out["reel"] = tout(preparer(d, minutes, croix=croix))
+    out["melange"] = tout(preparer(d, minutes, melange_graine=7, croix=croix))
     Path(sortie).write_text(json.dumps(out, ensure_ascii=False))
     for k in ("reel", "melange"):
         for nom, r in out[k].items():
@@ -410,11 +478,43 @@ def bilan(dossier, sortie_md, sortie_json):
                         f"{sum(x['gain'] > 0 for x in s)}/{len(s)} | {sum(x['mois_positifs'] for x in s)}/{sum(x['mois'] for x in s)} | " if s else "ne parie jamais | — | — | ")
                      + (f"{100 * np.mean([x['reussite'] for x in fm]):.2f} % |" if fm else "— |"))
         L.append("")
+    # leviers : ne jouer que les plus sûres, amplitude, heures à petits frais, combinaison
+    L += ["## Leviers (moyenne des marchés ; réussite / gain après spread / part des bougies jouées)", "",
+          "| Bougies | Méta-cerveau | 50 % plus sûres | 20 % | 10 % | 5 % | Amplitude ≥ 3x spread | Heures petits frais | Combo (20 % + ampl. 3x + heures) | Combo prix mélangés |",
+          "|---|---|---|---|---|---|---|---|---|---|"]
+    def agr(lst, ref):
+        lst = [x for x in lst if x]
+        if not lst:
+            return None
+        return {"reussite": round(float(np.mean([x["reussite"] for x in lst])), 4), "gain": round(float(np.mean([x["gain"] for x in lst])), 5),
+                "part": round(sum(x["n"] for x in lst) / max(ref, 1), 4), "n": sum(x["n"] for x in lst),
+                "marches_gagnants": f"{sum(x['gain'] > 0 for x in lst)}/{len(lst)}",
+                "mois_positifs": f"{sum(x['mois_positifs'] for x in lst)}/{sum(x['mois'] for x in lst)}"}
+    cel = lambda a: f"{100 * a['reussite']:.1f} % / {a['gain']:+.4f} % / {100 * a['part']:.1f} %" if a else "—"  # noqa: E731
+    leviers = []
+    for (u, nom), d in sorted(tab.items()):
+        ref = sum(x["toujours"]["n"] for _, x in d["reel"] if x.get("toujours"))
+        if not ref or "courbe" not in d["reel"][0][1]:
+            continue
+        nb_essais += 7 * len(d["reel"])
+        lv = {"unite": u, "nom": nom}
+        for c in COUVERTURES:
+            lv[f"cov{c}"] = agr([x["courbe"].get(str(c)) for _, x in d["reel"]], ref)
+        lv["ampl3"] = agr([x["amplitude"].get("3") for _, x in d["reel"]], ref)
+        lv["heures"] = agr([x["heures_petits_frais"] for _, x in d["reel"]], ref)
+        lv["combo"] = agr([x["combo"] for _, x in d["reel"]], ref)
+        refm = sum(x["toujours"]["n"] for _, x in d["melange"] if x.get("toujours"))
+        lv["combo_melange"] = agr([x.get("combo") for _, x in d["melange"]], refm)
+        lv["cov0.05_melange"] = agr([x.get("courbe", {}).get("0.05") for _, x in d["melange"]], refm)
+        leviers.append(lv)
+        L.append(f"| {u} | {nom} | " + " | ".join(cel(lv[f"cov{c}"]) for c in COUVERTURES) +
+                 f" | {cel(lv['ampl3'])} | {cel(lv['heures'])} | {cel(lv['combo'])} | {cel(lv['combo_melange'])} |")
+    L.append("")
     L += [f"Essais comptés (méta-cerveau x marché x version) : {nb_essais}.", ""]
     Path(sortie_md).write_text("\n".join(L))
     from datetime import datetime, timezone
     Path(sortie_json).write_text(json.dumps({"maj": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                                             "essais": nb_essais, "lignes": resume_l,
+                                             "essais": nb_essais, "lignes": resume_l, "leviers": leviers,
                                              "marches": sorted({r["epic"] for r in R})}, ensure_ascii=False))
     print("\n".join(L))
 
