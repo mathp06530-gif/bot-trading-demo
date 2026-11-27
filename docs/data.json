@@ -2081,12 +2081,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T16:24:25Z",
+ "derniere_execution": "2026-11-27T16:25:25Z",
  "historique": [
-  {
-   "date": "2026-11-24T15:45:24Z",
-   "valeur": 98.54
-  },
   {
    "date": "2026-11-24T15:50:23Z",
    "valeur": 98.92
@@ -14082,15 +14078,19 @@
   {
    "date": "2026-11-27T16:24:25Z",
    "valeur": 93.24
+  },
+  {
+   "date": "2026-11-27T16:25:25Z",
+   "valeur": 93.23
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.24,
+  "solde": 93.23,
   "depot": 92.84,
-  "resultat_latent": 0.4,
-  "disponible": 89.91
+  "resultat_latent": 0.39,
+  "disponible": 89.9
  },
  "positions": [
   {
@@ -14099,7 +14099,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3644.44,
-   "resultat": 0.4,
+   "resultat": 0.39,
    "ouverte_le": "2026-11-27T14:55:25.411",
    "id": "00000000-7723-03da-049f-c46d0015549e",
    "stop": 3653.44,
@@ -14514,7 +14514,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-27T14:55:25Z",
    "statut": "ouvert",
-   "resultat": 0.4,
+   "resultat": 0.39,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -14539,7 +14539,7 @@
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
   "2026-11-26": 92.86,
-  "2026-11-27": 93.24
+  "2026-11-27": 93.23
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -14673,9 +14673,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3622.6800000000003,
+    "prix": 3622.99,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 14.18 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 14.72 de plus dans le bon sens"
    }
   },
   "tendance": "SELL",
@@ -15372,11 +15372,11 @@
    43.3
   ],
   "rapide-GOLD": [
-   1795796400,
-   3619.55,
-   3624.73,
-   3619.25,
-   3622.68
+   1795796700,
+   3621.98,
+   3623.23,
+   3621.98,
+   3622.99
   ]
  },
  "nettoyage": "2026-11-26"
