@@ -60,7 +60,7 @@
   <div class="legende">
     <span><i class="haut">▲</i> prédit hausse</span><span><i class="bas">▼</i> prédit baisse</span>
     <span><i class="bon">●</i> juste</span><span><i class="mauvais">●</i> faux</span><span><i style="color:var(--doux)">○</i> en attente du résultat</span>
-    <span>Réussite = sur les 2 dernières heures, pour ce marché et cet horizon</span>
+    <span>En haut de chaque écran : « 78 % juste · 7 sur 9 » = sur les 2 dernières heures (ce marché, cet horizon), 7 prédictions justes sur 9 jugées</span><span>En bas : la dernière prédiction, la confiance de l'IA (ex. « sûre à 64 % ») et l'heure du verdict</span>
   </div>
   <div class="mur" id="mur"><div class="vide">Chargement des IA…</div></div>
 </main>
@@ -107,10 +107,10 @@ function dessiner() {
     const t = x.taux < 0 ? "—" : Math.round(100 * x.taux) + " %";
     const cl = x.taux < 0 ? "" : x.taux >= 0.55 ? "bon" : x.taux <= 0.45 ? "mauvais" : "moyen";
     const d = x.derniere;
-    const pied = d ? `<span>${heure(ms(d.t))} : <b class="${d.p[x.m] > 0.5 ? "haut" : "bas"}">${d.p[x.m] > 0.5 ? "▲ hausse" : "▼ baisse"}</b> ${Math.round(100 * Math.max(d.p[x.m], 1 - d.p[x.m]))} %</span><span>verdict ${heure(d.ech * 1000)}</span>`
+    const pied = d ? `<span>${heure(ms(d.t))} : <b class="${d.p[x.m] > 0.5 ? "haut" : "bas"}">${d.p[x.m] > 0.5 ? "▲ hausse" : "▼ baisse"}</b> sûre à ${Math.round(100 * Math.max(d.p[x.m], 1 - d.p[x.m]))} %</span><span>verdict ${heure(d.ech * 1000)}</span>`
                    : `<span>Pas de prédiction en cours</span><span></span>`;
     return `<div class="ecran${x.m === "vote" ? " vote" : ""}"><div class="tete"><span class="nom" title="${echap(nom(x.m))}">${echap(nom(x.m))}</span>
-      <span class="score"><b class="${cl}">${t}</b> · ${x.justes}/${x.n}</span></div><canvas data-i="${i}"></canvas><div class="pied">${pied}</div></div>`;
+      <span class="score" title="Réussite sur les 2 dernières heures">${x.n ? `<b class="${cl}">${t} juste</b> · ${x.justes} sur ${x.n}` : "pas encore jugée"}</span></div><canvas data-i="${i}"></canvas><div class="pied">${pied}</div></div>`;
   }).join("");
   const maintenant = Date.now();
   const debut = maintenant - 2 * 3600e3, fin = maintenant + HZ * 60e3;
