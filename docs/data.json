@@ -1997,12 +1997,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T06:44:25Z",
+ "derniere_execution": "2026-11-27T06:45:24Z",
  "historique": [
-  {
-   "date": "2026-11-22T16:00:24Z",
-   "valeur": 97.91
-  },
   {
    "date": "2026-11-22T16:05:24Z",
    "valeur": 97.91
@@ -13998,6 +13994,10 @@
   {
    "date": "2026-11-27T06:44:25Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-27T06:45:24Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -14515,7 +14515,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3648.17,
+    "prix": 3650.42,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    }
@@ -15209,11 +15209,11 @@
    44.12
   ],
   "rapide-GOLD": [
-   1795761600,
-   3646.72,
-   3650.55,
-   3645.54,
-   3648.17
+   1795761900,
+   3648.76,
+   3650.99,
+   3648.76,
+   3650.42
   ]
  },
  "nettoyage": "2026-11-26"
