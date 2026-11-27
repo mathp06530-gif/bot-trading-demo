@@ -2086,13 +2086,9 @@
    "texte": "Connexion refusée (401). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.invalid.api.key\"}"
   }
  ],
- "statut": "erreur",
- "derniere_execution": "2026-11-27T16:30:49Z",
+ "statut": "ok",
+ "derniere_execution": "2026-11-27T16:31:24Z",
  "historique": [
-  {
-   "date": "2026-11-24T16:10:24Z",
-   "valeur": 99.98
-  },
   {
    "date": "2026-11-24T16:15:24Z",
    "valeur": 100.16
@@ -14088,15 +14084,19 @@
   {
    "date": "2026-11-27T16:29:25Z",
    "valeur": 93.19
+  },
+  {
+   "date": "2026-11-27T16:31:24Z",
+   "valeur": 93.21
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.19,
+  "solde": 93.21,
   "depot": 92.84,
-  "resultat_latent": 0.35,
-  "disponible": 89.86
+  "resultat_latent": 0.37,
+  "disponible": 89.88
  },
  "positions": [
   {
@@ -14105,7 +14105,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3644.44,
-   "resultat": 0.35,
+   "resultat": 0.37,
    "ouverte_le": "2026-11-27T14:55:25.411",
    "id": "00000000-7723-03da-049f-c46d0015549e",
    "stop": 3653.44,
@@ -14520,7 +14520,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-27T14:55:25Z",
    "statut": "ouvert",
-   "resultat": 0.35,
+   "resultat": 0.37,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -14545,7 +14545,7 @@
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
   "2026-11-26": 92.86,
-  "2026-11-27": 93.19
+  "2026-11-27": 93.21
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -14649,7 +14649,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": null,
-   "prix": 43.2945,
+   "prix": 43.283,
    "plus_haut_20": 44.58,
    "plus_bas_20": 38.2,
    "ema200": 49.79,
@@ -14679,9 +14679,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3624.38,
+    "prix": 3624.285,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 15.93 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 15.69 de plus dans le bon sens"
    }
   },
   "tendance": "SELL",
@@ -15375,14 +15375,14 @@
    43.49,
    43.49,
    43.19,
-   43.29
+   43.28
   ],
   "rapide-GOLD": [
-   1795796700,
-   3621.98,
-   3625.27,
-   3621.98,
-   3624.38
+   1795797000,
+   3626.12,
+   3626.35,
+   3621.94,
+   3624.28
   ]
  },
  "nettoyage": "2026-11-26"
