@@ -1,0 +1,58 @@
+name: IA - Confirmer la piste 4 h sur des années jamais vues (aucun ordre)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  tester:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        epic: [GOLD, SILVER, US100, US500, EURUSD, OIL_CRUDE, DE40, GBPUSD]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ia/requirements.txt
+      - uses: actions/cache/restore@v4
+        with:
+          path: donnees_ia
+          key: ia-donnees-v1-
+          restore-keys: ia-donnees-v1-
+      - run: |
+          mkdir -p res
+          python -u ia/confirmer_4h.py donnees_ia ${{ matrix.epic }} res/${{ matrix.epic }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: conf4h-${{ matrix.epic }}
+          path: res
+          if-no-files-found: ignore
+  bilan:
+    needs: tester
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ia/requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: conf4h-*
+          path: res
+          merge-multiple: true
+      - run: python ia/confirmer_4h.py bilan res ia/CONFIRMATION_4H.md
+      - run: |
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          git add ia/CONFIRMATION_4H.md
+          git diff --cached --quiet && exit 0
+          git commit -qm "IA : confirmation piste 4 h sur années jamais vues"
+          for i in 1 2 3 4 5; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin HEAD:"${GITHUB_REF_NAME}" && exit 0; sleep 7; done
