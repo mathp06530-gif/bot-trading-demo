@@ -94,6 +94,13 @@
     <div class="note" id="sup-changements"></div>
   </section>
 
+  <section class="carte" style="margin-bottom:12px" id="chal-carte">
+    <h2>Challenge prop firm simulé <span class="doux" style="font-weight:400">· virtuel, rien payé</span></h2>
+    <div class="doux petit" style="margin-bottom:8px">Compte virtuel de 100 000 $ : réussi à <b>+10 %</b>, raté si on perd <b>5 % dans une journée</b> ou <b>10 % au total</b>. Les vrais résultats de la Super IA sur les 8 marchés à petits frais, vrai spread payé, une position à la fois par marché. Le <b>hasard</b> prend les mêmes trades : la Super IA doit faire mieux que lui.</div>
+    <div class="defile"><table id="chal-table"></table></div>
+    <div class="note" id="chal-note"></div>
+  </section>
+
   <section class="carte" style="margin-bottom:12px">
     <h2>Horizons : réussite et gain après spread</h2>
     <div class="defile"><table id="comparer"></table></div>
@@ -406,10 +413,31 @@ function tout() {
   $("maj").textContent = "Mis à jour " + new Date(V.maj).toLocaleString("fr-FR");
   superIA(); horizons(); comparer(); kpis(t); classement(t); chaleur(); remplirSelects(); probas(); dernieres(); etat(); marches(); exclues();
 }
+const NOMS_CHAL = {fixe_toujours:"Fixe, à chaque fois", fixe_sure:"Fixe, si sûre", evolutive_toujours:"Évolutive, à chaque fois", evolutive_sure:"Évolutive, si sûre", hasard:"Hasard (témoin)"};
+let CHAL = null;
+function challenge() {
+  if (!CHAL || !CHAL.stats) { $("chal-table").innerHTML = `<tr><td class="doux">Le challenge simulé démarre : premiers chiffres dans l'heure.</td></tr>`; return; }
+  const vs = CHAL.variantes || Object.keys(NOMS_CHAL);
+  let h = `<tr><th>Horizon</th>${vs.map(v => `<th>${NOMS_CHAL[v] || echap(v)}</th>`).join("")}</tr>`;
+  for (const hz of CHAL.horizons || []) {
+    const st = CHAL.stats[String(hz)] || {};
+    h += `<tr><td><b>${hz} min</b></td>`;
+    for (const v of vs) {
+      const d = st[v];
+      if (!d || !d.trades) { h += `<td class="faible">—</td>`; continue; }
+      const p = d.en_cours.progres, coul = p >= 0 ? "var(--vert)" : "var(--rouge)";
+      h += `<td><b>${d.reussis} réussi${d.reussis > 1 ? "s" : ""}</b> / ${d.tentatives} fini${d.tentatives > 1 ? "s" : ""}<br><span style="color:${coul}">en cours ${p >= 0 ? "+" : ""}${fmt(p, 2)} %</span><br><span class="doux petit">${d.trades} trades · ${fmt(100 * d.justes / d.trades, 0)} % justes · ${d.cout_virtuel} € virtuels</span></td>`;
+    }
+    h += "</tr>";
+  }
+  $("chal-table").innerHTML = h;
+  $("chal-note").innerHTML = `Rejoué depuis le ${CHAL.premier ? new Date(CHAL.premier).toLocaleString("fr-FR") : "—"} (${CHAL.resultats_lus} résultats jugés), mis à jour ${new Date(CHAL.maj).toLocaleString("fr-FR")}. Ratés : perte du jour ou perte totale. Prix d'une tentative compté à ${CHAL.regles.prix_challenge} € pour donner un ordre d'idée, jamais payé. Phase 1 seulement, perte du jour comptée sur les trades fermés.`;
+}
 async function charger() {
   try {
     const q = "?t=" + Math.floor(Date.now() / 60000);
     const [s, v, m] = await Promise.all(["stats.json", "vivant.json", "marches.json"].map(f => fetch(SOURCE + f + q).then(r => r.ok ? r.json() : null)));
+    fetch(SOURCE.replace("ia-journal", "ia-challenge") + "challenge.json" + q).then(r => r.ok ? r.json() : null).then(x => { CHAL = x; challenge(); }).catch(() => challenge());
     fetch(SOURCE.replace("ia-journal", "ia-super") + "super.json" + q).then(r => r.ok ? r.json() : null).then(x => { SUP = x; if (V) superIA(); }).catch(() => {});
     if (!s || !v) throw new Error("vide");
     TOUT = s.horizons || {"1": s}; V = v; M = (m && m.marches) || {};
