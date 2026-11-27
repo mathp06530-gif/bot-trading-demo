@@ -2011,12 +2011,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T14:09:25Z",
+ "derniere_execution": "2026-11-27T14:10:25Z",
  "historique": [
-  {
-   "date": "2026-11-24T04:40:25Z",
-   "valeur": 97.62
-  },
   {
    "date": "2026-11-24T04:45:25Z",
    "valeur": 97.54
@@ -14012,15 +14008,19 @@
   {
    "date": "2026-11-27T14:09:25Z",
    "valeur": 92.98
+  },
+  {
+   "date": "2026-11-27T14:10:25Z",
+   "valeur": 92.99
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 92.98,
+  "solde": 92.99,
   "depot": 92.86,
-  "resultat_latent": 0.12,
-  "disponible": 89.64
+  "resultat_latent": 0.13,
+  "disponible": 89.65
  },
  "positions": [
   {
@@ -14029,7 +14029,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3643.87,
-   "resultat": 0.12,
+   "resultat": 0.13,
    "ouverte_le": "2026-11-27T13:35:24.837",
    "id": "00000000-7721-b93c-049f-c46d0015549e",
    "stop": 3675.67,
@@ -14415,7 +14415,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-27T13:35:24Z",
    "statut": "ouvert",
-   "resultat": 0.12,
+   "resultat": 0.13,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -14440,7 +14440,7 @@
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
   "2026-11-26": 92.86,
-  "2026-11-27": 92.98
+  "2026-11-27": 92.99
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -14574,16 +14574,16 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3635.68,
+    "prix": 3635.7,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 27.91 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 27.93 de plus dans le bon sens"
    }
   },
   "tendance": "SELL",
   "meilleur": {
    "00000000-7721-b93c-049f-c46d0015549e": {
     "depuis": "2026-11-27T13:35:00",
-    "prix": 3638.2
+    "prix": 3635.25
    }
   },
   "entree_bougie": {
@@ -15273,11 +15273,11 @@
    43.67
   ],
   "rapide-GOLD": [
-   1795788300,
-   3641.32,
-   3643.25,
-   3635.25,
-   3635.68
+   1795788600,
+   3636.15,
+   3636.58,
+   3635.53,
+   3635.7
   ]
  },
  "nettoyage": "2026-11-26"
