@@ -1990,13 +1990,9 @@
    "texte": "Connexion refusée (401). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.invalid.api.key\"}"
   }
  ],
- "statut": "erreur",
- "derniere_execution": "2026-11-27T05:55:49Z",
+ "statut": "ok",
+ "derniere_execution": "2026-11-27T05:56:24Z",
  "historique": [
-  {
-   "date": "2026-11-22T12:00:24Z",
-   "valeur": 97.91
-  },
   {
    "date": "2026-11-22T12:05:24Z",
    "valeur": 97.91
@@ -13992,6 +13988,10 @@
   {
    "date": "2026-11-27T05:54:24Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-27T05:56:24Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -14481,7 +14481,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 44.085499999999996,
+   "prix": 44.0115,
    "plus_haut_20": 44.03,
    "plus_bas_20": 38.2,
    "ema200": 49.97,
@@ -14509,7 +14509,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3643.66,
+    "prix": 3640.74,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    }
@@ -15200,14 +15200,14 @@
    43.5,
    44.58,
    43.41,
-   44.09
+   44.01
   ],
   "rapide-GOLD": [
-   1795758600,
-   3643.96,
-   3644.72,
-   3640.35,
-   3643.66
+   1795758900,
+   3643.55,
+   3643.89,
+   3640.29,
+   3640.74
   ]
  },
  "nettoyage": "2026-11-26"
