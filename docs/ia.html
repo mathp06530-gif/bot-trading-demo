@@ -344,13 +344,15 @@ function superIA() {
   const sel = $("sup-portee"), choix = sel.value || "m:GOLD";
   const fam = new Set();
   Object.values(SUP.stats).forEach(hz => Object.values(hz).forEach(v => Object.keys(v.familles || {}).forEach(f => fam.add(f))));
-  const opts = [["m:GOLD", "Or"], ["m:SILVER", "Argent"], ["or+argent", "Or + argent"], ["tout", "Tous les marchés"], ["fb", "Frais bas (petit spread)"], ["fbl", "Frais bas + heures liquides"], ...[...fam].map(f => ["f:" + f, TYPES[f] || f])];
+  const opts = [["m:GOLD", "Or"], ["m:SILVER", "Argent"], ["or+argent", "Or + argent"], ["tout", "Tous les marchés"], ["fb", "Frais bas (petit spread)"], ["fbl", "Frais bas + heures liquides"], ["mok", "Mouvement habituel ≥ 3× le spread"], ["mokl", "Mouvement ≥ 3× spread + heures liquides"], ...[...fam].map(f => ["f:" + f, TYPES[f] || f])];
   sel.innerHTML = opts.map(([v, l]) => `<option value="${v}">${echap(l)}</option>`).join(""); sel.value = choix;
   const portee = v => {
     if (!v) return null;
     if (choix === "tout") return v;
     if (choix === "fb") return v.frais_bas || null;
     if (choix === "fbl") return v.frais_bas_liquide || null;
+    if (choix === "mok") return v.mouvement_ok || null;
+    if (choix === "mokl") return v.mouvement_ok_liquide || null;
     if (choix === "or+argent") { const a = v.marches.GOLD || {n:0,j:0,g:0}, b = v.marches.SILVER || {n:0,j:0,g:0}; return {n:a.n+b.n, j:a.j+b.j, g:a.g+b.g}; }
     if (choix.startsWith("m:")) return v.marches[choix.slice(2)] || null;
     return (v.familles || {})[choix.slice(2)] || null;

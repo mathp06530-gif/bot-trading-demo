@@ -35,6 +35,9 @@ PRIORITE = {"GOLD": "Or", "SILVER": "Argent"}
 # et la même chose limitée aux heures liquides (chevauchement Londres / New York, heure de Paris).
 SPREAD_BAS = 0.03            # % du prix
 HEURES_LIQUIDES = (14.5, 17.5)  # 14 h 30 - 17 h 30, heure de Paris
+# Vue « mouvement > frais » : on ne compte que les prédictions où le mouvement HABITUEL de ce marché sur cet horizon
+# (moyenne des résultats déjà connus AVANT la prédiction) vaut au moins RATIO_MIN fois le spread du moment.
+RATIO_MIN = 3.0
 EQUIPES = ["fixe", "evolutive"]
 PARIS = ["toujours", "sure"]
 ETA = 0.05
@@ -128,7 +131,11 @@ class SuperIA:
             for pari in PARIS:
                 if pari == "sure" and not pr["sure"]:
                     continue
-                self._compter(f"{equipe}_{pari}", it, hausse == bool(y), gain)
+                self._compter(f"{equipe}_{pari}", it, hausse == bool(y), gain, pr.get("r"))
+        mv = self.e.setdefault("mouvement", {}).setdefault(it["e"], [0.0, 0])
+        a = abs(it["mv"]) / math.sqrt(it["h"])  # mouvement ramené à 1 minute (il grandit comme la racine du temps)
+        mv[0] = round(0.8 * mv[0] + 0.2 * a, 6) if mv[1] else round(a, 6)  # moyenne glissante
+        mv[1] += 1
         # réussite récente de chaque IA (pour l'équipe évolutive)
         rec = self.e["recents"].setdefault(str(it["h"]), {})
         for m, p in it["p"].items():
@@ -143,7 +150,7 @@ class SuperIA:
                                     **{equipe: [pr["q"], int(pr["sure"])] for equipe, pr in preds.items()}})
         del self.e["dernieres"][:-300]
 
-    def _compter(self, variante, it, juste, gain):
+    def _compter(self, variante, it, juste, gain, ratio=None):
         st = self.e["stats"].setdefault(str(it["h"]), {}).setdefault(variante, {"n": 0, "j": 0, "g": 0.0, "familles": {}, "marches": {}})
         vide = {"n": 0, "j": 0, "g": 0.0}
         cases = [st, st["familles"].setdefault(it["ty"], dict(vide)), st["marches"].setdefault(it["e"], dict(vide))]
@@ -156,6 +163,10 @@ class SuperIA:
             cases.append(st.setdefault("heures_frais_bas", {}).setdefault(hh, dict(vide)))
             if HEURES_LIQUIDES[0] <= heure < HEURES_LIQUIDES[1]:
                 cases.append(st.setdefault("frais_bas_liquide", dict(vide)))
+        if ratio is not None and ratio >= RATIO_MIN:
+            cases.append(st.setdefault("mouvement_ok", dict(vide)))
+            if HEURES_LIQUIDES[0] <= heure < HEURES_LIQUIDES[1]:
+                cases.append(st.setdefault("mouvement_ok_liquide", dict(vide)))
         for d in cases:
             d["n"] += 1
             d["j"] += int(juste)
@@ -202,6 +213,10 @@ class SuperIA:
             if genre == 0:
                 faits.add(it["id"])
                 preds = {eq: p for eq in EQUIPES if (p := self.prevoir(it, eq))}
+                mvh = self.e.setdefault("mouvement", {}).get(it["e"])  # connu avant t : pas de triche
+                ratio = round(mvh[0] * math.sqrt(it["h"]) / max(it["sp"], 1e-9), 3) if mvh and mvh[1] >= 2 else None
+                for p in preds.values():
+                    p["r"] = ratio
                 if preds:
                     self.e["attente"][it["id"]] = preds
                     n_pred += 1
@@ -259,7 +274,7 @@ def publier(s):
     tableau = {"maj": iso(), "horizons": HS, "noyau": NOYAU, "priorite": PRIORITE, "equipes": EQUIPES, "paris": PARIS,
                "equipe_evolutive": s.e["equipe"], "changements": s.e["changements"], "stats": s.e["stats"],
                "dernieres": s.e["dernieres"][-150:], "coupure": iso(s.e["coupure"]) if s.e["coupure"] else None,
-               "couverture_visee": COUVERTURE, "spread_bas": SPREAD_BAS, "heures_liquides": HEURES_LIQUIDES,
+               "couverture_visee": COUVERTURE, "spread_bas": SPREAD_BAS, "ratio_min": RATIO_MIN, "heures_liquides": HEURES_LIQUIDES,
                "spreads": {e: {"moyen": round(v[0] / v[1], 5), "n": v[1], "bas": round(v[2] / v[1], 3)}
                            for e, v in s.e.get("spreads", {}).items() if v[1]}}
     (DOSSIER / "super_etat.json").write_text(json.dumps(s.e, separators=(",", ":")))
