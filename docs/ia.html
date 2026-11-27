@@ -94,6 +94,12 @@
     <div class="note" id="sup-changements"></div>
   </section>
 
+  <section class="carte" style="margin-bottom:12px" id="boost-carte">
+    <h2>Boosts en test <span class="doux" style="font-weight:400">· à côté des IA originales, 8 marchés à petits frais</span></h2>
+    <div class="doux petit" style="margin-bottom:8px">Chaque boost est entraîné seulement sur le passé, heure par heure. « En direct » = heures jamais vues depuis la mise en route. « Prix mélangés » doit rester proche de 50 % (sinon le boost est jeté). Aucun ordre.</div>
+    <div class="defile"><table id="boosts"><tr><td class="doux">Chargement…</td></tr></table></div>
+  </section>
+
   <section class="carte" style="margin-bottom:12px" id="chal-carte">
     <h2>Challenge prop firm simulé <span class="doux" style="font-weight:400">· virtuel, rien payé</span></h2>
     <div class="doux petit" style="margin-bottom:8px">Compte virtuel de 100 000 $ : réussi à <b>+10 %</b>, raté si on perd <b>5 % dans une journée</b> ou <b>10 % au total</b>. Les vrais résultats de la Super IA sur les 8 marchés à petits frais, vrai spread payé, une position à la fois par marché. Le <b>hasard</b> prend les mêmes trades : la Super IA doit faire mieux que lui.</div>
@@ -346,6 +352,15 @@ function comparer() {
 let SUP = null;
 const VARIANTES = [["fixe_toujours", "Équipe fixe · à chaque fois"], ["fixe_sure", "Équipe fixe · quand sûre"],
                    ["evolutive_toujours", "Équipe évolutive · à chaque fois"], ["evolutive_sure", "Équipe évolutive · quand sûre"]];
+function boosts(B) {
+  const t = $("boosts");
+  if (!B) { t.innerHTML = '<tr><td class="doux">Premiers résultats après le prochain calcul (chaque heure, à :40).</td></tr>'; return; }
+  const c = r => r ? `${fmt(100 * r.reussite)} % <span class="doux">(${r.n})</span> · <span class="${r.gain > 0 ? "v" : "r"}">${r.gain > 0 ? "+" : ""}${fmt(r.gain, 3)} %</span>` : '<span class="doux">—</span>';
+  let h = '<tr><th>Horizon</th><th>Stratégie</th><th>En direct</th><th>Test complet</th><th>Prix mélangés</th></tr>';
+  for (const [hz, st] of Object.entries(B.horizons)) for (const [nomS, r] of Object.entries(st))
+    h += `<tr><td>${hz} min</td><td>${echap(nomS)}</td><td>${c(r.en_direct)}</td><td>${c(r.test_complet)}</td><td>${r.prix_melanges ? fmt(100 * r.prix_melanges.reussite) + " %" : "—"}</td></tr>`;
+  t.innerHTML = h;
+}
 function superIA() {
   if (!SUP || !SUP.stats) { $("sup-table").innerHTML = `<tr><td class="doux">La Super IA démarre : ses premiers chiffres arrivent environ 1 h 15 après le lancement (elle attend 68 min pour être sûre de ne rien savoir du futur).</td></tr>`; return; }
   const sel = $("sup-portee"), choix = sel.value || "m:GOLD";
@@ -437,6 +452,7 @@ async function charger() {
   try {
     const q = "?t=" + Math.floor(Date.now() / 60000);
     const [s, v, m] = await Promise.all(["stats.json", "vivant.json", "marches.json"].map(f => fetch(SOURCE + f + q).then(r => r.ok ? r.json() : null)));
+    fetch(SOURCE.replace("ia-journal", "ia-boost") + "boost.json" + q).then(r => r.ok ? r.json() : null).then(boosts).catch(() => boosts(null));
     fetch(SOURCE.replace("ia-journal", "ia-challenge") + "challenge.json" + q).then(r => r.ok ? r.json() : null).then(x => { CHAL = x; challenge(); }).catch(() => challenge());
     fetch(SOURCE.replace("ia-journal", "ia-super") + "super.json" + q).then(r => r.ok ? r.json() : null).then(x => { SUP = x; if (V) superIA(); }).catch(() => {});
     if (!s || !v) throw new Error("vide");
