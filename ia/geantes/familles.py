@@ -14,18 +14,13 @@ FAMILLES = {
     "toto": {"pip": ["toto-ts", "setuptools<81"], "lot_max": 3, "modeles": {"toto": "Toto (Datadog, États-Unis)"}},
     "moirai": {"pip": ["uni2ts"], "modeles": {"moirai2": "Moirai 2 (Salesforce, États-Unis/Singapour)"}},
     "hf440": {"pip": ["transformers==4.40.1", "accelerate"], "lot_max": 4,
-              "modeles": {"sundial": "Sundial (Université Tsinghua, Chine)", "timemoe": "Time-MoE (Chine)"}},
+              "modeles": {"sundial": "Sundial (Université Tsinghua, Chine)"}},
     "kronos": {"pip": ["einops", "huggingface_hub", "safetensors", "pandas", "tqdm"],
                "git": "https://github.com/shiyu-coder/Kronos", "lot_max": 2,
                "modeles": {"kronos": "Kronos (Université Tsinghua, Chine) - spécial bougies de bourse"}},
-    "granite": {"pip": ["granite-tsfm"], "modeles": {"ttm": "Granite TinyTimeMixer (IBM)"}},
-    "chronos_t5": {"pip": ["chronos-forecasting>=2.0"], "lot_max": 4,
-                   "modeles": {"chronos_t5": "Chronos-T5 original (Amazon, États-Unis)"}},
+    "granite": {"pip": ["granite-tsfm"], "modeles": {"flowstate": "FlowState (IBM, 2025)"}},
     "timer": {"pip": ["transformers==4.40.1", "accelerate"], "lot_max": 12,
               "modeles": {"timer": "Timer (Université Tsinghua, Chine)"}},
-    "lagllama": {"py": "3.10", "pip": ["gluonts[torch]<=0.14.4", "huggingface_hub", "numpy<2", "pandas<2.2", "setuptools<81", "torch<2.6"],
-                 "git": "https://github.com/time-series-foundation-models/lag-llama", "lot_max": 8, "sans_requirements": True,
-                 "modeles": {"lagllama": "Lag-Llama (ServiceNow / Mila, Canada)"}},
     # modèles de recherche connus, réentraînés à chaque heure sur les bougies 1 min de ~30 grands marchés
     "nf_a": {"pip": ["neuralforecast"], "entraine": True,
              "modeles": {"nbeats": "N-BEATS (Element AI, Canada)", "nhits": "N-HiTS (Nixtla / CMU)",
@@ -33,6 +28,18 @@ FAMILLES = {
     "nf_b": {"pip": ["neuralforecast"], "entraine": True,
              "modeles": {"deepar": "DeepAR (Amazon)", "patchtst": "PatchTST (IBM / Princeton)",
                          "tft": "Temporal Fusion Transformer (Google)"}},
+    # ajoutées le 27/11 à la place des IA retirées (même méthode que nf_a, la famille la plus solide jusqu'ici)
+    "nf_c": {"pip": ["neuralforecast"], "entraine": True,
+             "modeles": {"bitcn": "BiTCN (réseau convolutif bidirectionnel)", "dlinear": "DLinear (Hong Kong)",
+                         "nlinear": "NLinear (Hong Kong)", "gru": "GRU (réseau récurrent)", "kan": "KAN (réseau de Kolmogorov-Arnold, MIT)"}},
+}
+
+# Retirées le 27/11 (demande de Mathis : on enlève celles qui ne couvrent pas les frais). Leurs chiffres restent visibles.
+RETIREES = {
+    "chronos_t5": ("Chronos-T5 original (Amazon, États-Unis)", "dernière ou presque à chaque horizon (35 % à 5 min, 19 % à 15 min)"),
+    "ttm": ("Granite TinyTimeMixer (IBM)", "sous les frais à chaque horizon (40 % à 5 min, 32 % à 60 min) ; remplacée par FlowState (IBM)"),
+    "timemoe": ("Time-MoE (Chine)", "sous les frais à chaque horizon (24 % à 15 min, 25 % à 60 min)"),
+    "lagllama": ("Lag-Llama (ServiceNow / Mila, Canada)", "trop lente : presque jamais de réponse à temps"),
 }
 
 # Étudiées mais pas branchées (et pourquoi)
@@ -43,6 +50,7 @@ EXCLUES = {
     "TimesFM 3 (Google)": "licence non commerciale et 330 M de paramètres : trop lent sur nos machines gratuites",
     "Toto 2.0 (Datadog)": "pas encore dans la bibliothèque toto-ts utilisée ; Toto 1.0 est branché",
     "Timestral (Mistral, France)": "sorti en octobre 2026, pas encore de bibliothèque Python simple pour le lancer",
+    **{n + " (retirée le 27/11)": r for n, r in RETIREES.values()},
     "Informer / Autoformer": "anciens transformers dépassés par PatchTST et TFT, déjà branchés",
 }
 
@@ -54,4 +62,5 @@ MAISON = {
 }
 
 NOMS = {**MAISON, **{m: n for f in FAMILLES.values() for m, n in f["modeles"].items()},
+        **{m: n + " (retirée)" for m, (n, _) in RETIREES.items()},
         "vote": "Vote de toutes les IA", "arbitre": "Vote arbitré (pondéré par les résultats réels)"}
