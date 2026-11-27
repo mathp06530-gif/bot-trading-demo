@@ -2074,12 +2074,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T15:17:25Z",
+ "derniere_execution": "2026-11-27T15:18:24Z",
  "historique": [
-  {
-   "date": "2026-11-24T10:15:25Z",
-   "valeur": 97.86
-  },
   {
    "date": "2026-11-24T10:20:25Z",
    "valeur": 97.86
@@ -14075,15 +14071,19 @@
   {
    "date": "2026-11-27T15:17:25Z",
    "valeur": 93.09
+  },
+  {
+   "date": "2026-11-27T15:18:24Z",
+   "valeur": 93.06
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.09,
+  "solde": 93.06,
   "depot": 92.84,
-  "resultat_latent": 0.25,
-  "disponible": 89.75
+  "resultat_latent": 0.22,
+  "disponible": 89.72
  },
  "positions": [
   {
@@ -14092,7 +14092,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3644.44,
-   "resultat": 0.25,
+   "resultat": 0.21,
    "ouverte_le": "2026-11-27T14:55:25.411",
    "id": "00000000-7723-03da-049f-c46d0015549e",
    "stop": 3663.62,
@@ -14507,7 +14507,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-27T14:55:25Z",
    "statut": "ouvert",
-   "resultat": 0.25,
+   "resultat": 0.21,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -14532,7 +14532,7 @@
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
   "2026-11-26": 92.86,
-  "2026-11-27": 93.09
+  "2026-11-27": 93.06
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -14636,7 +14636,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": null,
-   "prix": 43.5585,
+   "prix": 43.5735,
    "plus_haut_20": 44.58,
    "plus_bas_20": 38.2,
    "ema200": 49.86,
@@ -14666,9 +14666,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3630.71,
+    "prix": 3632.425,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 22.32 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 24.07 de plus dans le bon sens"
    }
   },
   "tendance": "SELL",
@@ -15362,14 +15362,14 @@
    44.11,
    44.17,
    43.35,
-   43.56
+   43.57
   ],
   "rapide-GOLD": [
    1795792500,
    3631.1,
    3634.16,
    3628.6,
-   3630.71
+   3632.43
   ]
  },
  "nettoyage": "2026-11-26"
