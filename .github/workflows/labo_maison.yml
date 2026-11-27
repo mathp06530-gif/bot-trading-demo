@@ -1,0 +1,89 @@
+name: IA - Labo stratégie maison « Journée » + filtre IA sur la Cassure (aucun ordre)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: labo-maison
+  cancel-in-progress: false
+
+jobs:
+  journee:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      matrix:
+        epic: [GOLD, SILVER, US100, US500, EURUSD, OIL_CRUDE, DE40, GBPUSD]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ia/requirements.txt
+      - uses: actions/cache/restore@v4
+        with:
+          path: donnees_ia
+          key: ia-donnees-v1-
+          restore-keys: ia-donnees-v1-
+      - run: |
+          mkdir -p res
+          python -u ia/journee.py tester donnees_ia ${{ matrix.epic }} res/${{ matrix.epic }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: journee-${{ matrix.epic }}
+          path: res
+          if-no-files-found: ignore
+  cassure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ia/requirements.txt
+      - uses: actions/cache/restore@v4
+        with:
+          path: donnees_ia
+          key: ia-donnees-v1-
+          restore-keys: ia-donnees-v1-
+      - run: mkdir -p fc && python -u ia/filtre_cassure.py donnees_ia fc/FILTRE_CASSURE.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: filtre-cassure
+          path: fc
+          if-no-files-found: ignore
+  bilan:
+    needs: [journee, cassure]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ia/requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: journee-*
+          path: res
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: filtre-cassure
+          path: fc
+      - run: |
+          python ia/journee.py bilan res ia/JOURNEE.md docs/journee.json
+          [ -f fc/FILTRE_CASSURE.md ] && cp fc/FILTRE_CASSURE.md ia/FILTRE_CASSURE.md || true
+      - run: |
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          git add ia/JOURNEE.md docs/journee.json ia/FILTRE_CASSURE.md 2>/dev/null || git add ia/JOURNEE.md docs/journee.json
+          git diff --cached --quiet && exit 0
+          git commit -qm "IA : labo stratégie maison Journée + filtre IA sur la Cassure"
+          for i in 1 2 3 4 5; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin HEAD:"${GITHUB_REF_NAME}" && exit 0; sleep 7; done
