@@ -51,6 +51,10 @@ COUVERTURES = (0.5, 0.2, 0.1, 0.05)
 PURGE = pd.Timedelta(hours=2)  # recalculé selon l'horizon dans tester()
 UNITE_MIN = {"MINUTE_5": 5, "MINUTE_15": 15, "HOUR": 60, "HOUR_4": 240}
 APPRIS = ["logistique", "lightgbm", "foret"]
+# LABO_COUTS (JSON) : remplace le spread Capital.com par les frais d'un autre courtier, par marché :
+# {"GOLD": {"pts": 0.12, "pct": 0.0}, ...} -> coût aller-retour = pts / prix + pct (en %). Vide = vrai spread Capital.com.
+COUTS = json.loads(os.getenv("LABO_COUTS", "") or "{}")
+FACTEUR_COUT = float(os.getenv("LABO_FACTEUR_COUT", "1"))  # 0,5 = frais divisés par 2 ; 0 = sans frais (plafond)
 COLS = None
 
 
@@ -147,6 +151,10 @@ def preparer(d: pd.DataFrame, minutes: int, melange_graine=None, croix=None, epi
     d = d.copy()
     mid = (d.close_bid + d.close_ask) / 2
     sp = ((d.close_ask - d.close_bid) / mid * 100).clip(lower=0)
+    if COUTS.get(epic) is not None:  # frais d'un autre courtier : spread en points + commission aller-retour en %
+        c = COUTS[epic]
+        sp = (c.get("pts", 0.0) / mid * 100 + c.get("pct", 0.0)).clip(lower=0)
+    sp = sp * FACTEUR_COUT
     if melange_graine is not None:  # prix mélangés : on permute les rendements, on reconstruit un chemin
         r = np.log(mid).diff().fillna(0).to_numpy()
         rng = np.random.default_rng(melange_graine)
@@ -497,6 +505,9 @@ def tester(dossier, epic, unite, sortie):
     out["reel"] = tout(preparer(d, minutes, croix=croix, epic=epic))
     out["melange"] = tout(preparer(d, minutes, melange_graine=7, croix=croix, epic=epic))
     out["pistes"] = PISTES
+    _f = preparer(d, minutes, croix=croix, epic=epic)
+    out["cout_moyen_pct"] = round(float(_f.sp.mean()), 5)
+    out["prix_moyen"] = round(float(((d.close_bid + d.close_ask) / 2).tail(2000).mean()), 5)
     Path(sortie).write_text(json.dumps(out, ensure_ascii=False))
     for k in ("reel", "melange"):
         for nom, r in out[k].items():

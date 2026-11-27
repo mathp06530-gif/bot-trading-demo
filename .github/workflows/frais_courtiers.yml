@@ -1,0 +1,98 @@
+name: IA - Labo frais courtiers (mêmes tests, frais d'un autre courtier)
+
+# Rejoue le labo multi-cerveaux (12 derniers mois jamais vus) en remplaçant le spread Capital.com par :
+#   ic     = IC Markets Raw cTrader (spreads moyens officiels + commission 3 $ / 100 000 $ par côté sur devises et métaux)
+#   moitie = frais Capital.com divisés par 2 (hypothèse très optimiste, aucun courtier trouvé ne le fait)
+#   zero   = aucun frais (plafond : ce que les IA gagnent avant tout frais)
+# Aucun ordre, rien ne change dans le bot ni dans les IA en direct. Résultat : ia/frais/*.md + ia/frais/*.json
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: frais-courtiers
+  cancel-in-progress: true
+
+jobs:
+  tester:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    strategy:
+      fail-fast: false
+      max-parallel: 24
+      matrix:
+        scenario: [ic, moitie, zero]
+        epic: [GOLD, SILVER, US100, US500, EURUSD, OIL_CRUDE, DE40, GBPUSD]
+        combo: ["MINUTE_15:1", "HOUR:1", "HOUR:4"]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ia/requirements.txt
+      - name: Prix déjà téléchargés par le labo multi-cerveaux
+        uses: actions/cache/restore@v4
+        with:
+          path: donnees_ia
+          key: ia-donnees-v1-${{ github.run_id }}
+          restore-keys: ia-donnees-v1-
+      - name: Labo ${{ matrix.scenario }} ${{ matrix.epic }} ${{ matrix.combo }}
+        run: |
+          mkdir -p resultats
+          U="${{ matrix.combo }}"; export LABO_H="${U#*:}"; U="${U%%:*}"
+          case "${{ matrix.scenario }}" in
+            ic) export LABO_COUTS='{"GOLD":{"pts":0.09,"pct":0.006},"SILVER":{"pts":0.03,"pct":0.006},"OIL_CRUDE":{"pts":0.034},"US500":{"pts":0.492},"US100":{"pts":1.807},"DE40":{"pts":1.338},"EURUSD":{"pts":0.00001,"pct":0.006},"GBPUSD":{"pts":0.00002,"pct":0.006}}' ;;
+            moitie) export LABO_FACTEUR_COUT=0.5 ;;
+            zero) export LABO_FACTEUR_COUT=0 ;;
+          esac
+          python -u ia/multi_labo.py tester donnees_ia ${{ matrix.epic }} $U resultats/${{ matrix.epic }}_${U}_h${LABO_H}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frais-${{ matrix.scenario }}-${{ strategy.job-index }}
+          path: resultats
+          if-no-files-found: ignore
+          retention-days: 30
+
+  bilan:
+    needs: tester
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      max-parallel: 1
+      matrix:
+        scenario: [ic, moitie, zero]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ia/requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: frais-${{ matrix.scenario }}-*
+          path: resultats
+          merge-multiple: true
+      - run: |
+          mkdir -p ia/frais
+          python ia/multi_labo.py bilan resultats ia/frais/${{ matrix.scenario }}.md ia/frais/${{ matrix.scenario }}.json
+          python - <<'P'
+          import json, glob
+          L = ["", "## Coût aller-retour moyen utilisé (en % du prix) et prix moyen récent", "", "| Marché | Bougies | Coût moyen | Prix moyen |", "|---|---|---|---|"]
+          for f in sorted(glob.glob("resultats/*.json")):
+              r = json.load(open(f))
+              L.append(f"| {r['epic']} | {r['unite']} | {r.get('cout_moyen_pct', '?')} % | {r.get('prix_moyen', '?')} |")
+          open("ia/frais/${{ matrix.scenario }}.md", "a").write("\n".join(L) + "\n")
+          P
+      - name: Enregistrer
+        run: |
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          git add ia/frais
+          git diff --cached --quiet && exit 0
+          git commit -qm "Labo frais courtiers : ${{ matrix.scenario }} $(date -u +%Y-%m-%d)"
+          for i in 1 2 3 4 5; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin HEAD:"${GITHUB_REF_NAME}" && exit 0; sleep 7; done
+          exit 1
