@@ -59,7 +59,8 @@ jobs:
       max-parallel: 24
       matrix:
         epic: [GOLD, SILVER, US100, US500, EURUSD, OIL_CRUDE, DE40, GBPUSD]
-        unite: [MINUTE_15, HOUR, MINUTE_5]
+        # unité:horizon en bougies -> 15 min, 1 h (4 x 15 min), 1 h, 4 h (4 x 1 h), 4 h (bougies 4 h, 10 ans), 15 min (3 x 5 min)
+        combo: ["MINUTE_15:1", "MINUTE_15:4", "HOUR:1", "HOUR:4", "HOUR_4:1", "MINUTE_5:3"]
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -70,14 +71,16 @@ jobs:
         with:
           name: donnees-multi
           path: donnees_ia
-      - name: Labo ${{ matrix.epic }} ${{ matrix.unite }}
+      - name: Labo ${{ matrix.epic }} ${{ matrix.combo }}
         run: |
           mkdir -p resultats
-          if [ "${{ matrix.unite }}" = "MINUTE_5" ]; then export LABO_MOIS_TEST=6 LABO_MOIS_CHAUFFE=3; fi
-          python -u ia/multi_labo.py tester donnees_ia ${{ matrix.epic }} ${{ matrix.unite }} resultats/${{ matrix.epic }}_${{ matrix.unite }}.json
+          U="${{ matrix.combo }}"; export LABO_H="${U#*:}"; U="${U%%:*}"
+          if [ "$U" = "MINUTE_5" ]; then export LABO_MOIS_TEST=6 LABO_MOIS_CHAUFFE=3; fi
+          if [ "$U" = "HOUR_4" ]; then export LABO_MOIS_TEST=24 LABO_MOIS_CHAUFFE=6; fi
+          python -u ia/multi_labo.py tester donnees_ia ${{ matrix.epic }} $U resultats/${{ matrix.epic }}_${U}_h${LABO_H}.json
       - uses: actions/upload-artifact@v4
         with:
-          name: multi-${{ matrix.epic }}-${{ matrix.unite }}
+          name: multi-${{ matrix.epic }}-${{ strategy.job-index }}
           path: resultats
           if-no-files-found: ignore
           retention-days: 30

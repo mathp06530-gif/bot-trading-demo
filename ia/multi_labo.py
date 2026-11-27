@@ -37,6 +37,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
+H = int(os.getenv("LABO_H", "1"))  # horizon en bougies (1 = bougie suivante ; 4 en 15 min = 1 h ; 4 en 1 h = 4 h)
 MOIS_TEST = int(os.getenv("LABO_MOIS_TEST", "12"))      # mois jugés (les plus récents)
 MOIS_CHAUFFE = int(os.getenv("LABO_MOIS_CHAUFFE", "4"))  # mois où les cerveaux prédisent déjà mais où les méta-cerveaux apprennent seulement
 TRAIN_MAX = int(os.getenv("LABO_TRAIN_MAX", "40000"))
@@ -47,7 +48,8 @@ SEUILS = (0.0, 0.01, 0.02, 0.03, 0.05, 0.08)
 FEN_SEUIL, MIN_SEUIL = 3000, 200
 MARCHES = ["GOLD", "SILVER", "US100", "US500", "EURUSD", "OIL_CRUDE", "DE40", "GBPUSD"]
 COUVERTURES = (0.5, 0.2, 0.1, 0.05)
-UNITE_MIN = {"MINUTE_5": 5, "MINUTE_15": 15, "HOUR": 60}
+PURGE = pd.Timedelta(hours=2)  # recalculé selon l'horizon dans tester()
+UNITE_MIN = {"MINUTE_5": 5, "MINUTE_15": 15, "HOUR": 60, "HOUR_4": 240}
 APPRIS = ["logistique", "lightgbm", "foret"]
 COLS = None
 
@@ -161,14 +163,14 @@ def preparer(d: pd.DataFrame, minutes: int, melange_graine=None, croix=None, epi
     r1 = lc.diff()
     f["er16"] = (lc - lc.shift(16)).abs() / r1.abs().rolling(16).sum()
     f["vrel"] = r1.abs().rolling(16).mean() / r1.abs().rolling(400, min_periods=100).mean()
-    suiv = mid.shift(-1)
-    ecart = pd.Series(d.index, index=d.index).diff().shift(-1).dt.total_seconds() / 60
+    suiv = mid.shift(-H)
+    ecart = (pd.Series(d.index, index=d.index).shift(-H) - pd.Series(d.index, index=d.index)).dt.total_seconds() / 60
     f["mv"] = (suiv / mid - 1) * 100
     f["sp"] = sp
     f["y"] = (f["mv"] > 0).astype(float)
     if PISTES:
         pistes(f, mid, epic)
-    ok = (ecart <= 2 * minutes) & (f["mv"] != 0) & f["mv"].notna()
+    ok = (ecart <= (H + 1) * minutes) & (f["mv"] != 0) & f["mv"].notna()
     f = f[ok].replace([np.inf, -np.inf], np.nan).dropna()
     return f
 
@@ -199,7 +201,7 @@ def cerveaux(f: pd.DataFrame, blocs):
     X, y = f[cols].to_numpy(), f.y.to_numpy()
     heure = f.index.hour
     for debut, fin in blocs:
-        tr = np.where(f.index < debut - pd.Timedelta(hours=2))[0][-TRAIN_MAX:]  # 2 h de trou (purge)
+        tr = np.where(f.index < debut - PURGE)[0][-TRAIN_MAX:]  # 2 h de trou (purge)
         te = np.where((f.index >= debut) & (f.index < fin))[0]
         if len(tr) < 2000 or not len(te):
             continue
@@ -250,7 +252,13 @@ def en_ligne(f: pd.DataFrame, P: pd.DataFrame, t_meta):
     qg, qr, regs = np.full(len(f), np.nan), np.full(len(f), np.nan), [""] * len(f)
     racc = np.full((len(f), len(noms)), 0.5)    # réussite récente de chaque cerveau (pour l'aiguilleur)
     acc = deque(maxlen=200)
+    attente = deque()  # (j, régime) : le résultat de j n'est connu que H bougies plus tard
     for i in range(len(f)):
+        while attente and attente[0][0] <= i - H:
+            j, rj = attente.popleft()
+            glob.maj(A[j], y[j])
+            reg[rj].maj(A[j], y[j])
+            acc.append((A[j, :len(noms)] > 0.5) == y[j])
         if np.isnan(A[i]).any():
             continue
         if acc:
@@ -262,10 +270,8 @@ def en_ligne(f: pd.DataFrame, P: pd.DataFrame, t_meta):
         qg[i] = glob.q(A[i])
         fr = reg[r]
         qr[i] = fr.q(A[i]) if fr.n >= MIN_REGIME else qg[i]
-        # le résultat de la bougie i n'est connu qu'à la clôture de la suivante : on apprend APRÈS avoir prédit i
-        glob.maj(A[i], y[i])
-        fr.maj(A[i], y[i])
-        acc.append((A[i, :len(noms)] > 0.5) == y[i])
+        # le résultat de i n'est connu que H bougies plus tard : on l'apprendra à ce moment-là
+        attente.append((i, r))
         if i + 1 < len(f):
             suiv.append(int(np.sign(sig1[i + 1]) == np.sign(sig1[i])) if sig1[i] else 0)
     return qg, qr, regs, racc
@@ -280,7 +286,7 @@ def aiguilleur(f, P, racc, blocs):
     q = np.full(len(f), np.nan)
     ok = ~np.isnan(X).any(1)
     for debut, fin in blocs:
-        tr = np.where(ok & (f.index < debut - pd.Timedelta(hours=2)))[0][-TRAIN_MAX:]
+        tr = np.where(ok & (f.index < debut - PURGE))[0][-TRAIN_MAX:]
         te = np.where(ok & (f.index >= debut) & (f.index < fin))[0]
         if len(tr) < 3000 or not len(te):
             continue
@@ -297,7 +303,7 @@ def eleve(f, cible, blocs):
     X = f[cols].to_numpy()
     q = np.full(len(f), np.nan)
     for debut, fin in blocs:
-        tr = np.where(~np.isnan(cible) & (f.index < debut - pd.Timedelta(hours=2)))[0][-TRAIN_MAX:]
+        tr = np.where(~np.isnan(cible) & (f.index < debut - PURGE))[0][-TRAIN_MAX:]
         te = np.where((f.index >= debut) & (f.index < fin))[0]
         if len(tr) < 3000 or not len(te):
             continue
@@ -313,11 +319,15 @@ def chef(f, Q: dict):
     y = f.y.to_numpy()
     fs = FS(len(noms))
     q = np.full(len(f), np.nan)
+    attente = deque()
     for i in range(len(f)):
+        while attente and attente[0] <= i - H:
+            j = attente.popleft()
+            fs.maj(A[j], y[j])
         if np.isnan(A[i]).any():
             continue
         q[i] = fs.q(A[i])
-        fs.maj(A[i], y[i])
+        attente.append(i)
     return q
 
 
@@ -327,7 +337,12 @@ def abstention(f, q, sur_test):
     garde = np.zeros(len(f), bool)
     hist_c, hist_g = deque(maxlen=FEN_SEUIL), deque(maxlen=FEN_SEUIL)
     seuil, maj = None, 0
+    attente = deque()
     for i in range(len(f)):
+        while attente and attente[0][0] <= i - H:
+            _, cj, gj = attente.popleft()
+            hist_c.append(cj)
+            hist_g.append(gj)
         if np.isnan(q[i]):
             continue
         c = abs(q[i] - 0.5)
@@ -340,8 +355,7 @@ def abstention(f, q, sur_test):
                     best, seuil = hg[m].mean(), s
         maj += 1
         garde[i] = seuil is not None and c >= seuil
-        hist_c.append(c)
-        hist_g.append((mv[i] if q[i] > 0.5 else -mv[i]) - sp[i])
+        attente.append((i, c, (mv[i] if q[i] > 0.5 else -mv[i]) - sp[i]))
     return garde
 
 
@@ -372,7 +386,7 @@ def amplitude(f, blocs):
     X, a = f[cols].to_numpy(), f.mv.abs().to_numpy()
     q = np.full(len(f), np.nan)
     for debut, fin in blocs:
-        tr = np.where(f.index < debut - pd.Timedelta(hours=2))[0][-TRAIN_MAX:]
+        tr = np.where(f.index < debut - PURGE)[0][-TRAIN_MAX:]
         te = np.where((f.index >= debut) & (f.index < fin))[0]
         if len(tr) < 3000 or not len(te):
             continue
@@ -419,7 +433,7 @@ def tout(f: pd.DataFrame):
     for debut, fin_b in blocs:
         if debut < debut_c + pd.DateOffset(months=1):
             continue
-        p_ = np.where((f.index >= debut_c) & (f.index < debut))[0]
+        p_ = np.where((f.index >= debut_c) & (f.index < debut - PURGE))[0]
         te = np.where((f.index >= debut) & (f.index < fin_b))[0]
         ok = ~np.isnan(Ab[p_]).any(1)
         if ok.sum() < 500:
@@ -476,7 +490,9 @@ def tester(dossier, epic, unite, sortie):
         print(epic, unite, ": pas assez de données")
         return
     minutes = UNITE_MIN[unite]
-    out = {"epic": epic, "unite": unite}
+    global PURGE
+    PURGE = max(pd.Timedelta(hours=2), pd.Timedelta(minutes=(H + 1) * minutes))
+    out = {"epic": epic, "unite": unite + (f" x{H}" if H > 1 else ""), "h": H}
     croix = croises(dossier, epic, unite, d.index)
     out["reel"] = tout(preparer(d, minutes, croix=croix, epic=epic))
     out["melange"] = tout(preparer(d, minutes, melange_graine=7, croix=croix, epic=epic))
