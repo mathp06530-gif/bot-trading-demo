@@ -17,7 +17,7 @@
  "nom": "Élan crypto 4 h (bot à part, expérimental)",
  "risque_pct": 1.0,
  "actif": true,
- "dernier_tour": "2026-11-27T17:00:45Z",
+ "dernier_tour": "2026-11-27T17:56:13Z",
  "deals": {},
  "ordres": [],
  "marches": {
@@ -41,7 +41,7 @@
    "sma200": 49.327299999999994,
    "bougie": "2026-11-27 12:00:00+00:00",
    "regle": "Élan 50 bougies de 4 h dans le sens de la moyenne 200, stop garanti 1.5 ATR",
-   "action": "Spread trop cher"
+   "action": "Signal déjà utilisé"
   },
   "SOLUSD": {
    "nom": "Solana",
