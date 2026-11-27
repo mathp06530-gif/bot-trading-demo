@@ -2018,12 +2018,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T14:13:24Z",
+ "derniere_execution": "2026-11-27T14:14:25Z",
  "historique": [
-  {
-   "date": "2026-11-24T05:00:25Z",
-   "valeur": 97.54
-  },
   {
    "date": "2026-11-24T05:05:24Z",
    "valeur": 97.34
@@ -14019,15 +14015,19 @@
   {
    "date": "2026-11-27T14:13:24Z",
    "valeur": 93.02
+  },
+  {
+   "date": "2026-11-27T14:14:25Z",
+   "valeur": 93.01
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.02,
+  "solde": 93.01,
   "depot": 92.86,
-  "resultat_latent": 0.16,
-  "disponible": 89.68
+  "resultat_latent": 0.15,
+  "disponible": 89.67
  },
  "positions": [
   {
@@ -14447,7 +14447,7 @@
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
   "2026-11-26": 92.86,
-  "2026-11-27": 93.02
+  "2026-11-27": 93.01
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -14539,7 +14539,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3636.76,
+   "prix": 3636.03,
    "plus_haut_20": 3678.35,
    "plus_bas_20": 3426.62,
    "ema200": 3891.14,
@@ -14581,9 +14581,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3635.06,
+    "prix": 3635.86,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 27.29 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 28.10 de plus dans le bon sens"
    }
   },
   "tendance": "SELL",
@@ -15269,8 +15269,8 @@
    1795780800,
    3673.73,
    3674.37,
-   3635.25,
-   3636.76
+   3634.56,
+   3636.03
   ],
   "cassure_4h-SILVER": [
    1795780800,
@@ -15284,7 +15284,7 @@
    3636.15,
    3639.13,
    3634.56,
-   3635.06
+   3635.86
   ]
  },
  "nettoyage": "2026-11-26"
