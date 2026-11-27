@@ -2101,12 +2101,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T21:00:25Z",
+ "derniere_execution": "2026-11-27T21:01:25Z",
  "historique": [
-  {
-   "date": "2026-11-25T14:25:25Z",
-   "valeur": 104.44
-  },
   {
    "date": "2026-11-25T14:30:27Z",
    "valeur": 105.54
@@ -14102,6 +14098,10 @@
   {
    "date": "2026-11-27T21:00:25Z",
    "valeur": 92.79
+  },
+  {
+   "date": "2026-11-27T21:01:25Z",
+   "valeur": 92.79
   }
  ],
  "compte": {
@@ -14627,7 +14627,7 @@
     "titre": "Prelim GDP q/q"
    }
   ],
-  "lu_le": "2026-11-27T20:01:22.424183+00:00",
+  "lu_le": "2026-11-27T21:01:22.618481+00:00",
   "pause": null,
   "prochaines": [],
   "pauses_marches": {}
