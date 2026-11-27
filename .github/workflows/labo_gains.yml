@@ -1,0 +1,101 @@
+name: IA - Labo n°5 gros gains (sorties, seuils, plus de marchés ; aucun ordre)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: labo-gains
+  cancel-in-progress: false
+
+jobs:
+  donnees:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ia/requirements.txt
+      - uses: actions/cache/restore@v4
+        with:
+          path: donnees_ia
+          key: ia-donnees-v1-
+          restore-keys: ia-donnees-v1-
+      - uses: actions/cache/restore@v4
+        with:
+          path: donnees_gains
+          key: ia-gains-v1-
+          restore-keys: ia-gains-v1-
+      - name: Bougies 4 h des marchés nouveaux (Capital.com démo)
+        env:
+          CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
+          CAPITAL_IDENTIFIER: ${{ secrets.CAPITAL_IDENTIFIER }}
+          CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
+        run: |
+          python -u ia/labo_gains.py telecharger donnees_gains US30 UK100 FR40 EU50 J225 HK50 AU200 USDJPY AUDUSD USDCAD USDCHF NZDUSD EURJPY EURGBP NATURALGAS COPPER PLATINUM OIL_BRENT BTCUSD ETHUSD
+          mkdir -p tout && cp donnees_ia/*_HOUR_4.csv donnees_ia/*_marche.json tout/ 2>/dev/null; cp donnees_gains/* tout/
+          ls tout | grep HOUR_4
+      - uses: actions/cache/save@v4
+        continue-on-error: true
+        with:
+          path: donnees_gains
+          key: ia-gains-v1-${{ github.run_id }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: donnees-gains
+          path: tout
+          retention-days: 5
+  tester:
+    needs: donnees
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 28
+      matrix:
+        epic: [GOLD, SILVER, US100, US500, EURUSD, OIL_CRUDE, DE40, GBPUSD, US30, UK100, FR40, EU50, J225, HK50, AU200, USDJPY, AUDUSD, USDCAD, USDCHF, NZDUSD, EURJPY, EURGBP, NATURALGAS, COPPER, PLATINUM, OIL_BRENT, BTCUSD, ETHUSD]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ia/requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          name: donnees-gains
+          path: tout
+      - run: |
+          mkdir -p res
+          python -u ia/labo_gains.py tester tout ${{ matrix.epic }} res/${{ matrix.epic }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gains-${{ matrix.epic }}
+          path: res
+          if-no-files-found: ignore
+  bilan:
+    needs: tester
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r ia/requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: gains-*
+          path: res
+          merge-multiple: true
+      - run: python ia/labo_gains.py bilan res ia/LABO_GAINS.md docs/labo_gains.json
+      - run: |
+          git config user.name "bot-trading-demo"
+          git config user.email "bot-trading-demo@users.noreply.github.com"
+          git add ia/LABO_GAINS.md docs/labo_gains.json
+          git diff --cached --quiet && exit 0
+          git commit -qm "IA : labo n°5 gros gains"
+          for i in 1 2 3 4 5; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin HEAD:"${GITHUB_REF_NAME}" && exit 0; sleep 7; done
