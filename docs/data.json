@@ -1910,10 +1910,16 @@
    "marche": "SILVER",
    "texte": "Cassure (VENTE) mais ordre REFUSÉ : cassure trop ancienne (depuis le 2026-11-12 08:00).",
    "strategie": "cassure_4h"
+  },
+  {
+   "date": "2026-11-27T00:32:49Z",
+   "type": "erreur",
+   "marche": "",
+   "texte": "Connexion refusée (401). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.invalid.api.key\"}"
   }
  ],
- "statut": "ok",
- "derniere_execution": "2026-11-27T00:31:24Z",
+ "statut": "erreur",
+ "derniere_execution": "2026-11-27T00:32:49Z",
  "historique": [
   {
    "date": "2026-11-21T10:25:24Z",
