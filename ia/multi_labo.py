@@ -71,7 +71,75 @@ def croises(dossier, epic, unite, index):
     return X.fillna(0.0)
 
 
-def preparer(d: pd.DataFrame, minutes: int, melange_graine=None, croix=None):
+PISTES = os.getenv("LABO_PISTES", "oui") == "oui"
+# heures de Paris des grands rendez-vous (piste « horloge fine », fil Pistes boost) :
+# Londres ouvre, fixing or LBMA matin, fixing BCE, ouverture US, fixing or LBMA après-midi, fixing WM, clôture Xetra, clôture US, fixing Tokyo
+RDV = {"londres": 9.0, "lbma_matin": 11.5, "bce": 14.25, "us_ouvre": 15.5, "lbma_aprem": 16.0, "wm": 17.0,
+       "xetra_ferme": 17.5, "us_ferme": 22.0, "tokyo": 1.9167}
+SEANCE = {"US100": (15.5, 22.0), "US500": (15.5, 22.0), "DE40": (9.0, 17.5)}
+
+
+def annonces_utc():
+    """Heures UTC des grosses annonces (NFP, CPI US, FOMC, BCE, BoE) + stocks de pétrole EIA chaque mercredi 10h30 New York."""
+    d = json.loads((Path(__file__).parent / "dates_annonces.json").read_text())
+    regles_h = {"NFP": ("America/New_York", 8, 30), "CPI_US": ("America/New_York", 8, 30), "FOMC": ("America/New_York", 14, 0),
+                "ECB": ("Europe/Berlin", 14, 15), "BOE": ("Europe/London", 12, 0)}
+    out = {"eco": [], "eia": []}
+    for k, (tz, hh, mm) in regles_h.items():
+        for j in d.get(k, []):
+            out["eco"].append(pd.Timestamp(f"{j} {hh:02d}:{mm:02d}", tz=tz).tz_convert("UTC").tz_localize(None))
+    for j in pd.date_range("2016-01-06", "2027-12-31", freq="W-WED"):
+        out["eia"].append(pd.Timestamp(f"{j.date()} 10:30", tz="America/New_York").tz_convert("UTC").tz_localize(None))
+    return {k: pd.DatetimeIndex(sorted(v)) for k, v in out.items()}
+
+
+def minutes_annonce(index, ev):
+    """Minutes entre le début de la bougie et l'annonce la plus proche (négatif = annonce passée)."""
+    t = index.values.astype("datetime64[m]").astype(np.int64)
+    e = ev.values.astype("datetime64[m]").astype(np.int64)
+    k = np.searchsorted(e, t)
+    av = np.where(k > 0, t - e[np.maximum(k - 1, 0)], 10 ** 6)
+    ap = np.where(k < len(e), e[np.minimum(k, len(e) - 1)] - t, 10 ** 6)
+    return np.where(ap <= av, ap, -av).astype(float)
+
+
+def pistes(f, mid, epic):
+    """Pistes du 27/11 : horloge fine, périodicité du même créneau, momentum de fin de séance, chiffres ronds.
+    Tout est connu à la clôture de la bougie (ou vient de jours passés)."""
+    loc = f.index.tz_localize("UTC").tz_convert("Europe/Paris")
+    h = np.asarray(loc.hour + loc.minute / 60, dtype=float)
+    f["min_sin"], f["min_cos"] = np.sin(2 * np.pi * loc.minute / 60), np.cos(2 * np.pi * loc.minute / 60)
+    for nom, t in RDV.items():
+        dmin = ((h - t + 12) % 24 - 12) * 60
+        f[f"rdv_{nom}"] = np.clip(dmin, -120, 120)
+    # périodicité : mouvement moyen du MÊME créneau horaire les jours précédents (jours passés seulement)
+    jour = pd.Index(loc.date)
+    creneau = pd.Index((loc.hour * 60 + loc.minute).astype(int))
+    tab = pd.Series(f["mv"].to_numpy(), index=pd.MultiIndex.from_arrays([jour, creneau])).groupby(level=[0, 1]).mean().unstack()
+    for k in (5, 10, 20):
+        m = tab.shift(1).rolling(k, min_periods=max(3, k // 2)).mean()
+        f[f"periode{k}"] = m.stack().reindex(pd.MultiIndex.from_arrays([jour, creneau])).to_numpy()
+    f[[f"periode{k}" for k in (5, 10, 20)]] = f[[f"periode{k}" for k in (5, 10, 20)]].fillna(0.0)
+    # momentum de fin de séance (Baltussen et al. 2021) : rendement depuis l'ouverture, actif dans les 30 dernières minutes
+    f["fin_seance"] = 0.0
+    if epic in SEANCE:
+        o, c = SEANCE[epic]
+        lm = np.log(mid.reindex(f.index))
+        ouv = pd.Series(np.where(np.abs(h - o) < 1e-6, lm, np.nan), index=f.index).groupby(jour).transform("first")
+        actif = (h >= c - 0.5) & (h < c)
+        f["fin_seance"] = np.where(actif, (lm - ouv).fillna(0.0), 0.0)
+    # calendrier économique : minutes jusqu'à la grosse annonce la plus proche (et stocks EIA pour le pétrole)
+    ev = annonces_utc()
+    f["eco_min"] = np.clip(minutes_annonce(f.index, ev["eco"]), -240, 240)
+    f["eia_min"] = np.clip(minutes_annonce(f.index, ev["eia"]), -240, 240) if epic == "OIL_CRUDE" else 240.0
+    # chiffres ronds (Osler 2003) : distance au rond le plus proche, en unités de volatilité
+    unite = 10 ** (np.floor(np.log10(mid.reindex(f.index))) - 2)
+    rond = np.round(mid.reindex(f.index) / unite) * unite
+    vol = mid.reindex(f.index).pct_change().rolling(50).std() * mid.reindex(f.index)
+    f["rond"] = ((mid.reindex(f.index) - rond) / vol.replace(0, np.nan)).clip(-10, 10).fillna(0.0)
+
+
+def preparer(d: pd.DataFrame, minutes: int, melange_graine=None, croix=None, epic=""):
     """Indicateurs connus à la clôture t, cible = sens de la bougie suivante, mouvement % et spread %."""
     from ia.predire import indicateurs
     d = d.copy()
@@ -98,6 +166,8 @@ def preparer(d: pd.DataFrame, minutes: int, melange_graine=None, croix=None):
     f["mv"] = (suiv / mid - 1) * 100
     f["sp"] = sp
     f["y"] = (f["mv"] > 0).astype(float)
+    if PISTES:
+        pistes(f, mid, epic)
     ok = (ecart <= 2 * minutes) & (f["mv"] != 0) & f["mv"].notna()
     f = f[ok].replace([np.inf, -np.inf], np.nan).dropna()
     return f
@@ -111,6 +181,7 @@ def regles(f: pd.DataFrame) -> dict:
         "retour_moyenne": s(-f.ema20), "rsi_contrarien": s(50 - f.rsi), "cassure_range": s(f.pos20 - 0.5),
         "croisement_moyennes": s(f.ema20 - f.ema50), "macd": s(f.macd),
         "tendance_propre": 0.5 + 0.05 * np.sign(f.r20) * (f.er16 > 0.35),
+        **({"periodicite": s(f.periode20), "fin_de_seance": s(f.fin_seance), "chiffre_rond": s(-f.rond)} if "periode20" in f else {}),
     }
 
 
@@ -368,6 +439,11 @@ def tout(f: pd.DataFrame):
     ratio_h = (f.mv.abs()[av] / f.sp[av].clip(lower=1e-6)).groupby(f.index[av].hour).median()
     bonnes_h = set(ratio_h[ratio_h >= ratio_h.quantile(2 / 3)].index)
     heures_ok = np.isin(f.index.hour, list(bonnes_h))
+    hors_ann = None
+    if "eco_min" in f:  # on ne joue pas de 5 min avant à 15 min après une grosse annonce (bougie suivante comprise)
+        pas = float(pd.Series(f.index).diff().dt.total_seconds().median() / 60)
+        hors_ann = ~((f.eco_min.to_numpy() >= -15) & (f.eco_min.to_numpy() <= 2 * pas + 5)) & \
+                   ~((f.eia_min.to_numpy() >= -15) & (f.eia_min.to_numpy() <= 2 * pas + 5))
     moitie = f.index[test].min() + (f.index.max() - f.index[test].min()) / 2
     res = {}
     regs_a = np.array(regs)
@@ -380,9 +456,13 @@ def tout(f: pd.DataFrame):
                     "courbe": {str(c): mesurer(f, q, couverture(q, c), test) for c in COUVERTURES},
                     "amplitude": {str(k): mesurer(f, q, ~np.isnan(amp) & (amp >= k * sp_), test) for k in (2, 3, 5)},
                     "heures_petits_frais": mesurer(f, q, heures_ok, test),
+                    "hors_annonces": mesurer(f, q, hors_ann, test) if hors_ann is not None else None,
                     "combo": mesurer(f, q, couverture(q, 0.2) & ~np.isnan(amp) & (amp >= 3 * sp_) & heures_ok, test)}
     for c in racc_cols:
         res.setdefault("_cerveaux", {})[c] = mesurer(f, P[c].to_numpy(), masque=test)
+    if "fin_seance" in f and (f.fin_seance != 0).any():
+        res["_cerveaux"]["fin_de_seance (30 dernières min seulement)"] = mesurer(
+            f, P["fin_de_seance"].to_numpy(), masque=test & np.asarray(f.fin_seance != 0))
     res["_heures_petits_frais"] = sorted(int(h) for h in bonnes_h)
     res["_periode"] = [str(debut_test), str(f.index.max())]
     res["_sens_majoritaire"] = round(float(max(yv[test].mean(), 1 - yv[test].mean())), 4)
@@ -398,8 +478,9 @@ def tester(dossier, epic, unite, sortie):
     minutes = UNITE_MIN[unite]
     out = {"epic": epic, "unite": unite}
     croix = croises(dossier, epic, unite, d.index)
-    out["reel"] = tout(preparer(d, minutes, croix=croix))
-    out["melange"] = tout(preparer(d, minutes, melange_graine=7, croix=croix))
+    out["reel"] = tout(preparer(d, minutes, croix=croix, epic=epic))
+    out["melange"] = tout(preparer(d, minutes, melange_graine=7, croix=croix, epic=epic))
+    out["pistes"] = PISTES
     Path(sortie).write_text(json.dumps(out, ensure_ascii=False))
     for k in ("reel", "melange"):
         for nom, r in out[k].items():
@@ -480,8 +561,8 @@ def bilan(dossier, sortie_md, sortie_json):
         L.append("")
     # leviers : ne jouer que les plus sûres, amplitude, heures à petits frais, combinaison
     L += ["## Leviers (moyenne des marchés ; réussite / gain après spread / part des bougies jouées)", "",
-          "| Bougies | Méta-cerveau | 50 % plus sûres | 20 % | 10 % | 5 % | Amplitude ≥ 3x spread | Heures petits frais | Combo (20 % + ampl. 3x + heures) | Combo prix mélangés |",
-          "|---|---|---|---|---|---|---|---|---|---|"]
+          "| Bougies | Méta-cerveau | 50 % plus sûres | 20 % | 10 % | 5 % | Amplitude ≥ 3x spread | Heures petits frais | Hors annonces | Combo (20 % + ampl. 3x + heures) | Combo prix mélangés |",
+          "|---|---|---|---|---|---|---|---|---|---|---|"]
     def agr(lst, ref):
         lst = [x for x in lst if x]
         if not lst:
@@ -502,19 +583,42 @@ def bilan(dossier, sortie_md, sortie_json):
             lv[f"cov{c}"] = agr([x["courbe"].get(str(c)) for _, x in d["reel"]], ref)
         lv["ampl3"] = agr([x["amplitude"].get("3") for _, x in d["reel"]], ref)
         lv["heures"] = agr([x["heures_petits_frais"] for _, x in d["reel"]], ref)
+        lv["hors_annonces"] = agr([x.get("hors_annonces") for _, x in d["reel"]], ref)
         lv["combo"] = agr([x["combo"] for _, x in d["reel"]], ref)
         refm = sum(x["toujours"]["n"] for _, x in d["melange"] if x.get("toujours"))
         lv["combo_melange"] = agr([x.get("combo") for _, x in d["melange"]], refm)
         lv["cov0.05_melange"] = agr([x.get("courbe", {}).get("0.05") for _, x in d["melange"]], refm)
         leviers.append(lv)
         L.append(f"| {u} | {nom} | " + " | ".join(cel(lv[f"cov{c}"]) for c in COUVERTURES) +
-                 f" | {cel(lv['ampl3'])} | {cel(lv['heures'])} | {cel(lv['combo'])} | {cel(lv['combo_melange'])} |")
+                 f" | {cel(lv['ampl3'])} | {cel(lv['heures'])} | {cel(lv['hors_annonces'])} | {cel(lv['combo'])} | {cel(lv['combo_melange'])} |")
+    L.append("")
+    # cerveaux seuls (pistes comprises), moyenne des marchés
+    L += ["## Cerveaux seuls (moyenne des marchés : réussite / gain après spread ; prix mélangés)", "",
+          "| Bougies | Cerveau | Réussite | Gain | Marchés | Prix mélangés |", "|---|---|---|---|---|---|"]
+    cerv = defaultdict(lambda: defaultdict(list))
+    for r in R:
+        for k in ("reel", "melange"):
+            for c, x in r.get(k, {}).get("_cerveaux", {}).items():
+                if x:
+                    cerv[(r["unite"], c)][k].append(x)
+    cerveaux_l = []
+    for (u, c), d in sorted(cerv.items()):
+        re_, me = d["reel"], d["melange"]
+        if not re_:
+            continue
+        nb_essais += len(re_)
+        ligne = {"unite": u, "cerveau": c, "reussite": round(float(np.mean([x["reussite"] for x in re_])), 4),
+                 "gain": round(float(np.mean([x["gain"] for x in re_])), 5), "marches": len(re_),
+                 "melange": round(float(np.mean([x["reussite"] for x in me])), 4) if me else None}
+        cerveaux_l.append(ligne)
+        L.append(f"| {u} | {c} | {100 * ligne['reussite']:.2f} % | {ligne['gain']:+.4f} % | {len(re_)} | "
+                 f"{100 * ligne['melange']:.2f} % |" if me else f"| {u} | {c} | {100 * ligne['reussite']:.2f} % | {ligne['gain']:+.4f} % | {len(re_)} | — |")
     L.append("")
     L += [f"Essais comptés (méta-cerveau x marché x version) : {nb_essais}.", ""]
     Path(sortie_md).write_text("\n".join(L))
     from datetime import datetime, timezone
     Path(sortie_json).write_text(json.dumps({"maj": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-                                             "essais": nb_essais, "lignes": resume_l, "leviers": leviers,
+                                             "essais": nb_essais, "lignes": resume_l, "leviers": leviers, "cerveaux": cerveaux_l,
                                              "marches": sorted({r["epic"] for r in R})}, ensure_ascii=False))
     print("\n".join(L))
 
