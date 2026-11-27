@@ -1966,13 +1966,9 @@
    "texte": "Connexion refusée (401). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.invalid.api.key\"}"
   }
  ],
- "statut": "erreur",
- "derniere_execution": "2026-11-27T02:29:49Z",
+ "statut": "ok",
+ "derniere_execution": "2026-11-27T02:30:24Z",
  "historique": [
-  {
-   "date": "2026-11-21T19:25:24Z",
-   "valeur": 97.91
-  },
   {
    "date": "2026-11-21T19:30:23Z",
    "valeur": 97.91
@@ -13968,6 +13964,10 @@
   {
    "date": "2026-11-27T02:28:24Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-27T02:30:24Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -14445,7 +14445,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3616.245,
+   "prix": 3615.51,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3898.36,
@@ -14457,7 +14457,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 43.025499999999994,
+   "prix": 43.056,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.04,
@@ -14485,7 +14485,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3615.3,
+    "prix": 3619.76,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    }
@@ -15169,21 +15169,21 @@
    3568.09,
    3627.55,
    3557.69,
-   3616.24
+   3615.51
   ],
   "cassure_4h-SILVER": [
    1795737600,
    41.55,
    43.46,
    41.34,
-   43.03
+   43.06
   ],
   "rapide-GOLD": [
-   1795746300,
-   3612.71,
-   3617.46,
-   3612.29,
-   3615.3
+   1795746600,
+   3616.24,
+   3619.76,
+   3615.46,
+   3619.76
   ]
  },
  "nettoyage": "2026-11-26"
