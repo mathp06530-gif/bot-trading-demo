@@ -392,7 +392,7 @@ def tout(f: pd.DataFrame):
 def tester(dossier, epic, unite, sortie):
     from ia.predire import lire
     d = lire(Path(dossier), epic, unite)
-    if d is None or len(d) < 20000:
+    if d is None or len(d) < 8000:
         print(epic, unite, ": pas assez de données")
         return
     minutes = UNITE_MIN[unite]
