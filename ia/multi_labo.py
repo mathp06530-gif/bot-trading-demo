@@ -56,6 +56,10 @@ APPRIS = ["logistique", "lightgbm", "foret"]
 COUTS = json.loads(os.getenv("LABO_COUTS", "") or "{}")
 FACTEUR_COUT = float(os.getenv("LABO_FACTEUR_COUT", "1"))  # 0,5 = frais divisés par 2 ; 0 = sans frais (plafond)
 COLS = None
+# LABO_NUIT=oui : ajoute au coût les frais de nuit Capital.com (moyenne achat/vente, % par nuit) pour chaque 22 h UTC
+# passé entre l'entrée (clôture de t) et la sortie (clôture de t+H). Indispensable pour les horizons jour / semaine.
+NUIT = os.getenv("LABO_NUIT", "non") == "oui"
+NUIT_PCT = {}
 
 
 # --------------------------------------------------------------------------- données
@@ -155,6 +159,12 @@ def preparer(d: pd.DataFrame, minutes: int, melange_graine=None, croix=None, epi
         c = COUTS[epic]
         sp = (c.get("pts", 0.0) / mid * 100 + c.get("pct", 0.0)).clip(lower=0)
     sp = sp * FACTEUR_COUT
+    if NUIT and NUIT_PCT.get(epic):
+        pas = pd.Timedelta(minutes=minutes)
+        t0 = pd.Series(d.index + pas, index=d.index)
+        t1 = t0.shift(-H)
+        jour = lambda t: ((t - pd.Timedelta(hours=22)).dt.floor("D") - pd.Timestamp("2000-01-01")).dt.days  # noqa: E731
+        sp = sp + (jour(t1) - jour(t0)).clip(lower=0).fillna(0) * NUIT_PCT[epic]
     if melange_graine is not None:  # prix mélangés : on permute les rendements, on reconstruit un chemin
         r = np.log(mid).diff().fillna(0).to_numpy()
         rng = np.random.default_rng(melange_graine)
@@ -500,7 +510,11 @@ def tester(dossier, epic, unite, sortie):
     minutes = UNITE_MIN[unite]
     global PURGE
     PURGE = max(pd.Timedelta(hours=2), pd.Timedelta(minutes=(H + 1) * minutes))
-    out = {"epic": epic, "unite": unite + (f" x{H}" if H > 1 else ""), "h": H}
+    if NUIT:
+        from ia.predire import frais_nuit
+        na, nv = frais_nuit(Path(dossier), epic)
+        NUIT_PCT[epic] = 100 * (na + nv) / 2
+    out = {"epic": epic, "unite": unite + (f" x{H}" if H > 1 else ""), "h": H, "nuit_pct": NUIT_PCT.get(epic)}
     croix = croises(dossier, epic, unite, d.index)
     out["reel"] = tout(preparer(d, minutes, croix=croix, epic=epic))
     out["melange"] = tout(preparer(d, minutes, melange_graine=7, croix=croix, epic=epic))
