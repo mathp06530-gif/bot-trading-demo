@@ -2057,15 +2057,18 @@
    "marche": "GOLD",
    "texte": "[Rapide] Stop suiveur déplacé de 3676.48 à 3671.65 pour garder le gain.",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-27T15:09:25Z",
+   "type": "stop",
+   "marche": "GOLD",
+   "texte": "[Rapide] Stop suiveur déplacé de 3671.65 à 3667.96 pour garder le gain.",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T15:08:24Z",
+ "derniere_execution": "2026-11-27T15:09:25Z",
  "historique": [
-  {
-   "date": "2026-11-24T09:30:24Z",
-   "valeur": 98.08
-  },
   {
    "date": "2026-11-24T09:35:24Z",
    "valeur": 97.88
@@ -14061,15 +14064,19 @@
   {
    "date": "2026-11-27T15:08:24Z",
    "valeur": 93.06
+  },
+  {
+   "date": "2026-11-27T15:09:25Z",
+   "valeur": 93.11
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.06,
+  "solde": 93.11,
   "depot": 92.84,
-  "resultat_latent": 0.22,
-  "disponible": 89.72
+  "resultat_latent": 0.27,
+  "disponible": 89.77
  },
  "positions": [
   {
@@ -14078,10 +14085,10 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3644.44,
-   "resultat": 0.21,
+   "resultat": 0.26,
    "ouverte_le": "2026-11-27T14:55:25.411",
    "id": "00000000-7723-03da-049f-c46d0015549e",
-   "stop": 3671.65,
+   "stop": 3667.96,
    "stop_garanti": true,
    "objectif": null,
    "strategie": "rapide"
@@ -14488,12 +14495,12 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3644.44,
-   "stop": 3671.65,
+   "stop": 3667.96,
    "objectif": null,
    "stop_garanti": true,
    "ouvert_le": "2026-11-27T14:55:25Z",
    "statut": "ouvert",
-   "resultat": 0.21,
+   "resultat": 0.26,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -14518,7 +14525,7 @@
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
   "2026-11-26": 92.86,
-  "2026-11-27": 93.06
+  "2026-11-27": 93.11
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -14610,7 +14617,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3638.1949999999997,
+   "prix": 3633.0600000000004,
    "plus_haut_20": 3678.35,
    "plus_bas_20": 3426.62,
    "ema200": 3891.14,
@@ -14622,7 +14629,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": null,
-   "prix": 43.566500000000005,
+   "prix": 43.55500000000001,
    "plus_haut_20": 44.58,
    "plus_bas_20": 38.2,
    "ema200": 49.86,
@@ -14652,9 +14659,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3632.925,
-    "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 24.16 de plus dans le bon sens"
+    "prix": 3631.64,
+    "action": "Stop suiveur déplacé",
+    "empilement": "position 2/2 possible quand le prix aura avancé de 23.26 de plus dans le bon sens"
    }
   },
   "tendance": "SELL",
@@ -15341,21 +15348,21 @@
    3673.73,
    3674.37,
    3625.31,
-   3638.19
+   3633.06
   ],
   "cassure_4h-SILVER": [
    1795780800,
    44.11,
    44.17,
    43.35,
-   43.57
+   43.56
   ],
   "rapide-GOLD": [
    1795791900,
    3634.65,
    3636.64,
    3630.17,
-   3632.93
+   3631.64
   ]
  },
  "nettoyage": "2026-11-26"
