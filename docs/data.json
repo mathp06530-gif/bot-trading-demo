@@ -1925,12 +1925,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T00:45:23Z",
+ "derniere_execution": "2026-11-27T00:46:24Z",
  "historique": [
-  {
-   "date": "2026-11-21T11:25:25Z",
-   "valeur": 97.91
-  },
   {
    "date": "2026-11-21T11:30:26Z",
    "valeur": 97.91
@@ -13926,6 +13922,10 @@
   {
    "date": "2026-11-27T00:45:23Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-27T00:46:24Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -14415,7 +14415,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.5435,
+   "prix": 41.537000000000006,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
    "ema200": 50.04,
@@ -14444,7 +14444,7 @@
      "tendance_4h": "SELL",
      "bollinger": 0.83
     },
-    "prix": 3565.4049999999997,
+    "prix": 3564.415,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    }
@@ -15141,8 +15141,8 @@
    1795740300,
    3565.95,
    3566.07,
-   3565.3,
-   3565.4
+   3563.17,
+   3564.41
   ]
  },
  "nettoyage": "2026-11-26"
