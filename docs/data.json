@@ -2078,10 +2078,16 @@
    "marche": "GOLD",
    "texte": "[Rapide] Stop suiveur déplacé de 3663.62 à 3653.44 pour garder le gain.",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-27T16:30:49Z",
+   "type": "erreur",
+   "marche": "",
+   "texte": "Connexion refusée (401). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.invalid.api.key\"}"
   }
  ],
- "statut": "ok",
- "derniere_execution": "2026-11-27T16:29:25Z",
+ "statut": "erreur",
+ "derniere_execution": "2026-11-27T16:30:49Z",
  "historique": [
   {
    "date": "2026-11-24T16:10:24Z",
