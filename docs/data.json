@@ -1925,12 +1925,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T00:42:23Z",
+ "derniere_execution": "2026-11-27T00:43:23Z",
  "historique": [
-  {
-   "date": "2026-11-21T11:10:25Z",
-   "valeur": 97.91
-  },
   {
    "date": "2026-11-21T11:15:25Z",
    "valeur": 97.91
@@ -13926,6 +13922,10 @@
   {
    "date": "2026-11-27T00:42:23Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-27T00:43:23Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -14444,7 +14444,7 @@
      "tendance_4h": "SELL",
      "bollinger": 0.82
     },
-    "prix": 3565.94,
+    "prix": 3566.36,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    }
@@ -15142,7 +15142,7 @@
    3566.51,
    3567.86,
    3565.34,
-   3565.94
+   3566.36
   ]
  },
  "nettoyage": "2026-11-26"
