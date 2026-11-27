@@ -2094,12 +2094,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T18:59:24Z",
+ "derniere_execution": "2026-11-27T19:00:25Z",
  "historique": [
-  {
-   "date": "2026-11-25T04:30:25Z",
-   "valeur": 98.88
-  },
   {
    "date": "2026-11-25T04:35:24Z",
    "valeur": 98.88
@@ -14095,6 +14091,10 @@
   {
    "date": "2026-11-27T18:59:24Z",
    "valeur": 92.79
+  },
+  {
+   "date": "2026-11-27T19:00:25Z",
+   "valeur": 92.79
   }
  ],
  "compte": {
@@ -14620,7 +14620,7 @@
     "titre": "Prelim GDP q/q"
    }
   ],
-  "lu_le": "2026-11-27T18:00:22.123249+00:00",
+  "lu_le": "2026-11-27T19:00:22.270335+00:00",
   "pause": null,
   "prochaines": [],
   "pauses_marches": {}
@@ -14670,7 +14670,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3642.32,
+    "prix": 3641.18,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 40.96 de plus dans le bon sens"
    }
@@ -15364,11 +15364,11 @@
    43.5
   ],
   "rapide-GOLD": [
-   1795805700,
-   3642.44,
-   3642.55,
-   3640.72,
-   3642.32
+   1795806000,
+   3641.5,
+   3641.65,
+   3640.97,
+   3641.18
   ]
  },
  "nettoyage": "2026-11-26"
