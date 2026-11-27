@@ -1997,12 +1997,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T08:00:25Z",
+ "derniere_execution": "2026-11-27T08:01:25Z",
  "historique": [
-  {
-   "date": "2026-11-22T22:15:25Z",
-   "valeur": 97.91
-  },
   {
    "date": "2026-11-22T22:20:25Z",
    "valeur": 97.91
@@ -13998,6 +13994,10 @@
   {
    "date": "2026-11-27T08:00:25Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-27T08:01:25Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -14475,24 +14475,24 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3660.32,
+   "prix": 3664.32,
    "plus_haut_20": 3678.35,
    "plus_bas_20": 3426.62,
-   "ema200": 3895.69,
+   "ema200": 3893.33,
    "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)",
-   "atr": 45.33,
+   "atr": 44.91,
    "empilement": "position 2/3 possible quand le prix aura avancé de 182.82 de plus dans le bon sens",
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)"
   },
   "SILVER": {
    "nom": "Silver",
-   "tendance": "SELL",
-   "prix": 44.325,
+   "tendance": null,
+   "prix": 44.251,
    "plus_haut_20": 44.03,
    "plus_bas_20": 38.2,
-   "ema200": 49.97,
-   "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)",
-   "atr": 1.05,
+   "ema200": 49.92,
+   "action": "Aucune action",
+   "atr": 1.06,
    "empilement": "position 2/3 possible quand le prix aura avancé de 3.75 de plus dans le bon sens",
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)"
   }
@@ -14515,7 +14515,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3659.23,
+    "prix": 3666.045,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    }
@@ -15195,25 +15195,25 @@
  "cassure_garde": {},
  "graph_live": {
   "cassure_4h-GOLD": [
-   1795752000,
-   3629.43,
-   3666.48,
-   3627.02,
-   3660.32
+   1795766400,
+   3658.38,
+   3664.69,
+   3658.28,
+   3664.32
   ],
   "cassure_4h-SILVER": [
-   1795752000,
-   43.5,
-   44.58,
-   43.41,
-   44.33
+   1795766400,
+   44.18,
+   44.27,
+   44.14,
+   44.25
   ],
   "rapide-GOLD": [
    1795766400,
    3658.38,
-   3659.72,
+   3667.01,
    3658.28,
-   3659.23
+   3666.05
   ]
  },
  "nettoyage": "2026-11-26"
