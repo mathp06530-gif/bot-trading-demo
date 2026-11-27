@@ -99,6 +99,9 @@ def charger(nom):
         tok = KronosTokenizer.from_pretrained("NeoQuasar/Kronos-Tokenizer-base")
         mod = Kronos.from_pretrained("NeoQuasar/Kronos-small")
         return KronosPredictor(mod, tok, device="cpu", max_context=512)
+    if nom == "flowstate":
+        from tsfm_public import FlowStateForPrediction
+        return FlowStateForPrediction.from_pretrained("ibm-granite/granite-timeseries-flowstate-r1", revision="r1.1")
     if nom == "ttm":
         from tsfm_public.toolkit.get_model import get_model
         return get_model("ibm-granite/granite-timeseries-ttm-r2", context_length=512, prediction_length=96)
@@ -119,7 +122,7 @@ def charger(nom):
                                 scaling=a["scaling"], time_feat=a["time_feat"], batch_size=64, num_parallel_samples=20,
                                 device=torch.device("cpu"))
         return est.create_predictor(est.create_transformation(), est.create_lightning_module())
-    if FAMILLE in ("nf_a", "nf_b"):
+    if FAMILLE in ("nf_a", "nf_b", "nf_c"):
         return entrainer_nf()
     raise ValueError(nom)
 
@@ -148,7 +151,8 @@ def entrainer_nf():
               scaler_type="standard", batch_size=64,
               enable_progress_bar=False, enable_model_summary=False, logger=False, accelerator="cpu")
     classes = {"nbeats": M.NBEATS, "nhits": M.NHITS, "tide": M.TiDE, "tcn": M.TCN, "deepar": M.DeepAR,
-               "patchtst": M.PatchTST, "tft": M.TFT}
+               "patchtst": M.PatchTST, "tft": M.TFT,
+               "bitcn": M.BiTCN, "dlinear": M.DLinear, "nlinear": M.NLinear, "gru": M.GRU, "kan": M.KAN}
     noms = list(FAMILLES[FAMILLE]["modeles"])
     nf = NeuralForecast(models=[classes[n](**kw, alias=n) for n in noms], freq=1)
     nf.fit(df)
@@ -215,6 +219,13 @@ def prevoir(nom, m, prix, ohlcv, Hs):
             res = [m.predict(df=d, x_timestamp=t, y_timestamp=ty, pred_len=H, T=1.0, top_p=0.9, sample_count=4,
                              verbose=False) for d in dfs]
         return P(np.array([r["close"].values[:H] for r in res]))
+    if nom == "flowstate":
+        z, mu, sd = normer(prix)
+        with torch.no_grad():  # 0,4 = 24 / 60 : cycle de base d'une heure sur des bougies 1 min
+            out = m(torch.tensor(z[:, :, None], dtype=torch.float32), scale_factor=0.4, prediction_length=H,
+                    batch_first=True).prediction_outputs.numpy()  # (n, 9 quantiles, H, 1)
+        q = out[..., 0].transpose(0, 2, 1) * sd[:, :, None] + mu[:, :, None]  # (n, H, 9)
+        return Q(q) if q.shape[2] == 9 else P(np.median(q, axis=2))
     if nom == "ttm":
         z, mu, sd = normer(prix[:, -512:])
         out = m(past_values=torch.tensor(z[:, :, None], dtype=torch.float32)).prediction_outputs
@@ -225,7 +236,7 @@ def prevoir(nom, m, prix, ohlcv, Hs):
         ds = ListDataset([{"start": pd.Period("2026-01-01 00:00", freq="1min"), "target": p.astype(np.float32)} for p in prix],
                          freq="1min")
         return E(np.stack([f.samples[:, :H] for f in m.predict(ds)]))
-    if FAMILLE in ("nf_a", "nf_b"):
+    if FAMILLE in ("nf_a", "nf_b", "nf_c"):
         cle = _NF.get("demande")
         if _NF.get("cle") != cle:  # une seule prévision pour tous les modèles de la famille
             import pandas as pd
