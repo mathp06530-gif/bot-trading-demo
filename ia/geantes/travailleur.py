@@ -140,7 +140,8 @@ def entrainer_nf():
     from neuralforecast import NeuralForecast
     from neuralforecast import models as M
     d = np.load(os.environ["IA_ENTRAINEMENT"], allow_pickle=True)
-    df = pd.concat([pd.DataFrame({"unique_id": f"s{k}", "ds": np.arange(len(x)), "y": np.asarray(x, dtype=float)})
+    garde = 1500 if FAMILLE == "nf_b" else 10 ** 9  # nf_b : seulement les 1 500 dernières bougies de chaque marché
+    df = pd.concat([pd.DataFrame({"unique_id": f"s{k}", "ds": np.arange(len(x[-garde:])), "y": np.asarray(x[-garde:], dtype=float)})
                     for k, x in enumerate(d["series"]) if len(x) > 200])
     lourd = FAMILLE == "nf_b"  # DeepAR / PatchTST / TFT : plus lents à 60 min, entraînement allégé pour tenir le temps de chargement
     kw = dict(h=max(HORIZONS), input_size=64 if lourd else 128, max_steps=int(os.getenv("IA_NF_PAS", "80")) // (2 if lourd else 1),
