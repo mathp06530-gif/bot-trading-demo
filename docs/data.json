@@ -2081,12 +2081,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T16:25:25Z",
+ "derniere_execution": "2026-11-27T16:26:24Z",
  "historique": [
-  {
-   "date": "2026-11-24T15:50:23Z",
-   "valeur": 98.92
-  },
   {
    "date": "2026-11-24T15:55:23Z",
    "valeur": 99.74
@@ -14082,15 +14078,19 @@
   {
    "date": "2026-11-27T16:25:25Z",
    "valeur": 93.23
+  },
+  {
+   "date": "2026-11-27T16:26:24Z",
+   "valeur": 93.22
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.23,
+  "solde": 93.22,
   "depot": 92.84,
-  "resultat_latent": 0.39,
-  "disponible": 89.9
+  "resultat_latent": 0.38,
+  "disponible": 89.89
  },
  "positions": [
   {
@@ -14099,7 +14099,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3644.44,
-   "resultat": 0.39,
+   "resultat": 0.38,
    "ouverte_le": "2026-11-27T14:55:25.411",
    "id": "00000000-7723-03da-049f-c46d0015549e",
    "stop": 3653.44,
@@ -14514,7 +14514,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-27T14:55:25Z",
    "statut": "ouvert",
-   "resultat": 0.39,
+   "resultat": 0.38,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -14539,7 +14539,7 @@
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
   "2026-11-26": 92.86,
-  "2026-11-27": 93.23
+  "2026-11-27": 93.22
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -14631,7 +14631,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3620.51,
+   "prix": 3623.855,
    "plus_haut_20": 3685.3,
    "plus_bas_20": 3426.62,
    "ema200": 3888.52,
@@ -14643,7 +14643,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": null,
-   "prix": 43.301,
+   "prix": 43.293000000000006,
    "plus_haut_20": 44.58,
    "plus_bas_20": 38.2,
    "ema200": 49.79,
@@ -14673,9 +14673,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3622.99,
+    "prix": 3623.24,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 14.72 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 14.96 de plus dans le bon sens"
    }
   },
   "tendance": "SELL",
@@ -15362,21 +15362,21 @@
    3627.69,
    3627.72,
    3618.62,
-   3620.51
+   3623.86
   ],
   "cassure_4h-SILVER": [
    1795795200,
    43.49,
    43.49,
    43.19,
-   43.3
+   43.29
   ],
   "rapide-GOLD": [
    1795796700,
    3621.98,
-   3623.23,
+   3623.94,
    3621.98,
-   3622.99
+   3623.24
   ]
  },
  "nettoyage": "2026-11-26"
