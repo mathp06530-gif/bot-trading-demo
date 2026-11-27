@@ -29,7 +29,7 @@ import torch  # noqa: E402
 
 torch.set_num_threads(max(1, int(os.getenv("IA_FILS", "1"))))
 NIVEAUX = [round(x, 1) for x in np.linspace(0.1, 0.9, 9)]
-HORIZONS = [1, 2, 3, 5]  # minutes
+HORIZONS = [5, 15, 30, 60]  # minutes
 
 
 def depuis_quantiles(q, dernier):
@@ -68,7 +68,7 @@ def charger(nom):
     if nom == "timesfm":
         import timesfm
         m = timesfm.TimesFM_2p5_200M_torch.from_pretrained("google/timesfm-2.5-200m-pytorch", torch_compile=False)
-        m.compile(timesfm.ForecastConfig(max_context=512, max_horizon=16, normalize_inputs=True, per_core_batch_size=4,
+        m.compile(timesfm.ForecastConfig(max_context=512, max_horizon=64, normalize_inputs=True, per_core_batch_size=4,
                                          use_continuous_quantile_head=True, force_flip_invariance=True,
                                          infer_is_positive=True, fix_quantile_crossing=True))
         return m
@@ -142,7 +142,7 @@ def entrainer_nf():
     d = np.load(os.environ["IA_ENTRAINEMENT"], allow_pickle=True)
     df = pd.concat([pd.DataFrame({"unique_id": f"s{k}", "ds": np.arange(len(x)), "y": np.asarray(x, dtype=float)})
                     for k, x in enumerate(d["series"]) if len(x) > 200])
-    kw = dict(h=max(HORIZONS), input_size=64, max_steps=int(os.getenv("IA_NF_PAS", "80")), scaler_type="standard", batch_size=64,
+    kw = dict(h=max(HORIZONS), input_size=128, max_steps=int(os.getenv("IA_NF_PAS", "80")), scaler_type="standard", batch_size=64,
               enable_progress_bar=False, enable_model_summary=False, logger=False, accelerator="cpu")
     classes = {"nbeats": M.NBEATS, "nhits": M.NHITS, "tide": M.TiDE, "tcn": M.TCN, "deepar": M.DeepAR,
                "patchtst": M.PatchTST, "tft": M.TFT}

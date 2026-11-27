@@ -1,11 +1,11 @@
 """SUPER IA : moteur À PART (aucun ordre, aucune influence sur le test des autres IA).
 
 Il lit le journal publié par ia/direct.py (branche ia-journal, fichier juges.json : chaque prédiction jugée à
-2, 3 et 5 min avec les probabilités de toutes les IA) et rejoue les événements DANS L'ORDRE DU TEMPS :
+5, 15, 30 et 60 min avec les probabilités de toutes les IA) et rejoue les événements DANS L'ORDRE DU TEMPS :
   - à l'heure t où la prédiction a été faite, la Super IA donne SA probabilité, avec uniquement ce qu'elle
     savait à t (résultats arrivés à échéance avant t) ;
   - à l'échéance, le résultat réel la corrige (poids, recalibrage, seuil de confiance, équipe).
-Le moteur attend 12 min avant de traiter un instant, pour être sûr d'avoir reçu tous les résultats d'avant :
+Le moteur attend 68 min avant de traiter un instant, pour être sûr d'avoir reçu tous les résultats d'avant :
 aucune information du futur.
 
 Variantes, bien séparées (chacune a ses propres chiffres) :
@@ -28,7 +28,7 @@ from zoneinfo import ZoneInfo
 FUSEAU = ZoneInfo("Europe/Paris")
 from pathlib import Path
 
-HS = [2, 3, 5]
+HS = [5, 15, 30, 60]
 NOYAU = ["sundial", "tide", "tcn", "nbeats", "nhits"]
 PRIORITE = {"GOLD": "Or", "SILVER": "Argent"}
 # Vue « frais bas » : seulement les prédictions où le VRAI spread Capital.com du moment était petit,
@@ -44,7 +44,7 @@ ETA = 0.05
 MIN_MARCHE, MIN_FAMILLE = 150, 300
 COUVERTURE, FENETRE_CONF = 0.25, 400
 FENETRE_EQUIPE, MIN_CANDIDAT, AVANCE = 1500, 300, 0.01
-ATTENTE = 12 * 60  # secondes : un instant n'est traité que quand tous les résultats d'avant sont publiés
+ATTENTE = 68 * 60  # secondes : un instant n'est traité que quand tous les résultats d'avant sont publiés
 DOSSIER = Path(os.getenv("SUPER_DOSSIER", "super_ia"))
 BRANCHE, SOURCE = "ia-super", "ia-journal"
 
@@ -291,6 +291,51 @@ def publier(s):
         print("publication impossible :", r.stderr[:300], flush=True)
 
 
+# ---------------------------------------------------------------------- archives (pour entraîner des améliorations plus tard)
+ARCHIVE_BRANCHE = "ia-archives"
+ARCHIVE = Path(os.getenv("SUPER_ARCHIVE", "archives_ia"))
+
+
+def archiver(lignes):
+    """Ajoute les résultats jugés (avec les probabilités de chaque IA) à la branche ia-archives : un fichier
+    compressé par session, avec historique normal (on ajoute, on n'écrase jamais)."""
+    import gzip
+    if not lignes:
+        return
+    def g(*a):
+        return subprocess.run(["git", *a], cwd=ARCHIVE, capture_output=True, text=True, timeout=120)
+    if not (ARCHIVE / ".git").exists():
+        ARCHIVE.mkdir(parents=True, exist_ok=True)
+        subprocess.run(["git", "init", "-q", str(ARCHIVE)])
+        for k in ("remote.origin.url",):
+            v = subprocess.run(["git", "config", "--get", k], capture_output=True, text=True).stdout.strip()
+            g("remote", "add", "origin", v)
+        auth = subprocess.run(["git", "config", "--get-regexp", r"http\..*\.extraheader"], capture_output=True, text=True).stdout
+        for ligne in auth.splitlines():
+            k, v = ligne.split(" ", 1)
+            g("config", k, v)
+        g("config", "user.name", "bot-trading-demo")
+        g("config", "user.email", "bot-trading-demo@users.noreply.github.com")
+    jour = lignes[0]["t"][:10]
+    nom = f"{jour}/{lignes[0]['ech']}-{lignes[-1]['ech']}-{len(lignes)}.jsonl.gz"  # unique
+    for essai in range(3):
+        if g("fetch", "-q", "origin", ARCHIVE_BRANCHE).returncode == 0:
+            g("checkout", "-q", "-f", "-B", ARCHIVE_BRANCHE, "FETCH_HEAD")
+        else:
+            g("checkout", "-q", "--orphan", ARCHIVE_BRANCHE)
+        (ARCHIVE / jour).mkdir(parents=True, exist_ok=True)
+        with gzip.open(ARCHIVE / nom, "wt") as f:
+            for it in lignes:
+                f.write(json.dumps(it, separators=(",", ":")) + "\n")
+        g("add", "-A")
+        g("commit", "-qm", f"Archives IA {iso()}")
+        if g("push", "-q", "origin", ARCHIVE_BRANCHE).returncode == 0:
+            print(f"archives : {len(lignes)} résultats -> {nom}", flush=True)
+            return
+        time.sleep(5)
+    print("archives : envoi impossible", flush=True)
+
+
 def principal():
     preparer()
     try:
@@ -300,13 +345,26 @@ def principal():
     s = SuperIA(e)
     debut = time.time()
     duree = int(os.getenv("SUPER_DUREE_S", "3300"))
+    a_archiver, dernier_envoi = [], time.time()
     while True:
         items = lire_journal()
+        jusqua = s.e.get("archive_jusqua", 0)
+        nouveaux = [it for it in items if it["ech"] > jusqua]
+        if nouveaux:
+            a_archiver += nouveaux
+            s.e["archive_jusqua"] = max(it["ech"] for it in nouveaux)
         maintenant = float(os.getenv("SUPER_MAINTENANT", "0")) or time.time()
         n_pred, n_corr = s.traiter(items, maintenant)
         print(f"{iso()} : {len(items)} résultats lus, {n_pred} prédictions, {n_corr} corrections", flush=True)
         publier(s)
-        if time.time() - debut > duree or os.getenv("SUPER_UNE_FOIS"):
+        fin = time.time() - debut > duree or os.getenv("SUPER_UNE_FOIS")
+        if a_archiver and os.getenv("SUPER_GIT", "oui") == "oui" and (fin or time.time() - dernier_envoi > 1200):
+            try:
+                archiver(a_archiver)
+            except Exception as ex:
+                print("archives :", str(ex)[:200], flush=True)
+            a_archiver, dernier_envoi = [], time.time()
+        if fin:
             break
         time.sleep(120)
 
