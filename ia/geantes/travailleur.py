@@ -142,7 +142,9 @@ def entrainer_nf():
     d = np.load(os.environ["IA_ENTRAINEMENT"], allow_pickle=True)
     df = pd.concat([pd.DataFrame({"unique_id": f"s{k}", "ds": np.arange(len(x)), "y": np.asarray(x, dtype=float)})
                     for k, x in enumerate(d["series"]) if len(x) > 200])
-    kw = dict(h=max(HORIZONS), input_size=128, max_steps=int(os.getenv("IA_NF_PAS", "80")), scaler_type="standard", batch_size=64,
+    lourd = FAMILLE == "nf_b"  # DeepAR / PatchTST / TFT : plus lents à 60 min, entraînement allégé pour tenir le temps de chargement
+    kw = dict(h=max(HORIZONS), input_size=64 if lourd else 128, max_steps=int(os.getenv("IA_NF_PAS", "80")) // (2 if lourd else 1),
+              scaler_type="standard", batch_size=64,
               enable_progress_bar=False, enable_model_summary=False, logger=False, accelerator="cpu")
     classes = {"nbeats": M.NBEATS, "nhits": M.NHITS, "tide": M.TiDE, "tcn": M.TCN, "deepar": M.DeepAR,
                "patchtst": M.PatchTST, "tft": M.TFT}
