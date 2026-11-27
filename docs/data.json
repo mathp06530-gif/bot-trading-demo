@@ -2081,12 +2081,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T16:06:25Z",
+ "derniere_execution": "2026-11-27T16:07:25Z",
  "historique": [
-  {
-   "date": "2026-11-24T14:15:23Z",
-   "valeur": 97.52
-  },
   {
    "date": "2026-11-24T14:20:24Z",
    "valeur": 97.64
@@ -14082,15 +14078,19 @@
   {
    "date": "2026-11-27T16:06:25Z",
    "valeur": 93.25
+  },
+  {
+   "date": "2026-11-27T16:07:25Z",
+   "valeur": 93.24
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.25,
+  "solde": 93.24,
   "depot": 92.84,
-  "resultat_latent": 0.41,
-  "disponible": 89.92
+  "resultat_latent": 0.4,
+  "disponible": 89.91
  },
  "positions": [
   {
@@ -14539,7 +14539,7 @@
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
   "2026-11-26": 92.86,
-  "2026-11-27": 93.25
+  "2026-11-27": 93.24
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -14673,9 +14673,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3622.44,
+    "prix": 3622.5,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 13.95 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 14.03 de plus dans le bon sens"
    }
   },
   "tendance": "SELL",
@@ -15376,7 +15376,7 @@
    3623.92,
    3624.8,
    3621.16,
-   3622.44
+   3622.5
   ]
  },
  "nettoyage": "2026-11-26"
