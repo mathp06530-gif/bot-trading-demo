@@ -1967,12 +1967,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T02:53:24Z",
+ "derniere_execution": "2026-11-27T02:54:23Z",
  "historique": [
-  {
-   "date": "2026-11-21T21:25:24Z",
-   "valeur": 97.91
-  },
   {
    "date": "2026-11-21T21:30:23Z",
    "valeur": 97.91
@@ -13968,6 +13964,10 @@
   {
    "date": "2026-11-27T02:53:24Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-27T02:54:23Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -14445,7 +14445,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3624.07,
+   "prix": 3626.435,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3898.36,
@@ -14485,7 +14485,7 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3625.63,
+    "prix": 3627.34,
     "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    }
@@ -15169,7 +15169,7 @@
    3568.09,
    3636.99,
    3557.69,
-   3624.07
+   3626.43
   ],
   "cassure_4h-SILVER": [
    1795737600,
@@ -15183,7 +15183,7 @@
    3624.95,
    3628.23,
    3624.66,
-   3625.63
+   3627.34
   ]
  },
  "nettoyage": "2026-11-26"
