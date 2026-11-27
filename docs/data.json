@@ -1913,12 +1913,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T00:00:24Z",
+ "derniere_execution": "2026-11-27T00:01:25Z",
  "historique": [
-  {
-   "date": "2026-11-21T07:50:25Z",
-   "valeur": 97.91
-  },
   {
    "date": "2026-11-21T07:55:24Z",
    "valeur": 97.91
@@ -13914,6 +13910,10 @@
   {
    "date": "2026-11-27T00:00:24Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-27T00:01:25Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -14391,24 +14391,24 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3568.41,
+   "prix": 3571.965,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
-   "ema200": 3901.68,
+   "ema200": 3898.36,
    "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)",
-   "atr": 45.44,
+   "atr": 42.71,
    "empilement": "position 2/3 possible quand le prix aura avancé de 182.82 de plus dans le bon sens",
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)"
   },
   "SILVER": {
    "nom": "Silver",
    "tendance": "SELL",
-   "prix": 41.531,
+   "prix": 41.632,
    "plus_haut_20": 44.25,
    "plus_bas_20": 38.2,
-   "ema200": 50.12,
+   "ema200": 50.04,
    "action": "Refusé : cassure trop ancienne (depuis le 2026-11-12 08:00)",
-   "atr": 1.0,
+   "atr": 0.95,
    "empilement": "position 2/3 possible quand le prix aura avancé de 3.75 de plus dans le bon sens",
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-12 08:00)"
   }
@@ -14432,7 +14432,7 @@
      "tendance_4h": "SELL",
      "bollinger": 0.45
     },
-    "prix": 3568.115,
+    "prix": 3571.79,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    }
@@ -15112,25 +15112,25 @@
  "cassure_garde": {},
  "graph_live": {
   "cassure_4h-GOLD": [
-   1795723200,
-   3568.19,
-   3570.68,
-   3563.46,
-   3568.41
+   1795737600,
+   3568.09,
+   3572.36,
+   3567.59,
+   3571.97
   ],
   "cassure_4h-SILVER": [
-   1795723200,
-   41.5,
-   41.6,
-   41.37,
-   41.53
+   1795737600,
+   41.55,
+   41.64,
+   41.54,
+   41.63
   ],
   "rapide-GOLD": [
    1795737600,
    3568.09,
-   3568.61,
+   3572.36,
    3567.59,
-   3568.11
+   3571.79
   ]
  },
  "nettoyage": "2026-11-26"
