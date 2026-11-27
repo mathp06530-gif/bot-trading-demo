@@ -2087,12 +2087,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T17:38:25Z",
+ "derniere_execution": "2026-11-27T17:39:25Z",
  "historique": [
-  {
-   "date": "2026-11-24T21:45:23Z",
-   "valeur": 101.5
-  },
   {
    "date": "2026-11-24T21:50:24Z",
    "valeur": 101.42
@@ -14088,6 +14084,10 @@
   {
    "date": "2026-11-27T17:38:25Z",
    "valeur": 92.99
+  },
+  {
+   "date": "2026-11-27T17:39:25Z",
+   "valeur": 92.99
   }
  ],
  "compte": {
@@ -14105,7 +14105,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3644.44,
-   "resultat": 0.16,
+   "resultat": 0.15,
    "ouverte_le": "2026-11-27T14:55:25.411",
    "id": "00000000-7723-03da-049f-c46d0015549e",
    "stop": 3653.44,
@@ -14520,7 +14520,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-27T14:55:25Z",
    "statut": "ouvert",
-   "resultat": 0.16,
+   "resultat": 0.15,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -14637,7 +14637,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3637.65,
+   "prix": 3636.15,
    "plus_haut_20": 3685.3,
    "plus_bas_20": 3426.62,
    "ema200": 3888.52,
@@ -14649,7 +14649,7 @@
   "SILVER": {
    "nom": "Silver",
    "tendance": null,
-   "prix": 43.46,
+   "prix": 43.434,
    "plus_haut_20": 44.58,
    "plus_bas_20": 38.2,
    "ema200": 49.79,
@@ -14679,9 +14679,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3636.0299999999997,
+    "prix": 3636.08,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 27.69 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 27.75 de plus dans le bon sens"
    }
   },
   "tendance": "SELL",
@@ -15368,21 +15368,21 @@
    3627.69,
    3640.5,
    3618.62,
-   3637.65
+   3636.15
   ],
   "cassure_4h-SILVER": [
    1795795200,
    43.49,
    43.64,
    43.19,
-   43.46
+   43.43
   ],
   "rapide-GOLD": [
    1795800900,
    3638.85,
    3640.17,
-   3636.03,
-   3636.03
+   3635.53,
+   3636.08
   ]
  },
  "nettoyage": "2026-11-26"
