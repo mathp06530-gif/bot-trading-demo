@@ -1931,12 +1931,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T01:01:25Z",
+ "derniere_execution": "2026-11-27T01:02:24Z",
  "historique": [
-  {
-   "date": "2026-11-21T12:40:25Z",
-   "valeur": 97.91
-  },
   {
    "date": "2026-11-21T12:45:25Z",
    "valeur": 97.91
@@ -13932,6 +13928,10 @@
   {
    "date": "2026-11-27T01:01:25Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-27T01:02:24Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -14451,7 +14451,7 @@
      "bollinger": 1.35,
      "adx": 15.0
     },
-    "prix": 3565.295,
+    "prix": 3564.995,
     "action": "En attente : tendance 5 min trop faible (ADX 15 ≤ 20)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    }
@@ -15147,9 +15147,9 @@
   "rapide-GOLD": [
    1795741200,
    3561.09,
-   3567.23,
+   3567.3,
    3557.69,
-   3565.3
+   3564.99
   ]
  },
  "nettoyage": "2026-11-26"
