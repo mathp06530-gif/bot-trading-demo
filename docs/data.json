@@ -1913,12 +1913,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T00:19:24Z",
+ "derniere_execution": "2026-11-27T00:20:23Z",
  "historique": [
-  {
-   "date": "2026-11-21T09:25:24Z",
-   "valeur": 97.91
-  },
   {
    "date": "2026-11-21T09:30:24Z",
    "valeur": 97.91
@@ -13914,6 +13910,10 @@
   {
    "date": "2026-11-27T00:19:24Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-27T00:20:23Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -14425,19 +14425,18 @@
   "nom": "Rapide 5 min : EMA 9/50 dans le sens des tendances 1 h et 4 h, Bollinger qui s'élargissent, ADX > 20, stop 1 %, suiveur 1 %, sortie au prix d'entrée après +0.5 R, garde 60 % du gain après +1.5 R, sortie si le croisement inverse dure 3 bougies, jusqu'à 2 position(s), risque 1 % (expérimentale)",
   "marches": {
    "GOLD": {
-    "tendance": "SELL",
+    "tendance": "BUY",
     "filtre": {
-     "signal_5min": "SELL",
+     "signal_5min": "BUY",
      "tendance_1h": "SELL",
-     "tendance_4h": "SELL",
-     "bollinger": 0.68
+     "tendance_4h": "SELL"
     },
-    "prix": 3570.075,
-    "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
+    "prix": 3571.12,
+    "action": "À l'écart : signal 5 min en hausse, mais tendance 1 h en baisse et 4 h en baisse (pas d'accord)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    }
   },
-  "tendance": "SELL",
+  "tendance": "BUY",
   "meilleur": {},
   "entree_bougie": {
    "GOLD": "2026-11-26T10:45:00"
@@ -15126,11 +15125,11 @@
    41.55
   ],
   "rapide-GOLD": [
-   1795738500,
-   3567.09,
-   3571.41,
-   3567.04,
-   3570.07
+   1795738800,
+   3571.26,
+   3571.57,
+   3571.02,
+   3571.12
   ]
  },
  "nettoyage": "2026-11-26"
