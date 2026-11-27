@@ -2081,12 +2081,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T16:00:25Z",
+ "derniere_execution": "2026-11-27T16:01:25Z",
  "historique": [
-  {
-   "date": "2026-11-24T13:50:25Z",
-   "valeur": 97.46
-  },
   {
    "date": "2026-11-24T13:50:51Z",
    "valeur": 97.48
@@ -14082,15 +14078,19 @@
   {
    "date": "2026-11-27T16:00:25Z",
    "valeur": 93.17
+  },
+  {
+   "date": "2026-11-27T16:01:25Z",
+   "valeur": 93.23
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 93.17,
+  "solde": 93.23,
   "depot": 92.84,
-  "resultat_latent": 0.33,
-  "disponible": 89.84
+  "resultat_latent": 0.39,
+  "disponible": 89.9
  },
  "positions": [
   {
@@ -14099,7 +14099,7 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3644.44,
-   "resultat": 0.34,
+   "resultat": 0.39,
    "ouverte_le": "2026-11-27T14:55:25.411",
    "id": "00000000-7723-03da-049f-c46d0015549e",
    "stop": 3653.44,
@@ -14514,7 +14514,7 @@
    "stop_garanti": true,
    "ouvert_le": "2026-11-27T14:55:25Z",
    "statut": "ouvert",
-   "resultat": 0.34,
+   "resultat": 0.39,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -14539,7 +14539,7 @@
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
   "2026-11-26": 92.86,
-  "2026-11-27": 93.17
+  "2026-11-27": 93.23
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -14631,22 +14631,22 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3627.49,
-   "plus_haut_20": 3678.35,
+   "prix": 3624.39,
+   "plus_haut_20": 3685.3,
    "plus_bas_20": 3426.62,
-   "ema200": 3891.14,
+   "ema200": 3888.52,
    "action": "Refusé : cassure trop ancienne (depuis le 2026-11-11 12:00)",
-   "atr": 43.63,
+   "atr": 44.68,
    "empilement": "position 2/3 possible quand le prix aura avancé de 182.82 de plus dans le bon sens",
    "dernier_refus": "cassure trop ancienne (depuis le 2026-11-11 12:00)"
   },
   "SILVER": {
    "nom": "Silver",
    "tendance": null,
-   "prix": 43.4955,
+   "prix": 43.352000000000004,
    "plus_haut_20": 44.58,
    "plus_bas_20": 38.2,
-   "ema200": 49.86,
+   "ema200": 49.79,
    "action": "Aucune action",
    "atr": 1.03,
    "empilement": "position 2/3 possible quand le prix aura avancé de 3.75 de plus dans le bon sens",
@@ -14673,9 +14673,9 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3625.9,
+    "prix": 3621.9449999999997,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 17.47 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 13.72 de plus dans le bon sens"
    }
   },
   "tendance": "SELL",
@@ -15358,25 +15358,25 @@
  "cassure_garde": {},
  "graph_live": {
   "cassure_4h-GOLD": [
-   1795780800,
-   3673.73,
-   3674.37,
-   3616.1,
-   3627.49
+   1795795200,
+   3627.69,
+   3627.72,
+   3624.19,
+   3624.39
   ],
   "cassure_4h-SILVER": [
-   1795780800,
-   44.11,
-   44.17,
-   43.21,
-   43.5
+   1795795200,
+   43.49,
+   43.49,
+   43.35,
+   43.35
   ],
   "rapide-GOLD": [
    1795795200,
    3627.69,
    3627.72,
-   3625.9,
-   3625.9
+   3621.55,
+   3621.94
   ]
  },
  "nettoyage": "2026-11-26"
