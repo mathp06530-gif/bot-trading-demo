@@ -71,6 +71,8 @@ def etat_vide():
 class SuperIA:
     def __init__(self, e=None):
         self.e = e or etat_vide()
+        for h in HS:  # un horizon ajouté après coup démarre avec l'équipe de base
+            self.e.setdefault("equipe", {}).setdefault(str(h), list(NOYAU))
 
     # ------------------------------------------------------------------ prédiction
     def _groupes(self, it):
