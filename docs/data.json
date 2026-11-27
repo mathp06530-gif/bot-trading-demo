@@ -2081,12 +2081,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T16:18:25Z",
+ "derniere_execution": "2026-11-27T16:19:25Z",
  "historique": [
-  {
-   "date": "2026-11-24T15:15:23Z",
-   "valeur": 98.14
-  },
   {
    "date": "2026-11-24T15:20:23Z",
    "valeur": 98.66
@@ -14082,6 +14078,10 @@
   {
    "date": "2026-11-27T16:18:25Z",
    "valeur": 93.3
+  },
+  {
+   "date": "2026-11-27T16:19:25Z",
+   "valeur": 93.3
   }
  ],
  "compte": {
@@ -14675,7 +14675,7 @@
     },
     "prix": 3619.44,
     "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 10.98 de plus dans le bon sens"
+    "empilement": "position 2/2 possible quand le prix aura avancé de 10.94 de plus dans le bon sens"
    }
   },
   "tendance": "SELL",
