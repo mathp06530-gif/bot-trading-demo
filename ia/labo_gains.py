@@ -279,26 +279,44 @@ def bilan(dossier, md, sortie_json):
     print("\n".join(L_))
 
 
+def connecter(api):
+    """Capital.com limite les ouvertures de session (erreur 429) : on réessaie en patientant."""
+    for essai in range(8):
+        try:
+            api.connexion()
+            return True
+        except Exception as x:
+            print("connexion :", str(x)[:120])
+            time.sleep(15 * (essai + 1))
+    return False
+
+
 def telecharger(dossier, epics):
     from backtest import telecharger as t
     from bot.capital import CapitalDemo
     cle, ident, mdp = (os.getenv(n, "").strip() for n in ("CAPITAL_API_KEY", "CAPITAL_IDENTIFIER", "CAPITAL_PASSWORD"))
     api = CapitalDemo(cle, ident, mdp)
-    api.connexion()
+    if not connecter(api):
+        print("Pas de connexion : on continue avec les marchés déjà en cache.")
+        return
     t.DOSSIER = Path(dossier)
     Path(dossier).mkdir(parents=True, exist_ok=True)
+    ouverte = time.time()
     for e in epics:
         if (Path(dossier) / f"{e}_HOUR_4.csv").exists():
             print(e, "déjà là")
             continue
+        if time.time() - ouverte > 480:  # la session expire après 10 min : on la renouvelle de temps en temps seulement
+            api.deconnexion()
+            time.sleep(3)
+            if not connecter(api):
+                break
+            ouverte = time.time()
         try:
             (Path(dossier) / f"{e}_marche.json").write_text(json.dumps(api.marche(e), ensure_ascii=False))
             t.telecharger(api, e, "HOUR_4", 240, 3650)
         except Exception as x:
             print(e, "échec", str(x)[:200])
-        api.deconnexion()
-        time.sleep(1)
-        api.connexion()
     api.deconnexion()
 
 

@@ -37,7 +37,7 @@ jobs:
           CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
         run: |
           python -u ia/labo_gains.py telecharger donnees_gains US30 UK100 FR40 EU50 J225 HK50 AU200 USDJPY AUDUSD USDCAD USDCHF NZDUSD EURJPY EURGBP NATURALGAS COPPER PLATINUM OIL_BRENT BTCUSD ETHUSD
-          mkdir -p tout && cp donnees_ia/*_HOUR_4.csv donnees_ia/*_marche.json tout/ 2>/dev/null; cp donnees_gains/* tout/
+          mkdir -p tout donnees_gains && cp donnees_ia/*_HOUR_4.csv donnees_ia/*_marche.json tout/ 2>/dev/null; cp donnees_gains/* tout/ 2>/dev/null || true
           ls tout | grep HOUR_4
       - uses: actions/cache/save@v4
         continue-on-error: true
