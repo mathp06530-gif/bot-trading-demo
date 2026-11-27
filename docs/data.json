@@ -2050,15 +2050,18 @@
    "marche": "GOLD",
    "texte": "[Rapide] Stop suiveur déplacé de 3680.88 à 3676.48 pour garder le gain.",
    "strategie": "rapide"
+  },
+  {
+   "date": "2026-11-27T15:00:25Z",
+   "type": "stop",
+   "marche": "GOLD",
+   "texte": "[Rapide] Stop suiveur déplacé de 3676.48 à 3671.65 pour garder le gain.",
+   "strategie": "rapide"
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T14:59:25Z",
+ "derniere_execution": "2026-11-27T15:00:26Z",
  "historique": [
-  {
-   "date": "2026-11-24T08:45:25Z",
-   "valeur": 97.76
-  },
   {
    "date": "2026-11-24T08:50:24Z",
    "valeur": 97.88
@@ -14054,15 +14057,19 @@
   {
    "date": "2026-11-27T14:59:25Z",
    "valeur": 92.96
+  },
+  {
+   "date": "2026-11-27T15:00:26Z",
+   "valeur": 93.02
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 92.96,
+  "solde": 93.02,
   "depot": 92.84,
-  "resultat_latent": 0.12,
-  "disponible": 89.62
+  "resultat_latent": 0.18,
+  "disponible": 89.68
  },
  "positions": [
   {
@@ -14071,10 +14078,10 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3644.44,
-   "resultat": 0.11,
+   "resultat": 0.19,
    "ouverte_le": "2026-11-27T14:55:25.411",
    "id": "00000000-7723-03da-049f-c46d0015549e",
-   "stop": 3676.48,
+   "stop": 3671.65,
    "stop_garanti": true,
    "objectif": null,
    "strategie": "rapide"
@@ -14481,12 +14488,12 @@
    "sens": "SELL",
    "taille": 0.02,
    "prix_entree": 3644.44,
-   "stop": 3676.48,
+   "stop": 3671.65,
    "objectif": null,
    "stop_garanti": true,
    "ouvert_le": "2026-11-27T14:55:25Z",
    "statut": "ouvert",
-   "resultat": 0.11,
+   "resultat": 0.19,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -14511,7 +14518,7 @@
   "2026-11-24": 99.14,
   "2026-11-25": 93.99,
   "2026-11-26": 92.86,
-  "2026-11-27": 92.96
+  "2026-11-27": 93.02
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
@@ -14645,16 +14652,16 @@
      "tendance_1h": "SELL",
      "tendance_4h": "SELL"
     },
-    "prix": 3636.98,
-    "action": "Position conservée",
-    "empilement": "position 2/2 possible quand le prix aura avancé de 28.60 de plus dans le bon sens"
+    "prix": 3635.3,
+    "action": "Stop suiveur déplacé",
+    "empilement": "position 2/2 possible quand le prix aura avancé de 26.96 de plus dans le bon sens"
    }
   },
   "tendance": "SELL",
   "meilleur": {
    "00000000-7723-03da-049f-c46d0015549e": {
     "depuis": "2026-11-27T14:55:00",
-    "prix": 3644.44
+    "prix": 3636.42
    }
   },
   "entree_bougie": {
@@ -15344,11 +15351,11 @@
    43.74
   ],
   "rapide-GOLD": [
-   1795791300,
-   3644.93,
-   3645.35,
-   3636.58,
-   3636.98
+   1795791600,
+   3637.09,
+   3637.31,
+   3635.3,
+   3635.3
   ]
  },
  "nettoyage": "2026-11-26"
