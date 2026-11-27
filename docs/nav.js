@@ -38,7 +38,7 @@
     bas.querySelectorAll("[data-nav]").forEach(a => a.dataset.nav === idBas ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
   };
   const page = location.pathname.split("/").pop();
-  navActif(page === "ia.html" ? "ia" : page === "elan.html" ? "elan" : (location.hash.slice(1) || "accueil"));
+  navActif(page === "ia.html" || page === "mur.html" ? "ia" : page === "elan.html" ? "elan" : (location.hash.slice(1) || "accueil"));
 
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 })();

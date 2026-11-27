@@ -296,6 +296,10 @@ def principal():
     attente = [p for p in lire_json("attente.json", []) if p.get("echeance", 0) > time.time() + 5 and p.get("h") in HS]
     anciens = {k: v for k, v in (lu.get("horizons") or {}).items() if int(k) not in HS}  # 1, 2, 3 min : chiffres gardés
     juges = lire_json("juges.json", {}).get("items", [])
+    mur_lu = lire_json("mur.json", {})  # « mur d'écrans » : prix + prédictions de chaque IA sur les 8 marchés prioritaires
+    prix_hist = {e: v for e, v in (mur_lu.get("prix") or {}).items() if e in PRIORITAIRES}
+    jugees_mur = list(mur_lu.get("jugees") or [])
+    derniere_pub_mur = 0.0
     derniere_session, derniere_pub, dernier_etat = time.time(), 0.0, time.time()
     pool = ThreadPoolExecutor(6)
     fond = ThreadPoolExecutor(1)  # publication seulement
@@ -336,6 +340,9 @@ def principal():
                     sens = 1 if pr > 0.5 else -1
                     gain = (sens * (fin["mid"] - p["depart"]) - p["spread"]) / p["depart"] * 100
                     compter(ST[p["h"]], p["epic"], p["type"], jour, m, (sens > 0) == hausse, gain)
+                if p["epic"] in PRIORITAIRES:
+                    jugees_mur.append({"t": p["heure"], "e": p["epic"], "h": p["h"], "d": p["depart"], "f": fin["mid"],
+                                       "up": int(hausse), "p": {m: round(v, 2) for m, v in p["probas"].items() if m != "arbitre"}})
                 if p["h"] >= 2:  # pour le moteur Super IA (à part) : aucune influence sur ce test
                     juges.append({"id": f'{p["heure"]}|{p["epic"]}|{p["h"]}', "t": p["heure"], "ech": round(p["echeance"]),
                                   "e": p["epic"], "ty": p["type"], "h": p["h"], "up": int(hausse),
@@ -449,6 +456,9 @@ def principal():
                 attente.append({"epic": e, "h": h, "type": univers["marches"].get(e, {}).get("type", "?"), "heure": heure,
                                 "echeance": t_depart + 60 * h, "depart": depart[e]["mid"], "spread": depart[e]["spread"],
                                 "probas": pe})
+            if e in PRIORITAIRES:
+                prix_hist.setdefault(e, []).append([heure, depart[e]["mid"]])
+                prix_hist[e] = prix_hist[e][-300:]
             vivant["probas"][e] = {"t": heure, "p": {str(h): {m: round(p, 3) for m, p in probas[e][h].items()} for h in HS}}
         vivant["delais"] = {"prix_frais_vers_prediction_s": round(time.time() - t_frais, 1),
                             "debut_minute_vers_prediction_s": round(time.time() - t_tour, 1),
@@ -462,11 +472,22 @@ def principal():
         # on ne garde que les probabilités de la dernière heure
         limite = iso(datetime.fromtimestamp(time.time() - 3600, timezone.utc))
         vivant["probas"] = {e: v for e, v in vivant["probas"].items() if v["t"] >= limite}
+        limite_mur = iso(datetime.fromtimestamp(time.time() - 2 * 3600, timezone.utc))  # 2 h de recul
+        jugees_mur = [j for j in jugees_mur if j["t"] >= limite_mur]
+        mur = {"maj": iso(), "hs": HS, "noms": NOMS,
+               "prix": prix_hist, "jugees": jugees_mur,
+               "attente": [{"t": a["heure"], "e": a["epic"], "h": a["h"], "d": a["depart"], "ech": round(a["echeance"]),
+                            "p": {m: round(v, 2) for m, v in a["probas"].items() if m != "arbitre"}}
+                           for a in attente if a["epic"] in PRIORITAIRES]}
         if time.time() - derniere_pub > 3 * 60 and (tache_pub is None or tache_pub.done()):
             vivant["maj"] = iso()
-            copie = json.loads(json.dumps({"stats.json": {"horizons": {**anciens, **{str(h): ST[h] for h in HS}}}, "vivant.json": vivant, "marches.json": univers, "juges.json": {"maj": iso(), "items": juges}, "attente.json": attente}))
+            derniere_pub_mur = time.time()
+            copie = json.loads(json.dumps({"mur.json": mur, "stats.json": {"horizons": {**anciens, **{str(h): ST[h] for h in HS}}}, "vivant.json": vivant, "marches.json": univers, "juges.json": {"maj": iso(), "items": juges}, "attente.json": attente}))
             tache_pub = fond.submit(publier, copie)  # en arrière-plan : la minute suivante n'attend pas
             derniere_pub = time.time()
+        elif time.time() - derniere_pub_mur > 55 and (tache_pub is None or tache_pub.done()):
+            tache_pub = fond.submit(publier, json.loads(json.dumps({"mur.json": mur})))  # le mur se met à jour chaque minute
+            derniere_pub_mur = time.time()
     if tache_pub is not None:
         tache_pub.result()
     vivant["maj"] = iso()
