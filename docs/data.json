@@ -1925,12 +1925,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-27T00:48:24Z",
+ "derniere_execution": "2026-11-27T00:49:24Z",
  "historique": [
-  {
-   "date": "2026-11-21T11:40:25Z",
-   "valeur": 97.91
-  },
   {
    "date": "2026-11-21T11:45:25Z",
    "valeur": 97.91
@@ -13926,6 +13922,10 @@
   {
    "date": "2026-11-27T00:48:24Z",
    "valeur": 92.86
+  },
+  {
+   "date": "2026-11-27T00:49:24Z",
+   "valeur": 92.86
   }
  ],
  "compte": {
@@ -14393,7 +14393,7 @@
     "titre": "Prelim GDP q/q"
    }
   ],
-  "lu_le": "2026-11-26T23:48:21.927391+00:00",
+  "lu_le": "2026-11-27T00:49:22.399254+00:00",
   "pause": null,
   "prochaines": [],
   "pauses_marches": {}
@@ -14403,7 +14403,7 @@
   "GOLD": {
    "nom": "Gold",
    "tendance": "SELL",
-   "prix": 3566.47,
+   "prix": 3562.645,
    "plus_haut_20": 3689.63,
    "plus_bas_20": 3426.62,
    "ema200": 3898.36,
@@ -14444,7 +14444,7 @@
      "tendance_4h": "SELL",
      "bollinger": 0.83
     },
-    "prix": 3562.8549999999996,
+    "prix": 3562.815,
     "action": "En attente : marché trop calme (bandes de Bollinger étroites)",
     "empilement": "position 2/2 possible quand le prix aura avancé de 53.46 de plus dans le bon sens"
    }
@@ -15127,8 +15127,8 @@
    1795737600,
    3568.09,
    3574.32,
-   3565.26,
-   3566.47
+   3562.35,
+   3562.64
   ],
   "cassure_4h-SILVER": [
    1795737600,
@@ -15141,8 +15141,8 @@
    1795740300,
    3565.95,
    3566.07,
-   3562.37,
-   3562.85
+   3562.3,
+   3562.82
   ]
  },
  "nettoyage": "2026-11-26"
