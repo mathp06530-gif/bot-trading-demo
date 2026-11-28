@@ -5,9 +5,6 @@ name: Labo trading manuel EUR/USD (aucun ordre)
 
 on:
   workflow_dispatch:
-  push:
-    branches: [claude/project-thread-yf4y2v]
-    paths: [backtest/manuel_eurusd.py, .github/workflows/manuel_eurusd.yml]
 
 permissions:
   contents: write
