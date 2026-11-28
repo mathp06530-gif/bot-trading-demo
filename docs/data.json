@@ -2251,12 +2251,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-28T15:56:23Z",
+ "derniere_execution": "2026-11-28T15:57:23Z",
  "historique": [
-  {
-   "date": "2026-11-26T13:23:26Z",
-   "valeur": 92.86
-  },
   {
    "date": "2026-11-26T13:24:26Z",
    "valeur": 92.86
@@ -14252,6 +14248,10 @@
   {
    "date": "2026-11-28T15:56:23Z",
    "valeur": 92.63
+  },
+  {
+   "date": "2026-11-28T15:57:23Z",
+   "valeur": 92.63
   }
  ],
  "compte": {
@@ -14260,9 +14260,24 @@
   "solde": 92.63,
   "depot": 92.63,
   "resultat_latent": 0.0,
-  "disponible": 92.63
+  "disponible": 89.91
  },
- "positions": [],
+ "positions": [
+  {
+   "marche": "BTCUSD",
+   "nom": "Bitcoin/USD",
+   "sens": "BUY",
+   "taille": 0.0001,
+   "prix_entree": 59448.45,
+   "resultat": 0,
+   "ouverte_le": "2026-11-28T15:57:18.338",
+   "id": "00000000-7764-2814-049f-c46d0015549e",
+   "stop": null,
+   "stop_garanti": false,
+   "objectif": null,
+   "strategie": "autre"
+  }
+ ],
  "ordres": [
   {
    "id": "00000000-750e-5d28-049f-c46d0015549e",
@@ -14725,6 +14740,25 @@
    "strategie": "autre",
    "reglages": null,
    "resultat_estime": false
+  },
+  {
+   "id": "00000000-7764-2814-049f-c46d0015549e",
+   "marche": "BTCUSD",
+   "nom": "Bitcoin/USD",
+   "sens": "BUY",
+   "taille": 0.0001,
+   "prix_entree": 59448.45,
+   "stop": null,
+   "objectif": null,
+   "stop_garanti": false,
+   "ouvert_le": "2026-11-28T15:57:18Z",
+   "statut": "ouvert",
+   "resultat": 0,
+   "ferme_le": null,
+   "prix_sortie": null,
+   "motif_sortie": null,
+   "strategie": "autre",
+   "reglages": null
   }
  ],
  "historique_jour": {
