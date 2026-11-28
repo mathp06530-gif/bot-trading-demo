@@ -2203,12 +2203,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-28T11:59:22Z",
+ "derniere_execution": "2026-11-28T12:00:23Z",
  "historique": [
-  {
-   "date": "2026-11-26T09:28:26Z",
-   "valeur": 93.16
-  },
   {
    "date": "2026-11-26T09:29:26Z",
    "valeur": 93.17
@@ -14204,6 +14200,10 @@
   {
    "date": "2026-11-28T11:59:22Z",
    "valeur": 92.79
+  },
+  {
+   "date": "2026-11-28T12:00:23Z",
+   "valeur": 92.79
   }
  ],
  "compte": {
@@ -14743,7 +14743,7 @@
    "prix": 3654.47,
    "plus_haut_20": 3685.3,
    "plus_bas_20": 3426.62,
-   "ema200": 3888.52,
+   "ema200": 3888.51,
    "action": "Refusé : marché fermé",
    "atr": 44.68,
    "empilement": "position 2/3 possible quand le prix aura avancé de 182.82 de plus dans le bon sens",
