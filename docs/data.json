@@ -2170,10 +2170,16 @@
    "type": "erreur",
    "marche": "",
    "texte": "Connexion refusée (504). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : <html>\r\n<head><title>504 Gateway Time-out</title></head>\r\n<body>\r\n<center><h1>504 Gateway Time-out</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
+  },
+  {
+   "date": "2026-11-28T07:35:51Z",
+   "type": "erreur",
+   "marche": "",
+   "texte": "HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=30)"
   }
  ],
  "statut": "erreur",
- "derniere_execution": "2026-11-28T07:34:37Z",
+ "derniere_execution": "2026-11-28T07:35:51Z",
  "historique": [
   {
    "date": "2026-11-26T05:04:25Z",
