@@ -2251,12 +2251,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-28T15:49:23Z",
+ "derniere_execution": "2026-11-28T15:50:23Z",
  "historique": [
-  {
-   "date": "2026-11-26T13:16:26Z",
-   "valeur": 92.86
-  },
   {
    "date": "2026-11-26T13:17:26Z",
    "valeur": 92.86
@@ -14252,15 +14248,19 @@
   {
    "date": "2026-11-28T15:49:23Z",
    "valeur": 92.73
+  },
+  {
+   "date": "2026-11-28T15:50:23Z",
+   "valeur": 92.7
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 92.73,
-  "depot": 92.79,
-  "resultat_latent": -0.06,
-  "disponible": 46.29
+  "solde": 92.7,
+  "depot": 92.75,
+  "resultat_latent": -0.05,
+  "disponible": 46.26
  },
  "positions": [
   {
@@ -14268,13 +14268,13 @@
    "nom": "Bitcoin/USD",
    "sens": "BUY",
    "taille": 0.0017,
-   "prix_entree": 59481.8,
-   "resultat": -0.04,
-   "ouverte_le": "2026-11-28T15:49:03.550",
-   "id": "00000000-7764-270f-049f-c46d0015549e",
-   "stop": 57648.5,
+   "prix_entree": 59476.2,
+   "resultat": -0.05,
+   "ouverte_le": "2026-11-28T15:49:54.264",
+   "id": "00000000-7764-2740-049f-c46d0015549e",
+   "stop": 57642.9,
    "stop_garanti": true,
-   "objectif": 60073.6,
+   "objectif": 60068.0,
    "strategie": "autre"
   }
  ],
@@ -14712,8 +14712,28 @@
    "objectif": 60073.6,
    "stop_garanti": true,
    "ouvert_le": "2026-11-28T15:49:03Z",
-   "statut": "ouvert",
+   "statut": "ferme",
    "resultat": -0.04,
+   "ferme_le": "2026-11-28T15:50:23Z",
+   "prix_sortie": 59455.05,
+   "motif_sortie": "Fermée chez Capital.com",
+   "strategie": "autre",
+   "reglages": null,
+   "resultat_estime": false
+  },
+  {
+   "id": "00000000-7764-2740-049f-c46d0015549e",
+   "marche": "BTCUSD",
+   "nom": "Bitcoin/USD",
+   "sens": "BUY",
+   "taille": 0.0017,
+   "prix_entree": 59476.2,
+   "stop": 57642.9,
+   "objectif": 60068.0,
+   "stop_garanti": true,
+   "ouvert_le": "2026-11-28T15:49:54Z",
+   "statut": "ouvert",
+   "resultat": -0.05,
    "ferme_le": null,
    "prix_sortie": null,
    "motif_sortie": null,
@@ -14730,7 +14750,7 @@
   "2026-11-25": 93.99,
   "2026-11-26": 92.86,
   "2026-11-27": 92.79,
-  "2026-11-28": 92.73
+  "2026-11-28": 92.7
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
