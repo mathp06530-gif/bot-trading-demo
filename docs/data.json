@@ -2196,13 +2196,9 @@
    "texte": "Connexion refusée (504). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : <html>\r\n<head><title>504 Gateway Time-out</title></head>\r\n<body>\r\n<center><h1>504 Gateway Time-out</h1></center>\r\n<hr><center>nginx</center>\r\n</body>\r\n</html>\r\n"
   }
  ],
- "statut": "erreur",
- "derniere_execution": "2026-11-28T07:38:36Z",
+ "statut": "ok",
+ "derniere_execution": "2026-11-28T07:39:24Z",
  "historique": [
-  {
-   "date": "2026-11-26T05:04:25Z",
-   "valeur": 93.15
-  },
   {
    "date": "2026-11-26T05:05:25Z",
    "valeur": 93.15
@@ -14197,6 +14193,10 @@
   },
   {
    "date": "2026-11-28T07:22:24Z",
+   "valeur": 92.79
+  },
+  {
+   "date": "2026-11-28T07:39:24Z",
    "valeur": 92.79
   }
  ],
