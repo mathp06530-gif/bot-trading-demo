@@ -26,12 +26,12 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r ia/requirements.txt matplotlib
-      - name: Cache des prix (le même que les labos IA)
-        uses: actions/cache@v4
+      - name: Cache des prix EUR/USD
+        uses: actions/cache/restore@v4
         with:
           path: donnees_ia
-          key: ia-donnees-v1-manuel-${{ github.run_id }}
-          restore-keys: ia-donnees-v1-
+          key: manuel-eurusd-v1-${{ github.run_id }}
+          restore-keys: manuel-eurusd-v1-
       - name: Prix EUR/USD (télécharge seulement s'il manque)
         env:
           CAPITAL_API_KEY: ${{ secrets.CAPITAL_API_KEY }}
@@ -39,13 +39,32 @@ jobs:
           CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
         run: |
           ls -la donnees_ia 2>/dev/null | grep EURUSD || true
-          if [ ! -f donnees_ia/EURUSD_MINUTE_5.csv ]; then python -u ia/predire.py telecharger donnees_ia EURUSD || echo "téléchargement partiel"; fi
+          if [ ! -f donnees_ia/EURUSD_MINUTE_15.csv ]; then
+            python -u - <<'PY'
+          import os, sys
+          from pathlib import Path
+          sys.path.insert(0, ".")
+          from backtest import telecharger as t
+          from bot.capital import CapitalDemo
+          api = CapitalDemo(*(os.environ[n] for n in ("CAPITAL_API_KEY", "CAPITAL_IDENTIFIER", "CAPITAL_PASSWORD")))
+          api.connexion()
+          t.DOSSIER = Path("donnees_ia"); t.DOSSIER.mkdir(exist_ok=True)
+          t.telecharger(api, "EURUSD", "MINUTE_15", 15, 700)
+          t.telecharger(api, "EURUSD", "MINUTE_5", 5, 365)
+          PY
+          fi
           wc -l donnees_ia/EURUSD_MINUTE_*.csv
+      - name: Garder les prix en cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: donnees_ia
+          key: manuel-eurusd-v1-${{ github.run_id }}
       - run: python -u backtest/manuel_eurusd.py donnees_ia backtest/MANUEL_EURUSD.md backtest/manuel_eurusd.json backtest/manuel_eurusd_images
       - run: |
           git config user.name "bot-trading-demo"
           git config user.email "bot-trading-demo@users.noreply.github.com"
-          git add backtest/MANUEL_EURUSD.md backtest/manuel_eurusd.json backtest/manuel_eurusd_images
+          git add -A backtest/
           git diff --cached --quiet && exit 0
           git commit -qm "Labo trading manuel EUR/USD : résultats"
           for i in 1 2 3 4 5; do git pull -q --rebase origin "${GITHUB_REF_NAME}" && git push -q origin HEAD:"${GITHUB_REF_NAME}" && exit 0; sleep 7; done

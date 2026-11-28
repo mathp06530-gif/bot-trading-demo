@@ -238,7 +238,7 @@ def ligne(nom, s):
             f"{s['R_total']:+.1f} | {s['R_mois']:+.2f} | {s['pire_baisse_R']} | {s['mois_positifs_pct']:.0f} % |")
 
 
-def images(d, trades, dossier, nb=4):
+def images(d, trades, dossier, nb=4, boite=None, unite_txt="15 min"):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -248,7 +248,7 @@ def images(d, trades, dossier, nb=4):
     fichiers = []
     for n, (t, sens, r, j, raison, stop, obj) in enumerate(choisis[:nb], 1):
         i = d.index.get_loc(t)
-        a, b = max(0, i - 40), min(len(d), j + 8)
+        a, b = max(0, i - (40 if boite is None else 44)), min(len(d), j + 8)
         g = d.iloc[a:b]
         fig, ax = plt.subplots(figsize=(10, 5), dpi=110)
         fig.patch.set_facecolor("#0b0f0c")
@@ -261,6 +261,14 @@ def images(d, trades, dossier, nb=4):
             ax.add_patch(plt.Rectangle((k - 0.35, min(o, c)), 0.7, max(abs(c - o), PIP / 10), color=col))
         ax.plot(range(len(g)), g.ema20.to_numpy(), color="#3498db", lw=1, label="EMA 20")
         ax.plot(range(len(g)), g.ema50.to_numpy(), color="#9b59b6", lw=1, label="EMA 50")
+        if boite is not None:
+            jour_t = d.jour.iat[i]
+            dans = [k for k in range(len(g)) if g.jour.iat[k] == jour_t and boite[0] <= g.heure.iat[k] < boite[1]]
+            if dans:
+                bh = g.hi.iloc[dans].max()
+                bl = g.lo.iloc[dans].min()
+                ax.add_patch(plt.Rectangle((dans[0] - 0.5, bl), len(dans), bh - bl, color="#f1c40f", alpha=0.12,
+                                           label="boîte 1 h - 9 h"))
         ie, js = i + 1 - a, j - a
         ent = d.open_ask.iat[i + 1] if sens > 0 else d.open_bid.iat[i + 1]
         ax.hlines(ent, ie, js, colors="#f1c40f", lw=1.5, label="entrée")
@@ -275,7 +283,7 @@ def images(d, trades, dossier, nb=4):
         ax.set_xticklabels(heures[::pas], color="#9fb3a4", fontsize=8)
         ax.tick_params(axis="y", colors="#9fb3a4", labelsize=8)
         jour = t.tz_localize("UTC").tz_convert("Europe/Paris").strftime("%d/%m/%Y")
-        ax.set_title(f"EUR/USD 15 min, {jour} (heure de Paris) : {raison}, {r:+.2f} R après spread",
+        ax.set_title(f"EUR/USD {unite_txt}, {jour} (heure de Paris) : {raison}, {r:+.2f} R après spread",
                      color="white", fontsize=11)
         ax.legend(facecolor="#0b0f0c", labelcolor="white", fontsize=8, loc="best")
         for s in ax.spines.values():
@@ -351,17 +359,53 @@ def principal():
                 meilleur_global = (score[0], unite, k, d, res[k][0])
         lignes.append("")
         sortie["unites"][unite]["toutes"] = {k: {"choix": res[k][1], "test": res[k][2]} for k in ordre}
+    # ----- stratégie retenue pour la fiche (choisie pour sa régularité sur les 2 unités, pas sur le seul test)
+    brut = lire(dossier, EPIC, "MINUTE_15")
+    if brut is not None:
+        d = preparer(brut)
+        tr = cassure(d, ("1:00", "9:00"), "13:00", "17:30", "autre bord", 1.5, 40)
+        debut, fin = d.index.min(), d.index.max()
+        coupe = debut + (fin - debut) * PART_CHOIX
+        tout = stats(tr)
+        lignes += ["## Stratégie de la fiche : Cassure de Londres (boîte 1 h - 9 h, stop autre bord, objectif 1,5 R), 15 min", "",
+                   "| Période | Trades | Gagnants | R moyen | R total | R / mois | Pire baisse (R) | Mois positifs | Pertes de suite max |",
+                   "|---|---|---|---|---|---|---|---|---|"]
+        semestres = pd.date_range(debut.normalize().replace(day=1), fin + pd.Timedelta(days=183), freq="6MS")
+        for a_, b_ in zip(semestres[:-1], semestres[1:]):
+            st = stats(tr, a_, b_)
+            if st.get("trades"):
+                lignes.append(f"| {a_:%m/%Y} - {(b_ - pd.Timedelta(days=1)):%m/%Y} | {st['trades']} | {st['gagnants_pct']} % | "
+                              f"{st['R_moyen']:+.3f} | {st['R_total']:+.1f} | {st['R_mois']:+.2f} | {st['pire_baisse_R']} | "
+                              f"{st['mois_positifs_pct']:.0f} % | {st['pertes_de_suite_max']} |")
+        lignes.append(f"| **Tout** | {tout['trades']} | {tout['gagnants_pct']} % | {tout['R_moyen']:+.3f} | {tout['R_total']:+.1f} | "
+                      f"{tout['R_mois']:+.2f} | {tout['pire_baisse_R']} | {tout['mois_positifs_pct']:.0f} % | {tout['pertes_de_suite_max']} |")
+        # tailles de boîte et de stop (en pips) pour calculer la taille de position à la main
+        boites, stops = [], []
+        for x in tr:
+            i = d.index.get_loc(x[0])
+            ent = d.open_ask.iat[i + 1] if x[1] > 0 else d.open_bid.iat[i + 1]
+            stops.append(abs(ent - x[5]) / PIP)
+        jours_ok = sum(1 for _ in tr)
+        nb_jours = d.jour.nunique()
+        raisons = pd.Series([x[4] for x in tr]).value_counts().to_dict()
+        heures = pd.Series([x[0].tz_localize("UTC").tz_convert("Europe/Paris").hour for x in tr]).value_counts().sort_index().to_dict()
+        lignes += ["", f"Stop moyen {np.mean(stops):.1f} pips (médiane {np.median(stops):.1f}, 10 % des trades > "
+                   f"{np.percentile(stops, 90):.1f}). Trade pris {jours_ok} jours sur {nb_jours} jours de cotation. "
+                   f"Sorties : {raisons}. Heure du signal (Paris) : {heures}.", ""]
+        mel = [stats(cassure(preparer(melanger(brut, g)), ("1:00", "9:00"), "13:00", "17:30", "autre bord", 1.5, 40)) for g in (1, 2, 3, 4, 5)]
+        lignes += [f"Prix mélangés (5 tirages) : R moyen {', '.join(f'{m.get(chr(82) + '_moyen', 0):+.3f}' for m in mel)}.", ""]
+        sortie["fiche"] = {"tout": tout, "stop_pips_median": float(np.median(stops)), "stop_pips_p90": float(np.percentile(stops, 90)),
+                           "sorties": raisons, "heures": heures, "melange": mel}
+        if img is not None:
+            sortie["images"] = images(d, tr, img, boite=(1, 9))
+        sortie["derniers_trades"] = [
+            {"date_paris": x[0].tz_localize("UTC").tz_convert("Europe/Paris").strftime("%d/%m/%Y %H:%M"),
+             "sens": "achat" if x[1] > 0 else "vente", "R": round(x[2], 2), "sortie": x[4]} for x in tr[-15:]]
     if meilleur_global:
         _, unite, k, d, tr = meilleur_global
         lignes += ["## Meilleure sur période jamais vue (attention : ce choix-là regarde le test)", "",
                    f"{k} en {unite}.", ""]
         sortie["meilleure"] = {"unite": unite, "variante": k}
-        if img is not None and unite == "MINUTE_15":
-            sortie["images"] = images(d, tr, img)
-        # 10 derniers trades pour la fiche
-        sortie["derniers_trades"] = [
-            {"date_paris": x[0].tz_localize("UTC").tz_convert("Europe/Paris").strftime("%d/%m/%Y %H:%M"),
-             "sens": "achat" if x[1] > 0 else "vente", "R": round(x[2], 2), "sortie": x[4]} for x in tr[-10:]]
     md.write_text("\n".join(lignes) + "\n", encoding="utf-8")
     js.write_text(json.dumps(sortie, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
     print("\n".join(lignes))
