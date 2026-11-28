@@ -2214,13 +2214,9 @@
    "texte": "Connexion refusée (401). Vérifie la clé API, l'e-mail et le mot de passe de la clé dans les secrets GitHub. Détail : {\"errorCode\":\"error.invalid.api.key\"}"
   }
  ],
- "statut": "erreur",
- "derniere_execution": "2026-11-28T12:46:49Z",
+ "statut": "ok",
+ "derniere_execution": "2026-11-28T12:47:23Z",
  "historique": [
-  {
-   "date": "2026-11-26T10:14:26Z",
-   "valeur": 93.09
-  },
   {
    "date": "2026-11-26T10:15:26Z",
    "valeur": 93.09
@@ -14215,6 +14211,10 @@
   },
   {
    "date": "2026-11-28T12:45:23Z",
+   "valeur": 92.79
+  },
+  {
+   "date": "2026-11-28T12:47:23Z",
    "valeur": 92.79
   }
  ],
