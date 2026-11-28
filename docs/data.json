@@ -2251,12 +2251,8 @@
   }
  ],
  "statut": "ok",
- "derniere_execution": "2026-11-28T15:54:23Z",
+ "derniere_execution": "2026-11-28T15:55:23Z",
  "historique": [
-  {
-   "date": "2026-11-26T13:21:25Z",
-   "valeur": 92.86
-  },
   {
    "date": "2026-11-26T13:22:25Z",
    "valeur": 92.86
@@ -14252,32 +14248,21 @@
   {
    "date": "2026-11-28T15:54:23Z",
    "valeur": 92.65
+  },
+  {
+   "date": "2026-11-28T15:55:23Z",
+   "valeur": 92.63
   }
  ],
  "compte": {
   "nom": "Account",
   "devise": "EUR",
-  "solde": 92.65,
-  "depot": 92.75,
-  "resultat_latent": -0.1,
-  "disponible": 46.24
+  "solde": 92.63,
+  "depot": 92.63,
+  "resultat_latent": 0.0,
+  "disponible": 92.63
  },
- "positions": [
-  {
-   "marche": "BTCUSD",
-   "nom": "Bitcoin/USD",
-   "sens": "BUY",
-   "taille": 0.0017,
-   "prix_entree": 59476.2,
-   "resultat": -0.1,
-   "ouverte_le": "2026-11-28T15:49:54.264",
-   "id": "00000000-7764-2740-049f-c46d0015549e",
-   "stop": 58642.9,
-   "stop_garanti": true,
-   "objectif": 64068,
-   "strategie": "autre"
-  }
- ],
+ "positions": [],
  "ordres": [
   {
    "id": "00000000-750e-5d28-049f-c46d0015549e",
@@ -14732,13 +14717,14 @@
    "objectif": 64068,
    "stop_garanti": true,
    "ouvert_le": "2026-11-28T15:49:54Z",
-   "statut": "ouvert",
-   "resultat": -0.1,
-   "ferme_le": null,
-   "prix_sortie": null,
-   "motif_sortie": null,
+   "statut": "ferme",
+   "resultat": -0.12,
+   "ferme_le": "2026-11-28T15:55:23Z",
+   "prix_sortie": 59401.25,
+   "motif_sortie": "Fermée chez Capital.com",
    "strategie": "autre",
-   "reglages": null
+   "reglages": null,
+   "resultat_estime": false
   }
  ],
  "historique_jour": {
@@ -14750,7 +14736,7 @@
   "2026-11-25": 93.99,
   "2026-11-26": 92.86,
   "2026-11-27": 92.79,
-  "2026-11-28": 92.65
+  "2026-11-28": 92.63
  },
  "entrees": {
   "tendance_mois:GOLD": "2026-11-19 00:00:00+00:00",
