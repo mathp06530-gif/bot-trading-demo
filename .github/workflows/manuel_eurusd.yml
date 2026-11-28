@@ -46,7 +46,7 @@ jobs:
           sys.path.insert(0, ".")
           from backtest import telecharger as t
           from bot.capital import CapitalDemo
-          api = CapitalDemo(*(os.environ[n] for n in ("CAPITAL_API_KEY", "CAPITAL_IDENTIFIER", "CAPITAL_PASSWORD")))
+          api = CapitalDemo(*(os.environ[n].strip() for n in ("CAPITAL_API_KEY", "CAPITAL_IDENTIFIER", "CAPITAL_PASSWORD")))
           api.connexion()
           t.DOSSIER = Path("donnees_ia"); t.DOSSIER.mkdir(exist_ok=True)
           t.telecharger(api, "EURUSD", "MINUTE_15", 15, 700)
