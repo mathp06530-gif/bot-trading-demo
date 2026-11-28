@@ -39,7 +39,7 @@ jobs:
           CAPITAL_PASSWORD: ${{ secrets.CAPITAL_PASSWORD }}
         run: |
           ls -la donnees_ia 2>/dev/null | grep EURUSD || true
-          if [ ! -f donnees_ia/EURUSD_MINUTE_5.csv ]; then python -u ia/predire.py telecharger donnees_ia EURUSD; fi
+          if [ ! -f donnees_ia/EURUSD_MINUTE_5.csv ]; then python -u ia/predire.py telecharger donnees_ia EURUSD || echo "téléchargement partiel"; fi
           wc -l donnees_ia/EURUSD_MINUTE_*.csv
       - run: python -u backtest/manuel_eurusd.py donnees_ia backtest/MANUEL_EURUSD.md backtest/manuel_eurusd.json backtest/manuel_eurusd_images
       - run: |
