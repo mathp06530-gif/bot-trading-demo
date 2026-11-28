@@ -2104,10 +2104,16 @@
    "type": "erreur",
    "marche": "",
    "texte": "HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=30)"
+  },
+  {
+   "date": "2026-11-28T07:24:50Z",
+   "type": "erreur",
+   "marche": "",
+   "texte": "HTTPSConnectionPool(host='demo-api-capital.backend-capital.com', port=443): Read timed out. (read timeout=30)"
   }
  ],
  "statut": "erreur",
- "derniere_execution": "2026-11-28T07:24:14Z",
+ "derniere_execution": "2026-11-28T07:24:50Z",
  "historique": [
   {
    "date": "2026-11-26T05:04:25Z",
